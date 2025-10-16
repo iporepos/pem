@@ -44,11 +44,11 @@ build-backend = "setuptools.build_meta"
 # BASIC
 # =======================================================================
 # The name of your package/project
-name = "copyme"          # <-- [CHANGE THIS] set with your project name
+name = "pem"          # <-- [CHANGE THIS] set with your project name
 # Version number
-version = "0.1.1"        # <-- [CHANGE THIS] Set version
+version = "0.0.1"        # <-- [CHANGE THIS] Set version
 # Short description
-description = "A simple template for python development."   # <-- [CHANGE THIS]
+description = "Scripts for marine spatial planning in Brazil."   # <-- [CHANGE THIS]
 # Keywords (optional) for search on PyPI
 keywords = [
   "python", 
@@ -67,7 +67,8 @@ readme = "README.md"  # <-- [CHECK THIS]
 # ------------------------------------------------------------------------
 # Here we use 'url' instead of email to avoid publishing email addresses
 authors = [
-    { name = "Iporã Possantti"}, # <-- [CHANGE THIS]
+    { name = "Iporã Possantti"},
+    { name = "Tiago Gandra"},
     # ... [ADD MORE IF NEDDED]
     # tip: include email if needed: 
     # { name = "NAME", email = "myemail@org"} 
@@ -104,9 +105,14 @@ requires-python = ">=3.10"  # <-- [CHECK THIS] Python 3.10 or higher
 # Installed automatically when someone installs your package
 
 dependencies = [
-    "requests",  # [EXAMPLE] [RECOMMENDED] network operations
-    "numpy",     # [EXAMPLE] [RECOMMENDED] numerical computations
-    "pandas",    # [EXAMPLE] [RECOMMENDED] data manipulation
+    "requests",
+    "numpy",
+    "matplotlib",
+    "scipy",
+    "pandas",
+    "geopandas",
+    "rasterio",
+
     # [EXAMPLE] custom dependency directly from GitHub:
     # "my-package @ git+https://github.com/username/my-package.git@main",
     # ... [ADD MORE IF NEDDED]
@@ -128,7 +134,6 @@ dependencies = [
 
 dev = [
     "black",           # [EXAMPLE] [RECOMMENDED] Code style lib
-    "notebook",        # [EXAMPLE] [RECOMMENDED] Useful for testing and learning
     # "pytest>=8.0",   # [EXAMPLE] testing framework
     # ... [ADD MORE IF NEDDED]
 ]
@@ -157,7 +162,7 @@ docs = [
 # URLS
 # ***********************************************************************
 [project.urls]
-"Homepage" = "https://github.com/iporepos/copyme" # <-- [CHANGE THIS]
+"Homepage" = "https://github.com/iporepos/pem" # <-- [CHANGE THIS]
 
 
 
