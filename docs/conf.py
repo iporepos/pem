@@ -86,6 +86,7 @@ autodoc_mock_imports = [
     "geopandas",
     "rasterio",
     "processing",
+    "qgis"
     # ... keep adding as new dependencies arise
 ]
 
@@ -141,7 +142,6 @@ html_logo = (
     "https://github.com/iporepos/pem/blob/main/docs/figs/logo.jpg?raw=true"
 )
 """
-
 
 
 html_theme_options = {
