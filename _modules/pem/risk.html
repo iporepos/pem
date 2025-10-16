@@ -1,0 +1,1204 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pem.risk &#8212; pem 0.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/pem/risk';</script>
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pem 0.0.1 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.risk</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for pem.risk</h1><div class="highlight"><pre>
+<span></span><span class="c1"># SPDX-License-Identifier: GPL-3.0-or-later</span>
+<span class="c1">#</span>
+<span class="c1"># Copyright (C) 2025 The Project Authors</span>
+<span class="c1"># See pyproject.toml for authors/maintainers.</span>
+<span class="c1"># See LICENSE for license details.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">{Short module description (1-3 sentences)}</span>
+<span class="sd">todo docstring</span>
+
+<span class="sd">Features</span>
+<span class="sd">--------</span>
+<span class="sd">todo docstring</span>
+
+<span class="sd">* {feature 1}</span>
+<span class="sd">* {feature 2}</span>
+<span class="sd">* {feature 3}</span>
+<span class="sd">* {etc}</span>
+
+<span class="sd">Overview</span>
+<span class="sd">--------</span>
+<span class="sd">todo docstring</span>
+<span class="sd">{Overview description}</span>
+
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+<span class="sd">todo docstring</span>
+<span class="sd">{Examples in rST}</span>
+
+<span class="sd">Print a message</span>
+
+<span class="sd">.. code-block:: python</span>
+
+<span class="sd">    # print message</span>
+<span class="sd">    print(&quot;Hello world!&quot;)</span>
+<span class="sd">    # [Output] &gt;&gt; &#39;Hello world!&#39;</span>
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="c1"># IMPORTS</span>
+<span class="c1"># ***********************************************************************</span>
+<span class="c1"># import modules from other libs</span>
+
+<span class="c1"># Native imports</span>
+<span class="c1"># =======================================================================</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># ... {develop}</span>
+
+<span class="c1"># External imports</span>
+<span class="c1"># =======================================================================</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">processing</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qgis.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QgsCoordinateReferenceSystem</span>
+
+
+<span class="c1"># ... {develop}</span>
+
+<span class="c1"># Project-level imports</span>
+<span class="c1"># =======================================================================</span>
+<span class="c1"># import {module}</span>
+<span class="c1"># ... {develop}</span>
+
+
+<span class="c1"># CONSTANTS</span>
+<span class="c1"># ***********************************************************************</span>
+<span class="c1"># define constants in uppercase</span>
+
+
+<span class="c1"># FUNCTIONS</span>
+<span class="c1"># ***********************************************************************</span>
+
+<span class="c1"># FUNCTIONS -- Project-level</span>
+<span class="c1"># =======================================================================</span>
+
+
+<div class="viewcode-block" id="setup_stressors">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.setup_stressors">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_stressors</span><span class="p">(</span>
+    <span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">reference_raster</span><span class="p">,</span> <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up stressor layers by rasterizing multiple vector layers from a</span>
+<span class="sd">     database into single stressor rasters and reprojecting them to a specified resolution.</span>
+
+<span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param input_db: The path to the source vector database (e.g., GeoPackage) containing the stressor layers.</span>
+<span class="sd">    :type input_db: str</span>
+<span class="sd">    :param groups: A dictionary defining the stressor groups. Keys are the desired output stressor names (e.g., ``Coastal_Pollution``), and values are dictionaries containing two keys: ``layers`` (a list of vector layer names to be combined) and ``buffer`` (the required buffer distance in meters for subsequent analysis).</span>
+<span class="sd">    :type groups: dict</span>
+<span class="sd">    :param reference_raster: The path to a raster file whose extent, CRS, and other properties will be used as a template for the output stressor rasters.</span>
+<span class="sd">    :type reference_raster: str</span>
+<span class="sd">    :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</span>
+<span class="sd">    :type is_blank: bool</span>
+<span class="sd">    :param resolution: The desired resolution (cell size) for the final output stressor rasters. Default value = 400</span>
+<span class="sd">    :type resolution: float</span>
+<span class="sd">    :return: The path to the newly created run-specific output folder containing the stressor rasters and metadata.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function combines features from multiple vector layers into a single output stressor raster for each defined group.</span>
+<span class="sd">    1. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
+<span class="sd">    2. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
+<span class="sd">    3. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">    4. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
+<span class="sd">    Intermediate rasters are cleaned up at the end.</span>
+
+
+<span class="sd">    **Script example**</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import importlib.util as iu</span>
+
+<span class="sd">        # define the paths to this module</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
+
+<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">        module = iu.module_from_spec(spec)</span>
+<span class="sd">        spec.loader.exec_module(module)</span>
+
+<span class="sd">        # define the paths to input and output folders</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+
+<span class="sd">        # define the path to input database</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+
+<span class="sd">        # organize stressors groups</span>
+<span class="sd">        groups = {</span>
+<span class="sd">            &quot;MINERACAO&quot;: {</span>
+<span class="sd">                &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000,</span>
+<span class="sd">                &quot;raster&quot;: None</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;TURISMO&quot;: {</span>
+<span class="sd">                &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000,</span>
+<span class="sd">                &quot;raster&quot;: None</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;EOLICAS&quot;: {</span>
+<span class="sd">                &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000,</span>
+<span class="sd">                &quot;raster&quot;: None</span>
+<span class="sd">            },</span>
+<span class="sd">        }</span>
+
+<span class="sd">        # call the function</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        output_file = module.setup_stressors(</span>
+<span class="sd">            input_db=input_db,</span>
+<span class="sd">            output_folder=output_dir,</span>
+<span class="sd">            groups=groups,</span>
+<span class="sd">            reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">            is_blank=False,</span>
+<span class="sd">            resolution=1000</span>
+<span class="sd">        )</span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Startup</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">setup_stressors</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup output variables</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># folders</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="c1"># -----------------------------------</span>
+
+    <span class="c1"># Run processes</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># handle reference raster</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="k">if</span> <span class="n">is_blank</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
+        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">raster_blank</span><span class="p">(</span>
+            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># loop over for rasterizing</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">ls_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ls_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ls_buffers</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+
+        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
+        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
+
+        <span class="c1"># copy reference</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">)</span>
+
+        <span class="c1"># loop for handling multiple layers</span>
+        <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="s2">&quot;layers&quot;</span><span class="p">]:</span>
+            <span class="c1"># rasterize</span>
+            <span class="n">layer_rasterize</span><span class="p">(</span>
+                <span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">),</span>
+                <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
+                <span class="n">input_layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span>
+                <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># reproject</span>
+        <span class="n">raster_reproject</span><span class="p">(</span>
+            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
+            <span class="n">dst_resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ls_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="n">ls_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_warped</span><span class="p">))</span>
+        <span class="n">ls_buffers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="s2">&quot;buffer&quot;</span><span class="p">])</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">)</span>
+
+    <span class="c1"># save CSV info</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">ls_names</span><span class="p">,</span>
+        <span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">ls_paths</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TYPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;STRESSOR&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_buffers</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info_stressors.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># removals</span>
+    <span class="c1"># -----------------------------------</span>
+
+    <span class="c1"># handle blank</span>
+    <span class="k">if</span> <span class="n">is_blank</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reference_raster</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_blank</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_folder</span></div>
+
+
+
+<div class="viewcode-block" id="setup_habitats">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.setup_habitats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span>
+    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">input_db</span><span class="p">,</span>
+    <span class="n">input_layer</span><span class="p">,</span>
+    <span class="n">groups</span><span class="p">,</span>
+    <span class="n">field_name</span><span class="p">,</span>
+    <span class="n">reference_raster</span><span class="p">,</span>
+    <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up habitat layers by splitting a vector layer, rasterizing each resulting</span>
+<span class="sd">    habitat group, and reprojecting the rasters to a specified resolution.</span>
+
+<span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param input_db: The path to the source vector database (e.g., GeoPackage) containing the habitat features.</span>
+<span class="sd">    :type input_db: str</span>
+<span class="sd">    :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.</span>
+<span class="sd">    :type input_layer: str</span>
+<span class="sd">    :param groups: A dictionary defining the habitat groups: keys are the desired output habitat names (layer names), and values are lists of string values from ``field_name`` to include in that habitat layer.</span>
+<span class="sd">    :type groups: dict</span>
+<span class="sd">    :param field_name: The name of the attribute field in the input data used for grouping and querying the habitat features.</span>
+<span class="sd">    :type field_name: str</span>
+<span class="sd">    :param reference_raster: The path to a raster file whose extent, CRS, and other properties will be used as a template for the output habitat rasters.</span>
+<span class="sd">    :type reference_raster: str</span>
+<span class="sd">    :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</span>
+<span class="sd">    :type is_blank: bool</span>
+<span class="sd">    :param resolution: The desired resolution (cell size) for the final output habitat rasters. Default value = 400</span>
+<span class="sd">    :type resolution: float</span>
+<span class="sd">    :return: The path to the newly created run-specific output folder containing the habitat rasters and metadata.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function orchestrates a multi-step process:</span>
+<span class="sd">    1. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
+<span class="sd">    2. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
+<span class="sd">    3. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
+<span class="sd">    4. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">    5. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
+<span class="sd">    Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</span>
+
+<span class="sd">    **Script example**</span>
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        import importlib.util as iu</span>
+
+<span class="sd">        # define the paths to this module</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
+
+<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">        module = iu.module_from_spec(spec)</span>
+<span class="sd">        spec.loader.exec_module(module)</span>
+
+<span class="sd">        # define the paths to input and output folders</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+
+<span class="sd">        # define the path to input database</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+
+<span class="sd">        # organize habitat groups</span>
+<span class="sd">        groups = {</span>
+<span class="sd">            &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],</span>
+<span class="sd">            &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
+<span class="sd">            &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
+<span class="sd">            &quot;MD3&quot;: [&quot;MD3&quot;],</span>
+<span class="sd">            &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
+<span class="sd">            &quot;ME1&quot;: [&quot;ME1&quot;],</span>
+<span class="sd">            &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
+<span class="sd">            &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
+<span class="sd">        }</span>
+
+<span class="sd">        # call the function</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        output_file = module.setup_habitats(</span>
+<span class="sd">            input_db=input_db,</span>
+<span class="sd">            output_folder=output_dir,</span>
+<span class="sd">            input_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
+<span class="sd">            groups=groups,</span>
+<span class="sd">            field_name=&quot;code&quot;,</span>
+<span class="sd">            reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">            resolution=1000</span>
+<span class="sd">        )</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Startup</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">setup_habitats</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup output variables</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># folders</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="c1"># -----------------------------------</span>
+
+    <span class="c1"># Run processes</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># split vector features</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">output_db</span> <span class="o">=</span> <span class="n">split_features</span><span class="p">(</span>
+        <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+        <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
+        <span class="n">input_layer</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span>
+        <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+        <span class="n">field_name</span><span class="o">=</span><span class="n">field_name</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># handle reference raster</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="k">if</span> <span class="n">is_blank</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
+        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">raster_blank</span><span class="p">(</span>
+            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># loop over for rasterizing</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">ls_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">ls_paths</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+
+        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
+
+        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
+
+        <span class="c1"># copy reference</span>
+        <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">)</span>
+
+        <span class="c1"># rasterize</span>
+        <span class="n">layer_rasterize</span><span class="p">(</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">),</span>
+            <span class="n">input_db</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span>
+            <span class="n">input_layer</span><span class="o">=</span><span class="n">g</span><span class="p">,</span>
+            <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="c1"># reproject</span>
+        <span class="n">raster_reproject</span><span class="p">(</span>
+            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
+            <span class="n">dst_resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">ls_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="n">ls_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_warped</span><span class="p">))</span>
+
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">)</span>
+
+    <span class="c1"># save CSV info</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">ls_names</span><span class="p">,</span>
+        <span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">ls_paths</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TYPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;HABITAT&quot;</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info_habitats.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># removals</span>
+    <span class="c1"># -----------------------------------</span>
+
+    <span class="c1"># handle blank</span>
+    <span class="k">if</span> <span class="n">is_blank</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reference_raster</span><span class="p">)</span>
+
+    <span class="c1"># handle geopackage</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/habitats.gpkg&quot;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_db</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_folder</span></div>
+
+
+
+<div class="viewcode-block" id="split_features">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.split_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">split_features</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Splits features from a source GeoDataFrame into separate</span>
+<span class="sd">    layers within a single GeoPackage file based on predefined groups of field values.</span>
+
+<span class="sd">    :param output_folder: The base directory where a new run-specific folder for the outputs will be created.</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param input_db: The path to the source vector database (e.g., a GeoPackage file).</span>
+<span class="sd">    :type input_db: str</span>
+<span class="sd">    :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.</span>
+<span class="sd">    :type input_layer: str</span>
+<span class="sd">    :param groups: A dictionary where keys are the desired output layer names (groups) and values are lists of string values from ``field_name`` to include in that layer.</span>
+<span class="sd">    :type groups: dict</span>
+<span class="sd">    :param field_name: The name of the attribute field in the input data used for grouping and querying the features.</span>
+<span class="sd">    :type field_name: str</span>
+<span class="sd">    :return: The path to the output GeoPackage file containing the newly created layers.</span>
+<span class="sd">    :rtype: :class:`pathlib.Path`</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    The function first reads the entire layer into a single GeoDataFrame.</span>
+<span class="sd">    It then iterates through the ``groups`` dictionary, querying the GeoDataFrame</span>
+<span class="sd">    for features where the value in ``field_name`` matches any of the values in</span>
+<span class="sd">    the group&#39;s list. All resulting group GeoDataFrames are concatenated and</span>
+<span class="sd">    saved as separate layers (named after the group keys) into a new GeoPackage</span>
+<span class="sd">    file called ``split.gpkg`` within a run-specific subfolder in ``output_folder``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># Startup</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">split_features</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup output variables</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># folders</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/split.gpkg&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Run processes</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># load data</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">input_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">input_layer</span><span class="p">)</span>
+
+    <span class="c1"># split loop</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">dc_files</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">ls_gdf</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">]:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">field_name</span><span class="si">}</span><span class="s2"> == &#39;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&#39;&quot;</span>
+            <span class="n">gdf_q</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">ls_gdf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gdf_q</span><span class="p">)</span>
+        <span class="n">gdf_group</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">ls_gdf</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">dc_files</span><span class="p">[</span><span class="n">g</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_group</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="c1"># Export</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">dc_files</span><span class="p">:</span>
+        <span class="n">dc_files</span><span class="p">[</span><span class="n">g</span><span class="p">]</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;GPKG&quot;</span><span class="p">)</span>
+
+    <span class="c1"># save</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_file</span></div>
+
+
+
+<span class="c1"># ... {develop}</span>
+
+<span class="c1"># FUNCTIONS -- Module-level</span>
+<span class="c1"># =======================================================================</span>
+<span class="c1"># ... {develop}</span>
+
+
+<div class="viewcode-block" id="raster_blank">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.raster_blank">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">raster_blank</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a blank (zero-valued) raster based on the extent,</span>
+<span class="sd">    resolution, and CRS of an existing input raster.</span>
+
+<span class="sd">    :param output_folder: The directory where the blank raster will be saved (used for organization, though the full path is given by ``output_raster``).</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param output_raster: The full path and filename for the resulting blank raster file.</span>
+<span class="sd">    :type output_raster: str</span>
+<span class="sd">    :param input_raster: The path to the source raster file whose properties (extent, resolution, CRS) will be used.</span>
+<span class="sd">    :type input_raster: str</span>
+<span class="sd">    :return: The full path to the newly created blank raster file.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function uses the QGIS processing algorithm ``native:rastercalc``</span>
+<span class="sd">    (Raster calculator). It works by multiplying every cell in the input</span>
+<span class="sd">    raster by zero, effectively preserving the metadata (extent, resolution, CRS)</span>
+<span class="sd">    while setting all data values to zero. The output raster is a new</span>
+<span class="sd">    file and does not modify the input raster.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">input_raster</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;LAYERS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">input_raster</span><span class="p">)],</span>
+        <span class="s2">&quot;EXPRESSION&quot;</span><span class="p">:</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">@1&quot; * 0&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filename</span><span class="p">),</span>
+        <span class="s2">&quot;EXTENT&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;CELL_SIZE&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_raster</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:rastercalc&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output_raster</span></div>
+
+
+
+<div class="viewcode-block" id="raster_reproject">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.raster_reproject">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">raster_reproject</span><span class="p">(</span>
+    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">output_raster</span><span class="p">,</span>
+    <span class="n">input_raster</span><span class="p">,</span>
+    <span class="n">dst_resolution</span><span class="p">,</span>
+    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5641&quot;</span><span class="p">,</span>
+    <span class="n">src_crs</span><span class="o">=</span><span class="s2">&quot;4326&quot;</span><span class="p">,</span>
+    <span class="n">dtype</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+    <span class="n">resampling</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reprojects and optionally resamples an input raster to a new Coordinate Reference System (CRS) and resolution.</span>
+
+<span class="sd">    :param output_folder: The directory where the reprojected raster will be saved (though not directly used in the current implementation, it implies the output location).</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param output_raster: The full path and filename for the resulting reprojected raster file.</span>
+<span class="sd">    :type output_raster: str</span>
+<span class="sd">    :param input_raster: The path to the source raster file to be reprojected.</span>
+<span class="sd">    :type input_raster: str</span>
+<span class="sd">    :param dst_resolution: The desired resolution (cell size) for the output raster, usually in the units of the target CRS.</span>
+<span class="sd">    :type dst_resolution: float</span>
+<span class="sd">    :param dst_crs: The EPSG code (as a string) for the target CRS. Default value = ``5641``</span>
+<span class="sd">    :type dst_crs: str</span>
+<span class="sd">    :param src_crs: The EPSG code (as a string) for the source CRS. Default value = ``4326``</span>
+<span class="sd">    :type src_crs: str</span>
+<span class="sd">    :param dtype: The desired data type for the output raster bands (GDAL data type code). Default value = 6 (Float32)</span>
+<span class="sd">    :type dtype: int</span>
+<span class="sd">    :param resampling: The resampling method to use (GDAL resampling code). Default value = 0 (Nearest Neighbour)</span>
+<span class="sd">    :type resampling: int</span>
+<span class="sd">    :return: The full path to the newly created output raster file.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function uses the QGIS processing algorithm ``gdal:warpreproject``.</span>
+<span class="sd">    The default NoData value is set to ``-99999``.</span>
+<span class="sd">    Common values for ``dtype`` include 1 (Byte), 4 (Int32), 6 (Float32).</span>
+<span class="sd">    Common values for ``resampling`` include 0 (Nearest Neighbour), 1 (Bilinear), 2 (Cubic).</span>
+<span class="sd">    The output path is constructed using the ``output_raster`` parameter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">input_raster</span><span class="p">),</span>
+        <span class="s2">&quot;SOURCE_CRS&quot;</span><span class="p">:</span> <span class="n">QgsCoordinateReferenceSystem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">src_crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;TARGET_CRS&quot;</span><span class="p">:</span> <span class="n">QgsCoordinateReferenceSystem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">dst_crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;RESAMPLING&quot;</span><span class="p">:</span> <span class="n">resampling</span><span class="p">,</span>
+        <span class="s2">&quot;NODATA&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">99999</span><span class="p">,</span>
+        <span class="s2">&quot;TARGET_RESOLUTION&quot;</span><span class="p">:</span> <span class="n">dst_resolution</span><span class="p">,</span>
+        <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;DATA_TYPE&quot;</span><span class="p">:</span> <span class="n">dtype</span><span class="p">,</span>
+        <span class="s2">&quot;TARGET_EXTENT&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;TARGET_EXTENT_CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;MULTITHREADING&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;EXTRA&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_raster</span><span class="p">),</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;gdal:warpreproject&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">output_raster</span></div>
+
+
+
+<div class="viewcode-block" id="layer_rasterize">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.layer_rasterize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">layer_rasterize</span><span class="p">(</span>
+    <span class="n">input_raster</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">input_table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rasterizes a vector layer from a database into an existing raster file, assigning a fixed burn value.</span>
+
+<span class="sd">    :param input_raster: The path to the existing raster file to be modified (must be writable).</span>
+<span class="sd">    :type input_raster: str</span>
+<span class="sd">    :param input_db: The path or connection string to the vector database (e.g., GeoPackage, PostGIS connection).</span>
+<span class="sd">    :type input_db: str</span>
+<span class="sd">    :param input_layer: The name of the vector layer or table to rasterize.</span>
+<span class="sd">    :type input_layer: str</span>
+<span class="sd">    :param input_table: [optional] The schema or parent table name if the ``input_layer`` is a sub-table or view (e.g., for PostGIS).</span>
+<span class="sd">    :type input_table: str or None</span>
+<span class="sd">    :param burn_value: The fixed value to burn into the raster cells covered by the vector features. Default value = 1</span>
+<span class="sd">    :type burn_value: int or float</span>
+<span class="sd">    :param extra: Additional command-line options passed directly to the underlying GDAL tool. Default value = ``&#39;&#39;``</span>
+<span class="sd">    :type extra: str</span>
+<span class="sd">    :return: The path to the modified input raster file.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function uses the QGIS processing algorithm ``gdal:rasterize_over_fixed_value``, which modifies the ``input_raster`` in place. If ``input_table`` is not provided, it assumes a standard layer format (e.g., GeoPackage layer). If ``input_table`` is provided, it constructs a PostgreSQL-like table reference.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># infer input</span>
+    <span class="k">if</span> <span class="n">input_table</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">input_vector</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">|layername=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_vector</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> table=&quot;</span><span class="si">{}</span><span class="s1">&quot;.&quot;</span><span class="si">{}</span><span class="s1">&quot; (geom)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">input_db</span><span class="p">,</span> <span class="n">input_table</span><span class="p">,</span> <span class="n">input_layer</span>
+        <span class="p">)</span>
+
+    <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">input_vector</span><span class="p">,</span>
+        <span class="s2">&quot;INPUT_RASTER&quot;</span><span class="p">:</span> <span class="n">input_raster</span><span class="p">,</span>
+        <span class="s2">&quot;BURN&quot;</span><span class="p">:</span> <span class="n">burn_value</span><span class="p">,</span>
+        <span class="s2">&quot;ADD&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;EXTRA&quot;</span><span class="p">:</span> <span class="n">extra</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;gdal:rasterize_over_fixed_value&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">input_raster</span></div>
+
+
+
+<span class="c1"># FUNCTIONS -- Utils</span>
+<span class="c1"># =======================================================================</span>
+
+
+<div class="viewcode-block" id="get_timestamp">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.get_timestamp">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_timestamp</span><span class="p">():</span>
+    <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="make_run_folder">
+<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.make_run_folder">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_run_folder</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Creates a unique, time-stamped run folder within a specified output directory.</span>
+
+<span class="sd">    :param output_folder: The parent directory where the new run folder will be created.</span>
+<span class="sd">    :type output_folder: str or :class:`pathlib.Path`</span>
+<span class="sd">    :param run_name: The base name for the new folder. A timestamp will be appended to it.</span>
+<span class="sd">    :type run_name: str</span>
+<span class="sd">    :return: The absolute path to the newly created run folder.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    It appends a unique timestamp to the run name and ensures the</span>
+<span class="sd">    folder doesn&#39;t already exist before creating it.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
+        <span class="n">folder_run</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_folder</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_run</span><span class="p">):</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder_run</span><span class="p">)</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder_run</span><span class="p">)</span></div>
+
+
+
+<span class="c1"># SCRIPT</span>
+<span class="c1"># ***********************************************************************</span>
+<span class="c1"># standalone behaviour as a script</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="c1"># Script section</span>
+    <span class="c1"># ===================================================================</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello world!&quot;</span><span class="p">)</span>
+    <span class="c1"># ... {develop}</span>
+
+    <span class="c1"># Script subsection</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="c1"># ... {develop}</span>
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Iporã Possantti.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.2.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

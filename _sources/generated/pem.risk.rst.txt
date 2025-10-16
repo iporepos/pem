@@ -1,0 +1,19 @@
+﻿pem.risk
+========
+
+.. automodule:: pem.risk
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      get_timestamp
+      layer_rasterize
+      make_run_folder
+      raster_blank
+      raster_reproject
+      setup_habitats
+      setup_stressors
+      split_features
+   

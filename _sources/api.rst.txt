@@ -33,3 +33,8 @@ and extending the functionality of the project.
 
    pem.module
 
+
+.. autosummary::
+   :toctree: generated
+
+   pem.risk
