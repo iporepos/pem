@@ -8,7 +8,7 @@ is a national initiative aimed at developing **spatially explicit guidelines** f
 strategic use of the Brazilian marine environment.
 
 This page provides a conceptual overview of the **general workflow**, which forms the core of
-the **PEM methodology** and underpins all regional plans, such as the **PEM Sul**.
+the PEM methodology and underpins all regional plans.
 
 By following this structured and data-driven workflow, the PEM methodology ensures
 **reproducibility**, **transparency**, and **scientific robustness** in the
@@ -21,12 +21,17 @@ available in this repository, which can be adapted for different regions and dat
 
    For implementation details see the :ref:`User Guide <usage>`
 
+.. _about_workflow:
 
-General Workflow
+PEM Workflow
 ============================================
 
-The **general workflow** represents the most abstract and reproducible component of the PEM method.
-It begins at a **zero level of information**, where only spatial data are available, and transforms these datasets into **spatially explicit indicators** and **decision-support maps**.
+The **PEM workflow** represents the most abstract and reproducible component of the PEM method.
+
+It begins at a **zero level of information**, where only spatial data are available, and
+transforms these datasets into **spatially explicit indicators** and **decision-support maps**.
+
+.. _about_input_data:
 
 Input Data
 ============================================
@@ -35,10 +40,12 @@ At the foundation level, the workflow integrates diverse spatial datasets, inclu
 
 * **Bathymetry** – ocean depth and seabed morphology.
 * **Habitats** – distribution and characteristics of marine ecosystems.
-* **Uses of the ocean** – spatial footprint of human activities across sectors such as fisheries, energy, transportation, and conservation.
+* **Uses of the ocean** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
 * **Coastal hubs** – ports, cities, and infrastructure nodes that influence or depend on marine uses.
 
 These datasets serve as the basis for constructing higher-level spatial information layers.
+
+.. _about_upg:
 
 Management and Planning Units (UPG)
 ============================================
@@ -53,17 +60,19 @@ The process groups similar areas into **nested spatial units**, allowing analysi
 UPGs are used to support **decision-making and scenario analysis**, ensuring that management strategies
 reflect ecological patterns, human activities, and the connectivity between land and sea.
 
-Spatial Indices
+.. _about_indexes:
+
+Spatial Indexes
 ============================================
 
 Through a series of converging analytical processes, the raw data are transformed into
-**three key spatial indices**, each representing a different dimension of marine use performance:
+**three key spatial indexes**, each representing a different dimension of marine use performance:
 
-1. **Benefit (B)** — quantifies the economic and social **benefit** derived from the use of each spatial unit of the ocean.
-2. **Conflict (C)** — expresses the **intensity of overlap** or competition between different marine uses within the same area.
-3. **Risk (R)** — captures the **environmental fragility** and **sensitivity** of marine habitats exposed to human activities.
+1. **Benefit Index (B)** — quantifies the economic and social **benefit** derived from the use of each spatial unit of the ocean.
+2. **Habitat Risk Index (R)** — captures the **environmental fragility** and **sensitivity** of marine habitats exposed to human activities.
+3. **Conflict Index (C)** — expresses the **intensity of overlap** or competition between different marine uses within the same area.
 
-Each of these indices is calculated as a **relative measure**, allowing
+Each of these index is calculated as a **relative measure**, allowing
 comparisons across spatial scales and scenarios of marine use.
 
 Integrated Performance Index
@@ -114,7 +123,7 @@ Each sectoral benefit :math:`B_j` is normalized such that:
     \sum_{i = 1}^{N} B_i = 1
 
 
-Risk Index
+Habitat Risk Index
 ---------------------------------------------
 
 **Risk (R)** — follows the conceptual structure of the *InVEST Habitat Risk* model,

@@ -359,7 +359,7 @@
 is a national initiative aimed at developing <strong>spatially explicit guidelines</strong> for the sustainable and
 strategic use of the Brazilian marine environment.</p>
 <p>This page provides a conceptual overview of the <strong>general workflow</strong>, which forms the core of
-the <strong>PEM methodology</strong> and underpins all regional plans, such as the <strong>PEM Sul</strong>.</p>
+the PEM methodology and underpins all regional plans.</p>
 <p>By following this structured and data-driven workflow, the PEM methodology ensures
 <strong>reproducibility</strong>, <strong>transparency</strong>, and <strong>scientific robustness</strong> in the
 assessment of marine spatial planning outcomes.</p>
@@ -369,24 +369,25 @@ available in this repository, which can be adapted for different regions and dat
 <p class="admonition-title">See also</p>
 <p>For implementation details see the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">User Guide</span></a></p>
 </div>
-<section id="general-workflow">
-<h2>General Workflow<a class="headerlink" href="#general-workflow" title="Link to this heading">#</a></h2>
-<p>The <strong>general workflow</strong> represents the most abstract and reproducible component of the PEM method.
-It begins at a <strong>zero level of information</strong>, where only spatial data are available, and transforms these datasets into <strong>spatially explicit indicators</strong> and <strong>decision-support maps</strong>.</p>
+<section id="pem-workflow">
+<span id="about-workflow"></span><h2>PEM Workflow<a class="headerlink" href="#pem-workflow" title="Link to this heading">#</a></h2>
+<p>The <strong>PEM workflow</strong> represents the most abstract and reproducible component of the PEM method.</p>
+<p>It begins at a <strong>zero level of information</strong>, where only spatial data are available, and
+transforms these datasets into <strong>spatially explicit indicators</strong> and <strong>decision-support maps</strong>.</p>
 </section>
 <section id="input-data">
-<h2>Input Data<a class="headerlink" href="#input-data" title="Link to this heading">#</a></h2>
+<span id="about-input-data"></span><h2>Input Data<a class="headerlink" href="#input-data" title="Link to this heading">#</a></h2>
 <p>At the foundation level, the workflow integrates diverse spatial datasets, including:</p>
 <ul class="simple">
 <li><p><strong>Bathymetry</strong> – ocean depth and seabed morphology.</p></li>
 <li><p><strong>Habitats</strong> – distribution and characteristics of marine ecosystems.</p></li>
-<li><p><strong>Uses of the ocean</strong> – spatial footprint of human activities across sectors such as fisheries, energy, transportation, and conservation.</p></li>
+<li><p><strong>Uses of the ocean</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
 <li><p><strong>Coastal hubs</strong> – ports, cities, and infrastructure nodes that influence or depend on marine uses.</p></li>
 </ul>
 <p>These datasets serve as the basis for constructing higher-level spatial information layers.</p>
 </section>
 <section id="management-and-planning-units-upg">
-<h2>Management and Planning Units (UPG)<a class="headerlink" href="#management-and-planning-units-upg" title="Link to this heading">#</a></h2>
+<span id="about-upg"></span><h2>Management and Planning Units (UPG)<a class="headerlink" href="#management-and-planning-units-upg" title="Link to this heading">#</a></h2>
 <p>An important component of the PEM workflow is the creation of <strong>Management and Planning Units (UPG)</strong> —
 spatial zones that organize and guide marine management actions.</p>
 <p>These units are derived from <strong>input data</strong> such as bathymetry, habitats, and coastal uses,
@@ -395,16 +396,16 @@ The process groups similar areas into <strong>nested spatial units</strong>, all
 <p>UPGs are used to support <strong>decision-making and scenario analysis</strong>, ensuring that management strategies
 reflect ecological patterns, human activities, and the connectivity between land and sea.</p>
 </section>
-<section id="spatial-indices">
-<h2>Spatial Indices<a class="headerlink" href="#spatial-indices" title="Link to this heading">#</a></h2>
+<section id="spatial-indexes">
+<span id="about-indexes"></span><h2>Spatial Indexes<a class="headerlink" href="#spatial-indexes" title="Link to this heading">#</a></h2>
 <p>Through a series of converging analytical processes, the raw data are transformed into
-<strong>three key spatial indices</strong>, each representing a different dimension of marine use performance:</p>
+<strong>three key spatial indexes</strong>, each representing a different dimension of marine use performance:</p>
 <ol class="arabic simple">
-<li><p><strong>Benefit (B)</strong> — quantifies the economic and social <strong>benefit</strong> derived from the use of each spatial unit of the ocean.</p></li>
-<li><p><strong>Conflict (C)</strong> — expresses the <strong>intensity of overlap</strong> or competition between different marine uses within the same area.</p></li>
-<li><p><strong>Risk (R)</strong> — captures the <strong>environmental fragility</strong> and <strong>sensitivity</strong> of marine habitats exposed to human activities.</p></li>
+<li><p><strong>Benefit Index (B)</strong> — quantifies the economic and social <strong>benefit</strong> derived from the use of each spatial unit of the ocean.</p></li>
+<li><p><strong>Habitat Risk Index (R)</strong> — captures the <strong>environmental fragility</strong> and <strong>sensitivity</strong> of marine habitats exposed to human activities.</p></li>
+<li><p><strong>Conflict Index (C)</strong> — expresses the <strong>intensity of overlap</strong> or competition between different marine uses within the same area.</p></li>
 </ol>
-<p>Each of these indices is calculated as a <strong>relative measure</strong>, allowing
+<p>Each of these index is calculated as a <strong>relative measure</strong>, allowing
 comparisons across spatial scales and scenarios of marine use.</p>
 </section>
 <section id="integrated-performance-index">
@@ -439,8 +440,8 @@ computed as a function of local value and activity:</p>
 <div class="math notranslate nohighlight">
 \[\sum_{i = 1}^{N} B_i = 1\]</div>
 </section>
-<section id="risk-index">
-<h3>Risk Index<a class="headerlink" href="#risk-index" title="Link to this heading">#</a></h3>
+<section id="habitat-risk-index">
+<h3>Habitat Risk Index<a class="headerlink" href="#habitat-risk-index" title="Link to this heading">#</a></h3>
 <p><strong>Risk (R)</strong> — follows the conceptual structure of the <em>InVEST Habitat Risk</em> model,
 estimating the likelihood of impact based on exposure, consequence, and habitat sensitivity.</p>
 </section>
@@ -506,13 +507,13 @@ for evaluating policy or spatial planning options.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-workflow">General Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem-workflow">PEM Workflow</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-data">Input Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-and-planning-units-upg">Management and Planning Units (UPG)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indices">Spatial Indices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indexes">Spatial Indexes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-performance-index">Integrated Performance Index</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benefit-index">Benefit Index</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-index">Risk Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#habitat-risk-index">Habitat Risk Index</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conflict-index">Conflict Index</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
 </ul>

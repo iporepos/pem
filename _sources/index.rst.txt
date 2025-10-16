@@ -5,7 +5,16 @@ PEM
 
 .. adapt this welcoming message [CHANGE THIS]:
 
-Welcome to ``pem`` documentation!
+Welcome to ``pem`` documentation page!
+
+.. toctree::
+   :maxdepth: 1
+
+   Home <self>
+   about
+   usage
+   api
+   development
 
 Scripts for marine spatial planning in Brazil.
 
@@ -36,16 +45,6 @@ By maintaining all analytical scripts in a single repository, the project ensure
 PEM regional plans. The scripts can be adapted or extended for other
 Brazilian coastal and marine regions following the same methodological principles.
 
-Contents
-********************************************
+.. seealso::
 
-.. list all pages it must contain in the home page [CHANGE THIS]:
-
-.. toctree::
-   :maxdepth: 1
-
-   Home <self>
-   about
-   usage
-   api
-   development
+   For technical details see the :ref:`About <about>` page
