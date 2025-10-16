@@ -134,3 +134,17 @@ External (requires installation):
 """
 html_theme = "pydata_sphinx_theme"  # <-- [CHECK THIS] it might be not installed. use built-in 'classic' in case
 html_static_path = ["_static"]
+html_context = {"default_mode": "light"}
+
+"""
+html_logo = (
+    "https://github.com/iporepos/pem/blob/main/docs/figs/logo.jpg?raw=true"
+)
+"""
+
+
+
+html_theme_options = {
+    "github_url": "https://github.com/iporepos/pem",
+    "navbar_end": ["theme-switcher", "navbar-icon-links"],
+}
