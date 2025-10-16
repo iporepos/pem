@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>About &#8212; copyme 0.0.1 documentation</title>
+    <title>About &#8212; pem 0.0.1 documentation</title>
   
   
   
@@ -44,12 +44,13 @@
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'about';</script>
     <link rel="author" title="About these documents" href="#" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Usage" href="usage.html" />
-    <link rel="prev" title="Copyme" href="index.html" />
+    <link rel="next" title="User Guide" href="usage.html" />
+    <link rel="prev" title="PEM" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -114,7 +115,7 @@
   
   
   
-    <p class="title logo__title">copyme 0.0.1 documentation</p>
+    <p class="title logo__title">pem 0.0.1 documentation</p>
   
 </a></div>
     
@@ -144,7 +145,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
-    Usage
+    User Guide
   </a>
 </li>
 
@@ -162,23 +163,6 @@
   </a>
 </li>
 
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="dummy.html">
-    Dummy file
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -268,7 +252,7 @@
 
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
-    Usage
+    User Guide
   </a>
 </li>
 
@@ -283,13 +267,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="development.html">
     Development
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="dummy.html">
-    Dummy file
   </a>
 </li>
 
@@ -376,104 +353,109 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <a class="reference external image-reference" href="https://github.com/iporepos/copyme"><img alt="GitHub repository" src="https://img.shields.io/badge/GitHub-Source-black?logo=github" />
-</a>
-<section id="about">
+  <section id="about">
 <span id="id1"></span><h1>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h1>
-<p>This repository, <code class="docutils literal notranslate"><span class="pre">copyme</span></code>, is designed as a <strong>template for Python projects</strong> following best practices in modern software development.
-It emphasizes:</p>
-<ul class="simple">
-<li><p><strong>Style-consistent formatting</strong> – code style is automatically enforced using tools like <a class="reference external" href="https://black.readthedocs.io/">Black</a>, ensuring consistency across the project.</p></li>
-<li><p><strong>Documentation-oriented practices</strong> – project is documented with <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a>, including docstrings for API auto-generation.</p></li>
-<li><p><strong>Test-driven development</strong> – all features should be covered by unit and benchmark tests. Avoid bulk data in tests; only include small, useful datasets. Large datasets should be downloaded during development.</p></li>
-<li><p><strong>Continuous Integration (CI)</strong> – Tests, Docs and Style checked online for passing or failing before commiting to main.</p></li>
-</ul>
-<p>This template provides a structured starting point including configuration files, example Python modules, and documentation templates to help you quickly set up a project integrated with GitHub.</p>
-<p><strong>Recommended workflow when using this template:</strong></p>
-<ol class="arabic simple">
-<li><p>Set up your project structure based on the template.</p></li>
-<li><p>Copy or adapt configuration files (<code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>, testing configs, CI/CD workflows).</p></li>
-<li><p>Copy template files for Python modules, data, and documentation (<code class="docutils literal notranslate"><span class="pre">__init__.py</span></code>, Sphinx docs, etc.).</p></li>
-<li><p>Optionally, download the full development source and rename root folders and source packages to fit your project.</p></li>
-</ol>
-<p>Following this approach ensures your project maintains a standardized structure and behavior.</p>
-<section id="templates">
-<span id="id2"></span><h2>Templates<a class="headerlink" href="#templates" title="Link to this heading">#</a></h2>
-<p>When copying files from this repository, remember that they are <strong>_templates_</strong>:</p>
-<ol class="arabic simple">
-<li><p>Look for <code class="docutils literal notranslate"><span class="pre">[CHANGE</span> <span class="pre">THIS]</span></code> for mandatory modifications.</p></li>
-<li><p>Look for <code class="docutils literal notranslate"><span class="pre">[CHECK</span> <span class="pre">THIS]</span></code> for optional modifications.</p></li>
-<li><p>Look for <code class="docutils literal notranslate"><span class="pre">[EXAMPLE]</span></code> for simple examples (comment or uncomment if needed).</p></li>
-<li><p>Look for <code class="docutils literal notranslate"><span class="pre">[ADD</span> <span class="pre">MORE</span> <span class="pre">IF</span> <span class="pre">NEEDED]</span></code> for possible extra features.</p></li>
-<li><p>Placeholders are designated by curly braces: <code class="docutils literal notranslate"><span class="pre">{replace-this}</span></code>.</p></li>
-</ol>
+<p>The <strong>PEM Project</strong> (<em>Planejamento Espacial Marinho do Brasil</em>, or <em>Marine Spatial Planning for Brazil</em>)
+is a national initiative aimed at developing <strong>spatially explicit guidelines</strong> for the sustainable and
+strategic use of the Brazilian marine environment.</p>
+<p>This page provides a conceptual overview of the <strong>general workflow</strong>, which forms the core of
+the <strong>PEM methodology</strong> and underpins all regional plans, such as the <strong>PEM Sul</strong>.</p>
+<p>By following this structured and data-driven workflow, the PEM methodology ensures
+<strong>reproducibility</strong>, <strong>transparency</strong>, and <strong>scientific robustness</strong> in the
+assessment of marine spatial planning outcomes.</p>
+<p>All analytical steps are implemented through <strong>R and Python scripts</strong>,
+available in this repository, which can be adapted for different regions and data resolutions.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For implementation details see the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">User Guide</span></a></p>
+</div>
+<section id="general-workflow">
+<h2>General Workflow<a class="headerlink" href="#general-workflow" title="Link to this heading">#</a></h2>
+<p>The <strong>general workflow</strong> represents the most abstract and reproducible component of the PEM method.
+It begins at a <strong>zero level of information</strong>, where only spatial data are available, and transforms these datasets into <strong>spatially explicit indicators</strong> and <strong>decision-support maps</strong>.</p>
 </section>
-<section id="configuration-files">
-<span id="config-files"></span><h2>Configuration files<a class="headerlink" href="#configuration-files" title="Link to this heading">#</a></h2>
-<p>This repository relies on several <strong>configuration files</strong> that are essential for the proper functioning of the template. Each file has a specific role, and some of them work together, so they should be edited thoughtfully. Below is an overview of the main configuration files:</p>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head"><p><strong>File</strong></p></th>
-<th class="head"><p><strong>Purpose</strong></p></th>
-<th class="head"><p><strong>Key Notes</strong></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code></p></td>
-<td><p>Project configuration</p></td>
-<td><p>Manages dependencies, build system, and project settings. Update when adding dependencies or changing project structure.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">.gitignore</span></code></p></td>
-<td><p>Git ignore rules</p></td>
-<td><p>Specifies files/folders Git should ignore (e.g., temp files, datasets, build outputs). Keeps repo clean.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/style.yml</span></code></p></td>
-<td><p>Style CI configuration</p></td>
-<td><p>Runs code style checks using <a class="reference external" href="https://black.readthedocs.io/">Black</a>. Depends on <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> dev dependencies.</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">docs/conf.py</span></code></p></td>
-<td><p>Docs configuration</p></td>
-<td><p>Configures <a class="reference external" href="https://www.sphinx-doc.org">Sphinx</a> for building documentation. Update if project structure changes.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/docs.yml</span></code></p></td>
-<td><p>Docs CI configuration</p></td>
-<td><p>Automates online docs build. Relies on <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code> and <cite>docs/conf.py</cite>. Requires extra steps (see file).</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">tests/conftest.py</span></code></p></td>
-<td><p>Testing configuration</p></td>
-<td><p>Provides shared fixtures and settings for tests. Can be customized to fit project needs.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">.github/workflows/tests.yml</span></code></p></td>
-<td><p>Testing CI configuration</p></td>
-<td><p>Runs automated unit tests on CI. Ensures code correctness after changes.</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All config files are commented with recommended actions and extra steps.</p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Online documentation build may require additional setup — check <code class="docutils literal notranslate"><span class="pre">.github/workflows/docs.yml</span></code>.</p>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Continuous Integration (CI) ensures commits pass style, docs, and tests before merging. Always ensure these checks pass to avoid pushing broken code.</p>
-</div>
-</section>
-<section id="resources">
-<span id="id3"></span><h2>Resources<a class="headerlink" href="#resources" title="Link to this heading">#</a></h2>
-<p>Helpful references for configuring and extending your project:</p>
+<section id="input-data">
+<h2>Input Data<a class="headerlink" href="#input-data" title="Link to this heading">#</a></h2>
+<p>At the foundation level, the workflow integrates diverse spatial datasets, including:</p>
 <ul class="simple">
-<li><p><strong>pyproject.toml specification</strong> – <a class="reference external" href="https://peps.python.org/pep-0621/">https://peps.python.org/pep-0621/</a></p></li>
-<li><p><strong>Sphinx documentation</strong> – <a class="reference external" href="https://www.sphinx-doc.org/">https://www.sphinx-doc.org/</a></p></li>
-<li><p><strong>Python unit testing</strong> – <a class="reference external" href="https://docs.python.org/3/library/unittest.html">https://docs.python.org/3/library/unittest.html</a></p></li>
-<li><p><strong>Black code formatter</strong> – <a class="reference external" href="https://black.readthedocs.io/">https://black.readthedocs.io/</a></p></li>
-<li><p><strong>GitHub Actions</strong> – <a class="reference external" href="https://docs.github.com/en/actions">https://docs.github.com/en/actions</a></p></li>
-<li><p><strong>GitHub Workflows</strong> – <a class="reference external" href="https://docs.github.com/en/actions/using-workflows">https://docs.github.com/en/actions/using-workflows</a></p></li>
+<li><p><strong>Bathymetry</strong> – ocean depth and seabed morphology.</p></li>
+<li><p><strong>Habitats</strong> – distribution and characteristics of marine ecosystems.</p></li>
+<li><p><strong>Uses of the ocean</strong> – spatial footprint of human activities across sectors such as fisheries, energy, transportation, and conservation.</p></li>
+<li><p><strong>Coastal hubs</strong> – ports, cities, and infrastructure nodes that influence or depend on marine uses.</p></li>
 </ul>
+<p>These datasets serve as the basis for constructing higher-level spatial information layers.</p>
+</section>
+<section id="management-and-planning-units-upg">
+<h2>Management and Planning Units (UPG)<a class="headerlink" href="#management-and-planning-units-upg" title="Link to this heading">#</a></h2>
+<p>An important component of the PEM workflow is the creation of <strong>Management and Planning Units (UPG)</strong> —
+spatial zones that organize and guide marine management actions.</p>
+<p>These units are derived from <strong>input data</strong> such as bathymetry, habitats, and coastal uses,
+combined with <strong>expert-defined thresholds</strong> for distance, depth, and sensitivity.
+The process groups similar areas into <strong>nested spatial units</strong>, allowing analysis and planning at multiple scales.</p>
+<p>UPGs are used to support <strong>decision-making and scenario analysis</strong>, ensuring that management strategies
+reflect ecological patterns, human activities, and the connectivity between land and sea.</p>
+</section>
+<section id="spatial-indices">
+<h2>Spatial Indices<a class="headerlink" href="#spatial-indices" title="Link to this heading">#</a></h2>
+<p>Through a series of converging analytical processes, the raw data are transformed into
+<strong>three key spatial indices</strong>, each representing a different dimension of marine use performance:</p>
+<ol class="arabic simple">
+<li><p><strong>Benefit (B)</strong> — quantifies the economic and social <strong>benefit</strong> derived from the use of each spatial unit of the ocean.</p></li>
+<li><p><strong>Conflict (C)</strong> — expresses the <strong>intensity of overlap</strong> or competition between different marine uses within the same area.</p></li>
+<li><p><strong>Risk (R)</strong> — captures the <strong>environmental fragility</strong> and <strong>sensitivity</strong> of marine habitats exposed to human activities.</p></li>
+</ol>
+<p>Each of these indices is calculated as a <strong>relative measure</strong>, allowing
+comparisons across spatial scales and scenarios of marine use.</p>
+</section>
+<section id="integrated-performance-index">
+<h2>Integrated Performance Index<a class="headerlink" href="#integrated-performance-index" title="Link to this heading">#</a></h2>
+<p>The core integrative indicator of the PEM framework is the <strong>Marine Use Performance Index</strong>,
+or <strong>IDUSE-Mar</strong> (<em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>).
+This index synthesizes the three dimensions—benefit, risk, and
+conflict—into a single expression of marine use performance:</p>
+<div class="math notranslate nohighlight">
+\[D = \frac{B}{R \times C} \quad \text{where } D \in [0, 1]\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(D\)</span> is the <strong>performance</strong> of marine use;</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> is the <strong>benefit</strong>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(R\)</span> is the <strong>risk</strong>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the <strong>conflict</strong>.</p></li>
+</ul>
+<p>A higher value of <span class="math notranslate nohighlight">\(D\)</span> indicates a more sustainable and efficient use of
+the marine space—high benefits with relatively low risk and conflict.</p>
+<section id="benefit-index">
+<h3>Benefit Index<a class="headerlink" href="#benefit-index" title="Link to this heading">#</a></h3>
+<p>The <strong>benefit index</strong> is derived from the spatialized intensity and value of marine uses.
+It aggregates sectoral information into a normalized economic density indicator:</p>
+<div class="math notranslate nohighlight">
+\[B = \sum_{j = 1}^{N} \mathcal{B}(U_j) \quad U \in \mathbb{U}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(U_j\)</span> represents each use sector <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>For each municipality <span class="math notranslate nohighlight">\(i\)</span> and time step <span class="math notranslate nohighlight">\(t\)</span>, the benefit is
+computed as a function of local value and activity:</p>
+<div class="math notranslate nohighlight">
+\[B_{i, j, t} = f(V_{i, t}, U_{j, t}), \quad B \in [0, 1]\]</div>
+<p>Each sectoral benefit <span class="math notranslate nohighlight">\(B_j\)</span> is normalized such that:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i = 1}^{N} B_i = 1\]</div>
+</section>
+<section id="risk-index">
+<h3>Risk Index<a class="headerlink" href="#risk-index" title="Link to this heading">#</a></h3>
+<p><strong>Risk (R)</strong> — follows the conceptual structure of the <em>InVEST Habitat Risk</em> model,
+estimating the likelihood of impact based on exposure, consequence, and habitat sensitivity.</p>
+</section>
+<section id="conflict-index">
+<h3>Conflict Index<a class="headerlink" href="#conflict-index" title="Link to this heading">#</a></h3>
+<p><strong>Conflict (C)</strong> — measures spatial incompatibility or overlap between uses,
+reflecting competition for marine space or interference between activities.</p>
+</section>
+<section id="scenario-based-analyses">
+<h3>Scenario-Based Analyses<a class="headerlink" href="#scenario-based-analyses" title="Link to this heading">#</a></h3>
+<p>All indices (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific <strong>use scenarios</strong>.
+Scenarios may represent current conditions, projected developments, or management
+alternatives, allowing the <strong>IDUSE-Mar</strong> to serve as a comparative tool
+for evaluating policy or spatial planning options.</p>
+</section>
 </section>
 </section>
 
@@ -493,7 +475,7 @@ It emphasizes:</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Copyme</p>
+        <p class="prev-next-title">PEM</p>
       </div>
     </a>
     <a class="right-next"
@@ -501,7 +483,7 @@ It emphasizes:</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Usage</p>
+        <p class="prev-next-title">User Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -524,9 +506,17 @@ It emphasizes:</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#templates">Templates</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration-files">Configuration files</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#resources">Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-workflow">General Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-data">Input Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-and-planning-units-upg">Management and Planning Units (UPG)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indices">Spatial Indices</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-performance-index">Integrated Performance Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benefit-index">Benefit Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#risk-index">Risk Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#conflict-index">Conflict Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
+</ul>
+</li>
 </ul>
   </nav></div>
 

@@ -1,7 +1,3 @@
-.. a cool badge for the source. replace or remove if appropriate [CHANGE THIS]:
-
-.. include:: ./badge_source.rst
-
 .. _api:
 
 API
@@ -10,7 +6,10 @@ API
 .. develop a small description for the API [CHANGE THIS]:
 
 Welcome to the API documentation for this project.
-This reference, automatically generated using Sphinx, provides a complete overview of all relevant modules, classes, functions, and constants in the repository. It is intended to help developers quickly understand and navigate the available components and their usage, serving as a reliable guide for integrating and extending the functionality of the project.
+This reference, automatically generated using Sphinx, provides a complete overview of all relevant modules,
+classes, functions, and constants in the repository. It is intended to help developers quickly understand
+and navigate the available components and their usage, serving as a reliable guide for integrating
+and extending the functionality of the project.
 
 
 .. remove this note after enter maintenance mode [CHANGE THIS]:
@@ -26,23 +25,11 @@ This reference, automatically generated using Sphinx, provides a complete overvi
 .. autosummary::
    :toctree: generated
 
-   copyme
+   pem
 
 
 .. autosummary::
    :toctree: generated
 
-   copyme.module
-
-
-.. autosummary::
-   :toctree: generated
-
-   copyme.mypackage
-
-
-.. autosummary::
-   :toctree: generated
-
-   copyme.mypackage.submodule
+   pem.module
 

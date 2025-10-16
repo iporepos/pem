@@ -1,7 +1,7 @@
-﻿copyme.module
-=============
+﻿pem.module
+==========
 
-.. automodule:: copyme.module
+.. automodule:: pem.module
 
    
    .. rubric:: Functions

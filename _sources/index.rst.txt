@@ -1,23 +1,13 @@
-.. a cool badge for the source. replace or remove if appropriate [CHANGE THIS]:
-
-.. include:: ./badge_source.rst
-
-.. a cool logo. replace or remove if appropriate [CHANGE THIS]:
-
-.. include:: ./logo.rst
-
-----
-
-.. rename title [CHANGE THIS]:
-
 .. _home:
 
-Copyme
+PEM
 ############################################
 
 .. adapt this welcoming message [CHANGE THIS]:
 
-Welcome to ``copyme`` documentation! A simple template for python development.
+Welcome to ``pem`` documentation!
+
+Scripts for marine spatial planning in Brazil.
 
 .. remove this note after enter maintenance mode [CHANGE THIS]:
 
@@ -25,6 +15,26 @@ Welcome to ``copyme`` documentation! A simple template for python development.
 
    This project is under active development.
 
+The **PEM Project** (*Planejamento Espacial Marinho do Brasil*, or *Marine Spatial Planning for Brazil*)
+is a national initiative focused on developing **spatially explicit guidelines** for the sustainable
+use and management of Brazil’s marine environment. It supports the implementation of
+**Marine Spatial Planning (MSP)** across the country, integrating ecological, social,
+and economic dimensions of the ocean.
+
+This repository hosts **R and Python scripts** that ensure **reproducibility** of the analytical
+methods and mapping procedures applied in the **PEM Sul** (*Southern Marine Spatial Plan*).
+
+Each script is designed to operate independently, targeting specific stages of
+the general methodological workflow. The general workflow aims to:
+
+* Convert and analyze spatial information on **marine uses** and **habitats**.
+* Integrate data to support ecosystem-based marine management.
+* Develop the **Marine Use Performance Index** — **IDUSE-Mar** (*Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar*), a measure that evaluates how marine uses interact with and depend on ecosystem services.
+
+By maintaining all analytical scripts in a single repository, the project ensures
+**transparency**, **reproducibility**, and **consistency** across different
+PEM regional plans. The scripts can be adapted or extended for other
+Brazilian coastal and marine regions following the same methodological principles.
 
 Contents
 ********************************************
@@ -39,4 +49,3 @@ Contents
    usage
    api
    development
-   dummy

@@ -1,102 +1,137 @@
-.. a cool badge for the source. replace or remove if appropriate [CHANGE THIS]:
-
-.. include:: ./badge_source.rst
-
 .. _about:
 
 About
 ############################################
 
-This repository, ``copyme``, is designed as a **template for Python projects** following best practices in modern software development.
-It emphasizes:
+The **PEM Project** (*Planejamento Espacial Marinho do Brasil*, or *Marine Spatial Planning for Brazil*)
+is a national initiative aimed at developing **spatially explicit guidelines** for the sustainable and
+strategic use of the Brazilian marine environment.
 
-* **Style-consistent formatting** – code style is automatically enforced using tools like `Black`_, ensuring consistency across the project.
-* **Documentation-oriented practices** – project is documented with `Sphinx`_, including docstrings for API auto-generation.
-* **Test-driven development** – all features should be covered by unit and benchmark tests. Avoid bulk data in tests; only include small, useful datasets. Large datasets should be downloaded during development.
-* **Continuous Integration (CI)** – Tests, Docs and Style checked online for passing or failing before commiting to main.
+This page provides a conceptual overview of the **general workflow**, which forms the core of
+the **PEM methodology** and underpins all regional plans, such as the **PEM Sul**.
 
-This template provides a structured starting point including configuration files, example Python modules, and documentation templates to help you quickly set up a project integrated with GitHub.
+By following this structured and data-driven workflow, the PEM methodology ensures
+**reproducibility**, **transparency**, and **scientific robustness** in the
+assessment of marine spatial planning outcomes.
 
-**Recommended workflow when using this template:**
+All analytical steps are implemented through **R and Python scripts**,
+available in this repository, which can be adapted for different regions and data resolutions.
 
-1. Set up your project structure based on the template.
-2. Copy or adapt configuration files (``pyproject.toml``, testing configs, CI/CD workflows).
-3. Copy template files for Python modules, data, and documentation (``__init__.py``, Sphinx docs, etc.).
-4. Optionally, download the full development source and rename root folders and source packages to fit your project.
+.. seealso::
 
-Following this approach ensures your project maintains a standardized structure and behavior.
-
-.. _templates:
-
-Templates
-********************************************
-
-When copying files from this repository, remember that they are **_templates_**:
-
-1. Look for ``[CHANGE THIS]`` for mandatory modifications.
-2. Look for ``[CHECK THIS]`` for optional modifications.
-3. Look for ``[EXAMPLE]`` for simple examples (comment or uncomment if needed).
-4. Look for ``[ADD MORE IF NEEDED]`` for possible extra features.
-5. Placeholders are designated by curly braces: ``{replace-this}``.
-
-.. _config_files:
-
-Configuration files
-********************************************
-
-This repository relies on several **configuration files** that are essential for the proper functioning of the template. Each file has a specific role, and some of them work together, so they should be edited thoughtfully. Below is an overview of the main configuration files:
-
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| **File**                        | **Purpose**                | **Key Notes**                                                                                                                         |
-+=================================+============================+=======================================================================================================================================+
-| ``pyproject.toml``              | Project configuration      | Manages dependencies, build system, and project settings. Update when adding dependencies or changing project structure.              |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``.gitignore``                  | Git ignore rules           | Specifies files/folders Git should ignore (e.g., temp files, datasets, build outputs). Keeps repo clean.                              |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``.github/workflows/style.yml`` | Style CI configuration     | Runs code style checks using `Black`_. Depends on ``pyproject.toml`` dev dependencies.                                                |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``docs/conf.py``                | Docs configuration         | Configures `Sphinx`_ for building documentation. Update if project structure changes.                                                 |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``.github/workflows/docs.yml``  | Docs CI configuration      | Automates online docs build. Relies on ``pyproject.toml`` and `docs/conf.py`. Requires extra steps (see file).                        |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``tests/conftest.py``           | Testing configuration      | Provides shared fixtures and settings for tests. Can be customized to fit project needs.                                              |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
-| ``.github/workflows/tests.yml`` | Testing CI configuration   | Runs automated unit tests on CI. Ensures code correctness after changes.                                                              |
-+---------------------------------+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------+
+   For implementation details see the :ref:`User Guide <usage>`
 
 
-.. Note::
+General Workflow
+============================================
 
-   All config files are commented with recommended actions and extra steps.
+The **general workflow** represents the most abstract and reproducible component of the PEM method.
+It begins at a **zero level of information**, where only spatial data are available, and transforms these datasets into **spatially explicit indicators** and **decision-support maps**.
+
+Input Data
+============================================
+
+At the foundation level, the workflow integrates diverse spatial datasets, including:
+
+* **Bathymetry** – ocean depth and seabed morphology.
+* **Habitats** – distribution and characteristics of marine ecosystems.
+* **Uses of the ocean** – spatial footprint of human activities across sectors such as fisheries, energy, transportation, and conservation.
+* **Coastal hubs** – ports, cities, and infrastructure nodes that influence or depend on marine uses.
+
+These datasets serve as the basis for constructing higher-level spatial information layers.
+
+Management and Planning Units (UPG)
+============================================
+
+An important component of the PEM workflow is the creation of **Management and Planning Units (UPG)** —
+spatial zones that organize and guide marine management actions.
+
+These units are derived from **input data** such as bathymetry, habitats, and coastal uses,
+combined with **expert-defined thresholds** for distance, depth, and sensitivity.
+The process groups similar areas into **nested spatial units**, allowing analysis and planning at multiple scales.
+
+UPGs are used to support **decision-making and scenario analysis**, ensuring that management strategies
+reflect ecological patterns, human activities, and the connectivity between land and sea.
+
+Spatial Indices
+============================================
+
+Through a series of converging analytical processes, the raw data are transformed into
+**three key spatial indices**, each representing a different dimension of marine use performance:
+
+1. **Benefit (B)** — quantifies the economic and social **benefit** derived from the use of each spatial unit of the ocean.
+2. **Conflict (C)** — expresses the **intensity of overlap** or competition between different marine uses within the same area.
+3. **Risk (R)** — captures the **environmental fragility** and **sensitivity** of marine habitats exposed to human activities.
+
+Each of these indices is calculated as a **relative measure**, allowing
+comparisons across spatial scales and scenarios of marine use.
+
+Integrated Performance Index
+============================================
+
+The core integrative indicator of the PEM framework is the **Marine Use Performance Index**,
+or **IDUSE-Mar** (*Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar*).
+This index synthesizes the three dimensions—benefit, risk, and
+conflict—into a single expression of marine use performance:
+
+.. math::
+
+    D = \frac{B}{R \times C} \quad \text{where } D \in [0, 1]
+
+Where:
+
+* :math:`D` is the **performance** of marine use;
+* :math:`B` is the **benefit**;
+* :math:`R` is the **risk**; and
+* :math:`C` is the **conflict**.
+
+A higher value of :math:`D` indicates a more sustainable and efficient use of
+the marine space—high benefits with relatively low risk and conflict.
+
+Benefit Index
+---------------------------------------------
+
+The **benefit index** is derived from the spatialized intensity and value of marine uses.
+It aggregates sectoral information into a normalized economic density indicator:
+
+.. math::
+
+    B = \sum_{j = 1}^{N} \mathcal{B}(U_j) \quad U \in \mathbb{U}
+
+Where :math:`U_j` represents each use sector :math:`j`.
+
+For each municipality :math:`i` and time step :math:`t`, the benefit is
+computed as a function of local value and activity:
+
+.. math::
+
+    B_{i, j, t} = f(V_{i, t}, U_{j, t}), \quad B \in [0, 1]
+
+Each sectoral benefit :math:`B_j` is normalized such that:
+
+.. math::
+
+    \sum_{i = 1}^{N} B_i = 1
 
 
-.. Warning::
+Risk Index
+---------------------------------------------
 
-   Online documentation build may require additional setup — check ``.github/workflows/docs.yml``.
+**Risk (R)** — follows the conceptual structure of the *InVEST Habitat Risk* model,
+estimating the likelihood of impact based on exposure, consequence, and habitat sensitivity.
 
+Conflict Index
+---------------------------------------------
 
-.. Important::
+**Conflict (C)** — measures spatial incompatibility or overlap between uses,
+reflecting competition for marine space or interference between activities.
 
-   Continuous Integration (CI) ensures commits pass style, docs, and tests before merging. Always ensure these checks pass to avoid pushing broken code.
+Scenario-Based Analyses
+---------------------------------------------
 
-
-.. _resources:
-
-Resources
-********************************************
-
-Helpful references for configuring and extending your project:
-
-* **pyproject.toml specification** – https://peps.python.org/pep-0621/
-* **Sphinx documentation** – https://www.sphinx-doc.org/
-* **Python unit testing** – https://docs.python.org/3/library/unittest.html
-* **Black code formatter** – https://black.readthedocs.io/
-* **GitHub Actions** – https://docs.github.com/en/actions
-* **GitHub Workflows** – https://docs.github.com/en/actions/using-workflows
+All indices (:math:`B`, :math:`R`, and :math:`C`) are computed for specific **use scenarios**.
+Scenarios may represent current conditions, projected developments, or management
+alternatives, allowing the **IDUSE-Mar** to serve as a comparative tool
+for evaluating policy or spatial planning options.
 
 
-.. _links:
-
-.. _Black: https://black.readthedocs.io/
-
-.. _Sphinx: https://www.sphinx-doc.org
