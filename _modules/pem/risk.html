@@ -380,34 +380,44 @@
 <span class="c1"># See pyproject.toml for authors/maintainers.</span>
 <span class="c1"># See LICENSE for license details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Routines for handling pre and post-processing steps of the Habitat Risk Index</span>
+<span class="sd">Module for pre- and post-processing routines supporting the Habitat Risk Index workflow.</span>
 
-<span class="sd">Features</span>
-<span class="sd">--------</span>
-<span class="sd">todo docstring</span>
+<span class="sd">This module provides a collection of helper functions for organizing, rasterizing, and</span>
+<span class="sd">reprojecting spatial data layers used in the InVEST Habitat Risk model. It is intended</span>
+<span class="sd">to be executed within the **QGIS Python environment** and relies on its processing framework</span>
+<span class="sd">(`processing` algorithms, CRS handling, rasterization utilities, etc.).</span>
 
-<span class="sd">* {feature 1}</span>
-<span class="sd">* {feature 2}</span>
-<span class="sd">* {feature 3}</span>
-<span class="sd">* {etc}</span>
+<span class="sd">.. seealso::</span>
 
-<span class="sd">Overview</span>
-<span class="sd">--------</span>
-<span class="sd">todo docstring</span>
-<span class="sd">{Overview description}</span>
+<span class="sd">    Refer to the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_</span>
+<span class="sd">    documentation for theoretical and technical details regarding input data</span>
+<span class="sd">    preparation for the Habitat Risk Index.</span>
 
-<span class="sd">Examples</span>
-<span class="sd">--------</span>
-<span class="sd">todo docstring</span>
-<span class="sd">{Examples in rST}</span>
+<span class="sd">**Requirements**</span>
 
-<span class="sd">Print a message</span>
+<span class="sd">The following libraries and environment are required:</span>
 
-<span class="sd">.. code-block:: python</span>
+<span class="sd">* QGIS 3 (Python environment)</span>
+<span class="sd">* ``numpy``</span>
+<span class="sd">* ``pandas``</span>
+<span class="sd">* ``geopandas``</span>
 
-<span class="sd">    # print message</span>
-<span class="sd">    print(&quot;Hello world!&quot;)</span>
-<span class="sd">    # [Output] &gt;&gt; &#39;Hello world!&#39;</span>
+<span class="sd">**Overview**</span>
+
+<span class="sd">This module includes routines for:</span>
+
+<span class="sd">* Preparing and rasterizing stressor and habitat layers.</span>
+<span class="sd">* Reprojecting rasters and generating blank templates.</span>
+<span class="sd">* Splitting vector datasets into grouped layers.</span>
+<span class="sd">* Creating structured, time-stamped output directories for reproducible runs.</span>
+
+<span class="sd">Each function performs a self-contained processing step designed to integrate</span>
+<span class="sd">smoothly with other spatial workflows in QGIS.</span>
+
+<span class="sd">**Examples**</span>
+
+<span class="sd">Scripted usage examples are provided in the docstrings of each function.</span>
+<span class="sd">No global examples are included at module level.</span>
 
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -452,7 +462,7 @@
 
 
 <div class="viewcode-block" id="setup_stressors">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.setup_stressors">[docs]</a>
+<a class="viewcode-back" href="../../risk.html#pem.risk.setup_stressors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_stressors</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">reference_raster</span><span class="p">,</span> <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span>
 <span class="p">):</span>
@@ -495,7 +505,15 @@
 
 <span class="sd">    **Script example**</span>
 
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+
+
 <span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
 
 <span class="sd">        import importlib.util as iu</span>
 
@@ -560,7 +578,7 @@
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
@@ -574,7 +592,7 @@
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
-        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">raster_blank</span><span class="p">(</span>
+        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
             <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
@@ -596,7 +614,7 @@
         <span class="c1"># loop for handling multiple layers</span>
         <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">][</span><span class="s2">&quot;layers&quot;</span><span class="p">]:</span>
             <span class="c1"># rasterize</span>
-            <span class="n">layer_rasterize</span><span class="p">(</span>
+            <span class="n">util_layer_rasterize</span><span class="p">(</span>
                 <span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">),</span>
                 <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
                 <span class="n">input_layer</span><span class="o">=</span><span class="n">layer</span><span class="p">,</span>
@@ -604,7 +622,7 @@
             <span class="p">)</span>
 
         <span class="c1"># reproject</span>
-        <span class="n">raster_reproject</span><span class="p">(</span>
+        <span class="n">util_raster_reproject</span><span class="p">(</span>
             <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
@@ -643,7 +661,7 @@
 
 
 <div class="viewcode-block" id="setup_habitats">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.setup_habitats">[docs]</a>
+<a class="viewcode-back" href="../../risk.html#pem.risk.setup_habitats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
@@ -695,7 +713,14 @@
 
 <span class="sd">    **Script example**</span>
 
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+
 <span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
 
 <span class="sd">        import importlib.util as iu</span>
 
@@ -753,7 +778,7 @@
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
@@ -763,7 +788,7 @@
 
     <span class="c1"># split vector features</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">output_db</span> <span class="o">=</span> <span class="n">split_features</span><span class="p">(</span>
+    <span class="n">output_db</span> <span class="o">=</span> <span class="n">util_split_features</span><span class="p">(</span>
         <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
         <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
         <span class="n">input_layer</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span>
@@ -777,7 +802,7 @@
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
-        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">raster_blank</span><span class="p">(</span>
+        <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
             <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
@@ -797,7 +822,7 @@
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">)</span>
 
         <span class="c1"># rasterize</span>
-        <span class="n">layer_rasterize</span><span class="p">(</span>
+        <span class="n">util_layer_rasterize</span><span class="p">(</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">group_raster_src</span><span class="p">),</span>
             <span class="n">input_db</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span>
             <span class="n">input_layer</span><span class="o">=</span><span class="n">g</span><span class="p">,</span>
@@ -805,7 +830,7 @@
         <span class="p">)</span>
 
         <span class="c1"># reproject</span>
-        <span class="n">raster_reproject</span><span class="p">(</span>
+        <span class="n">util_raster_reproject</span><span class="p">(</span>
             <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
@@ -847,9 +872,16 @@
 
 
 
-<div class="viewcode-block" id="split_features">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.split_features">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">split_features</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+<span class="c1"># ... {develop}</span>
+
+<span class="c1"># FUNCTIONS -- Module-level</span>
+<span class="c1"># =======================================================================</span>
+<span class="c1"># ... {develop}</span>
+
+
+<div class="viewcode-block" id="util_split_features">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_split_features">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_split_features</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits features from a source GeoDataFrame into separate</span>
 <span class="sd">    layers within a single GeoPackage file based on predefined groups of field values.</span>
@@ -880,7 +912,7 @@
 
     <span class="c1"># Startup</span>
     <span class="c1"># -------------------------------------------------------------------</span>
-    <span class="n">func_name</span> <span class="o">=</span> <span class="n">split_features</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">util_split_features</span><span class="o">.</span><span class="vm">__name__</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="c1"># Setup output variables</span>
@@ -889,7 +921,7 @@
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
@@ -927,16 +959,9 @@
 
 
 
-<span class="c1"># ... {develop}</span>
-
-<span class="c1"># FUNCTIONS -- Module-level</span>
-<span class="c1"># =======================================================================</span>
-<span class="c1"># ... {develop}</span>
-
-
-<div class="viewcode-block" id="raster_blank">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.raster_blank">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">raster_blank</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
+<div class="viewcode-block" id="util_raster_blank">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_blank">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_raster_blank</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a blank (zero-valued) raster based on the extent,</span>
 <span class="sd">    resolution, and CRS of an existing input raster.</span>
@@ -973,9 +998,9 @@
 
 
 
-<div class="viewcode-block" id="raster_reproject">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.raster_reproject">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">raster_reproject</span><span class="p">(</span>
+<div class="viewcode-block" id="util_raster_reproject">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_reproject">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_raster_reproject</span><span class="p">(</span>
     <span class="n">output_folder</span><span class="p">,</span>
     <span class="n">output_raster</span><span class="p">,</span>
     <span class="n">input_raster</span><span class="p">,</span>
@@ -1036,9 +1061,9 @@
 
 
 
-<div class="viewcode-block" id="layer_rasterize">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.layer_rasterize">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">layer_rasterize</span><span class="p">(</span>
+<div class="viewcode-block" id="util_layer_rasterize">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_layer_rasterize">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_layer_rasterize</span><span class="p">(</span>
     <span class="n">input_raster</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">input_table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1088,17 +1113,12 @@
 <span class="c1"># =======================================================================</span>
 
 
-<div class="viewcode-block" id="get_timestamp">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.get_timestamp">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">get_timestamp</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_get_timestamp</span><span class="p">():</span>
     <span class="n">now</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
-    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">))</span>
 
 
-
-<div class="viewcode-block" id="make_run_folder">
-<a class="viewcode-back" href="../../generated/pem.risk.html#pem.risk.make_run_folder">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">make_run_folder</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_run_folder</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a unique, time-stamped run folder within a specified output directory.</span>
 
@@ -1116,7 +1136,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">ts</span> <span class="o">=</span> <span class="n">get_timestamp</span><span class="p">()</span>
+        <span class="n">ts</span> <span class="o">=</span> <span class="n">_get_timestamp</span><span class="p">()</span>
         <span class="n">folder_run</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_folder</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_run</span><span class="p">):</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
@@ -1124,8 +1144,7 @@
             <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">folder_run</span><span class="p">)</span>
             <span class="k">break</span>
 
-    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder_run</span><span class="p">)</span></div>
-
+    <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">folder_run</span><span class="p">)</span>
 
 
 <span class="c1"># SCRIPT</span>
