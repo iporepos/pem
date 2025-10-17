@@ -4,8 +4,7 @@
 # See pyproject.toml for authors/maintainers.
 # See LICENSE for license details.
 """
-{Short module description (1-3 sentences)}
-todo docstring
+Routines for handling pre and post-processing steps of the Habitat Risk Index
 
 Features
 --------
@@ -80,8 +79,14 @@ def setup_stressors(
     output_folder, input_db, groups, reference_raster, is_blank=False, resolution=400
 ):
     """
+
     Sets up stressor layers by rasterizing multiple vector layers from a
-     database into single stressor rasters and reprojecting them to a specified resolution.
+    database into single stressor rasters and reprojecting them to a specified resolution.
+
+    .. note::
+
+        This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
+
 
     :param output_folder: The base directory where a new run-specific folder for all outputs will be created.
     :type output_folder: str
@@ -101,10 +106,12 @@ def setup_stressors(
     **Notes**
 
     This function combines features from multiple vector layers into a single output stressor raster for each defined group.
-    1. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.
-    2. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group's ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
-    3. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
-    4. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.
+
+    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.
+    #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group's ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
+    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+    #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.
+
     Intermediate rasters are cleaned up at the end.
 
 
@@ -270,6 +277,10 @@ def setup_habitats(
     Sets up habitat layers by splitting a vector layer, rasterizing each resulting
     habitat group, and reprojecting the rasters to a specified resolution.
 
+    .. note::
+
+        This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
+
     :param output_folder: The base directory where a new run-specific folder for all outputs will be created.
     :type output_folder: str
     :param input_db: The path to the source vector database (e.g., GeoPackage) containing the habitat features.
@@ -292,11 +303,13 @@ def setup_habitats(
     **Notes**
 
     This function orchestrates a multi-step process:
-    1. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.
-    2. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.
-    3. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
-    4. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
-    5. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.
+
+    #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.
+    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.
+    #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
+    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+    #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.
+
     Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.
 
     **Script example**
