@@ -380,8 +380,7 @@
 <span class="c1"># See pyproject.toml for authors/maintainers.</span>
 <span class="c1"># See LICENSE for license details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">{Short module description (1-3 sentences)}</span>
-<span class="sd">todo docstring</span>
+<span class="sd">Routines for handling pre and post-processing steps of the Habitat Risk Index</span>
 
 <span class="sd">Features</span>
 <span class="sd">--------</span>
@@ -458,8 +457,14 @@
     <span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">reference_raster</span><span class="p">,</span> <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+
 <span class="sd">    Sets up stressor layers by rasterizing multiple vector layers from a</span>
-<span class="sd">     database into single stressor rasters and reprojecting them to a specified resolution.</span>
+<span class="sd">    database into single stressor rasters and reprojecting them to a specified resolution.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
+
 
 <span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
 <span class="sd">    :type output_folder: str</span>
@@ -479,10 +484,12 @@
 <span class="sd">    **Notes**</span>
 
 <span class="sd">    This function combines features from multiple vector layers into a single output stressor raster for each defined group.</span>
-<span class="sd">    1. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
-<span class="sd">    2. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
-<span class="sd">    3. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
-<span class="sd">    4. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
+
+<span class="sd">    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
+<span class="sd">    #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
+<span class="sd">    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">    #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
+
 <span class="sd">    Intermediate rasters are cleaned up at the end.</span>
 
 
@@ -651,6 +658,10 @@
 <span class="sd">    Sets up habitat layers by splitting a vector layer, rasterizing each resulting</span>
 <span class="sd">    habitat group, and reprojecting the rasters to a specified resolution.</span>
 
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
+
 <span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
 <span class="sd">    :type output_folder: str</span>
 <span class="sd">    :param input_db: The path to the source vector database (e.g., GeoPackage) containing the habitat features.</span>
@@ -673,11 +684,13 @@
 <span class="sd">    **Notes**</span>
 
 <span class="sd">    This function orchestrates a multi-step process:</span>
-<span class="sd">    1. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
-<span class="sd">    2. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
-<span class="sd">    3. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
-<span class="sd">    4. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
-<span class="sd">    5. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
+
+<span class="sd">    #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
+<span class="sd">    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
+<span class="sd">    #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
+<span class="sd">    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">    #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
+
 <span class="sd">    Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</span>
 
 <span class="sd">    **Script example**</span>

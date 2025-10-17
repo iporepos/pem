@@ -398,8 +398,7 @@
                   
   <section id="module-pem.risk">
 <span id="pem-risk"></span><h1>pem.risk<a class="headerlink" href="#module-pem.risk" title="Link to this heading">#</a></h1>
-<p>{Short module description (1-3 sentences)}
-todo docstring</p>
+<p>Routines for handling pre and post-processing steps of the Habitat Risk Index</p>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
 <p>todo docstring</p>
@@ -448,7 +447,7 @@ todo docstring</p>
 <td><p>Sets up habitat layers by splitting a vector layer, rasterizing each resulting habitat group, and reprojecting the rasters to a specified resolution.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pem.risk.setup_stressors" title="pem.risk.setup_stressors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_stressors</span></code></a>(output_folder, input_db, ...)</p></td>
-<td><p>Sets up stressor layers by rasterizing multiple vector layers from a</p></td>
+<td><p>Sets up stressor layers by rasterizing multiple vector layers from a database into single stressor rasters and reprojecting them to a specified resolution.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pem.risk.split_features" title="pem.risk.split_features"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split_features</span></code></a>(output_folder, input_db, ...)</p></td>
 <td><p>Splits features from a source GeoDataFrame into separate layers within a single GeoPackage file based on predefined groups of field values.</p></td>
@@ -459,10 +458,12 @@ todo docstring</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_stressors">
 <span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_stressors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pem/risk.html#setup_stressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_stressors" title="Link to this definition">#</a></dt>
-<dd><dl class="simple">
-<dt>Sets up stressor layers by rasterizing multiple vector layers from a</dt><dd><p>database into single stressor rasters and reprojecting them to a specified resolution.</p>
-</dd>
-</dl>
+<dd><p>Sets up stressor layers by rasterizing multiple vector layers from a
+database into single stressor rasters and reprojecting them to a specified resolution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script is a utility for running the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -482,12 +483,14 @@ todo docstring</p>
 </dd>
 </dl>
 <p><strong>Notes</strong></p>
-<p>This function combines features from multiple vector layers into a single output stressor raster for each defined group.
-1. <strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.
-2. <strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
-3. <strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).
-4. <strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.
-Intermediate rasters are cleaned up at the end.</p>
+<p>This function combines features from multiple vector layers into a single output stressor raster for each defined group.</p>
+<ol class="arabic simple">
+<li><p><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.</p></li>
+<li><p><strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</p></li>
+<li><p><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.</p></li>
+</ol>
+<p>Intermediate rasters are cleaned up at the end.</p>
 <p><strong>Script example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
@@ -546,6 +549,10 @@ Intermediate rasters are cleaned up at the end.</p>
 <span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_folder</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/pem/risk.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_habitats" title="Link to this definition">#</a></dt>
 <dd><p>Sets up habitat layers by splitting a vector layer, rasterizing each resulting
 habitat group, and reprojecting the rasters to a specified resolution.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This script is a utility for running the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>.</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -567,13 +574,15 @@ habitat group, and reprojecting the rasters to a specified resolution.</p>
 </dd>
 </dl>
 <p><strong>Notes</strong></p>
-<p>This function orchestrates a multi-step process:
-1. <strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.
-2. <strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.
-3. <strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
-4. <strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).
-5. <strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.
-Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
+<p>This function orchestrates a multi-step process:</p>
+<ol class="arabic simple">
+<li><p><strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.</p></li>
+<li><p><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.</p></li>
+<li><p><strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</p></li>
+<li><p><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.</p></li>
+</ol>
+<p>Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
 <p><strong>Script example</strong></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
