@@ -4,34 +4,44 @@
 # See pyproject.toml for authors/maintainers.
 # See LICENSE for license details.
 """
-Routines for handling pre and post-processing steps of the Habitat Risk Index
+Module for pre- and post-processing routines supporting the Habitat Risk Index workflow.
 
-Features
---------
-todo docstring
+This module provides a collection of helper functions for organizing, rasterizing, and
+reprojecting spatial data layers used in the InVEST Habitat Risk model. It is intended
+to be executed within the **QGIS Python environment** and relies on its processing framework
+(`processing` algorithms, CRS handling, rasterization utilities, etc.).
 
-* {feature 1}
-* {feature 2}
-* {feature 3}
-* {etc}
+.. seealso::
 
-Overview
---------
-todo docstring
-{Overview description}
+    Refer to the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_
+    documentation for theoretical and technical details regarding input data
+    preparation for the Habitat Risk Index.
 
-Examples
---------
-todo docstring
-{Examples in rST}
+**Requirements**
 
-Print a message
+The following libraries and environment are required:
 
-.. code-block:: python
+* QGIS 3 (Python environment)
+* ``numpy``
+* ``pandas``
+* ``geopandas``
 
-    # print message
-    print("Hello world!")
-    # [Output] >> 'Hello world!'
+**Overview**
+
+This module includes routines for:
+
+* Preparing and rasterizing stressor and habitat layers.
+* Reprojecting rasters and generating blank templates.
+* Splitting vector datasets into grouped layers.
+* Creating structured, time-stamped output directories for reproducible runs.
+
+Each function performs a self-contained processing step designed to integrate
+smoothly with other spatial workflows in QGIS.
+
+**Examples**
+
+Scripted usage examples are provided in the docstrings of each function.
+No global examples are included at module level.
 
 
 """
@@ -117,7 +127,15 @@ def setup_stressors(
 
     **Script example**
 
+    .. warning::
+
+        The following script is expected to be executed under the QGIS Python
+        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+
+
     .. code-block:: python
+
+        # WARNING: run this in QGIS Python Environment
 
         import importlib.util as iu
 
@@ -182,7 +200,7 @@ def setup_stressors(
     # folders
     # -----------------------------------
     os.makedirs(output_folder, exist_ok=True)
-    output_folder = make_run_folder(run_name=func_name, output_folder=output_folder)
+    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
 
     # files
     # -----------------------------------
@@ -196,7 +214,7 @@ def setup_stressors(
         pass
     else:
         output_blank = Path(f"{output_folder}/blank.tif")
-        reference_raster = raster_blank(
+        reference_raster = util_raster_blank(
             output_folder=output_folder,
             output_raster=output_blank,
             input_raster=reference_raster,
@@ -218,7 +236,7 @@ def setup_stressors(
         # loop for handling multiple layers
         for layer in groups[g]["layers"]:
             # rasterize
-            layer_rasterize(
+            util_layer_rasterize(
                 input_raster=str(group_raster_src),
                 input_db=input_db,
                 input_layer=layer,
@@ -226,7 +244,7 @@ def setup_stressors(
             )
 
         # reproject
-        raster_reproject(
+        util_raster_reproject(
             output_folder=output_folder,
             output_raster=group_raster_warped,
             input_raster=group_raster_src,
@@ -314,7 +332,14 @@ def setup_habitats(
 
     **Script example**
 
+    .. warning::
+
+        The following script is expected to be executed under the QGIS Python
+        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+
     .. code-block:: python
+
+        # WARNING: run this in QGIS Python Environment
 
         import importlib.util as iu
 
@@ -372,7 +397,7 @@ def setup_habitats(
     # folders
     # -----------------------------------
     os.makedirs(output_folder, exist_ok=True)
-    output_folder = make_run_folder(run_name=func_name, output_folder=output_folder)
+    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
 
     # files
     # -----------------------------------
@@ -382,7 +407,7 @@ def setup_habitats(
 
     # split vector features
     # -----------------------------------
-    output_db = split_features(
+    output_db = util_split_features(
         output_folder=output_folder,
         input_db=input_db,
         input_layer=input_layer,
@@ -396,7 +421,7 @@ def setup_habitats(
         pass
     else:
         output_blank = Path(f"{output_folder}/blank.tif")
-        reference_raster = raster_blank(
+        reference_raster = util_raster_blank(
             output_folder=output_folder,
             output_raster=output_blank,
             input_raster=reference_raster,
@@ -416,7 +441,7 @@ def setup_habitats(
         shutil.copy(src=reference_raster, dst=group_raster_src)
 
         # rasterize
-        layer_rasterize(
+        util_layer_rasterize(
             input_raster=str(group_raster_src),
             input_db=output_db,
             input_layer=g,
@@ -424,7 +449,7 @@ def setup_habitats(
         )
 
         # reproject
-        raster_reproject(
+        util_raster_reproject(
             output_folder=output_folder,
             output_raster=group_raster_warped,
             input_raster=group_raster_src,
@@ -465,7 +490,14 @@ def setup_habitats(
     return output_folder
 
 
-def split_features(output_folder, input_db, input_layer, groups, field_name):
+# ... {develop}
+
+# FUNCTIONS -- Module-level
+# =======================================================================
+# ... {develop}
+
+
+def util_split_features(output_folder, input_db, input_layer, groups, field_name):
     """
     Splits features from a source GeoDataFrame into separate
     layers within a single GeoPackage file based on predefined groups of field values.
@@ -496,7 +528,7 @@ def split_features(output_folder, input_db, input_layer, groups, field_name):
 
     # Startup
     # -------------------------------------------------------------------
-    func_name = split_features.__name__
+    func_name = util_split_features.__name__
     print(f"running: {func_name}")
 
     # Setup output variables
@@ -505,7 +537,7 @@ def split_features(output_folder, input_db, input_layer, groups, field_name):
     # folders
     # -----------------------------------
     os.makedirs(output_folder, exist_ok=True)
-    output_folder = make_run_folder(run_name=func_name, output_folder=output_folder)
+    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
 
     # files
     # -----------------------------------
@@ -542,14 +574,7 @@ def split_features(output_folder, input_db, input_layer, groups, field_name):
     return output_file
 
 
-# ... {develop}
-
-# FUNCTIONS -- Module-level
-# =======================================================================
-# ... {develop}
-
-
-def raster_blank(output_folder, output_raster, input_raster):
+def util_raster_blank(output_folder, output_raster, input_raster):
     """
     Creates a blank (zero-valued) raster based on the extent,
     resolution, and CRS of an existing input raster.
@@ -585,7 +610,7 @@ def raster_blank(output_folder, output_raster, input_raster):
     return output_raster
 
 
-def raster_reproject(
+def util_raster_reproject(
     output_folder,
     output_raster,
     input_raster,
@@ -645,7 +670,7 @@ def raster_reproject(
     return output_raster
 
 
-def layer_rasterize(
+def util_layer_rasterize(
     input_raster, input_db, input_layer, input_table=None, burn_value=1, extra=""
 ):
     """
@@ -694,12 +719,12 @@ def layer_rasterize(
 # =======================================================================
 
 
-def get_timestamp():
+def _get_timestamp():
     now = datetime.datetime.now()
     return str(now.strftime("%Y-%m-%dT%H%M%S"))
 
 
-def make_run_folder(output_folder, run_name):
+def _make_run_folder(output_folder, run_name):
     """
     Creates a unique, time-stamped run folder within a specified output directory.
 
@@ -717,7 +742,7 @@ def make_run_folder(output_folder, run_name):
 
     """
     while True:
-        ts = get_timestamp()
+        ts = _get_timestamp()
         folder_run = Path(output_folder) / f"{run_name}_{ts}"
         if os.path.exists(folder_run):
             time.sleep(1)

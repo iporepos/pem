@@ -22,19 +22,8 @@ and extending the functionality of the project.
 .. list down here all modules that must be in the API [CHANGE THIS]:
 
 
-.. autosummary::
-   :toctree: generated
+.. toctree::
+   :maxdepth: 1
 
-   pem
-
-
-.. autosummary::
-   :toctree: generated
-
-   pem.module
-
-
-.. autosummary::
-   :toctree: generated
-
-   pem.risk
+   API <self>
+   risk

@@ -86,7 +86,7 @@ autodoc_mock_imports = [
     "geopandas",
     "rasterio",
     "processing",
-    "qgis"
+    "qgis",
     # ... keep adding as new dependencies arise
 ]
 
@@ -95,14 +95,16 @@ autodoc_member_order = "bysource"
 # Exclude the __dict__, __weakref__, and __module__ attributes from being documented
 exclude_members = ["__dict__", "__weakref__", "__module__", "__str__"]
 # Configure autodoc options
+
 autodoc_default_options = {
     "members": True,
     "undoc-members": False,
-    "private-members": True,
-    "special-members": True,
+    "private-members": False,
+    "special-members": False,
     "show-inheritance": True,
     "exclude-members": ",".join(exclude_members),
 }
+
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

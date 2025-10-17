@@ -33,7 +33,7 @@ Update docs
 
 
 """
-
+import shutil
 
 # IMPORTS
 # ***********************************************************************
@@ -42,7 +42,7 @@ Update docs
 # =======================================================================
 import subprocess
 import webbrowser
-import glob
+import glob, os
 from pathlib import Path
 
 # External imports
@@ -79,6 +79,7 @@ def build_docs():
     """
     # Clean generated files
     delete_generated()
+    delete_build()
     # Run sphinx-build
     subprocess.run(
         ["sphinx-build", "-b", "html", str(DOCS_DIR), str(BUILD_DIR), "--write-all"],
@@ -102,6 +103,23 @@ def delete_generated():
     else:
         for f in ls_files:
             os.remove(f)
+    return None
+
+
+def delete_build():
+    """
+    Delete all items in _build
+    """
+    d = Path(__file__).parent
+    d_build = d / "_build"
+    ls_items = os.listdir(d_build)
+    for item in ls_items:
+        item_path = f"./_build/{item}"
+        if os.path.isfile(item_path):
+            os.remove(item_path)
+        elif os.path.isdir(item_path):
+            shutil.rmtree(item_path)
+
     return None
 
 
