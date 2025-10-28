@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>About &#8212; pem 0.0.1 documentation</title>
+    <title>Benefit Index &#8212; pem 0.0.1 documentation</title>
   
   
   
@@ -45,12 +45,12 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'about';</script>
-    <link rel="author" title="About these documents" href="#" />
+    <script>DOCUMENTATION_OPTIONS.pagename = 'about_benefit_index';</script>
+    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Management Units" href="about_upg.html" />
-    <link rel="prev" title="PEM" href="index.html" />
+    <link rel="next" title="User Guide" href="usage.html" />
+    <link rel="prev" title="Conflict Index" href="about_conflict_index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -137,7 +137,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="about.html">
     About
   </a>
 </li>
@@ -260,7 +260,7 @@
 
 
 <li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+  <a class="nav-link nav-internal" href="about.html">
     About
   </a>
 </li>
@@ -330,11 +330,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_upg.html">Management Units</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_risk_index.html">Habitat Risk Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_conflict_index.html">Conflict Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about_benefit_index.html">Benefit Index</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Benefit Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -375,7 +375,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">About</span></li>
+    
+    <li class="breadcrumb-item"><a href="about.html" class="nav-link">About</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Benefit Index</span></li>
   </ul>
 </nav>
 </div>
@@ -392,140 +395,24 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="about">
-<span id="id1"></span><h1>About<a class="headerlink" href="#about" title="Link to this heading">#</a></h1>
-<div class="toctree-wrapper compound">
-<ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about_upg.html">Management Units</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about_risk_index.html">Habitat Risk Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about_conflict_index.html">Conflict Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="about_benefit_index.html">Benefit Index</a></li>
-</ul>
+  <div class="admonition warning" id="about-benefit-index">
+<p class="admonition-title">Warning</p>
+<p>This section is under development.</p>
 </div>
-<p>The <strong>PEM Project</strong> (<em>Planejamento Espacial Marinho do Brasil</em>, or <em>Marine Spatial Planning for Brazil</em>)
-is a national initiative aimed at developing <strong>spatially explicit guidelines</strong> for the sustainable and
-strategic use of the Brazilian marine environment.</p>
-<p>This page provides a conceptual overview of the <strong>general workflow</strong>, which forms the core of
-the PEM methodology and underpins all regional plans.</p>
-<p>By following this structured and data-driven workflow, the PEM methodology ensures
-<strong>reproducibility</strong>, <strong>transparency</strong>, and <strong>scientific robustness</strong> in the
-assessment of marine spatial planning outcomes.</p>
-<p>All analytical steps are implemented through <strong>R and Python scripts</strong>,
-available in this repository, which can be adapted for different regions and data resolutions.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>For implementation details see the <a class="reference internal" href="usage.html#usage"><span class="std std-ref">User Guide</span></a></p>
-</div>
-<section id="pem-framework">
-<span id="about-workflow"></span><h2>PEM framework<a class="headerlink" href="#pem-framework" title="Link to this heading">#</a></h2>
-<p>The <strong>PEM framework</strong> represents the most abstract and reproducible component of the PEM method.</p>
-<p>It begins at a <strong>zero level of information</strong>, where only spatial data are available, and
-transforms these datasets into <strong>spatially explicit indicators</strong> and <strong>decision-support maps</strong>.</p>
-</section>
-<section id="input-data">
-<span id="about-input-data"></span><h2>Input Data<a class="headerlink" href="#input-data" title="Link to this heading">#</a></h2>
-<p>At the foundation level, the workflow integrates diverse spatial datasets, including:</p>
-<ul class="simple">
-<li><p><strong>Bathymetry</strong> – ocean depth and seabed morphology.</p></li>
-<li><p><strong>Habitats</strong> – distribution and characteristics of marine ecosystems.</p></li>
-<li><p><strong>Uses of the ocean</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
-<li><p><strong>Coastal hubs</strong> – ports, cities, and infrastructure nodes that influence or depend on marine uses.</p></li>
-</ul>
-<p>These datasets serve as the basis for constructing higher-level spatial information layers.</p>
-</section>
-<section id="the-spatial-model">
-<span id="about-model"></span><h2>The Spatial Model<a class="headerlink" href="#the-spatial-model" title="Link to this heading">#</a></h2>
-<p>PEM framework use a spatial model that allows comprehensive decision-making.</p>
-<p>This model represents the ocean space and adjacent land as a two-dimensional
-surface divided into model cells. Each model cell describes the spatial
-unit of analysis, allowing the integration of land,
-coastline, and marine environments within the same planning structure.</p>
-<p>Within this space, several spatial features are represented: <strong>land hubs</strong> such
-as ports, cities, and river mouths; <strong>habitats</strong>, which are sources of ecosystem
-services and may be sensitive to disturbance; and <strong>users</strong>, representing the
-various sectors that occupy and use ecosystem services. These elements coexist and
-interact across the grid, forming the physical and functional components of the
-system.</p>
-<p>The dynamic interaction among these components gives rise to three key
-dimensions of spatial performance: <strong>benefit</strong>, <strong>risk</strong>, and <strong>conflict</strong>.</p>
-<p>Benefits flow from users through the use of ecosystem services and connect back
-to land hubs. Risks emerge where users overlap with sensitive habitats, and
-conflicts arise where different users compete for the same space.</p>
-<p>Together, these dimensions define the integrative structure of the PEM framework, which
-supports both diagnostic evaluation and scenario-based simulation of marine use
-performance.</p>
-<figure class="align-center" id="fig-spatial-model">
-<a class="reference internal image-reference" href="_images/model.jpg"><img alt="_images/model.jpg" src="_images/model.jpg" style="width: 100%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Conceptual representation of the spatial model in the PEM framework.
-The ocean and land areas are divided into a spatial grid, where land hubs,
-habitats, and users interact to generate benefit, risk, and conflict metrics
-that support integrated performance assessment and scenario simulation.</span><a class="headerlink" href="#fig-spatial-model" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</section>
-<section id="management-units">
-<span id="about-upg"></span><h2>Management Units<a class="headerlink" href="#management-units" title="Link to this heading">#</a></h2>
-<p>An important component of the PEM framework is the creation of
-<strong>Management Units</strong>, denoted as UPG — spatial zones that organize
-and guide marine management actions.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Check out more information about the definition of <a class="reference internal" href="about_upg.html#about-upg"><span class="std std-ref">Management Units</span></a></p>
-</div>
-</section>
-<section id="integrated-performance-index">
-<span id="about-indexes"></span><h2>Integrated Performance Index<a class="headerlink" href="#integrated-performance-index" title="Link to this heading">#</a></h2>
-<p>The core integrative indicator of the PEM framework is the <strong>Marine Use Performance Index</strong>,
-or <strong>IDUSE-Mar</strong> (<em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>).</p>
-<p>This index synthesizes the three dimensions — benefit, risk, and
-conflict — into a single expression of marine use performance:</p>
+<section id="benefit-index">
+<h1>Benefit Index<a class="headerlink" href="#benefit-index" title="Link to this heading">#</a></h1>
+<p>The <strong>benefit index</strong> is derived from the spatialized intensity and value of marine uses.
+It aggregates sectoral information into a normalized economic density indicator:</p>
 <div class="math notranslate nohighlight">
-\[D = \frac{B}{R \times C} \quad \text{where } D \in [0, 1]\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(D\)</span> is the <strong>performance</strong> of marine use;</p></li>
-<li><p><span class="math notranslate nohighlight">\(B\)</span> is the <strong>benefit</strong>;</p></li>
-<li><p><span class="math notranslate nohighlight">\(R\)</span> is the <strong>risk</strong>; and</p></li>
-<li><p><span class="math notranslate nohighlight">\(C\)</span> is the <strong>conflict</strong>.</p></li>
-</ul>
-<p>A higher value of <span class="math notranslate nohighlight">\(D\)</span> indicates a more sustainable and efficient use of
-the marine space—high benefits with relatively low risk and conflict.</p>
-<section id="spatial-indexes">
-<h3>Spatial Indexes<a class="headerlink" href="#spatial-indexes" title="Link to this heading">#</a></h3>
-<p>Through a series of converging analytical processes, the raw data are
-transformed into the three key spatial indexes, each representing
-a different dimension of marine use performance:</p>
-<ol class="arabic simple">
-<li><p><strong>Benefit Index</strong> — quantifies the economic and social <strong>benefit</strong> derived from the use of each spatial unit of the ocean.</p></li>
-<li><p><strong>Habitat Risk Index</strong> — captures the <strong>environmental fragility</strong> and <strong>sensitivity</strong> of marine habitats exposed to human activities.</p></li>
-<li><p><strong>Conflict Index</strong> — expresses the <strong>intensity of overlap</strong> or competition between different marine uses within the same area.</p></li>
-</ol>
-<p>Each of these index is calculated as a <strong>relative measure</strong>, allowing
-comparisons across spatial scales and scenarios of marine use.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">Benefit Index</span></a></p>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index</span></a></p>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">Conflict Index</span></a></p>
-</div>
-</section>
-</section>
-<section id="scenario-based-analyses">
-<h2>Scenario-Based Analyses<a class="headerlink" href="#scenario-based-analyses" title="Link to this heading">#</a></h2>
-<p>All indices (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific <strong>use scenarios</strong>.
-Scenarios may represent current conditions, projected developments, or management
-alternatives, allowing the <strong>IDUSE-Mar</strong> to serve as a comparative tool
-for evaluating policy or spatial planning options.</p>
-</section>
+\[B = \sum_{j = 1}^{N} \mathcal{B}(U_j) \quad U \in \mathbb{U}\]</div>
+<p>Where <span class="math notranslate nohighlight">\(U_j\)</span> represents each use sector <span class="math notranslate nohighlight">\(j\)</span>.</p>
+<p>For each municipality <span class="math notranslate nohighlight">\(i\)</span> and time step <span class="math notranslate nohighlight">\(t\)</span>, the benefit is
+computed as a function of local value and activity:</p>
+<div class="math notranslate nohighlight">
+\[B_{i, j, t} = f(V_{i, t}, U_{j, t}), \quad B \in [0, 1]\]</div>
+<p>Each sectoral benefit <span class="math notranslate nohighlight">\(B_j\)</span> is normalized such that:</p>
+<div class="math notranslate nohighlight">
+\[\sum_{i = 1}^{N} B_i = 1\]</div>
 </section>
 
 
@@ -539,20 +426,20 @@ for evaluating policy or spatial planning options.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="index.html"
+       href="about_conflict_index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">PEM</p>
+        <p class="prev-next-title">Conflict Index</p>
       </div>
     </a>
     <a class="right-next"
-       href="about_upg.html"
+       href="usage.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Management Units</p>
+        <p class="prev-next-title">User Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -568,30 +455,10 @@ for evaluating policy or spatial planning options.</p>
 
 
   <div class="sidebar-secondary-item">
-<div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> On this page
-  </div>
-  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem-framework">PEM framework</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-data">Input Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spatial-model">The Spatial Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-units">Management Units</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-performance-index">Integrated Performance Index</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indexes">Spatial Indexes</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
-</ul>
-  </nav></div>
-
-  <div class="sidebar-secondary-item">
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/about.rst.txt"
+      <li><a href="_sources/about_benefit_index.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>
