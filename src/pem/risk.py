@@ -64,7 +64,6 @@ import pandas as pd
 import processing
 from qgis.core import QgsCoordinateReferenceSystem
 
-
 # ... {develop}
 
 # Project-level imports
@@ -77,6 +76,29 @@ from qgis.core import QgsCoordinateReferenceSystem
 # ***********************************************************************
 # define constants in uppercase
 
+CRS_OPS = {
+    "5641": "+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80"
+}
+
+INVEST_JSON = """
+{
+    "args": {
+        "aoi_vector_path": "[aoi]",
+        "criteria_table_path": "[criteria]",
+        "decay_eq": "linear",
+        "info_table_path": "[info]",
+        "max_rating": "3",
+        "n_overlapping_stressors": "10",
+        "resolution": "[res]",
+        "results_suffix": "[suffix]",
+        "risk_eq": "euclidean",
+        "visualize_outputs": false,
+        "workspace_dir": "[workspace]"
+    },
+    "invest_version": "3.16.0",
+    "model_id": "habitat_risk_assessment"
+}
+"""
 
 # FUNCTIONS
 # ***********************************************************************
@@ -85,11 +107,258 @@ from qgis.core import QgsCoordinateReferenceSystem
 # =======================================================================
 
 
-def setup_stressors(
-    output_folder, input_db, groups, reference_raster, is_blank=False, resolution=400
+def setup_hra_model(
+    output_folder,
+    criteria_table,
+    input_db,
+    reference_raster,
+    resolution,
+    aoi_layer,
+    habitat_layer,
+    habitat_field,
+    habitat_groups,
+    stressor_groups,
+    dst_crs="5641",
+    suffix="",
 ):
     """
+    Sets up all necessary input layers and data structures for the HRA (Habitat Risk Assessment) model run.
 
+    .. note::
+
+        This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
+
+    :param output_folder: Path to the main output directory where all generated files will be stored.
+    :type output_folder: str
+    :param criteria_table: Path to criteria table for habitat sensitivity
+    :type criteria_table: str
+    :param input_db: Path to the GeoPackage file containing the input vector layers.
+    :type input_db: str
+    :param reference_raster: Path to the raster used as a spatial template for model rasters.
+    :type reference_raster: str
+    :param resolution: The target spatial resolution (pixel size) for the model outputs.
+    :type resolution: float
+    :param aoi_layer: The name of the vector layer in ``input_db`` defining the Area of Interest (AOI).
+    :type aoi_layer: str
+    :param habitat_layer: The name of the vector layer in ``input_db`` containing the habitat features.
+    :type habitat_layer: str
+    :param habitat_field: The name of the field in ``habitat_layer`` used to classify habitats into groups.
+    :type habitat_field: str
+    :param habitat_groups: A dictionary defining how habitats are grouped and processed.
+    :type habitat_groups: dict
+    :param stressor_groups: A dictionary defining the stressor layers and their properties.
+    :type stressor_groups: dict
+    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5641``
+    :type dst_crs: str
+    :param suffix: String suffix for model runs
+    :type suffix: str
+    :return: The path to the newly created main output folder for the model run.
+    :rtype: str
+
+    **Notes**
+
+    This function prepares the environment by creating output folders,
+    reprojecting the AOI, creating a blank reference raster,
+    and running ``setup_habitats`` and ``setup_stressors`` to
+    prepare those inputs. It also generates a combined ``info.csv`` table.
+
+
+    .. warning::
+
+        The following script is expected to be executed under the QGIS Python
+        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+
+
+    .. code-block:: python
+
+        # WARNING: run this in QGIS Python Environment
+
+        import importlib.util as iu
+
+        # define the paths to this module
+        # ----------------------------------------
+        the_module = "path/to/risk.py"
+
+        spec = iu.spec_from_file_location("module", the_module)
+        module = iu.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        # define the paths to input and output folders
+        # ----------------------------------------
+        input_dir = "path/to/dir"
+        output_dir = "path/to/dir"
+
+        # define the path to input database
+        # ----------------------------------------
+        input_db = f"{input_dir}/pem.gpkg"
+
+        # define criteria table
+        criteria_table = f"{input_dir}/criteria_ben_pem.csv"
+
+        # define reference raster
+        reference_raster = f"{input_dir}/gebco_topobathymetry.tif"
+
+        # organize habitat groups
+        habitat_groups = {
+            # Habitat group
+            "MB3_MC3": ["MB3", "MC3"],  # list of habitats names
+            "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
+            "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
+            "MD3": ["MD3"],
+            "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
+            "ME1": ["ME1"],
+            "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
+            "MG4_MG6": ["MG4", "MG6"],
+        }
+
+        # organize stressors groups
+        stressor_groups = {
+            # stressor name
+            "MINERACAO": {
+                # list of layers in input database
+                "layers": ["mineracao_processos", "mineracao_areas_potenciais"],
+                "buffer": 10000, # in meters
+            },
+            "TURISMO": {
+                "layers": ["turismo_atividades_esportivas_sul"],
+                "buffer": 10000,
+            },
+            "EOLICAS": {
+                "layers": ["eolico_parques"],
+                "buffer": 10000,
+            },
+        }
+
+        # call the function
+        # ----------------------------------------
+        output_folder = module.setup_hra_model(
+            output_folder=output_dir,
+            criteria_table=criteria_table,
+            input_db=input_db,
+            reference_raster=reference_raster,
+            resolution=1000, # in meters
+            aoi_layer="sul",
+            habitat_layer="habitats_bentonicos_sul_v2",
+            habitat_field="code",
+            habitat_groups=habitat_groups,
+            stressor_groups=stressor_groups,
+        )
+
+    """
+    # Startup
+    # -------------------------------------------------------------------
+    func_name = setup_hra_model.__name__
+    print(f"running: {func_name}")
+
+    # Setup output variables
+    # -------------------------------------------------------------------
+
+    # folders
+    # -----------------------------------
+    os.makedirs(output_folder, exist_ok=True)
+    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
+
+    # files
+    # -----------------------------------
+    model_reference_raster = f"{output_folder}/blank.tif"
+
+    # Run processes
+    # -------------------------------------------------------------------
+
+    # handle aoi layer
+    # -----------------------------------
+    aoi_file = f"{output_folder}/aoi.shp"
+    dc_params = {
+        "INPUT": f"{input_db}|layername={aoi_layer}",
+        "TARGET_CRS": QgsCoordinateReferenceSystem(f"EPSG:{dst_crs}"),
+        "CONVERT_CURVED_GEOMETRIES": False,
+        "OPERATION": CRS_OPS[dst_crs],
+        "OUTPUT": aoi_file,
+    }
+    processing.run("native:reprojectlayer", dc_params)
+
+    # handle blank
+    # -----------------------------------
+    model_reference_raster = util_raster_blank(
+        output_raster=model_reference_raster, input_raster=reference_raster
+    )
+
+    # Habitats
+    # -----------------------------------
+    habitat_folder = setup_habitats(
+        output_folder=f"{output_folder}/habitats",
+        input_db=input_db,
+        input_layer=habitat_layer,
+        groups=habitat_groups,
+        field_name=habitat_field,
+        reference_raster=model_reference_raster,
+        is_blank=True,
+        resolution=resolution,
+        subfolder=False,
+    )
+
+    # Stressors
+    # -----------------------------------
+    stressor_folder = setup_stressors(
+        output_folder=f"{output_folder}/stressors",
+        input_db=input_db,
+        groups=stressor_groups,
+        reference_raster=model_reference_raster,
+        is_blank=True,
+        resolution=resolution,
+        subfolder=False,
+    )
+
+    # Criteria table
+    # -----------------------------------
+    criteria_file = f"{output_folder}/criteria.csv"
+    shutil.copy(src=criteria_table, dst=criteria_file)
+
+    # Info table
+    # -----------------------------------
+    info_file = f"{output_folder}/info.csv"
+    table_h = f"{habitat_folder}/info_habitats.csv"
+    table_s = f"{stressor_folder}/info_stressors.csv"
+
+    df_h = pd.read_csv(table_h, sep=",")
+    df_s = pd.read_csv(table_s, sep=",")
+    df_info = pd.concat([df_h, df_s])
+    df_info.to_csv(info_file, sep=",", index=False)
+
+    # Handle model file
+    # -----------------------------------
+    json_string = INVEST_JSON[:]
+    json_string = json_string.replace("[aoi]", aoi_file)
+    json_string = json_string.replace("[info]", info_file)
+    json_string = json_string.replace("[res]", str(resolution))
+    json_string = json_string.replace("[suffix]", suffix)
+    json_string = json_string.replace("[criteria]", criteria_file)
+    json_string = json_string.replace("[workspace]", output_folder)
+
+    json_string = json_string.replace("\\", "/")
+
+    with open(f"{output_folder}/model.json", "w") as file:
+        file.write(json_string)
+        file.close()
+
+    print(f"run successfull. see for outputs:\n{output_folder}")
+
+    return output_folder
+
+    return None
+
+
+# test developed
+def setup_stressors(
+    output_folder,
+    input_db,
+    groups,
+    reference_raster,
+    is_blank=False,
+    resolution=400,
+    subfolder=True,
+):
+    """
     Sets up stressor layers by rasterizing multiple vector layers from a
     database into single stressor rasters and reprojecting them to a specified resolution.
 
@@ -200,7 +469,10 @@ def setup_stressors(
     # folders
     # -----------------------------------
     os.makedirs(output_folder, exist_ok=True)
-    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
+    if subfolder:
+        output_folder = _make_run_folder(
+            run_name=func_name, output_folder=output_folder
+        )
 
     # files
     # -----------------------------------
@@ -208,15 +480,15 @@ def setup_stressors(
     # Run processes
     # -------------------------------------------------------------------
 
+    # todo develop: a nice thing would be to save only the stressors to a database
+
     # handle reference raster
     # -----------------------------------
     if is_blank:
         pass
     else:
-        output_blank = Path(f"{output_folder}/blank.tif")
         reference_raster = util_raster_blank(
-            output_folder=output_folder,
-            output_raster=output_blank,
+            output_raster=f"{output_folder}/blank.tif",
             input_raster=reference_raster,
         )
 
@@ -245,10 +517,13 @@ def setup_stressors(
 
         # reproject
         util_raster_reproject(
-            output_folder=output_folder,
             output_raster=group_raster_warped,
             input_raster=group_raster_src,
             dst_resolution=resolution,
+            dst_crs="5641",
+            src_crs="4326",
+            dtype=6,
+            resampling=0,
         )
 
         ls_names.append(g)
@@ -274,13 +549,13 @@ def setup_stressors(
     # handle blank
     if is_blank is None:
         os.remove(reference_raster)
-        os.remove(output_blank)
 
     print(f"run successfull. see for outputs:\n{output_folder}")
 
     return output_folder
 
 
+# test developed
 def setup_habitats(
     output_folder,
     input_db,
@@ -290,6 +565,7 @@ def setup_habitats(
     reference_raster,
     is_blank=False,
     resolution=400,
+    subfolder=True,
 ):
     """
     Sets up habitat layers by splitting a vector layer, rasterizing each resulting
@@ -397,7 +673,10 @@ def setup_habitats(
     # folders
     # -----------------------------------
     os.makedirs(output_folder, exist_ok=True)
-    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
+    if subfolder:
+        output_folder = _make_run_folder(
+            run_name=func_name, output_folder=output_folder
+        )
 
     # files
     # -----------------------------------
@@ -420,10 +699,8 @@ def setup_habitats(
     if is_blank:
         pass
     else:
-        output_blank = Path(f"{output_folder}/blank.tif")
         reference_raster = util_raster_blank(
-            output_folder=output_folder,
-            output_raster=output_blank,
+            output_raster=f"{output_folder}/blank.tif",
             input_raster=reference_raster,
         )
 
@@ -450,7 +727,6 @@ def setup_habitats(
 
         # reproject
         util_raster_reproject(
-            output_folder=output_folder,
             output_raster=group_raster_warped,
             input_raster=group_raster_src,
             dst_resolution=resolution,
@@ -497,6 +773,7 @@ def setup_habitats(
 # ... {develop}
 
 
+# test developed
 def util_split_features(output_folder, input_db, input_layer, groups, field_name):
     """
     Splits features from a source GeoDataFrame into separate
@@ -574,14 +851,13 @@ def util_split_features(output_folder, input_db, input_layer, groups, field_name
     return output_file
 
 
-def util_raster_blank(output_folder, output_raster, input_raster):
+# test developed
+def util_raster_blank(output_raster, input_raster):
     """
     Creates a blank (zero-valued) raster based on the extent,
     resolution, and CRS of an existing input raster.
 
-    :param output_folder: The directory where the blank raster will be saved (used for organization, though the full path is given by ``output_raster``).
-    :type output_folder: str
-    :param output_raster: The full path and filename for the resulting blank raster file.
+    :param output_raster: name for the resulting blank raster file (without extension).
     :type output_raster: str
     :param input_raster: The path to the source raster file whose properties (extent, resolution, CRS) will be used.
     :type input_raster: str
@@ -604,14 +880,13 @@ def util_raster_blank(output_folder, output_raster, input_raster):
         "EXTENT": None,
         "CELL_SIZE": None,
         "CRS": None,
-        "OUTPUT": str(output_raster),
+        "OUTPUT": output_raster,
     }
     processing.run("native:rastercalc", dc_parameters)
     return output_raster
 
 
 def util_raster_reproject(
-    output_folder,
     output_raster,
     input_raster,
     dst_resolution,
@@ -623,8 +898,6 @@ def util_raster_reproject(
     """
     Reprojects and optionally resamples an input raster to a new Coordinate Reference System (CRS) and resolution.
 
-    :param output_folder: The directory where the reprojected raster will be saved (though not directly used in the current implementation, it implies the output location).
-    :type output_folder: str
     :param output_raster: The full path and filename for the resulting reprojected raster file.
     :type output_raster: str
     :param input_raster: The path to the source raster file to be reprojected.
@@ -670,6 +943,7 @@ def util_raster_reproject(
     return output_raster
 
 
+# test developed
 def util_layer_rasterize(
     input_raster, input_db, input_layer, input_table=None, burn_value=1, extra=""
 ):
