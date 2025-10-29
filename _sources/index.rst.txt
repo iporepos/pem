@@ -3,8 +3,6 @@
 PEM
 ############################################
 
-.. adapt this welcoming message [CHANGE THIS]:
-
 Welcome to ``pem`` documentation page!
 
 .. toctree::
@@ -16,7 +14,7 @@ Welcome to ``pem`` documentation page!
    api
    development
 
-Scripts for marine spatial planning in Brazil.
+Methods and scripts for marine spatial planning in Brazil.
 
 .. remove this note after enter maintenance mode [CHANGE THIS]:
 
@@ -51,7 +49,7 @@ please cite as:
 
 .. code-block:: text
 
-    Possantti, I., Gandra, T., Nora Barbosa, M., Teixeira, G., Asmus, M., & Silva, T. (2025).
+    Possantti, I., Gandra, T., Nyland, J., Nora Barbosa, M., Teixeira, G., Asmus, M., & Silva, T. (2025).
     PEM: methods and scripts for marine spatial planning in Brazil (0.0.1).
     Zenodo. https://doi.org/10.5281/zenodo.17475714
 

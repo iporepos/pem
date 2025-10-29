@@ -440,7 +440,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">processing</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">qgis.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QgsCoordinateReferenceSystem</span>
 
-
 <span class="c1"># ... {develop}</span>
 
 <span class="c1"># Project-level imports</span>
@@ -453,6 +452,29 @@
 <span class="c1"># ***********************************************************************</span>
 <span class="c1"># define constants in uppercase</span>
 
+<span class="n">CRS_OPS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;5641&quot;</span><span class="p">:</span> <span class="s2">&quot;+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80&quot;</span>
+<span class="p">}</span>
+
+<span class="n">INVEST_JSON</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">{</span>
+<span class="s2">    &quot;args&quot;: {</span>
+<span class="s2">        &quot;aoi_vector_path&quot;: &quot;[aoi]&quot;,</span>
+<span class="s2">        &quot;criteria_table_path&quot;: &quot;[criteria]&quot;,</span>
+<span class="s2">        &quot;decay_eq&quot;: &quot;linear&quot;,</span>
+<span class="s2">        &quot;info_table_path&quot;: &quot;[info]&quot;,</span>
+<span class="s2">        &quot;max_rating&quot;: &quot;3&quot;,</span>
+<span class="s2">        &quot;n_overlapping_stressors&quot;: &quot;10&quot;,</span>
+<span class="s2">        &quot;resolution&quot;: &quot;[res]&quot;,</span>
+<span class="s2">        &quot;results_suffix&quot;: &quot;[suffix]&quot;,</span>
+<span class="s2">        &quot;risk_eq&quot;: &quot;euclidean&quot;,</span>
+<span class="s2">        &quot;visualize_outputs&quot;: false,</span>
+<span class="s2">        &quot;workspace_dir&quot;: &quot;[workspace]&quot;</span>
+<span class="s2">    },</span>
+<span class="s2">    &quot;invest_version&quot;: &quot;3.16.0&quot;,</span>
+<span class="s2">    &quot;model_id&quot;: &quot;habitat_risk_assessment&quot;</span>
+<span class="s2">}</span>
+<span class="s2">&quot;&quot;&quot;</span>
 
 <span class="c1"># FUNCTIONS</span>
 <span class="c1"># ***********************************************************************</span>
@@ -461,13 +483,263 @@
 <span class="c1"># =======================================================================</span>
 
 
+<div class="viewcode-block" id="setup_hra_model">
+<a class="viewcode-back" href="../../risk.html#pem.risk.setup_hra_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_model</span><span class="p">(</span>
+    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">criteria_table</span><span class="p">,</span>
+    <span class="n">input_db</span><span class="p">,</span>
+    <span class="n">reference_raster</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="p">,</span>
+    <span class="n">aoi_layer</span><span class="p">,</span>
+    <span class="n">habitat_layer</span><span class="p">,</span>
+    <span class="n">habitat_field</span><span class="p">,</span>
+    <span class="n">habitat_groups</span><span class="p">,</span>
+    <span class="n">stressor_groups</span><span class="p">,</span>
+    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5641&quot;</span><span class="p">,</span>
+    <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up all necessary input layers and data structures for the HRA (Habitat Risk Assessment) model run.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
+
+<span class="sd">    :param output_folder: Path to the main output directory where all generated files will be stored.</span>
+<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param criteria_table: Path to criteria table for habitat sensitivity</span>
+<span class="sd">    :type criteria_table: str</span>
+<span class="sd">    :param input_db: Path to the GeoPackage file containing the input vector layers.</span>
+<span class="sd">    :type input_db: str</span>
+<span class="sd">    :param reference_raster: Path to the raster used as a spatial template for model rasters.</span>
+<span class="sd">    :type reference_raster: str</span>
+<span class="sd">    :param resolution: The target spatial resolution (pixel size) for the model outputs.</span>
+<span class="sd">    :type resolution: float</span>
+<span class="sd">    :param aoi_layer: The name of the vector layer in ``input_db`` defining the Area of Interest (AOI).</span>
+<span class="sd">    :type aoi_layer: str</span>
+<span class="sd">    :param habitat_layer: The name of the vector layer in ``input_db`` containing the habitat features.</span>
+<span class="sd">    :type habitat_layer: str</span>
+<span class="sd">    :param habitat_field: The name of the field in ``habitat_layer`` used to classify habitats into groups.</span>
+<span class="sd">    :type habitat_field: str</span>
+<span class="sd">    :param habitat_groups: A dictionary defining how habitats are grouped and processed.</span>
+<span class="sd">    :type habitat_groups: dict</span>
+<span class="sd">    :param stressor_groups: A dictionary defining the stressor layers and their properties.</span>
+<span class="sd">    :type stressor_groups: dict</span>
+<span class="sd">    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5641``</span>
+<span class="sd">    :type dst_crs: str</span>
+<span class="sd">    :param suffix: String suffix for model runs</span>
+<span class="sd">    :type suffix: str</span>
+<span class="sd">    :return: The path to the newly created main output folder for the model run.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function prepares the environment by creating output folders,</span>
+<span class="sd">    reprojecting the AOI, creating a blank reference raster,</span>
+<span class="sd">    and running ``setup_habitats`` and ``setup_stressors`` to</span>
+<span class="sd">    prepare those inputs. It also generates a combined ``info.csv`` table.</span>
+
+
+<span class="sd">    .. warning::</span>
+
+<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+
+
+<span class="sd">    .. code-block:: python</span>
+
+<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
+
+<span class="sd">        import importlib.util as iu</span>
+
+<span class="sd">        # define the paths to this module</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
+
+<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">        module = iu.module_from_spec(spec)</span>
+<span class="sd">        spec.loader.exec_module(module)</span>
+
+<span class="sd">        # define the paths to input and output folders</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+
+<span class="sd">        # define the path to input database</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+
+<span class="sd">        # define criteria table</span>
+<span class="sd">        criteria_table = f&quot;{input_dir}/criteria_ben_pem.csv&quot;</span>
+
+<span class="sd">        # define reference raster</span>
+<span class="sd">        reference_raster = f&quot;{input_dir}/gebco_topobathymetry.tif&quot;</span>
+
+<span class="sd">        # organize habitat groups</span>
+<span class="sd">        habitat_groups = {</span>
+<span class="sd">            # Habitat group</span>
+<span class="sd">            &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],  # list of habitats names</span>
+<span class="sd">            &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
+<span class="sd">            &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
+<span class="sd">            &quot;MD3&quot;: [&quot;MD3&quot;],</span>
+<span class="sd">            &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
+<span class="sd">            &quot;ME1&quot;: [&quot;ME1&quot;],</span>
+<span class="sd">            &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
+<span class="sd">            &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
+<span class="sd">        }</span>
+
+<span class="sd">        # organize stressors groups</span>
+<span class="sd">        stressor_groups = {</span>
+<span class="sd">            # stressor name</span>
+<span class="sd">            &quot;MINERACAO&quot;: {</span>
+<span class="sd">                # list of layers in input database</span>
+<span class="sd">                &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000, # in meters</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;TURISMO&quot;: {</span>
+<span class="sd">                &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000,</span>
+<span class="sd">            },</span>
+<span class="sd">            &quot;EOLICAS&quot;: {</span>
+<span class="sd">                &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
+<span class="sd">                &quot;buffer&quot;: 10000,</span>
+<span class="sd">            },</span>
+<span class="sd">        }</span>
+
+<span class="sd">        # call the function</span>
+<span class="sd">        # ----------------------------------------</span>
+<span class="sd">        output_folder = module.setup_hra_model(</span>
+<span class="sd">            output_folder=output_dir,</span>
+<span class="sd">            criteria_table=criteria_table,</span>
+<span class="sd">            input_db=input_db,</span>
+<span class="sd">            reference_raster=reference_raster,</span>
+<span class="sd">            resolution=1000, # in meters</span>
+<span class="sd">            aoi_layer=&quot;sul&quot;,</span>
+<span class="sd">            habitat_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
+<span class="sd">            habitat_field=&quot;code&quot;,</span>
+<span class="sd">            habitat_groups=habitat_groups,</span>
+<span class="sd">            stressor_groups=stressor_groups,</span>
+<span class="sd">        )</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Startup</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">setup_hra_model</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup output variables</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># folders</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">model_reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span>
+
+    <span class="c1"># Run processes</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># handle aoi layer</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">aoi_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/aoi.shp&quot;</span>
+    <span class="n">dc_params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_db</span><span class="si">}</span><span class="s2">|layername=</span><span class="si">{</span><span class="n">aoi_layer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;TARGET_CRS&quot;</span><span class="p">:</span> <span class="n">QgsCoordinateReferenceSystem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">dst_crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;CONVERT_CURVED_GEOMETRIES&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;OPERATION&quot;</span><span class="p">:</span> <span class="n">CRS_OPS</span><span class="p">[</span><span class="n">dst_crs</span><span class="p">],</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">aoi_file</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:reprojectlayer&quot;</span><span class="p">,</span> <span class="n">dc_params</span><span class="p">)</span>
+
+    <span class="c1"># handle blank</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">model_reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
+        <span class="n">output_raster</span><span class="o">=</span><span class="n">model_reference_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Habitats</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">habitat_folder</span> <span class="o">=</span> <span class="n">setup_habitats</span><span class="p">(</span>
+        <span class="n">output_folder</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/habitats&quot;</span><span class="p">,</span>
+        <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
+        <span class="n">input_layer</span><span class="o">=</span><span class="n">habitat_layer</span><span class="p">,</span>
+        <span class="n">groups</span><span class="o">=</span><span class="n">habitat_groups</span><span class="p">,</span>
+        <span class="n">field_name</span><span class="o">=</span><span class="n">habitat_field</span><span class="p">,</span>
+        <span class="n">reference_raster</span><span class="o">=</span><span class="n">model_reference_raster</span><span class="p">,</span>
+        <span class="n">is_blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+        <span class="n">subfolder</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Stressors</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">stressor_folder</span> <span class="o">=</span> <span class="n">setup_stressors</span><span class="p">(</span>
+        <span class="n">output_folder</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/stressors&quot;</span><span class="p">,</span>
+        <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
+        <span class="n">groups</span><span class="o">=</span><span class="n">stressor_groups</span><span class="p">,</span>
+        <span class="n">reference_raster</span><span class="o">=</span><span class="n">model_reference_raster</span><span class="p">,</span>
+        <span class="n">is_blank</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+        <span class="n">subfolder</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Criteria table</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">criteria_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/criteria.csv&quot;</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">criteria_table</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">criteria_file</span><span class="p">)</span>
+
+    <span class="c1"># Info table</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">info_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info.csv&quot;</span>
+    <span class="n">table_h</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">habitat_folder</span><span class="si">}</span><span class="s2">/info_habitats.csv&quot;</span>
+    <span class="n">table_s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stressor_folder</span><span class="si">}</span><span class="s2">/info_stressors.csv&quot;</span>
+
+    <span class="n">df_h</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">table_h</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="n">df_s</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">table_s</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+    <span class="n">df_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_h</span><span class="p">,</span> <span class="n">df_s</span><span class="p">])</span>
+    <span class="n">df_info</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="c1"># Handle model file</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">INVEST_JSON</span><span class="p">[:]</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[aoi]&quot;</span><span class="p">,</span> <span class="n">aoi_file</span><span class="p">)</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[info]&quot;</span><span class="p">,</span> <span class="n">info_file</span><span class="p">)</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[res]&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolution</span><span class="p">))</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[suffix]&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[criteria]&quot;</span><span class="p">,</span> <span class="n">criteria_file</span><span class="p">)</span>
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[workspace]&quot;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
+
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/model.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_folder</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_stressors">
 <a class="viewcode-back" href="../../risk.html#pem.risk.setup_stressors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_stressors</span><span class="p">(</span>
-    <span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">reference_raster</span><span class="p">,</span> <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span>
+    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">input_db</span><span class="p">,</span>
+    <span class="n">groups</span><span class="p">,</span>
+    <span class="n">reference_raster</span><span class="p">,</span>
+    <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-
 <span class="sd">    Sets up stressor layers by rasterizing multiple vector layers from a</span>
 <span class="sd">    database into single stressor rasters and reprojecting them to a specified resolution.</span>
 
@@ -578,7 +850,10 @@
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
+        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
+            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span>
+        <span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
@@ -586,15 +861,15 @@
     <span class="c1"># Run processes</span>
     <span class="c1"># -------------------------------------------------------------------</span>
 
+    <span class="c1"># todo develop: a nice thing would be to save only the stressors to a database</span>
+
     <span class="c1"># handle reference raster</span>
     <span class="c1"># -----------------------------------</span>
     <span class="k">if</span> <span class="n">is_blank</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
         <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
-            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
-            <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -623,10 +898,13 @@
 
         <span class="c1"># reproject</span>
         <span class="n">util_raster_reproject</span><span class="p">(</span>
-            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
             <span class="n">dst_resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+            <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5641&quot;</span><span class="p">,</span>
+            <span class="n">src_crs</span><span class="o">=</span><span class="s2">&quot;4326&quot;</span><span class="p">,</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
+            <span class="n">resampling</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">ls_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
@@ -652,7 +930,6 @@
     <span class="c1"># handle blank</span>
     <span class="k">if</span> <span class="n">is_blank</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reference_raster</span><span class="p">)</span>
-        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_blank</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
@@ -660,6 +937,7 @@
 
 
 
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_habitats">
 <a class="viewcode-back" href="../../risk.html#pem.risk.setup_habitats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span>
@@ -671,6 +949,7 @@
     <span class="n">reference_raster</span><span class="p">,</span>
     <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">subfolder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Sets up habitat layers by splitting a vector layer, rasterizing each resulting</span>
@@ -778,7 +1057,10 @@
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
+        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
+            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span>
+        <span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
@@ -801,10 +1083,8 @@
     <span class="k">if</span> <span class="n">is_blank</span><span class="p">:</span>
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">output_blank</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">)</span>
         <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
-            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
-            <span class="n">output_raster</span><span class="o">=</span><span class="n">output_blank</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -831,7 +1111,6 @@
 
         <span class="c1"># reproject</span>
         <span class="n">util_raster_reproject</span><span class="p">(</span>
-            <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
             <span class="n">output_raster</span><span class="o">=</span><span class="n">group_raster_warped</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">,</span>
             <span class="n">dst_resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
@@ -879,6 +1158,7 @@
 <span class="c1"># ... {develop}</span>
 
 
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_split_features">
 <a class="viewcode-back" href="../../risk.html#pem.risk.util_split_features">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_split_features</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
@@ -959,16 +1239,15 @@
 
 
 
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_raster_blank">
 <a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_blank">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_raster_blank</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_raster_blank</span><span class="p">(</span><span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a blank (zero-valued) raster based on the extent,</span>
 <span class="sd">    resolution, and CRS of an existing input raster.</span>
 
-<span class="sd">    :param output_folder: The directory where the blank raster will be saved (used for organization, though the full path is given by ``output_raster``).</span>
-<span class="sd">    :type output_folder: str</span>
-<span class="sd">    :param output_raster: The full path and filename for the resulting blank raster file.</span>
+<span class="sd">    :param output_raster: name for the resulting blank raster file (without extension).</span>
 <span class="sd">    :type output_raster: str</span>
 <span class="sd">    :param input_raster: The path to the source raster file whose properties (extent, resolution, CRS) will be used.</span>
 <span class="sd">    :type input_raster: str</span>
@@ -991,7 +1270,7 @@
         <span class="s2">&quot;EXTENT&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;CELL_SIZE&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
         <span class="s2">&quot;CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">output_raster</span><span class="p">),</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output_raster</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:rastercalc&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">output_raster</span></div>
@@ -1001,7 +1280,6 @@
 <div class="viewcode-block" id="util_raster_reproject">
 <a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_reproject">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_raster_reproject</span><span class="p">(</span>
-    <span class="n">output_folder</span><span class="p">,</span>
     <span class="n">output_raster</span><span class="p">,</span>
     <span class="n">input_raster</span><span class="p">,</span>
     <span class="n">dst_resolution</span><span class="p">,</span>
@@ -1013,8 +1291,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Reprojects and optionally resamples an input raster to a new Coordinate Reference System (CRS) and resolution.</span>
 
-<span class="sd">    :param output_folder: The directory where the reprojected raster will be saved (though not directly used in the current implementation, it implies the output location).</span>
-<span class="sd">    :type output_folder: str</span>
 <span class="sd">    :param output_raster: The full path and filename for the resulting reprojected raster file.</span>
 <span class="sd">    :type output_raster: str</span>
 <span class="sd">    :param input_raster: The path to the source raster file to be reprojected.</span>
@@ -1061,6 +1337,7 @@
 
 
 
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_layer_rasterize">
 <a class="viewcode-back" href="../../risk.html#pem.risk.util_layer_rasterize">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_layer_rasterize</span><span class="p">(</span>
