@@ -48,3 +48,12 @@ Brazilian coastal and marine regions following the same methodological principle
 .. seealso::
 
    For technical details see the :ref:`About <about>` page
+
+
+Credits
+=======================================
+
+This website content is result from a team of experts discussions and work
+during 2024 and 2025. If some methods and scripts were used from this source,
+please cite as:
+

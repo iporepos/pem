@@ -20,7 +20,7 @@ strategic use of the Brazilian marine environment.
 This page provides a conceptual overview of the **general workflow**, which forms the core of
 the PEM methodology and underpins all regional plans.
 
-By following this structured and data-driven workflow, the PEM methodology ensures
+By following this structured and data-driven workflow, the PEM framework ensures
 **reproducibility**, **transparency**, and **scientific robustness** in the
 assessment of marine spatial planning outcomes.
 
@@ -49,9 +49,10 @@ Input Data
 At the foundation level, the workflow integrates diverse spatial datasets, including:
 
 * **Bathymetry** – ocean depth and seabed morphology.
-* **Habitats** – distribution and characteristics of marine ecosystems.
-* **Uses of the ocean** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
-* **Coastal hubs** – ports, cities, and infrastructure nodes that influence or depend on marine uses.
+* **Ocean Habitats** – distribution and characteristics of marine environments that provide ecosystem services.
+* **Ocean Users** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
+* **Land Hubs** – ports, cities, and infrastructure nodes that receives direct economic benefits from activities in the ocean.
+* **Coastal features** - other important geographical features of the coastline that influence the definition of management units.
 
 These datasets serve as the basis for constructing higher-level spatial information layers.
 
@@ -67,24 +68,6 @@ surface divided into model cells. Each model cell describes the spatial
 unit of analysis, allowing the integration of land,
 coastline, and marine environments within the same planning structure.
 
-Within this space, several spatial features are represented: **land hubs** such
-as ports, cities, and river mouths; **habitats**, which are sources of ecosystem
-services and may be sensitive to disturbance; and **users**, representing the
-various sectors that occupy and use ecosystem services. These elements coexist and
-interact across the grid, forming the physical and functional components of the
-system.
-
-The dynamic interaction among these components gives rise to three key
-dimensions of spatial performance: **benefit**, **risk**, and **conflict**.
-
-Benefits flow from users through the use of ecosystem services and connect back
-to land hubs. Risks emerge where users overlap with sensitive habitats, and
-conflicts arise where different users compete for the same space.
-
-Together, these dimensions define the integrative structure of the PEM framework, which
-supports both diagnostic evaluation and scenario-based simulation of marine use
-performance.
-
 .. figure:: figs/model.jpg
     :name: fig-spatial-model
     :width: 100%
@@ -95,12 +78,31 @@ performance.
     habitats, and users interact to generate benefit, risk, and conflict metrics
     that support integrated performance assessment and scenario simulation.
 
+Within this space, several spatial features are represented: **land hubs** such
+as ports and coastal cities; **habitats**, which are sources of ecosystem
+services and may be sensitive to disturbance; and **users**, representing the
+various economic sectors that occupy and use ecosystem services.
+
+These elements coexist and interact across the ocean space grid, forming the physical and
+functional components of the system.
+
+The dynamic interaction among these components gives rise to three key
+dimensions of spatial performance: **Benefit**, **Risk**, and **Conflict**.
+
+Benefits flow from users through the use of ecosystem services and connect back
+to land hubs. Risks emerge where users overlap with sensitive habitats, and
+conflicts arise where different users compete for the same space.
+
+Together, these dimensions define the integrative structure of the PEM framework, which
+supports both diagnostic evaluation and scenario-based simulation of marine use
+performance.
+
 .. _about_upg:
 
 Management Units
 ============================================
 
-An important component of the PEM framework is the creation of
+An important component of the PEM framework is the definition of
 **Management Units**, denoted as UPG — spatial zones that organize
 and guide marine management actions.
 
@@ -111,64 +113,121 @@ and guide marine management actions.
 .. _about_indexes:
 
 
-Integrated Performance Index
+Use Performance Index
 ============================================
 
-The core integrative indicator of the PEM framework is the **Marine Use Performance Index**,
-or **IDUSE-Mar** (*Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar*).
+The core integrative indicator of the PEM framework is the
+**Marine Ecosystem Services Use Performance Index**,
 
-This index synthesizes the three dimensions — benefit, risk, and
-conflict — into a single expression of marine use performance:
+.. note::
+
+    In portuguese, this index is referred as *Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar*,
+    or **IDUSE-Mar** for short.
+
+This index, denoted as :math:`D`, synthesizes the three component
+dimensions — benefit, risk, and conflict — into a single expression of marine use performance:
 
 .. math::
 
-    D = \frac{B}{R \times C} \quad \text{where } D \in [0, 1]
+    D = \frac{B}{R \times C} \quad \text{where } D \in [0, +\infty]
 
 Where:
 
-* :math:`D` is the **performance** of marine use;
-* :math:`B` is the **benefit**;
-* :math:`R` is the **risk**; and
-* :math:`C` is the **conflict**.
+* :math:`D` is the **use performance index** :math:`\in [0, +\infty]`;
+* :math:`B` is the **benefit index** :math:`\in [0, 1]`;
+* :math:`R` is the **habitat risk index** :math:`\in [0, 1]`; and
+* :math:`C` is the **conflict index** :math:`\in [0, 1]`.
 
-A higher value of :math:`D` indicates a more sustainable and efficient use of
-the marine space—high benefits with relatively low risk and conflict.
+The interpretation of :math:`D` is straight-forward:
+it is as a correction for the economic benefit of using the ocean space
+by taking consideration risk and conflict as well.
+
+The value of :math:`D` must be maximized by ocean management policies,
+since it indicates a more sustainable and efficient use of
+the ocean space — high benefits with relatively low risk and conflict.
+A policy that solely maximizes benefit will more likely
+yield an inferior use performance than one that keeps risk and conflict low.
+
+All component variables are spatially explicit, hence :math:`D` is a local
+spatial variable too, being computed at every model cell.
+The value of :math:`D` can then be upscaled by averaging for the scale of interest,
+like the Management Units.
+
+Performance Hyperspace
+-------------------------------------------
+
+Because all components of :math:`D` are normalized variables, *i.e.*, defined
+between 0 and 1, the mathematical **hyperspace** of :math:`D` can be explored
+a priori.
+
+.. figure:: figs/plots.jpg
+    :name: fig-plots
+    :width: 100%
+    :align: center
+
+    Exploration of the Use Performance Index formula. (**a**) The performance
+    mathematical hyperspace. (**b**) Mathematical bounds for the performance
+    index.
+
+The upper value of :math:`D` is unbounded, it goes to infinity.
+That means that values of :math:`D` can skyrocket if the product :math:`R \times C`
+goes very low, close to zero.
+To avoid technical issues with numerical overflow, one might
+*truncate* the value of the product :math:`R \times C`
+to 0.01, which will yield an upper bound of 100.
+
+The lower value of :math:`D` is bounded to zero, and always
+converges to the value of :math:`B`. When the product :math:`R \times C`
+goes to maximum possible, that is 1,
+The value of :math:`D` converges to :math:`B`. This means that
+the correction for :math:`R` and :math:`C` are always
+incremental, making :math:`D` larger than :math:`B`,
+like an incentive to lower :math:`R` or :math:`C`.
+
+
 
 Spatial Indexes
 -------------------------------------------
 
-Through a series of converging analytical processes, the raw data are
-transformed into the three key spatial indexes, each representing
-a different dimension of marine use performance:
+To get :math:`D` one need to compute all three subjacent spatial
+indexes: :math:`B`, :math:`R` and :math:`C`.
 
-1. **Benefit Index** — quantifies the economic and social **benefit** derived from the use of each spatial unit of the ocean.
-2. **Habitat Risk Index** — captures the **environmental fragility** and **sensitivity** of marine habitats exposed to human activities.
-3. **Conflict Index** — expresses the **intensity of overlap** or competition between different marine uses within the same area.
+The PEM framework is designed to help in this process. Through a series of
+converging analytical processes, the input data are transformed into this
+spatial index components.
 
-Each of these index is calculated as a **relative measure**, allowing
-comparisons across spatial scales and scenarios of marine use.
+The **Benefit Index** quantifies the economic and social **benefit** derived
+from the use of every model cell in the ocean space.
 
 .. seealso::
 
    Check out more information about the :ref:`Benefit Index <about-benefit-index>`
 
+The **Habitat Risk Index** captures the **sensitivity** of
+marine habitats exposed to human activities, considered here as ecosystem **stressors**.
 
 .. seealso::
 
    Check out more information about the :ref:`Habitat Risk Index <about-risk-index>`
 
 
+The **Conflict Index** expresses the **intensity of overlap** or
+competition between different marine uses within the model cell.
+
 .. seealso::
 
    Check out more information about the :ref:`Conflict Index <about-conflict-index>`
 
 
+
 Scenario-Based Analyses
 ============================================
 
-All indices (:math:`B`, :math:`R`, and :math:`C`) are computed for specific **use scenarios**.
+All spatial indexes (:math:`B`, :math:`R`, and :math:`C`) are computed for specific
+use **scenarios** of the ocean space.
+
 Scenarios may represent current conditions, projected developments, or management
-alternatives, allowing the **IDUSE-Mar** to serve as a comparative tool
+alternatives, allowing :math:`D` to serve as a comparative tool
 for evaluating policy or spatial planning options.
 
 

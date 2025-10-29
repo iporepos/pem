@@ -70,7 +70,7 @@ INDEX_FILE = BUILD_DIR / "index.html"
 
 # FUNCTIONS -- Project-level
 # =======================================================================
-def build_docs():
+def build_docs(open_site=False):
     """
     Build Sphinx documentation and open the index.html file.
 
@@ -87,7 +87,8 @@ def build_docs():
     )
 
     # Open the generated index.html in the default web browser
-    webbrowser.open(INDEX_FILE.resolve().as_uri())
+    if open_site:
+        webbrowser.open(INDEX_FILE.resolve().as_uri())
     print(f"Documentation built successfully! Opened {INDEX_FILE}")
 
 
