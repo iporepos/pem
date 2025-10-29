@@ -408,7 +408,7 @@ is a national initiative aimed at developing <strong>spatially explicit guidelin
 strategic use of the Brazilian marine environment.</p>
 <p>This page provides a conceptual overview of the <strong>general workflow</strong>, which forms the core of
 the PEM methodology and underpins all regional plans.</p>
-<p>By following this structured and data-driven workflow, the PEM methodology ensures
+<p>By following this structured and data-driven workflow, the PEM framework ensures
 <strong>reproducibility</strong>, <strong>transparency</strong>, and <strong>scientific robustness</strong> in the
 assessment of marine spatial planning outcomes.</p>
 <p>All analytical steps are implemented through <strong>R and Python scripts</strong>,
@@ -428,9 +428,10 @@ transforms these datasets into <strong>spatially explicit indicators</strong> an
 <p>At the foundation level, the workflow integrates diverse spatial datasets, including:</p>
 <ul class="simple">
 <li><p><strong>Bathymetry</strong> – ocean depth and seabed morphology.</p></li>
-<li><p><strong>Habitats</strong> – distribution and characteristics of marine ecosystems.</p></li>
-<li><p><strong>Uses of the ocean</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
-<li><p><strong>Coastal hubs</strong> – ports, cities, and infrastructure nodes that influence or depend on marine uses.</p></li>
+<li><p><strong>Ocean Habitats</strong> – distribution and characteristics of marine environments that provide ecosystem services.</p></li>
+<li><p><strong>Ocean Users</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
+<li><p><strong>Land Hubs</strong> – ports, cities, and infrastructure nodes that receives direct economic benefits from activities in the ocean.</p></li>
+<li><p><strong>Coastal features</strong> - other important geographical features of the coastline that influence the definition of management units.</p></li>
 </ul>
 <p>These datasets serve as the basis for constructing higher-level spatial information layers.</p>
 </section>
@@ -441,20 +442,6 @@ transforms these datasets into <strong>spatially explicit indicators</strong> an
 surface divided into model cells. Each model cell describes the spatial
 unit of analysis, allowing the integration of land,
 coastline, and marine environments within the same planning structure.</p>
-<p>Within this space, several spatial features are represented: <strong>land hubs</strong> such
-as ports, cities, and river mouths; <strong>habitats</strong>, which are sources of ecosystem
-services and may be sensitive to disturbance; and <strong>users</strong>, representing the
-various sectors that occupy and use ecosystem services. These elements coexist and
-interact across the grid, forming the physical and functional components of the
-system.</p>
-<p>The dynamic interaction among these components gives rise to three key
-dimensions of spatial performance: <strong>benefit</strong>, <strong>risk</strong>, and <strong>conflict</strong>.</p>
-<p>Benefits flow from users through the use of ecosystem services and connect back
-to land hubs. Risks emerge where users overlap with sensitive habitats, and
-conflicts arise where different users compete for the same space.</p>
-<p>Together, these dimensions define the integrative structure of the PEM framework, which
-supports both diagnostic evaluation and scenario-based simulation of marine use
-performance.</p>
 <figure class="align-center" id="fig-spatial-model">
 <a class="reference internal image-reference" href="_images/model.jpg"><img alt="_images/model.jpg" src="_images/model.jpg" style="width: 100%;" />
 </a>
@@ -465,10 +452,24 @@ habitats, and users interact to generate benefit, risk, and conflict metrics
 that support integrated performance assessment and scenario simulation.</span><a class="headerlink" href="#fig-spatial-model" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
+<p>Within this space, several spatial features are represented: <strong>land hubs</strong> such
+as ports and coastal cities; <strong>habitats</strong>, which are sources of ecosystem
+services and may be sensitive to disturbance; and <strong>users</strong>, representing the
+various economic sectors that occupy and use ecosystem services.</p>
+<p>These elements coexist and interact across the ocean space grid, forming the physical and
+functional components of the system.</p>
+<p>The dynamic interaction among these components gives rise to three key
+dimensions of spatial performance: <strong>Benefit</strong>, <strong>Risk</strong>, and <strong>Conflict</strong>.</p>
+<p>Benefits flow from users through the use of ecosystem services and connect back
+to land hubs. Risks emerge where users overlap with sensitive habitats, and
+conflicts arise where different users compete for the same space.</p>
+<p>Together, these dimensions define the integrative structure of the PEM framework, which
+supports both diagnostic evaluation and scenario-based simulation of marine use
+performance.</p>
 </section>
 <section id="management-units">
 <span id="about-upg"></span><h2>Management Units<a class="headerlink" href="#management-units" title="Link to this heading">#</a></h2>
-<p>An important component of the PEM framework is the creation of
+<p>An important component of the PEM framework is the definition of
 <strong>Management Units</strong>, denoted as UPG — spatial zones that organize
 and guide marine management actions.</p>
 <div class="admonition seealso">
@@ -476,43 +477,87 @@ and guide marine management actions.</p>
 <p>Check out more information about the definition of <a class="reference internal" href="about_upg.html#about-upg"><span class="std std-ref">Management Units</span></a></p>
 </div>
 </section>
-<section id="integrated-performance-index">
-<span id="about-indexes"></span><h2>Integrated Performance Index<a class="headerlink" href="#integrated-performance-index" title="Link to this heading">#</a></h2>
-<p>The core integrative indicator of the PEM framework is the <strong>Marine Use Performance Index</strong>,
-or <strong>IDUSE-Mar</strong> (<em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>).</p>
-<p>This index synthesizes the three dimensions — benefit, risk, and
-conflict — into a single expression of marine use performance:</p>
+<section id="use-performance-index">
+<span id="about-indexes"></span><h2>Use Performance Index<a class="headerlink" href="#use-performance-index" title="Link to this heading">#</a></h2>
+<p>The core integrative indicator of the PEM framework is the
+<strong>Marine Ecosystem Services Use Performance Index</strong>,</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In portuguese, this index is referred as <em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>,
+or <strong>IDUSE-Mar</strong> for short.</p>
+</div>
+<p>This index, denoted as <span class="math notranslate nohighlight">\(D\)</span>, synthesizes the three component
+dimensions — benefit, risk, and conflict — into a single expression of marine use performance:</p>
 <div class="math notranslate nohighlight">
-\[D = \frac{B}{R \times C} \quad \text{where } D \in [0, 1]\]</div>
+\[D = \frac{B}{R \times C} \quad \text{where } D \in [0, +\infty]\]</div>
 <p>Where:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(D\)</span> is the <strong>performance</strong> of marine use;</p></li>
-<li><p><span class="math notranslate nohighlight">\(B\)</span> is the <strong>benefit</strong>;</p></li>
-<li><p><span class="math notranslate nohighlight">\(R\)</span> is the <strong>risk</strong>; and</p></li>
-<li><p><span class="math notranslate nohighlight">\(C\)</span> is the <strong>conflict</strong>.</p></li>
+<li><p><span class="math notranslate nohighlight">\(D\)</span> is the <strong>use performance index</strong> <span class="math notranslate nohighlight">\(\in [0, +\infty]\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(B\)</span> is the <strong>benefit index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(R\)</span> is the <strong>habitat risk index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>; and</p></li>
+<li><p><span class="math notranslate nohighlight">\(C\)</span> is the <strong>conflict index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>.</p></li>
 </ul>
-<p>A higher value of <span class="math notranslate nohighlight">\(D\)</span> indicates a more sustainable and efficient use of
-the marine space—high benefits with relatively low risk and conflict.</p>
+<p>The interpretation of <span class="math notranslate nohighlight">\(D\)</span> is straight-forward:
+it is as a correction for the economic benefit of using the ocean space
+by taking consideration risk and conflict as well.</p>
+<p>The value of <span class="math notranslate nohighlight">\(D\)</span> must be maximized by ocean management policies,
+since it indicates a more sustainable and efficient use of
+the ocean space — high benefits with relatively low risk and conflict.
+A policy that solely maximizes benefit will more likely
+yield an inferior use performance than one that keeps risk and conflict low.</p>
+<p>All component variables are spatially explicit, hence <span class="math notranslate nohighlight">\(D\)</span> is a local
+spatial variable too, being computed at every model cell.
+The value of <span class="math notranslate nohighlight">\(D\)</span> can then be upscaled by averaging for the scale of interest,
+like the Management Units.</p>
+<section id="performance-hyperspace">
+<h3>Performance Hyperspace<a class="headerlink" href="#performance-hyperspace" title="Link to this heading">#</a></h3>
+<p>Because all components of <span class="math notranslate nohighlight">\(D\)</span> are normalized variables, <em>i.e.</em>, defined
+between 0 and 1, the mathematical <strong>hyperspace</strong> of <span class="math notranslate nohighlight">\(D\)</span> can be explored
+a priori.</p>
+<figure class="align-center" id="fig-plots">
+<a class="reference internal image-reference" href="_images/plots.jpg"><img alt="_images/plots.jpg" src="_images/plots.jpg" style="width: 100%;" />
+</a>
+<figcaption>
+<p><span class="caption-text">Exploration of the Use Performance Index formula. (<strong>a</strong>) The performance
+mathematical hyperspace. (<strong>b</strong>) Mathematical bounds for the performance
+index.</span><a class="headerlink" href="#fig-plots" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>The upper value of <span class="math notranslate nohighlight">\(D\)</span> is unbounded, it goes to infinity.
+That means that values of <span class="math notranslate nohighlight">\(D\)</span> can skyrocket if the product <span class="math notranslate nohighlight">\(R \times C\)</span>
+goes very low, close to zero.
+To avoid technical issues with numerical overflow, one might
+<em>truncate</em> the value of the product <span class="math notranslate nohighlight">\(R \times C\)</span>
+to 0.01, which will yield an upper bound of 100.</p>
+<p>The lower value of <span class="math notranslate nohighlight">\(D\)</span> is bounded to zero, and always
+converges to the value of <span class="math notranslate nohighlight">\(B\)</span>. When the product <span class="math notranslate nohighlight">\(R \times C\)</span>
+goes to maximum possible, that is 1,
+The value of <span class="math notranslate nohighlight">\(D\)</span> converges to <span class="math notranslate nohighlight">\(B\)</span>. This means that
+the correction for <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are always
+incremental, making <span class="math notranslate nohighlight">\(D\)</span> larger than <span class="math notranslate nohighlight">\(B\)</span>,
+like an incentive to lower <span class="math notranslate nohighlight">\(R\)</span> or <span class="math notranslate nohighlight">\(C\)</span>.</p>
+</section>
 <section id="spatial-indexes">
 <h3>Spatial Indexes<a class="headerlink" href="#spatial-indexes" title="Link to this heading">#</a></h3>
-<p>Through a series of converging analytical processes, the raw data are
-transformed into the three key spatial indexes, each representing
-a different dimension of marine use performance:</p>
-<ol class="arabic simple">
-<li><p><strong>Benefit Index</strong> — quantifies the economic and social <strong>benefit</strong> derived from the use of each spatial unit of the ocean.</p></li>
-<li><p><strong>Habitat Risk Index</strong> — captures the <strong>environmental fragility</strong> and <strong>sensitivity</strong> of marine habitats exposed to human activities.</p></li>
-<li><p><strong>Conflict Index</strong> — expresses the <strong>intensity of overlap</strong> or competition between different marine uses within the same area.</p></li>
-</ol>
-<p>Each of these index is calculated as a <strong>relative measure</strong>, allowing
-comparisons across spatial scales and scenarios of marine use.</p>
+<p>To get <span class="math notranslate nohighlight">\(D\)</span> one need to compute all three subjacent spatial
+indexes: <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(C\)</span>.</p>
+<p>The PEM framework is designed to help in this process. Through a series of
+converging analytical processes, the input data are transformed into this
+spatial index components.</p>
+<p>The <strong>Benefit Index</strong> quantifies the economic and social <strong>benefit</strong> derived
+from the use of every model cell in the ocean space.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Check out more information about the <a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">Benefit Index</span></a></p>
 </div>
+<p>The <strong>Habitat Risk Index</strong> captures the <strong>sensitivity</strong> of
+marine habitats exposed to human activities, considered here as ecosystem <strong>stressors</strong>.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Check out more information about the <a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index</span></a></p>
 </div>
+<p>The <strong>Conflict Index</strong> expresses the <strong>intensity of overlap</strong> or
+competition between different marine uses within the model cell.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Check out more information about the <a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">Conflict Index</span></a></p>
@@ -521,9 +566,10 @@ comparisons across spatial scales and scenarios of marine use.</p>
 </section>
 <section id="scenario-based-analyses">
 <h2>Scenario-Based Analyses<a class="headerlink" href="#scenario-based-analyses" title="Link to this heading">#</a></h2>
-<p>All indices (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific <strong>use scenarios</strong>.
-Scenarios may represent current conditions, projected developments, or management
-alternatives, allowing the <strong>IDUSE-Mar</strong> to serve as a comparative tool
+<p>All spatial indexes (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific
+use <strong>scenarios</strong> of the ocean space.</p>
+<p>Scenarios may represent current conditions, projected developments, or management
+alternatives, allowing <span class="math notranslate nohighlight">\(D\)</span> to serve as a comparative tool
 for evaluating policy or spatial planning options.</p>
 </section>
 </section>
@@ -579,7 +625,8 @@ for evaluating policy or spatial planning options.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-data">Input Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spatial-model">The Spatial Model</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-units">Management Units</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#integrated-performance-index">Integrated Performance Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-performance-index">Use Performance Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-hyperspace">Performance Hyperspace</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indexes">Spatial Indexes</a></li>
 </ul>
 </li>
