@@ -430,15 +430,20 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">datetime</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pprint</span><span class="w"> </span><span class="kn">import</span> <span class="n">pprint</span>
 
 <span class="c1"># ... {develop}</span>
 
 <span class="c1"># External imports</span>
 <span class="c1"># =======================================================================</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># qgis</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">processing</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">qgis.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QgsCoordinateReferenceSystem</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qgis.core</span><span class="w"> </span><span class="kn">import</span> <span class="n">QgsCoordinateReferenceSystem</span><span class="p">,</span> <span class="n">QgsRasterLayer</span><span class="p">,</span> <span class="n">QgsRasterBandStats</span>
 
 <span class="c1"># ... {develop}</span>
 
@@ -483,11 +488,112 @@
 <span class="c1"># =======================================================================</span>
 
 
+<span class="c1"># test developed</span>
+<div class="viewcode-block" id="compute_risk_index">
+<a class="viewcode-back" href="../../risk.html#pem.risk.compute_risk_index">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">compute_risk_index</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">raster_hra_benthic</span><span class="p">,</span> <span class="n">raster_hra_pelagic</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes a final risk index raster by applying fuzzy logic to benthic and pelagic Human Risk Assessment (HRA) rasters.</span>
+
+<span class="sd">    :param folder_output: The path to the main output folder where a new run-specific subfolder will be created.</span>
+<span class="sd">    :type folder_output: str</span>
+<span class="sd">    :param raster_hra_benthic: Full path to the input benthic HRA raster.</span>
+<span class="sd">    :type raster_hra_benthic: str</span>
+<span class="sd">    :param raster_hra_pelagic: Full path to the input pelagic HRA raster.</span>
+<span class="sd">    :type raster_hra_pelagic: str</span>
+<span class="sd">    :return: The path to the run-specific output folder containing the resulting risk index rasters.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    The function executes the following steps:</span>
+<span class="sd">    1.  Creates a unique run output subfolder within ``folder_output``.</span>
+<span class="sd">    2.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.</span>
+<span class="sd">    3.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS&#39;s raster calculator (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).</span>
+<span class="sd">    4.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to produce the final **Risk Index raster** (``risk.tif``).</span>
+<span class="sd">    The final risk index raster (``risk.tif``) represents the combined and normalized risk.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Startup</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+    <span class="n">func_name</span> <span class="o">=</span> <span class="n">compute_risk_index</span><span class="o">.</span><span class="vm">__name__</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;running: </span><span class="si">{</span><span class="n">func_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Setup output variables</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># folders</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span><span class="p">)</span>
+
+    <span class="c1"># files</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">raster_risk_benthic</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/risk_b.tif&quot;</span>
+    <span class="n">raster_risk_pelagic</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/risk_p.tif&quot;</span>
+    <span class="n">raster_hra_sum</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/hra_sum.tif&quot;</span>
+    <span class="n">raster_risk</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/risk.tif&quot;</span>
+
+    <span class="c1"># Run processes</span>
+    <span class="c1"># -------------------------------------------------------------------</span>
+
+    <span class="c1"># fuzzify hra benthic</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">raster_risk_benthic</span> <span class="o">=</span> <span class="n">util_fuzzify_raster</span><span class="p">(</span>
+        <span class="n">input_raster</span><span class="o">=</span><span class="n">raster_hra_benthic</span><span class="p">,</span>
+        <span class="n">output_raster</span><span class="o">=</span><span class="n">raster_risk_benthic</span><span class="p">,</span>
+        <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">hi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_percentiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># fuzzify hra pelagic</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">raster_risk_pelagic</span> <span class="o">=</span> <span class="n">util_fuzzify_raster</span><span class="p">(</span>
+        <span class="n">input_raster</span><span class="o">=</span><span class="n">raster_hra_pelagic</span><span class="p">,</span>
+        <span class="n">output_raster</span><span class="o">=</span><span class="n">raster_risk_pelagic</span><span class="p">,</span>
+        <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">hi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_percentiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># add hra</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">name_benthic</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">raster_hra_benthic</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">name_pelagic</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">raster_hra_pelagic</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;LAYERS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">raster_hra_benthic</span><span class="p">,</span> <span class="n">raster_hra_pelagic</span><span class="p">],</span>
+        <span class="s2">&quot;EXPRESSION&quot;</span><span class="p">:</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">@1&quot; + &quot;</span><span class="si">{}</span><span class="s1">@1&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_benthic</span><span class="p">,</span> <span class="n">name_pelagic</span><span class="p">),</span>
+        <span class="s2">&quot;EXTENT&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;CELL_SIZE&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">raster_hra_sum</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:rastercalc&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+
+    <span class="c1"># fuzzify sum</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">raster_risk</span> <span class="o">=</span> <span class="n">util_fuzzify_raster</span><span class="p">(</span>
+        <span class="n">input_raster</span><span class="o">=</span><span class="n">raster_hra_sum</span><span class="p">,</span>
+        <span class="n">output_raster</span><span class="o">=</span><span class="n">raster_risk</span><span class="p">,</span>
+        <span class="n">lo</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">hi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">use_percentiles</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">folder_output</span></div>
+
+
+
+<span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_hra_model">
 <a class="viewcode-back" href="../../risk.html#pem.risk.setup_hra_model">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_model</span><span class="p">(</span>
-    <span class="n">output_folder</span><span class="p">,</span>
-    <span class="n">criteria_table</span><span class="p">,</span>
+    <span class="n">folder_output</span><span class="p">,</span>
+    <span class="n">file_criteria</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
     <span class="n">reference_raster</span><span class="p">,</span>
     <span class="n">resolution</span><span class="p">,</span>
@@ -506,10 +612,10 @@
 
 <span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
 
-<span class="sd">    :param output_folder: Path to the main output directory where all generated files will be stored.</span>
-<span class="sd">    :type output_folder: str</span>
-<span class="sd">    :param criteria_table: Path to criteria table for habitat sensitivity</span>
-<span class="sd">    :type criteria_table: str</span>
+<span class="sd">    :param folder_output: Path to the main output directory where all generated files will be stored.</span>
+<span class="sd">    :type folder_output: str</span>
+<span class="sd">    :param file_criteria: Path to criteria table for habitat sensitivity</span>
+<span class="sd">    :type file_criteria: str</span>
 <span class="sd">    :param input_db: Path to the GeoPackage file containing the input vector layers.</span>
 <span class="sd">    :type input_db: str</span>
 <span class="sd">    :param reference_raster: Path to the raster used as a spatial template for model rasters.</span>
@@ -609,9 +715,9 @@
 
 <span class="sd">        # call the function</span>
 <span class="sd">        # ----------------------------------------</span>
-<span class="sd">        output_folder = module.setup_hra_model(</span>
-<span class="sd">            output_folder=output_dir,</span>
-<span class="sd">            criteria_table=criteria_table,</span>
+<span class="sd">        folder_output = module.setup_hra_model(</span>
+<span class="sd">            folder_output=output_dir,</span>
+<span class="sd">            file_criteria=criteria_table,</span>
 <span class="sd">            input_db=input_db,</span>
 <span class="sd">            reference_raster=reference_raster,</span>
 <span class="sd">            resolution=1000, # in meters</span>
@@ -633,19 +739,19 @@
 
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span><span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">model_reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span>
+    <span class="n">model_reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span>
 
     <span class="c1"># Run processes</span>
     <span class="c1"># -------------------------------------------------------------------</span>
 
     <span class="c1"># handle aoi layer</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">aoi_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/aoi.shp&quot;</span>
+    <span class="n">aoi_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/aoi.shp&quot;</span>
     <span class="n">dc_params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_db</span><span class="si">}</span><span class="s2">|layername=</span><span class="si">{</span><span class="n">aoi_layer</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
         <span class="s2">&quot;TARGET_CRS&quot;</span><span class="p">:</span> <span class="n">QgsCoordinateReferenceSystem</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;EPSG:</span><span class="si">{</span><span class="n">dst_crs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">),</span>
@@ -664,7 +770,7 @@
     <span class="c1"># Habitats</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">habitat_folder</span> <span class="o">=</span> <span class="n">setup_habitats</span><span class="p">(</span>
-        <span class="n">output_folder</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/habitats&quot;</span><span class="p">,</span>
+        <span class="n">folder_output</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/habitats&quot;</span><span class="p">,</span>
         <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
         <span class="n">input_layer</span><span class="o">=</span><span class="n">habitat_layer</span><span class="p">,</span>
         <span class="n">groups</span><span class="o">=</span><span class="n">habitat_groups</span><span class="p">,</span>
@@ -678,7 +784,7 @@
     <span class="c1"># Stressors</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">stressor_folder</span> <span class="o">=</span> <span class="n">setup_stressors</span><span class="p">(</span>
-        <span class="n">output_folder</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/stressors&quot;</span><span class="p">,</span>
+        <span class="n">folder_output</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/stressors&quot;</span><span class="p">,</span>
         <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
         <span class="n">groups</span><span class="o">=</span><span class="n">stressor_groups</span><span class="p">,</span>
         <span class="n">reference_raster</span><span class="o">=</span><span class="n">model_reference_raster</span><span class="p">,</span>
@@ -689,12 +795,12 @@
 
     <span class="c1"># Criteria table</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">criteria_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/criteria.csv&quot;</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">criteria_table</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">criteria_file</span><span class="p">)</span>
+    <span class="n">criteria_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/criteria.csv&quot;</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">file_criteria</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">criteria_file</span><span class="p">)</span>
 
     <span class="c1"># Info table</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">info_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info.csv&quot;</span>
+    <span class="n">info_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/info.csv&quot;</span>
     <span class="n">table_h</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">habitat_folder</span><span class="si">}</span><span class="s2">/info_habitats.csv&quot;</span>
     <span class="n">table_s</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">stressor_folder</span><span class="si">}</span><span class="s2">/info_stressors.csv&quot;</span>
 
@@ -703,7 +809,7 @@
     <span class="n">df_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_h</span><span class="p">,</span> <span class="n">df_s</span><span class="p">])</span>
     <span class="n">df_info</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">info_file</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="c1"># Handle model file</span>
+    <span class="c1"># Handle model file for InVEST</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">INVEST_JSON</span><span class="p">[:]</span>
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[aoi]&quot;</span><span class="p">,</span> <span class="n">aoi_file</span><span class="p">)</span>
@@ -711,17 +817,21 @@
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[res]&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolution</span><span class="p">))</span>
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[suffix]&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[criteria]&quot;</span><span class="p">,</span> <span class="n">criteria_file</span><span class="p">)</span>
-    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[workspace]&quot;</span><span class="p">,</span> <span class="n">output_folder</span><span class="p">)</span>
-
+    <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[workspace]&quot;</span><span class="p">,</span> <span class="n">folder_output</span><span class="p">)</span>
     <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
 
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/model.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/model.json&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
         <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
         <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># Rename blank raster</span>
+    <span class="c1"># -----------------------------------</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+        <span class="n">src</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
+        <span class="n">dst</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/reference_raster_blank.tif&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">output_folder</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="kc">None</span></div>
 
@@ -731,7 +841,7 @@
 <div class="viewcode-block" id="setup_stressors">
 <a class="viewcode-back" href="../../risk.html#pem.risk.setup_stressors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_stressors</span><span class="p">(</span>
-    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">folder_output</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
     <span class="n">groups</span><span class="p">,</span>
     <span class="n">reference_raster</span><span class="p">,</span>
@@ -748,8 +858,8 @@
 <span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
 
 
-<span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
-<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param folder_output: The base directory where a new run-specific folder for all outputs will be created.</span>
+<span class="sd">    :type folder_output: str</span>
 <span class="sd">    :param input_db: The path to the source vector database (e.g., GeoPackage) containing the stressor layers.</span>
 <span class="sd">    :type input_db: str</span>
 <span class="sd">    :param groups: A dictionary defining the stressor groups. Keys are the desired output stressor names (e.g., ``Coastal_Pollution``), and values are dictionaries containing two keys: ``layers`` (a list of vector layer names to be combined) and ``buffer`` (the required buffer distance in meters for subsequent analysis).</span>
@@ -829,7 +939,7 @@
 <span class="sd">        # ----------------------------------------</span>
 <span class="sd">        output_file = module.setup_stressors(</span>
 <span class="sd">            input_db=input_db,</span>
-<span class="sd">            output_folder=output_dir,</span>
+<span class="sd">            folder_output=output_dir,</span>
 <span class="sd">            groups=groups,</span>
 <span class="sd">            reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
 <span class="sd">            is_blank=False,</span>
@@ -849,10 +959,10 @@
 
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
-        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
-            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span>
+        <span class="n">folder_output</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
+            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span>
         <span class="p">)</span>
 
     <span class="c1"># files</span>
@@ -869,7 +979,7 @@
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
-            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -880,8 +990,8 @@
     <span class="n">ls_buffers</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
 
-        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
-        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
+        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
+        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
 
         <span class="c1"># copy reference</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">)</span>
@@ -922,7 +1032,7 @@
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TYPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;STRESSOR&quot;</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ls_buffers</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info_stressors.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/info_stressors.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># removals</span>
     <span class="c1"># -----------------------------------</span>
@@ -931,9 +1041,9 @@
     <span class="k">if</span> <span class="n">is_blank</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reference_raster</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">output_folder</span></div>
+    <span class="k">return</span> <span class="n">folder_output</span></div>
 
 
 
@@ -941,7 +1051,7 @@
 <div class="viewcode-block" id="setup_habitats">
 <a class="viewcode-back" href="../../risk.html#pem.risk.setup_habitats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span>
-    <span class="n">output_folder</span><span class="p">,</span>
+    <span class="n">folder_output</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
     <span class="n">input_layer</span><span class="p">,</span>
     <span class="n">groups</span><span class="p">,</span>
@@ -959,8 +1069,8 @@
 
 <span class="sd">        This script is a utility for running the `InVEST Habitat Risk model &lt;https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment&gt;`_.</span>
 
-<span class="sd">    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.</span>
-<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param folder_output: The base directory where a new run-specific folder for all outputs will be created.</span>
+<span class="sd">    :type folder_output: str</span>
 <span class="sd">    :param input_db: The path to the source vector database (e.g., GeoPackage) containing the habitat features.</span>
 <span class="sd">    :type input_db: str</span>
 <span class="sd">    :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.</span>
@@ -1036,7 +1146,7 @@
 <span class="sd">        # ----------------------------------------</span>
 <span class="sd">        output_file = module.setup_habitats(</span>
 <span class="sd">            input_db=input_db,</span>
-<span class="sd">            output_folder=output_dir,</span>
+<span class="sd">            folder_output=output_dir,</span>
 <span class="sd">            input_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
 <span class="sd">            groups=groups,</span>
 <span class="sd">            field_name=&quot;code&quot;,</span>
@@ -1056,10 +1166,10 @@
 
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">subfolder</span><span class="p">:</span>
-        <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
-            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span>
+        <span class="n">folder_output</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span>
+            <span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span>
         <span class="p">)</span>
 
     <span class="c1"># files</span>
@@ -1071,7 +1181,7 @@
     <span class="c1"># split vector features</span>
     <span class="c1"># -----------------------------------</span>
     <span class="n">output_db</span> <span class="o">=</span> <span class="n">util_split_features</span><span class="p">(</span>
-        <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">,</span>
+        <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span><span class="p">,</span>
         <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
         <span class="n">input_layer</span><span class="o">=</span><span class="n">input_layer</span><span class="p">,</span>
         <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
@@ -1084,7 +1194,7 @@
         <span class="k">pass</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">reference_raster</span> <span class="o">=</span> <span class="n">util_raster_blank</span><span class="p">(</span>
-            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
+            <span class="n">output_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/blank.tif&quot;</span><span class="p">,</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
         <span class="p">)</span>
 
@@ -1094,9 +1204,9 @@
     <span class="n">ls_paths</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
 
-        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
+        <span class="n">group_raster_src</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_src.tif&quot;</span><span class="p">)</span>
 
-        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
+        <span class="n">group_raster_warped</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
 
         <span class="c1"># copy reference</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">group_raster_src</span><span class="p">)</span>
@@ -1130,7 +1240,7 @@
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc</span><span class="p">)</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;TYPE&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;HABITAT&quot;</span>
     <span class="n">df</span><span class="p">[</span><span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/info_habitats.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/info_habitats.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># removals</span>
     <span class="c1"># -----------------------------------</span>
@@ -1142,18 +1252,18 @@
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">reference_raster</span><span class="p">)</span>
 
     <span class="c1"># handle geopackage</span>
-    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/habitats.gpkg&quot;</span><span class="p">)</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/habitats.gpkg&quot;</span><span class="p">)</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">output_db</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="p">)</span>
 
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">output_folder</span></div>
+    <span class="k">return</span> <span class="n">folder_output</span></div>
 
 
 
 <span class="c1"># ... {develop}</span>
 
-<span class="c1"># FUNCTIONS -- Module-level</span>
+<span class="c1"># FUNCTIONS -- Public utils</span>
 <span class="c1"># =======================================================================</span>
 <span class="c1"># ... {develop}</span>
 
@@ -1161,13 +1271,13 @@
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_split_features">
 <a class="viewcode-back" href="../../risk.html#pem.risk.util_split_features">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_split_features</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_split_features</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits features from a source GeoDataFrame into separate</span>
 <span class="sd">    layers within a single GeoPackage file based on predefined groups of field values.</span>
 
-<span class="sd">    :param output_folder: The base directory where a new run-specific folder for the outputs will be created.</span>
-<span class="sd">    :type output_folder: str</span>
+<span class="sd">    :param folder_output: The base directory where a new run-specific folder for the outputs will be created.</span>
+<span class="sd">    :type folder_output: str</span>
 <span class="sd">    :param input_db: The path to the source vector database (e.g., a GeoPackage file).</span>
 <span class="sd">    :type input_db: str</span>
 <span class="sd">    :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.</span>
@@ -1186,7 +1296,7 @@
 <span class="sd">    for features where the value in ``field_name`` matches any of the values in</span>
 <span class="sd">    the group&#39;s list. All resulting group GeoDataFrames are concatenated and</span>
 <span class="sd">    saved as separate layers (named after the group keys) into a new GeoPackage</span>
-<span class="sd">    file called ``split.gpkg`` within a run-specific subfolder in ``output_folder``.</span>
+<span class="sd">    file called ``split.gpkg`` within a run-specific subfolder in ``folder_output``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -1200,12 +1310,12 @@
 
     <span class="c1"># folders</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">output_folder</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">output_folder</span><span class="o">=</span><span class="n">output_folder</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">_make_run_folder</span><span class="p">(</span><span class="n">run_name</span><span class="o">=</span><span class="n">func_name</span><span class="p">,</span> <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_output</span><span class="p">)</span>
 
     <span class="c1"># files</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">output_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">/split.gpkg&quot;</span><span class="p">)</span>
+    <span class="n">output_file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/split.gpkg&quot;</span><span class="p">)</span>
 
     <span class="c1"># Run processes</span>
     <span class="c1"># -------------------------------------------------------------------</span>
@@ -1233,7 +1343,7 @@
 
     <span class="c1"># save</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">output_folder</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;run successfull. see for outputs:</span><span class="se">\n</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">output_file</span></div>
 
@@ -1386,7 +1496,170 @@
 
 
 
-<span class="c1"># FUNCTIONS -- Utils</span>
+<div class="viewcode-block" id="util_fuzzify_raster">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_fuzzify_raster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_fuzzify_raster</span><span class="p">(</span>
+    <span class="n">input_raster</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_percentiles</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies a linear membership fuzzy set function to a raster, reclassifying values between a low and high bound.</span>
+
+<span class="sd">    :param input_raster: Full path to the input raster file.</span>
+<span class="sd">    :type input_raster: str</span>
+<span class="sd">    :param output_raster: Full path for the output fuzzy raster file.</span>
+<span class="sd">    :type output_raster: str</span>
+<span class="sd">    :param lo: [optional] The lower bound for the linear membership function. If ``None``, it defaults to the minimum value (or 1st percentile if ``use_percentiles`` is ``True``).</span>
+<span class="sd">    :type lo: float or int</span>
+<span class="sd">    :param hi: [optional] The upper bound for the linear membership function. If ``None``, it defaults to the maximum value (or 99th percentile if ``use_percentiles`` is ``True``).</span>
+<span class="sd">    :type hi: float or int</span>
+<span class="sd">    :param use_percentiles: Use the 1st and 99th percentiles as default bounds instead of the absolute min/max when ``lo`` or ``hi`` are ``None``. Default value = ``False``</span>
+<span class="sd">    :type use_percentiles: bool</span>
+<span class="sd">    :return: The file path of the resulting fuzzy raster.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    This function uses the QGIS processing algorithm ``native:fuzzifyrasterlinearmembership``.</span>
+<span class="sd">    Values in the input raster are reclassified:</span>
+<span class="sd">    - Values $\le$ ``lo`` get a fuzzy membership value of 0.</span>
+<span class="sd">    - Values $\ge$ ``hi`` get a fuzzy membership value of 1.</span>
+<span class="sd">    - Values between ``lo`` and ``hi`` are linearly interpolated between 0 and 1.</span>
+<span class="sd">    The internal call to ``util_get_raster_stats`` is assumed to return &#39;p01&#39; and &#39;p99&#39; keys when ``full=True``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># setup keys</span>
+    <span class="n">min_key</span> <span class="o">=</span> <span class="s2">&quot;min&quot;</span>
+    <span class="n">max_key</span> <span class="o">=</span> <span class="s2">&quot;max&quot;</span>
+
+    <span class="c1"># get bounds</span>
+    <span class="n">dc_bounds</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">lo</span><span class="p">,</span> <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">hi</span><span class="p">}</span>
+
+    <span class="c1"># handle undefined bounds</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="p">[</span><span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">]):</span>
+        <span class="n">dc_stats</span> <span class="o">=</span> <span class="n">util_get_raster_stats</span><span class="p">(</span>
+            <span class="n">input_raster</span><span class="o">=</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="n">use_percentiles</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">lo</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_percentiles</span><span class="p">:</span>
+                <span class="n">min_key</span> <span class="o">=</span> <span class="s2">&quot;p01&quot;</span>
+            <span class="n">dc_bounds</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="n">min_key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">hi</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">use_percentiles</span><span class="p">:</span>
+                <span class="n">max_key</span> <span class="o">=</span> <span class="s2">&quot;p99&quot;</span>
+            <span class="n">dc_bounds</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="n">max_key</span><span class="p">]</span>
+
+    <span class="c1"># run</span>
+    <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">input_raster</span><span class="p">,</span>
+        <span class="s2">&quot;BAND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;FUZZYLOWBOUND&quot;</span><span class="p">:</span> <span class="n">dc_bounds</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;FUZZYHIGHBOUND&quot;</span><span class="p">:</span> <span class="n">dc_bounds</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">output_raster</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:fuzzifyrasterlinearmembership&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">output_raster</span></div>
+
+
+
+<div class="viewcode-block" id="util_get_raster_stats">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_get_raster_stats">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the statistics for a specified band of a given raster file.</span>
+
+<span class="sd">    :param input_raster: Full path to the input raster file.</span>
+<span class="sd">    :type input_raster: str</span>
+<span class="sd">    :param band: The band number to calculate statistics for. Default value = ``1``</span>
+<span class="sd">    :type band: int</span>
+<span class="sd">    :return: A dictionary containing the raster band&#39;s mean, standard deviation, minimum, maximum, sum, and element count.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    **Notes**</span>
+
+<span class="sd">    The function uses QGIS classes internally to read the raster and compute statistics.</span>
+<span class="sd">    The keys in the returned dictionary are ``mean``, ``sd``, ``min``, ``max``, ``sum``, and ``count``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dc_stats</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
+        <span class="n">dc_raster</span> <span class="o">=</span> <span class="n">util_read_raster</span><span class="p">(</span>
+            <span class="n">file_input</span><span class="o">=</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span>
+        <span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dc_raster</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">dc_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">&quot;sd&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))),</span>  <span class="c1"># number of valid pixels</span>
+            <span class="s2">&quot;p01&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">&quot;p05&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+            <span class="s2">&quot;p25&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">25</span><span class="p">)),</span>
+            <span class="s2">&quot;p50&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">)),</span>  <span class="c1"># median</span>
+            <span class="s2">&quot;p75&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">75</span><span class="p">)),</span>
+            <span class="s2">&quot;p95&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">95</span><span class="p">)),</span>
+            <span class="s2">&quot;p99&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">99</span><span class="p">)),</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="s2">&quot;raster&quot;</span><span class="p">)</span>
+        <span class="n">provider</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">dataProvider</span><span class="p">()</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">bandStatistics</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="n">QgsRasterBandStats</span><span class="o">.</span><span class="n">All</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">extent</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">dc_stats</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+            <span class="s2">&quot;sd&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">stdDev</span><span class="p">,</span>
+            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">minimumValue</span><span class="p">,</span>
+            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">maximumValue</span><span class="p">,</span>
+            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
+            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">elementCount</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="n">dc_stats</span></div>
+
+
+
+<div class="viewcode-block" id="util_read_raster">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_read_raster">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_read_raster</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a raster (GeoTIFF) file</span>
+
+<span class="sd">    :param file_input: path to raster file</span>
+<span class="sd">    :type file_input: str</span>
+<span class="sd">    :param n_band: number of the band to read</span>
+<span class="sd">    :type n_band: int</span>
+<span class="sd">    :param metadata: option to return</span>
+<span class="sd">    :type metadata: bool</span>
+<span class="sd">    :return: dictionary with &quot;data&quot; and (optional) &quot;metadata&quot;</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># -------------------------------------------------------------------------</span>
+    <span class="c1"># LOAD</span>
+    <span class="c1"># Open the raster file using gdal</span>
+    <span class="n">raster_input</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">file_input</span><span class="p">)</span>
+    <span class="c1"># Get the raster band</span>
+    <span class="n">band_input</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="c1"># Read the raster data as a numpy array</span>
+    <span class="n">grid_input</span> <span class="o">=</span> <span class="n">band_input</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">()</span>
+    <span class="n">dc_output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">grid_input</span><span class="p">}</span>
+    <span class="c1"># -- Collect useful metadata</span>
+    <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
+        <span class="n">dc_metadata</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterXSize</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_y_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterYSize</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_projection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_geotransform&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;cellsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_geotransform&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># append to output</span>
+        <span class="n">dc_output</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span>
+    <span class="c1"># -- Close the raster</span>
+    <span class="n">raster_input</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="n">dc_output</span></div>
+
+
+
+<span class="c1"># FUNCTIONS -- internal utils</span>
 <span class="c1"># =======================================================================</span>
 
 
@@ -1395,12 +1668,12 @@
     <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">now</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H%M%S&quot;</span><span class="p">))</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_make_run_folder</span><span class="p">(</span><span class="n">output_folder</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_make_run_folder</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">run_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a unique, time-stamped run folder within a specified output directory.</span>
 
-<span class="sd">    :param output_folder: The parent directory where the new run folder will be created.</span>
-<span class="sd">    :type output_folder: str or :class:`pathlib.Path`</span>
+<span class="sd">    :param folder_output: The parent directory where the new run folder will be created.</span>
+<span class="sd">    :type folder_output: str or :class:`pathlib.Path`</span>
 <span class="sd">    :param run_name: The base name for the new folder. A timestamp will be appended to it.</span>
 <span class="sd">    :type run_name: str</span>
 <span class="sd">    :return: The absolute path to the newly created run folder.</span>
@@ -1414,7 +1687,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">ts</span> <span class="o">=</span> <span class="n">_get_timestamp</span><span class="p">()</span>
-        <span class="n">folder_run</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">output_folder</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">folder_run</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_output</span><span class="p">)</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">run_name</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">ts</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">folder_run</span><span class="p">):</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
