@@ -54,15 +54,20 @@ No global examples are included at module level.
 import datetime, os, time
 import shutil
 from pathlib import Path
+from pprint import pprint
 
 # ... {develop}
 
 # External imports
 # =======================================================================
 import geopandas as gpd
+import numpy as np
 import pandas as pd
+
+# qgis
 import processing
-from qgis.core import QgsCoordinateReferenceSystem
+from osgeo import gdal
+from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer, QgsRasterBandStats
 
 # ... {develop}
 
@@ -107,9 +112,107 @@ INVEST_JSON = """
 # =======================================================================
 
 
+# test developed
+def compute_risk_index(folder_output, raster_hra_benthic, raster_hra_pelagic):
+    """
+    Computes a final risk index raster by applying fuzzy logic to benthic and pelagic Human Risk Assessment (HRA) rasters.
+
+    :param folder_output: The path to the main output folder where a new run-specific subfolder will be created.
+    :type folder_output: str
+    :param raster_hra_benthic: Full path to the input benthic HRA raster.
+    :type raster_hra_benthic: str
+    :param raster_hra_pelagic: Full path to the input pelagic HRA raster.
+    :type raster_hra_pelagic: str
+    :return: The path to the run-specific output folder containing the resulting risk index rasters.
+    :rtype: str
+
+    **Notes**
+
+    The function executes the following steps:
+    1.  Creates a unique run output subfolder within ``folder_output``.
+    2.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.
+    3.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS's raster calculator (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).
+    4.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to produce the final **Risk Index raster** (``risk.tif``).
+    The final risk index raster (``risk.tif``) represents the combined and normalized risk.
+
+    """
+    # Startup
+    # -------------------------------------------------------------------
+    func_name = compute_risk_index.__name__
+    print(f"running: {func_name}")
+
+    # Setup output variables
+    # -------------------------------------------------------------------
+
+    # folders
+    # -----------------------------------
+    os.makedirs(folder_output, exist_ok=True)
+    folder_output = _make_run_folder(run_name=func_name, folder_output=folder_output)
+
+    # files
+    # -----------------------------------
+    raster_risk_benthic = f"{folder_output}/risk_b.tif"
+    raster_risk_pelagic = f"{folder_output}/risk_p.tif"
+    raster_hra_sum = f"{folder_output}/hra_sum.tif"
+    raster_risk = f"{folder_output}/risk.tif"
+
+    # Run processes
+    # -------------------------------------------------------------------
+
+    # fuzzify hra benthic
+    # -----------------------------------
+    raster_risk_benthic = util_fuzzify_raster(
+        input_raster=raster_hra_benthic,
+        output_raster=raster_risk_benthic,
+        lo=0,
+        hi=None,
+        use_percentiles=True,
+    )
+
+    # fuzzify hra pelagic
+    # -----------------------------------
+    raster_risk_pelagic = util_fuzzify_raster(
+        input_raster=raster_hra_pelagic,
+        output_raster=raster_risk_pelagic,
+        lo=0,
+        hi=None,
+        use_percentiles=True,
+    )
+
+    # add hra
+    # -----------------------------------
+    name_benthic = os.path.basename(raster_hra_benthic).split(".")[0]
+    name_pelagic = os.path.basename(raster_hra_pelagic).split(".")[0]
+
+    dc_parameters = {
+        "LAYERS": [raster_hra_benthic, raster_hra_pelagic],
+        "EXPRESSION": '"{}@1" + "{}@1"'.format(name_benthic, name_pelagic),
+        "EXTENT": None,
+        "CELL_SIZE": None,
+        "CRS": None,
+        "OUTPUT": raster_hra_sum,
+    }
+    processing.run("native:rastercalc", dc_parameters)
+
+    # fuzzify sum
+    # -----------------------------------
+    raster_risk = util_fuzzify_raster(
+        input_raster=raster_hra_sum,
+        output_raster=raster_risk,
+        lo=0,
+        hi=None,
+        use_percentiles=True,
+    )
+
+    print(f"run successfull. see for outputs:\n{folder_output}")
+
+    return folder_output
+
+
+# test developed
 def setup_hra_model(
-    output_folder,
-    criteria_table,
+    folder_output,
+    file_criteria,
     input_db,
     reference_raster,
     resolution,
@@ -128,10 +231,10 @@ def setup_hra_model(
 
         This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
 
-    :param output_folder: Path to the main output directory where all generated files will be stored.
-    :type output_folder: str
-    :param criteria_table: Path to criteria table for habitat sensitivity
-    :type criteria_table: str
+    :param folder_output: Path to the main output directory where all generated files will be stored.
+    :type folder_output: str
+    :param file_criteria: Path to criteria table for habitat sensitivity
+    :type file_criteria: str
     :param input_db: Path to the GeoPackage file containing the input vector layers.
     :type input_db: str
     :param reference_raster: Path to the raster used as a spatial template for model rasters.
@@ -231,9 +334,9 @@ def setup_hra_model(
 
         # call the function
         # ----------------------------------------
-        output_folder = module.setup_hra_model(
-            output_folder=output_dir,
-            criteria_table=criteria_table,
+        folder_output = module.setup_hra_model(
+            folder_output=output_dir,
+            file_criteria=criteria_table,
             input_db=input_db,
             reference_raster=reference_raster,
             resolution=1000, # in meters
@@ -255,19 +358,19 @@ def setup_hra_model(
 
     # folders
     # -----------------------------------
-    os.makedirs(output_folder, exist_ok=True)
-    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
+    os.makedirs(folder_output, exist_ok=True)
+    folder_output = _make_run_folder(run_name=func_name, folder_output=folder_output)
 
     # files
     # -----------------------------------
-    model_reference_raster = f"{output_folder}/blank.tif"
+    model_reference_raster = f"{folder_output}/blank.tif"
 
     # Run processes
     # -------------------------------------------------------------------
 
     # handle aoi layer
     # -----------------------------------
-    aoi_file = f"{output_folder}/aoi.shp"
+    aoi_file = f"{folder_output}/aoi.shp"
     dc_params = {
         "INPUT": f"{input_db}|layername={aoi_layer}",
         "TARGET_CRS": QgsCoordinateReferenceSystem(f"EPSG:{dst_crs}"),
@@ -286,7 +389,7 @@ def setup_hra_model(
     # Habitats
     # -----------------------------------
     habitat_folder = setup_habitats(
-        output_folder=f"{output_folder}/habitats",
+        folder_output=f"{folder_output}/habitats",
         input_db=input_db,
         input_layer=habitat_layer,
         groups=habitat_groups,
@@ -300,7 +403,7 @@ def setup_hra_model(
     # Stressors
     # -----------------------------------
     stressor_folder = setup_stressors(
-        output_folder=f"{output_folder}/stressors",
+        folder_output=f"{folder_output}/stressors",
         input_db=input_db,
         groups=stressor_groups,
         reference_raster=model_reference_raster,
@@ -311,12 +414,12 @@ def setup_hra_model(
 
     # Criteria table
     # -----------------------------------
-    criteria_file = f"{output_folder}/criteria.csv"
-    shutil.copy(src=criteria_table, dst=criteria_file)
+    criteria_file = f"{folder_output}/criteria.csv"
+    shutil.copy(src=file_criteria, dst=criteria_file)
 
     # Info table
     # -----------------------------------
-    info_file = f"{output_folder}/info.csv"
+    info_file = f"{folder_output}/info.csv"
     table_h = f"{habitat_folder}/info_habitats.csv"
     table_s = f"{stressor_folder}/info_stressors.csv"
 
@@ -325,7 +428,7 @@ def setup_hra_model(
     df_info = pd.concat([df_h, df_s])
     df_info.to_csv(info_file, sep=",", index=False)
 
-    # Handle model file
+    # Handle model file for InVEST
     # -----------------------------------
     json_string = INVEST_JSON[:]
     json_string = json_string.replace("[aoi]", aoi_file)
@@ -333,24 +436,28 @@ def setup_hra_model(
     json_string = json_string.replace("[res]", str(resolution))
     json_string = json_string.replace("[suffix]", suffix)
     json_string = json_string.replace("[criteria]", criteria_file)
-    json_string = json_string.replace("[workspace]", output_folder)
-
+    json_string = json_string.replace("[workspace]", folder_output)
     json_string = json_string.replace("\\", "/")
 
-    with open(f"{output_folder}/model.json", "w") as file:
+    with open(f"{folder_output}/model.json", "w") as file:
         file.write(json_string)
         file.close()
 
-    print(f"run successfull. see for outputs:\n{output_folder}")
+    # Rename blank raster
+    # -----------------------------------
+    os.rename(
+        src=f"{folder_output}/blank.tif",
+        dst=f"{folder_output}/reference_raster_blank.tif",
+    )
 
-    return output_folder
+    print(f"run successfull. see for outputs:\n{folder_output}")
 
     return None
 
 
 # test developed
 def setup_stressors(
-    output_folder,
+    folder_output,
     input_db,
     groups,
     reference_raster,
@@ -367,8 +474,8 @@ def setup_stressors(
         This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
 
 
-    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.
-    :type output_folder: str
+    :param folder_output: The base directory where a new run-specific folder for all outputs will be created.
+    :type folder_output: str
     :param input_db: The path to the source vector database (e.g., GeoPackage) containing the stressor layers.
     :type input_db: str
     :param groups: A dictionary defining the stressor groups. Keys are the desired output stressor names (e.g., ``Coastal_Pollution``), and values are dictionaries containing two keys: ``layers`` (a list of vector layer names to be combined) and ``buffer`` (the required buffer distance in meters for subsequent analysis).
@@ -448,7 +555,7 @@ def setup_stressors(
         # ----------------------------------------
         output_file = module.setup_stressors(
             input_db=input_db,
-            output_folder=output_dir,
+            folder_output=output_dir,
             groups=groups,
             reference_raster=f"{input_dir}/raster.tif",
             is_blank=False,
@@ -468,10 +575,10 @@ def setup_stressors(
 
     # folders
     # -----------------------------------
-    os.makedirs(output_folder, exist_ok=True)
+    os.makedirs(folder_output, exist_ok=True)
     if subfolder:
-        output_folder = _make_run_folder(
-            run_name=func_name, output_folder=output_folder
+        folder_output = _make_run_folder(
+            run_name=func_name, folder_output=folder_output
         )
 
     # files
@@ -488,7 +595,7 @@ def setup_stressors(
         pass
     else:
         reference_raster = util_raster_blank(
-            output_raster=f"{output_folder}/blank.tif",
+            output_raster=f"{folder_output}/blank.tif",
             input_raster=reference_raster,
         )
 
@@ -499,8 +606,8 @@ def setup_stressors(
     ls_buffers = []
     for g in groups:
 
-        group_raster_src = Path(f"{output_folder}/{g}_src.tif")
-        group_raster_warped = Path(f"{output_folder}/{g}.tif")
+        group_raster_src = Path(f"{folder_output}/{g}_src.tif")
+        group_raster_warped = Path(f"{folder_output}/{g}.tif")
 
         # copy reference
         shutil.copy(src=reference_raster, dst=group_raster_src)
@@ -541,7 +648,7 @@ def setup_stressors(
     df = pd.DataFrame(dc)
     df["TYPE"] = "STRESSOR"
     df["STRESSOR BUFFER (meters)"] = ls_buffers
-    df.to_csv(f"{output_folder}/info_stressors.csv", sep=",", index=False)
+    df.to_csv(f"{folder_output}/info_stressors.csv", sep=",", index=False)
 
     # removals
     # -----------------------------------
@@ -550,14 +657,14 @@ def setup_stressors(
     if is_blank is None:
         os.remove(reference_raster)
 
-    print(f"run successfull. see for outputs:\n{output_folder}")
+    print(f"run successfull. see for outputs:\n{folder_output}")
 
-    return output_folder
+    return folder_output
 
 
 # test developed
 def setup_habitats(
-    output_folder,
+    folder_output,
     input_db,
     input_layer,
     groups,
@@ -575,8 +682,8 @@ def setup_habitats(
 
         This script is a utility for running the `InVEST Habitat Risk model <https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment>`_.
 
-    :param output_folder: The base directory where a new run-specific folder for all outputs will be created.
-    :type output_folder: str
+    :param folder_output: The base directory where a new run-specific folder for all outputs will be created.
+    :type folder_output: str
     :param input_db: The path to the source vector database (e.g., GeoPackage) containing the habitat features.
     :type input_db: str
     :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.
@@ -652,7 +759,7 @@ def setup_habitats(
         # ----------------------------------------
         output_file = module.setup_habitats(
             input_db=input_db,
-            output_folder=output_dir,
+            folder_output=output_dir,
             input_layer="habitats_bentonicos_sul_v2",
             groups=groups,
             field_name="code",
@@ -672,10 +779,10 @@ def setup_habitats(
 
     # folders
     # -----------------------------------
-    os.makedirs(output_folder, exist_ok=True)
+    os.makedirs(folder_output, exist_ok=True)
     if subfolder:
-        output_folder = _make_run_folder(
-            run_name=func_name, output_folder=output_folder
+        folder_output = _make_run_folder(
+            run_name=func_name, folder_output=folder_output
         )
 
     # files
@@ -687,7 +794,7 @@ def setup_habitats(
     # split vector features
     # -----------------------------------
     output_db = util_split_features(
-        output_folder=output_folder,
+        folder_output=folder_output,
         input_db=input_db,
         input_layer=input_layer,
         groups=groups,
@@ -700,7 +807,7 @@ def setup_habitats(
         pass
     else:
         reference_raster = util_raster_blank(
-            output_raster=f"{output_folder}/blank.tif",
+            output_raster=f"{folder_output}/blank.tif",
             input_raster=reference_raster,
         )
 
@@ -710,9 +817,9 @@ def setup_habitats(
     ls_paths = []
     for g in groups:
 
-        group_raster_src = Path(f"{output_folder}/{g}_src.tif")
+        group_raster_src = Path(f"{folder_output}/{g}_src.tif")
 
-        group_raster_warped = Path(f"{output_folder}/{g}.tif")
+        group_raster_warped = Path(f"{folder_output}/{g}.tif")
 
         # copy reference
         shutil.copy(src=reference_raster, dst=group_raster_src)
@@ -746,7 +853,7 @@ def setup_habitats(
     df = pd.DataFrame(dc)
     df["TYPE"] = "HABITAT"
     df["STRESSOR BUFFER (meters)"] = ""
-    df.to_csv(f"{output_folder}/info_habitats.csv", sep=",", index=False)
+    df.to_csv(f"{folder_output}/info_habitats.csv", sep=",", index=False)
 
     # removals
     # -----------------------------------
@@ -758,29 +865,29 @@ def setup_habitats(
         os.remove(reference_raster)
 
     # handle geopackage
-    shutil.copy(src=output_db, dst=f"{output_folder}/habitats.gpkg")
+    shutil.copy(src=output_db, dst=f"{folder_output}/habitats.gpkg")
     shutil.rmtree(Path(output_db).parent)
 
-    print(f"run successfull. see for outputs:\n{output_folder}")
+    print(f"run successfull. see for outputs:\n{folder_output}")
 
-    return output_folder
+    return folder_output
 
 
 # ... {develop}
 
-# FUNCTIONS -- Module-level
+# FUNCTIONS -- Public utils
 # =======================================================================
 # ... {develop}
 
 
 # test developed
-def util_split_features(output_folder, input_db, input_layer, groups, field_name):
+def util_split_features(folder_output, input_db, input_layer, groups, field_name):
     """
     Splits features from a source GeoDataFrame into separate
     layers within a single GeoPackage file based on predefined groups of field values.
 
-    :param output_folder: The base directory where a new run-specific folder for the outputs will be created.
-    :type output_folder: str
+    :param folder_output: The base directory where a new run-specific folder for the outputs will be created.
+    :type folder_output: str
     :param input_db: The path to the source vector database (e.g., a GeoPackage file).
     :type input_db: str
     :param input_layer: The name of the layer or table within the ``input_db`` to read the features from.
@@ -799,7 +906,7 @@ def util_split_features(output_folder, input_db, input_layer, groups, field_name
     for features where the value in ``field_name`` matches any of the values in
     the group's list. All resulting group GeoDataFrames are concatenated and
     saved as separate layers (named after the group keys) into a new GeoPackage
-    file called ``split.gpkg`` within a run-specific subfolder in ``output_folder``.
+    file called ``split.gpkg`` within a run-specific subfolder in ``folder_output``.
 
     """
 
@@ -813,12 +920,12 @@ def util_split_features(output_folder, input_db, input_layer, groups, field_name
 
     # folders
     # -----------------------------------
-    os.makedirs(output_folder, exist_ok=True)
-    output_folder = _make_run_folder(run_name=func_name, output_folder=output_folder)
+    os.makedirs(folder_output, exist_ok=True)
+    folder_output = _make_run_folder(run_name=func_name, folder_output=folder_output)
 
     # files
     # -----------------------------------
-    output_file = Path(f"{output_folder}/split.gpkg")
+    output_file = Path(f"{folder_output}/split.gpkg")
 
     # Run processes
     # -------------------------------------------------------------------
@@ -846,7 +953,7 @@ def util_split_features(output_folder, input_db, input_layer, groups, field_name
 
     # save
     # -----------------------------------
-    print(f"run successfull. see for outputs:\n{output_folder}")
+    print(f"run successfull. see for outputs:\n{folder_output}")
 
     return output_file
 
@@ -989,7 +1096,161 @@ def util_layer_rasterize(
     return input_raster
 
 
-# FUNCTIONS -- Utils
+def util_fuzzify_raster(
+    input_raster, output_raster, lo=None, hi=None, use_percentiles=False
+):
+    """
+    Applies a linear membership fuzzy set function to a raster, reclassifying values between a low and high bound.
+
+    :param input_raster: Full path to the input raster file.
+    :type input_raster: str
+    :param output_raster: Full path for the output fuzzy raster file.
+    :type output_raster: str
+    :param lo: [optional] The lower bound for the linear membership function. If ``None``, it defaults to the minimum value (or 1st percentile if ``use_percentiles`` is ``True``).
+    :type lo: float or int
+    :param hi: [optional] The upper bound for the linear membership function. If ``None``, it defaults to the maximum value (or 99th percentile if ``use_percentiles`` is ``True``).
+    :type hi: float or int
+    :param use_percentiles: Use the 1st and 99th percentiles as default bounds instead of the absolute min/max when ``lo`` or ``hi`` are ``None``. Default value = ``False``
+    :type use_percentiles: bool
+    :return: The file path of the resulting fuzzy raster.
+    :rtype: str
+
+    **Notes**
+
+    This function uses the QGIS processing algorithm ``native:fuzzifyrasterlinearmembership``.
+    Values in the input raster are reclassified:
+    - Values $\le$ ``lo`` get a fuzzy membership value of 0.
+    - Values $\ge$ ``hi`` get a fuzzy membership value of 1.
+    - Values between ``lo`` and ``hi`` are linearly interpolated between 0 and 1.
+    The internal call to ``util_get_raster_stats`` is assumed to return 'p01' and 'p99' keys when ``full=True``.
+
+    """
+    # setup keys
+    min_key = "min"
+    max_key = "max"
+
+    # get bounds
+    dc_bounds = {"min": lo, "max": hi}
+
+    # handle undefined bounds
+    if any(x is None for x in [lo, hi]):
+        dc_stats = util_get_raster_stats(
+            input_raster=input_raster, full=use_percentiles
+        )
+        if lo is None:
+            if use_percentiles:
+                min_key = "p01"
+            dc_bounds["min"] = dc_stats[min_key]
+        if hi is None:
+            if use_percentiles:
+                max_key = "p99"
+            dc_bounds["max"] = dc_stats[max_key]
+
+    # run
+    dc_parameters = {
+        "INPUT": input_raster,
+        "BAND": 1,
+        "FUZZYLOWBOUND": dc_bounds["min"],
+        "FUZZYHIGHBOUND": dc_bounds["max"],
+        "OUTPUT": output_raster,
+    }
+    processing.run("native:fuzzifyrasterlinearmembership", dc_parameters)
+
+    return output_raster
+
+
+def util_get_raster_stats(input_raster, band=1, full=False):
+    """
+    Calculates the statistics for a specified band of a given raster file.
+
+    :param input_raster: Full path to the input raster file.
+    :type input_raster: str
+    :param band: The band number to calculate statistics for. Default value = ``1``
+    :type band: int
+    :return: A dictionary containing the raster band's mean, standard deviation, minimum, maximum, sum, and element count.
+    :rtype: dict
+
+    **Notes**
+
+    The function uses QGIS classes internally to read the raster and compute statistics.
+    The keys in the returned dictionary are ``mean``, ``sd``, ``min``, ``max``, ``sum``, and ``count``.
+
+    """
+    dc_stats = None
+    if full:
+        dc_raster = util_read_raster(
+            file_input=input_raster, n_band=band, metadata=None
+        )
+        data = dc_raster["data"]
+        dc_stats = {
+            "mean": float(np.nanmean(data)),
+            "sd": float(np.nanstd(data)),
+            "min": float(np.nanmin(data)),
+            "max": float(np.nanmax(data)),
+            "sum": float(np.nansum(data)),
+            "count": float(np.count_nonzero(~np.isnan(data))),  # number of valid pixels
+            "p01": float(np.nanpercentile(data, 1)),
+            "p05": float(np.nanpercentile(data, 5)),
+            "p25": float(np.nanpercentile(data, 25)),
+            "p50": float(np.nanpercentile(data, 50)),  # median
+            "p75": float(np.nanpercentile(data, 75)),
+            "p95": float(np.nanpercentile(data, 95)),
+            "p99": float(np.nanpercentile(data, 99)),
+        }
+    else:
+        layer = QgsRasterLayer(input_raster, "raster")
+        provider = layer.dataProvider()
+        stats = provider.bandStatistics(band, QgsRasterBandStats.All, layer.extent(), 0)
+        dc_stats = {
+            "mean": stats.mean,
+            "sd": stats.stdDev,
+            "min": stats.minimumValue,
+            "max": stats.maximumValue,
+            "sum": stats.sum,
+            "count": stats.elementCount,
+        }
+    return dc_stats
+
+
+def util_read_raster(file_input, n_band=1, metadata=True):
+    """
+    Read a raster (GeoTIFF) file
+
+    :param file_input: path to raster file
+    :type file_input: str
+    :param n_band: number of the band to read
+    :type n_band: int
+    :param metadata: option to return
+    :type metadata: bool
+    :return: dictionary with "data" and (optional) "metadata"
+    :rtype: dict
+    """
+    # -------------------------------------------------------------------------
+    # LOAD
+    # Open the raster file using gdal
+    raster_input = gdal.Open(file_input)
+    # Get the raster band
+    band_input = raster_input.GetRasterBand(1)
+    # Read the raster data as a numpy array
+    grid_input = band_input.ReadAsArray()
+    dc_output = {"data": grid_input}
+    # -- Collect useful metadata
+    if metadata:
+        dc_metadata = {}
+        dc_metadata["raster_x_size"] = raster_input.RasterXSize
+        dc_metadata["raster_y_size"] = raster_input.RasterYSize
+        dc_metadata["raster_projection"] = raster_input.GetProjection()
+        dc_metadata["raster_geotransform"] = raster_input.GetGeoTransform()
+        dc_metadata["cellsize"] = dc_metadata["raster_geotransform"][1]
+        # append to output
+        dc_output["metadata"] = dc_metadata
+    # -- Close the raster
+    raster_input = None
+
+    return dc_output
+
+
+# FUNCTIONS -- internal utils
 # =======================================================================
 
 
@@ -998,12 +1259,12 @@ def _get_timestamp():
     return str(now.strftime("%Y-%m-%dT%H%M%S"))
 
 
-def _make_run_folder(output_folder, run_name):
+def _make_run_folder(folder_output, run_name):
     """
     Creates a unique, time-stamped run folder within a specified output directory.
 
-    :param output_folder: The parent directory where the new run folder will be created.
-    :type output_folder: str or :class:`pathlib.Path`
+    :param folder_output: The parent directory where the new run folder will be created.
+    :type folder_output: str or :class:`pathlib.Path`
     :param run_name: The base name for the new folder. A timestamp will be appended to it.
     :type run_name: str
     :return: The absolute path to the newly created run folder.
@@ -1017,7 +1278,7 @@ def _make_run_folder(output_folder, run_name):
     """
     while True:
         ts = _get_timestamp()
-        folder_run = Path(output_folder) / f"{run_name}_{ts}"
+        folder_run = Path(folder_output) / f"{run_name}_{ts}"
         if os.path.exists(folder_run):
             time.sleep(1)
         else:

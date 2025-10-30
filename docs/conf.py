@@ -87,6 +87,7 @@ autodoc_mock_imports = [
     "rasterio",
     "processing",
     "qgis",
+    "osgeo",
     # ... keep adding as new dependencies arise
 ]
 
