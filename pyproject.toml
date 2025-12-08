@@ -148,6 +148,7 @@ docs = [
     "pydata-sphinx-theme",          # [EXAMPLE] Sphinx theme
     "sphinx_copybutton",            # [EXAMPLE] Sphinx feature for code blocks
     "myst-parser",                  # [EXAMPLE] Sphinx feature for markdown files
+    "sphinx_design",                # [EXAMPLE] Sphinx miscellaneous features, like tabs, etc
     # ... [ADD MORE IF NEDDED]
 ]
 # Notes

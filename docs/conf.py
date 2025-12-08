@@ -47,7 +47,7 @@ sys.path.insert(0, os.path.abspath("../src"))  # <-- [CHECK THIS] src layout
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = "pem"  # <-- [CHANGE HERE]
-copyright = "2025, Iporã Possantti"  # <-- [CHANGE HERE]
+copyright = "2025, The Authors"  # <-- [CHANGE HERE]
 author = "Iporã Possantti"  # <-- [CHANGE HERE]
 release = "0.0.1"  # <-- [CHANGE HERE]
 
@@ -70,6 +70,7 @@ extensions = [
     "sphinx_copybutton",  # install by `python -m pip install sphinx-copybutton`
     # -- converter for markdown files in docs
     "myst_parser",  # install by `python -m pip install myst-parser`
+    "sphinx_design",  # install by `python -m pip install sphinx-design`
 ]
 
 source_suffix = {
@@ -95,8 +96,8 @@ autodoc_member_order = "bysource"
 
 # Exclude the __dict__, __weakref__, and __module__ attributes from being documented
 exclude_members = ["__dict__", "__weakref__", "__module__", "__str__"]
-# Configure autodoc options
 
+# Configure autodoc options
 autodoc_default_options = {
     "members": True,
     "undoc-members": False,
