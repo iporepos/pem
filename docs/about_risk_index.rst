@@ -30,16 +30,34 @@ overlap spatially, compounding their individual impacts. The cumulative habitat
 risk is therefore nonlinear, reflecting potential synergistic effects among
 stressors.
 
-.. figure:: figs/risk.jpg
-    :name: fig-habitat-risk-concept2
-    :width: 100%
-    :align: center
+.. tab-set::
 
-    Conceptual representation of the Habitat Risk Index. (**a**) The spatial
-    distribution of multiple habitat types and the footprint of a
-    stressor, illustrating both direct and border impacts with distance-decay
-    exposure. (**b**) The model aggregates overlapping stressors into a cumulative,
-    nonlinear habitat risk surface.
+    .. tab-item:: English
+
+        .. figure:: figs/risk.jpg
+            :name: fig-habitat-risk-concept2
+            :width: 100%
+            :align: center
+
+            Conceptual representation of the Habitat Risk Index. (**a**) The spatial
+            distribution of multiple habitat types and the footprint of a
+            stressor, illustrating both direct and border impacts with distance-decay
+            exposure. (**b**) The model aggregates overlapping stressors into a cumulative,
+            nonlinear habitat risk surface.
+
+    .. tab-item:: Português
+
+        .. figure:: figs/risk_pt.jpg
+            :name: fig-habitat-risk-concept2-pt
+            :width: 100%
+            :align: center
+
+            Representação conceitual do Índice de Risco Ecológico. (**a**)
+            A distribuição espacial de múltiplos tipos de habitat e a pegada de um estressor,
+            ilustrando impactos diretos e de borda com exposição que decai com a distância.
+            (**b**) O modelo agrega estressores sobrepostos em uma
+            superfície cumulativa e não linear de risco ao habitat.
+
 
 
 Benthic and Pelagic Habitats

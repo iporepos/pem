@@ -126,14 +126,20 @@ def compute_risk_index(folder_output, raster_hra_benthic, raster_hra_pelagic):
     :return: The path to the run-specific output folder containing the resulting risk index rasters.
     :rtype: str
 
-    **Notes**
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
 
-    The function executes the following steps:
-    1.  Creates a unique run output subfolder within ``folder_output``.
-    2.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.
-    3.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS's raster calculator (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).
-    4.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to produce the final **Risk Index raster** (``risk.tif``).
-    The final risk index raster (``risk.tif``) represents the combined and normalized risk.
+        The function executes the following steps:
+
+        #.  Creates a unique run output subfolder within ``folder_output``.
+        #.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a
+            lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.
+        #.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS's raster calculator
+            (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).
+        #.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to
+            produce the final **Risk Index raster** (``risk.tif``).
+
+        The final risk index raster (``risk.tif``) represents the combined and normalized risk.
 
     """
     # Startup
@@ -258,94 +264,97 @@ def setup_hra_model(
     :return: The path to the newly created main output folder for the model run.
     :rtype: str
 
-    **Notes**
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
 
-    This function prepares the environment by creating output folders,
-    reprojecting the AOI, creating a blank reference raster,
-    and running ``setup_habitats`` and ``setup_stressors`` to
-    prepare those inputs. It also generates a combined ``info.csv`` table.
-
-
-    .. warning::
-
-        The following script is expected to be executed under the QGIS Python
-        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+        This function prepares the environment by creating output folders,
+        reprojecting the AOI, creating a blank reference raster,
+        and running ``setup_habitats`` and ``setup_stressors`` to
+        prepare those inputs. It also generates a combined ``info.csv`` table.
 
 
-    .. code-block:: python
+    .. dropdown:: Script sample
+        :icon: code-square
 
-        # WARNING: run this in QGIS Python Environment
+        .. warning::
 
-        import importlib.util as iu
+            The following script is expected to be executed under the QGIS Python
+            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
 
-        # define the paths to this module
-        # ----------------------------------------
-        the_module = "path/to/risk.py"
+        .. code-block:: python
 
-        spec = iu.spec_from_file_location("module", the_module)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
+            # WARNING: run this in QGIS Python Environment
 
-        # define the paths to input and output folders
-        # ----------------------------------------
-        input_dir = "path/to/dir"
-        output_dir = "path/to/dir"
+            import importlib.util as iu
 
-        # define the path to input database
-        # ----------------------------------------
-        input_db = f"{input_dir}/pem.gpkg"
+            # define the paths to this module
+            # ----------------------------------------
+            the_module = "path/to/risk.py"
 
-        # define criteria table
-        criteria_table = f"{input_dir}/criteria_ben_pem.csv"
+            spec = iu.spec_from_file_location("module", the_module)
+            module = iu.module_from_spec(spec)
+            spec.loader.exec_module(module)
 
-        # define reference raster
-        reference_raster = f"{input_dir}/gebco_topobathymetry.tif"
+            # define the paths to input and output folders
+            # ----------------------------------------
+            input_dir = "path/to/dir"
+            output_dir = "path/to/dir"
 
-        # organize habitat groups
-        habitat_groups = {
-            # Habitat group
-            "MB3_MC3": ["MB3", "MC3"],  # list of habitats names
-            "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
-            "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
-            "MD3": ["MD3"],
-            "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
-            "ME1": ["ME1"],
-            "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
-            "MG4_MG6": ["MG4", "MG6"],
-        }
+            # define the path to input database
+            # ----------------------------------------
+            input_db = f"{input_dir}/pem.gpkg"
 
-        # organize stressors groups
-        stressor_groups = {
-            # stressor name
-            "MINERACAO": {
-                # list of layers in input database
-                "layers": ["mineracao_processos", "mineracao_areas_potenciais"],
-                "buffer": 10000, # in meters
-            },
-            "TURISMO": {
-                "layers": ["turismo_atividades_esportivas_sul"],
-                "buffer": 10000,
-            },
-            "EOLICAS": {
-                "layers": ["eolico_parques"],
-                "buffer": 10000,
-            },
-        }
+            # define criteria table
+            criteria_table = f"{input_dir}/criteria_ben_pem.csv"
 
-        # call the function
-        # ----------------------------------------
-        folder_output = module.setup_hra_model(
-            folder_output=output_dir,
-            file_criteria=criteria_table,
-            input_db=input_db,
-            reference_raster=reference_raster,
-            resolution=1000, # in meters
-            aoi_layer="sul",
-            habitat_layer="habitats_bentonicos_sul_v2",
-            habitat_field="code",
-            habitat_groups=habitat_groups,
-            stressor_groups=stressor_groups,
-        )
+            # define reference raster
+            reference_raster = f"{input_dir}/gebco_topobathymetry.tif"
+
+            # organize habitat groups
+            habitat_groups = {
+                # Habitat group
+                "MB3_MC3": ["MB3", "MC3"],  # list of habitats names
+                "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
+                "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
+                "MD3": ["MD3"],
+                "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
+                "ME1": ["ME1"],
+                "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
+                "MG4_MG6": ["MG4", "MG6"],
+            }
+
+            # organize stressors groups
+            stressor_groups = {
+                # stressor name
+                "MINERACAO": {
+                    # list of layers in input database
+                    "layers": ["mineracao_processos", "mineracao_areas_potenciais"],
+                    "buffer": 10000, # in meters
+                },
+                "TURISMO": {
+                    "layers": ["turismo_atividades_esportivas_sul"],
+                    "buffer": 10000,
+                },
+                "EOLICAS": {
+                    "layers": ["eolico_parques"],
+                    "buffer": 10000,
+                },
+            }
+
+            # call the function
+            # ----------------------------------------
+            folder_output = module.setup_hra_model(
+                folder_output=output_dir,
+                file_criteria=criteria_table,
+                input_db=input_db,
+                reference_raster=reference_raster,
+                resolution=1000, # in meters
+                aoi_layer="sul",
+                habitat_layer="habitats_bentonicos_sul_v2",
+                habitat_field="code",
+                habitat_groups=habitat_groups,
+                stressor_groups=stressor_groups,
+            )
 
     """
     # Startup
@@ -489,78 +498,80 @@ def setup_stressors(
     :return: The path to the newly created run-specific output folder containing the stressor rasters and metadata.
     :rtype: str
 
-    **Notes**
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
 
-    This function combines features from multiple vector layers into a single output stressor raster for each defined group.
+        This function combines features from multiple vector layers into a single output stressor raster for each defined group.
 
-    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.
-    #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group's ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
-    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
-    #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.
+        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.
+        #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group's ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
+        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+        #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.
 
-    Intermediate rasters are cleaned up at the end.
-
-
-    **Script example**
-
-    .. warning::
-
-        The following script is expected to be executed under the QGIS Python
-        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+        Intermediate rasters are cleaned up at the end.
 
 
-    .. code-block:: python
+    .. dropdown:: Script sample
+        :icon: code-square
 
-        # WARNING: run this in QGIS Python Environment
+        .. warning::
 
-        import importlib.util as iu
+            The following script is expected to be executed under the QGIS Python
+            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
 
-        # define the paths to this module
-        # ----------------------------------------
-        the_module = "path/to/risk.py"
 
-        spec = iu.spec_from_file_location("module", the_module)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
+        .. code-block:: python
 
-        # define the paths to input and output folders
-        # ----------------------------------------
-        input_dir = "path/to/dir"
-        output_dir = "path/to/dir"
+            # WARNING: run this in QGIS Python Environment
 
-        # define the path to input database
-        # ----------------------------------------
-        input_db = f"{input_dir}/pem.gpkg"
+            import importlib.util as iu
 
-        # organize stressors groups
-        groups = {
-            "MINERACAO": {
-                "layers": ["mineracao_processos", "mineracao_areas_potenciais"],
-                "buffer": 10000,
-                "raster": None
-            },
-            "TURISMO": {
-                "layers": ["turismo_atividades_esportivas_sul"],
-                "buffer": 10000,
-                "raster": None
-            },
-            "EOLICAS": {
-                "layers": ["eolico_parques"],
-                "buffer": 10000,
-                "raster": None
-            },
-        }
+            # define the paths to this module
+            # ----------------------------------------
+            the_module = "path/to/risk.py"
 
-        # call the function
-        # ----------------------------------------
-        output_file = module.setup_stressors(
-            input_db=input_db,
-            folder_output=output_dir,
-            groups=groups,
-            reference_raster=f"{input_dir}/raster.tif",
-            is_blank=False,
-            resolution=1000
-        )
+            spec = iu.spec_from_file_location("module", the_module)
+            module = iu.module_from_spec(spec)
+            spec.loader.exec_module(module)
+
+            # define the paths to input and output folders
+            # ----------------------------------------
+            input_dir = "path/to/dir"
+            output_dir = "path/to/dir"
+
+            # define the path to input database
+            # ----------------------------------------
+            input_db = f"{input_dir}/pem.gpkg"
+
+            # organize stressors groups
+            groups = {
+                "MINERACAO": {
+                    "layers": ["mineracao_processos", "mineracao_areas_potenciais"],
+                    "buffer": 10000,
+                    "raster": None
+                },
+                "TURISMO": {
+                    "layers": ["turismo_atividades_esportivas_sul"],
+                    "buffer": 10000,
+                    "raster": None
+                },
+                "EOLICAS": {
+                    "layers": ["eolico_parques"],
+                    "buffer": 10000,
+                    "raster": None
+                },
+            }
+
+            # call the function
+            # ----------------------------------------
+            output_file = module.setup_stressors(
+                input_db=input_db,
+                folder_output=output_dir,
+                groups=groups,
+                reference_raster=f"{input_dir}/raster.tif",
+                is_blank=False,
+                resolution=1000
+            )
 
 
     """
@@ -701,71 +712,73 @@ def setup_habitats(
     :return: The path to the newly created run-specific output folder containing the habitat rasters and metadata.
     :rtype: str
 
-    **Notes**
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
 
-    This function orchestrates a multi-step process:
+        This function orchestrates a multi-step process:
 
-    #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.
-    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.
-    #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
-    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
-    #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.
+        #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.
+        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.
+        #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
+        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+        #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.
 
-    Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.
+        Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.
 
-    **Script example**
+    .. dropdown:: Script sample
+        :icon: code-square
 
-    .. warning::
+        .. warning::
 
-        The following script is expected to be executed under the QGIS Python
-        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
+            The following script is expected to be executed under the QGIS Python
+            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.
 
-    .. code-block:: python
+        .. code-block:: python
 
-        # WARNING: run this in QGIS Python Environment
+            # WARNING: run this in QGIS Python Environment
 
-        import importlib.util as iu
+            import importlib.util as iu
 
-        # define the paths to this module
-        # ----------------------------------------
-        the_module = "path/to/risk.py"
+            # define the paths to this module
+            # ----------------------------------------
+            the_module = "path/to/risk.py"
 
-        spec = iu.spec_from_file_location("module", the_module)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
+            spec = iu.spec_from_file_location("module", the_module)
+            module = iu.module_from_spec(spec)
+            spec.loader.exec_module(module)
 
-        # define the paths to input and output folders
-        # ----------------------------------------
-        input_dir = "path/to/dir"
-        output_dir = "path/to/dir"
+            # define the paths to input and output folders
+            # ----------------------------------------
+            input_dir = "path/to/dir"
+            output_dir = "path/to/dir"
 
-        # define the path to input database
-        # ----------------------------------------
-        input_db = f"{input_dir}/pem.gpkg"
+            # define the path to input database
+            # ----------------------------------------
+            input_db = f"{input_dir}/pem.gpkg"
 
-        # organize habitat groups
-        groups = {
-            "MB3_MC3": ["MB3", "MC3"],
-            "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
-            "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
-            "MD3": ["MD3"],
-            "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
-            "ME1": ["ME1"],
-            "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
-            "MG4_MG6": ["MG4", "MG6"],
-        }
+            # organize habitat groups
+            groups = {
+                "MB3_MC3": ["MB3", "MC3"],
+                "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
+                "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
+                "MD3": ["MD3"],
+                "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
+                "ME1": ["ME1"],
+                "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
+                "MG4_MG6": ["MG4", "MG6"],
+            }
 
-        # call the function
-        # ----------------------------------------
-        output_file = module.setup_habitats(
-            input_db=input_db,
-            folder_output=output_dir,
-            input_layer="habitats_bentonicos_sul_v2",
-            groups=groups,
-            field_name="code",
-            reference_raster=f"{input_dir}/raster.tif",
-            resolution=1000
-        )
+            # call the function
+            # ----------------------------------------
+            output_file = module.setup_habitats(
+                input_db=input_db,
+                folder_output=output_dir,
+                input_layer="habitats_bentonicos_sul_v2",
+                groups=groups,
+                field_name="code",
+                reference_raster=f"{input_dir}/raster.tif",
+                resolution=1000
+            )
 
     """
 
