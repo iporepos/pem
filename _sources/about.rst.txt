@@ -8,9 +8,9 @@ About
 
    Home <self>
    about_upg
+   about_benefit_index
    about_risk_index
    about_conflict_index
-   about_benefit_index
 
 
 The **PEM Project** (*Planejamento Espacial Marinho do Brasil*, or *Marine Spatial Planning for Brazil*)
@@ -68,15 +68,34 @@ surface divided into model cells. Each model cell describes the spatial
 unit of analysis, allowing the integration of land,
 coastline, and marine environments within the same planning structure.
 
-.. figure:: figs/model.jpg
-    :name: fig-spatial-model
-    :width: 100%
-    :align: center
+.. tab-set::
 
-    Conceptual representation of the spatial model in the PEM framework.
-    The ocean and land areas are divided into a spatial grid, where land hubs,
-    habitats, and users interact to generate benefit, risk, and conflict metrics
-    that support integrated performance assessment and scenario simulation.
+    .. tab-item:: English
+
+        .. figure:: figs/model.jpg
+            :name: fig-spatial-model
+            :width: 100%
+            :align: center
+
+            Conceptual representation of the spatial model in the PEM framework.
+            The ocean and land areas are divided into a spatial grid, where land hubs,
+            habitats, and users interact to generate benefit, risk, and conflict metrics
+            that support integrated performance assessment and scenario simulation.
+
+    .. tab-item:: Português
+
+        .. figure:: figs/model_pt.jpg
+            :name: fig-spatial-model-pt
+            :width: 100%
+            :align: center
+
+            Representação conceitual do modelo espacial no arcabouço PEM.
+            As áreas oceânicas e terrestres são divididas em uma grade espacial,
+            onde os Hubs costeiros, Habitats e usuários interagem para gerar métricas
+            de benefício, risco e conflito que apoiam avaliação integrada
+            de desempenho e simulação de cenários.
+
+
 
 Within this space, several spatial features are represented: **land hubs** such
 as ports and coastal cities; **habitats**, which are sources of ecosystem
@@ -160,14 +179,31 @@ Because all components of :math:`D` are normalized variables, *i.e.*, defined
 between 0 and 1, the mathematical **hyperspace** of :math:`D` can be explored
 a priori.
 
-.. figure:: figs/plots.jpg
-    :name: fig-plots
-    :width: 100%
-    :align: center
+.. tab-set::
 
-    Exploration of the Use Performance Index formula. (**a**) The performance
-    mathematical hyperspace. (**b**) Mathematical bounds for the performance
-    index.
+    .. tab-item:: English
+
+        .. figure:: figs/plots.jpg
+            :name: fig-plots
+            :width: 100%
+            :align: center
+
+            Exploration of the Use Performance Index formula. (**a**) The performance
+            mathematical hyperspace. (**b**) Mathematical bounds for the performance
+            index.
+
+    .. tab-item:: Português
+
+        .. figure:: figs/plots_pt.jpg
+            :name: fig-plots-pt
+            :width: 100%
+            :align: center
+
+            Exploração da fórmula do Índice de Desempenho.
+            (a) O hiperespaço matemático de desempenho.
+            (b) Limites matemáticos para o índice de desempenho.
+
+
 
 The upper value of :math:`D` is unbounded, it goes to infinity.
 That means that values of :math:`D` can skyrocket if the product :math:`R \times C`

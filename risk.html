@@ -446,14 +446,22 @@ No global examples are included at module level.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>The function executes the following steps:
-1.  Creates a unique run output subfolder within <code class="docutils literal notranslate"><span class="pre">folder_output</span></code>.
-2.  <strong>Fuzzifies</strong> both the benthic and pelagic HRA rasters using <code class="docutils literal notranslate"><span class="pre">util_fuzzify_raster</span></code> with a lower bound of 0 and an upper bound calculated from the <strong>99th percentile</strong> of each raster (<code class="docutils literal notranslate"><span class="pre">use_percentiles=True</span></code>). This produces <code class="docutils literal notranslate"><span class="pre">risk_b.tif</span></code> and <code class="docutils literal notranslate"><span class="pre">risk_p.tif</span></code>.
-3.  <strong>Sums</strong> the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS’s raster calculator (<code class="docutils literal notranslate"><span class="pre">native:rastercalc</span></code>) to create an intermediate sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>).
-4.  <strong>Fuzzifies</strong> the resulting sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>) using the same 0 to 99th percentile bounds to produce the final <strong>Risk Index raster</strong> (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>).
-The final risk index raster (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>) represents the combined and normalized risk.</p>
-</dd></dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The function executes the following steps:</p>
+<ol class="arabic simple">
+<li><p class="sd-card-text">Creates a unique run output subfolder within <code class="docutils literal notranslate"><span class="pre">folder_output</span></code>.</p></li>
+<li><p class="sd-card-text"><strong>Fuzzifies</strong> both the benthic and pelagic HRA rasters using <code class="docutils literal notranslate"><span class="pre">util_fuzzify_raster</span></code> with a
+lower bound of 0 and an upper bound calculated from the <strong>99th percentile</strong> of each raster (<code class="docutils literal notranslate"><span class="pre">use_percentiles=True</span></code>). This produces <code class="docutils literal notranslate"><span class="pre">risk_b.tif</span></code> and <code class="docutils literal notranslate"><span class="pre">risk_p.tif</span></code>.</p></li>
+<li><p class="sd-card-text"><strong>Sums</strong> the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS’s raster calculator
+(<code class="docutils literal notranslate"><span class="pre">native:rastercalc</span></code>) to create an intermediate sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>).</p></li>
+<li><p class="sd-card-text"><strong>Fuzzifies</strong> the resulting sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>) using the same 0 to 99th percentile bounds to
+produce the final <strong>Risk Index raster</strong> (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>).</p></li>
+</ol>
+<p class="sd-card-text">The final risk index raster (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>) represents the combined and normalized risk.</p>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_hra_model">
@@ -487,14 +495,20 @@ The final risk index raster (<code class="docutils literal notranslate"><span cl
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>This function prepares the environment by creating output folders,
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function prepares the environment by creating output folders,
 reprojecting the AOI, creating a blank reference raster,
 and running <code class="docutils literal notranslate"><span class="pre">setup_habitats</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_stressors</span></code> to
 prepare those inputs. It also generates a combined <code class="docutils literal notranslate"><span class="pre">info.csv</span></code> table.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The following script is expected to be executed under the QGIS Python
+<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
 Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
@@ -571,7 +585,8 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 <span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_stressors">
@@ -600,19 +615,24 @@ database into single stressor rasters and reprojecting them to a specified resol
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>This function combines features from multiple vector layers into a single output stressor raster for each defined group.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function combines features from multiple vector layers into a single output stressor raster for each defined group.</p>
 <ol class="arabic simple">
-<li><p><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.</p></li>
-<li><p><strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</p></li>
-<li><p><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
-<li><p><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.</p></li>
+<li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.</p></li>
+<li><p class="sd-card-text"><strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</p></li>
+<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.</p></li>
 </ol>
-<p>Intermediate rasters are cleaned up at the end.</p>
-<p><strong>Script example</strong></p>
+<p class="sd-card-text">Intermediate rasters are cleaned up at the end.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The following script is expected to be executed under the QGIS Python
+<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
 Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
@@ -667,7 +687,8 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 <span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_habitats">
@@ -698,20 +719,25 @@ habitat group, and reprojecting the rasters to a specified resolution.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>This function orchestrates a multi-step process:</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function orchestrates a multi-step process:</p>
 <ol class="arabic simple">
-<li><p><strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.</p></li>
-<li><p><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.</p></li>
-<li><p><strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</p></li>
-<li><p><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
-<li><p><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.</p></li>
+<li><p class="sd-card-text"><strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.</p></li>
+<li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.</p></li>
+<li><p class="sd-card-text"><strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</p></li>
+<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.</p></li>
 </ol>
-<p>Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
-<p><strong>Script example</strong></p>
+<p class="sd-card-text">Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The following script is expected to be executed under the QGIS Python
+<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
 Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
@@ -760,7 +786,8 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 <span class="p">)</span>
 </pre></div>
 </div>
-</dd></dl>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.util_split_features">

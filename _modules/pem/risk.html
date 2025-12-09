@@ -506,14 +506,20 @@
 <span class="sd">    :return: The path to the run-specific output folder containing the resulting risk index rasters.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    **Notes**</span>
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
 
-<span class="sd">    The function executes the following steps:</span>
-<span class="sd">    1.  Creates a unique run output subfolder within ``folder_output``.</span>
-<span class="sd">    2.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.</span>
-<span class="sd">    3.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS&#39;s raster calculator (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).</span>
-<span class="sd">    4.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to produce the final **Risk Index raster** (``risk.tif``).</span>
-<span class="sd">    The final risk index raster (``risk.tif``) represents the combined and normalized risk.</span>
+<span class="sd">        The function executes the following steps:</span>
+
+<span class="sd">        #.  Creates a unique run output subfolder within ``folder_output``.</span>
+<span class="sd">        #.  **Fuzzifies** both the benthic and pelagic HRA rasters using ``util_fuzzify_raster`` with a</span>
+<span class="sd">            lower bound of 0 and an upper bound calculated from the **99th percentile** of each raster (``use_percentiles=True``). This produces ``risk_b.tif`` and ``risk_p.tif``.</span>
+<span class="sd">        #.  **Sums** the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS&#39;s raster calculator</span>
+<span class="sd">            (``native:rastercalc``) to create an intermediate sum raster (``hra_sum.tif``).</span>
+<span class="sd">        #.  **Fuzzifies** the resulting sum raster (``hra_sum.tif``) using the same 0 to 99th percentile bounds to</span>
+<span class="sd">            produce the final **Risk Index raster** (``risk.tif``).</span>
+
+<span class="sd">        The final risk index raster (``risk.tif``) represents the combined and normalized risk.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Startup</span>
@@ -641,94 +647,97 @@
 <span class="sd">    :return: The path to the newly created main output folder for the model run.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    **Notes**</span>
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
 
-<span class="sd">    This function prepares the environment by creating output folders,</span>
-<span class="sd">    reprojecting the AOI, creating a blank reference raster,</span>
-<span class="sd">    and running ``setup_habitats`` and ``setup_stressors`` to</span>
-<span class="sd">    prepare those inputs. It also generates a combined ``info.csv`` table.</span>
-
-
-<span class="sd">    .. warning::</span>
-
-<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
-<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+<span class="sd">        This function prepares the environment by creating output folders,</span>
+<span class="sd">        reprojecting the AOI, creating a blank reference raster,</span>
+<span class="sd">        and running ``setup_habitats`` and ``setup_stressors`` to</span>
+<span class="sd">        prepare those inputs. It also generates a combined ``info.csv`` table.</span>
 
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. dropdown:: Script sample</span>
+<span class="sd">        :icon: code-square</span>
 
-<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
+<span class="sd">        .. warning::</span>
 
-<span class="sd">        import importlib.util as iu</span>
+<span class="sd">            The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
 
-<span class="sd">        # define the paths to this module</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
+<span class="sd">        .. code-block:: python</span>
 
-<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
-<span class="sd">        module = iu.module_from_spec(spec)</span>
-<span class="sd">        spec.loader.exec_module(module)</span>
+<span class="sd">            # WARNING: run this in QGIS Python Environment</span>
 
-<span class="sd">        # define the paths to input and output folders</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
-<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            import importlib.util as iu</span>
 
-<span class="sd">        # define the path to input database</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+<span class="sd">            # define the paths to this module</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            the_module = &quot;path/to/risk.py&quot;</span>
 
-<span class="sd">        # define criteria table</span>
-<span class="sd">        criteria_table = f&quot;{input_dir}/criteria_ben_pem.csv&quot;</span>
+<span class="sd">            spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">            module = iu.module_from_spec(spec)</span>
+<span class="sd">            spec.loader.exec_module(module)</span>
 
-<span class="sd">        # define reference raster</span>
-<span class="sd">        reference_raster = f&quot;{input_dir}/gebco_topobathymetry.tif&quot;</span>
+<span class="sd">            # define the paths to input and output folders</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            output_dir = &quot;path/to/dir&quot;</span>
 
-<span class="sd">        # organize habitat groups</span>
-<span class="sd">        habitat_groups = {</span>
-<span class="sd">            # Habitat group</span>
-<span class="sd">            &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],  # list of habitats names</span>
-<span class="sd">            &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
-<span class="sd">            &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
-<span class="sd">            &quot;MD3&quot;: [&quot;MD3&quot;],</span>
-<span class="sd">            &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
-<span class="sd">            &quot;ME1&quot;: [&quot;ME1&quot;],</span>
-<span class="sd">            &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
-<span class="sd">            &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
-<span class="sd">        }</span>
+<span class="sd">            # define the path to input database</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
 
-<span class="sd">        # organize stressors groups</span>
-<span class="sd">        stressor_groups = {</span>
-<span class="sd">            # stressor name</span>
-<span class="sd">            &quot;MINERACAO&quot;: {</span>
-<span class="sd">                # list of layers in input database</span>
-<span class="sd">                &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000, # in meters</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;TURISMO&quot;: {</span>
-<span class="sd">                &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000,</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;EOLICAS&quot;: {</span>
-<span class="sd">                &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000,</span>
-<span class="sd">            },</span>
-<span class="sd">        }</span>
+<span class="sd">            # define criteria table</span>
+<span class="sd">            criteria_table = f&quot;{input_dir}/criteria_ben_pem.csv&quot;</span>
 
-<span class="sd">        # call the function</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        folder_output = module.setup_hra_model(</span>
-<span class="sd">            folder_output=output_dir,</span>
-<span class="sd">            file_criteria=criteria_table,</span>
-<span class="sd">            input_db=input_db,</span>
-<span class="sd">            reference_raster=reference_raster,</span>
-<span class="sd">            resolution=1000, # in meters</span>
-<span class="sd">            aoi_layer=&quot;sul&quot;,</span>
-<span class="sd">            habitat_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
-<span class="sd">            habitat_field=&quot;code&quot;,</span>
-<span class="sd">            habitat_groups=habitat_groups,</span>
-<span class="sd">            stressor_groups=stressor_groups,</span>
-<span class="sd">        )</span>
+<span class="sd">            # define reference raster</span>
+<span class="sd">            reference_raster = f&quot;{input_dir}/gebco_topobathymetry.tif&quot;</span>
+
+<span class="sd">            # organize habitat groups</span>
+<span class="sd">            habitat_groups = {</span>
+<span class="sd">                # Habitat group</span>
+<span class="sd">                &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],  # list of habitats names</span>
+<span class="sd">                &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
+<span class="sd">                &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
+<span class="sd">                &quot;MD3&quot;: [&quot;MD3&quot;],</span>
+<span class="sd">                &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
+<span class="sd">                &quot;ME1&quot;: [&quot;ME1&quot;],</span>
+<span class="sd">                &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
+<span class="sd">                &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
+<span class="sd">            }</span>
+
+<span class="sd">            # organize stressors groups</span>
+<span class="sd">            stressor_groups = {</span>
+<span class="sd">                # stressor name</span>
+<span class="sd">                &quot;MINERACAO&quot;: {</span>
+<span class="sd">                    # list of layers in input database</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000, # in meters</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;TURISMO&quot;: {</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000,</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;EOLICAS&quot;: {</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000,</span>
+<span class="sd">                },</span>
+<span class="sd">            }</span>
+
+<span class="sd">            # call the function</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            folder_output = module.setup_hra_model(</span>
+<span class="sd">                folder_output=output_dir,</span>
+<span class="sd">                file_criteria=criteria_table,</span>
+<span class="sd">                input_db=input_db,</span>
+<span class="sd">                reference_raster=reference_raster,</span>
+<span class="sd">                resolution=1000, # in meters</span>
+<span class="sd">                aoi_layer=&quot;sul&quot;,</span>
+<span class="sd">                habitat_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
+<span class="sd">                habitat_field=&quot;code&quot;,</span>
+<span class="sd">                habitat_groups=habitat_groups,</span>
+<span class="sd">                stressor_groups=stressor_groups,</span>
+<span class="sd">            )</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Startup</span>
@@ -875,78 +884,80 @@
 <span class="sd">    :return: The path to the newly created run-specific output folder containing the stressor rasters and metadata.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    **Notes**</span>
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
 
-<span class="sd">    This function combines features from multiple vector layers into a single output stressor raster for each defined group.</span>
+<span class="sd">        This function combines features from multiple vector layers into a single output stressor raster for each defined group.</span>
 
-<span class="sd">    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
-<span class="sd">    #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
-<span class="sd">    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
-<span class="sd">    #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
+<span class="sd">        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
+<span class="sd">        #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
+<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">        #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
 
-<span class="sd">    Intermediate rasters are cleaned up at the end.</span>
-
-
-<span class="sd">    **Script example**</span>
-
-<span class="sd">    .. warning::</span>
-
-<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
-<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+<span class="sd">        Intermediate rasters are cleaned up at the end.</span>
 
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">    .. dropdown:: Script sample</span>
+<span class="sd">        :icon: code-square</span>
 
-<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
+<span class="sd">        .. warning::</span>
 
-<span class="sd">        import importlib.util as iu</span>
+<span class="sd">            The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
 
-<span class="sd">        # define the paths to this module</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
 
-<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
-<span class="sd">        module = iu.module_from_spec(spec)</span>
-<span class="sd">        spec.loader.exec_module(module)</span>
+<span class="sd">        .. code-block:: python</span>
 
-<span class="sd">        # define the paths to input and output folders</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
-<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            # WARNING: run this in QGIS Python Environment</span>
 
-<span class="sd">        # define the path to input database</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+<span class="sd">            import importlib.util as iu</span>
 
-<span class="sd">        # organize stressors groups</span>
-<span class="sd">        groups = {</span>
-<span class="sd">            &quot;MINERACAO&quot;: {</span>
-<span class="sd">                &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000,</span>
-<span class="sd">                &quot;raster&quot;: None</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;TURISMO&quot;: {</span>
-<span class="sd">                &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000,</span>
-<span class="sd">                &quot;raster&quot;: None</span>
-<span class="sd">            },</span>
-<span class="sd">            &quot;EOLICAS&quot;: {</span>
-<span class="sd">                &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
-<span class="sd">                &quot;buffer&quot;: 10000,</span>
-<span class="sd">                &quot;raster&quot;: None</span>
-<span class="sd">            },</span>
-<span class="sd">        }</span>
+<span class="sd">            # define the paths to this module</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            the_module = &quot;path/to/risk.py&quot;</span>
 
-<span class="sd">        # call the function</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        output_file = module.setup_stressors(</span>
-<span class="sd">            input_db=input_db,</span>
-<span class="sd">            folder_output=output_dir,</span>
-<span class="sd">            groups=groups,</span>
-<span class="sd">            reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
-<span class="sd">            is_blank=False,</span>
-<span class="sd">            resolution=1000</span>
-<span class="sd">        )</span>
+<span class="sd">            spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">            module = iu.module_from_spec(spec)</span>
+<span class="sd">            spec.loader.exec_module(module)</span>
+
+<span class="sd">            # define the paths to input and output folders</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            output_dir = &quot;path/to/dir&quot;</span>
+
+<span class="sd">            # define the path to input database</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+
+<span class="sd">            # organize stressors groups</span>
+<span class="sd">            groups = {</span>
+<span class="sd">                &quot;MINERACAO&quot;: {</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;mineracao_processos&quot;, &quot;mineracao_areas_potenciais&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000,</span>
+<span class="sd">                    &quot;raster&quot;: None</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;TURISMO&quot;: {</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;turismo_atividades_esportivas_sul&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000,</span>
+<span class="sd">                    &quot;raster&quot;: None</span>
+<span class="sd">                },</span>
+<span class="sd">                &quot;EOLICAS&quot;: {</span>
+<span class="sd">                    &quot;layers&quot;: [&quot;eolico_parques&quot;],</span>
+<span class="sd">                    &quot;buffer&quot;: 10000,</span>
+<span class="sd">                    &quot;raster&quot;: None</span>
+<span class="sd">                },</span>
+<span class="sd">            }</span>
+
+<span class="sd">            # call the function</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            output_file = module.setup_stressors(</span>
+<span class="sd">                input_db=input_db,</span>
+<span class="sd">                folder_output=output_dir,</span>
+<span class="sd">                groups=groups,</span>
+<span class="sd">                reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">                is_blank=False,</span>
+<span class="sd">                resolution=1000</span>
+<span class="sd">            )</span>
 
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1090,71 +1101,73 @@
 <span class="sd">    :return: The path to the newly created run-specific output folder containing the habitat rasters and metadata.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    **Notes**</span>
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
 
-<span class="sd">    This function orchestrates a multi-step process:</span>
+<span class="sd">        This function orchestrates a multi-step process:</span>
 
-<span class="sd">    #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
-<span class="sd">    #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
-<span class="sd">    #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
-<span class="sd">    #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
-<span class="sd">    #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
+<span class="sd">        #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
+<span class="sd">        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
+<span class="sd">        #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
+<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">        #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
 
-<span class="sd">    Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</span>
+<span class="sd">        Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</span>
 
-<span class="sd">    **Script example**</span>
+<span class="sd">    .. dropdown:: Script sample</span>
+<span class="sd">        :icon: code-square</span>
 
-<span class="sd">    .. warning::</span>
+<span class="sd">        .. warning::</span>
 
-<span class="sd">        The following script is expected to be executed under the QGIS Python</span>
-<span class="sd">        Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
+<span class="sd">            The following script is expected to be executed under the QGIS Python</span>
+<span class="sd">            Environment with ``numpy``, ``pandas`` and ``geopandas`` installed.</span>
 
-<span class="sd">    .. code-block:: python</span>
+<span class="sd">        .. code-block:: python</span>
 
-<span class="sd">        # WARNING: run this in QGIS Python Environment</span>
+<span class="sd">            # WARNING: run this in QGIS Python Environment</span>
 
-<span class="sd">        import importlib.util as iu</span>
+<span class="sd">            import importlib.util as iu</span>
 
-<span class="sd">        # define the paths to this module</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        the_module = &quot;path/to/risk.py&quot;</span>
+<span class="sd">            # define the paths to this module</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            the_module = &quot;path/to/risk.py&quot;</span>
 
-<span class="sd">        spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
-<span class="sd">        module = iu.module_from_spec(spec)</span>
-<span class="sd">        spec.loader.exec_module(module)</span>
+<span class="sd">            spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
+<span class="sd">            module = iu.module_from_spec(spec)</span>
+<span class="sd">            spec.loader.exec_module(module)</span>
 
-<span class="sd">        # define the paths to input and output folders</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_dir = &quot;path/to/dir&quot;</span>
-<span class="sd">        output_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            # define the paths to input and output folders</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            output_dir = &quot;path/to/dir&quot;</span>
 
-<span class="sd">        # define the path to input database</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
+<span class="sd">            # define the path to input database</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
 
-<span class="sd">        # organize habitat groups</span>
-<span class="sd">        groups = {</span>
-<span class="sd">            &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],</span>
-<span class="sd">            &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
-<span class="sd">            &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
-<span class="sd">            &quot;MD3&quot;: [&quot;MD3&quot;],</span>
-<span class="sd">            &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
-<span class="sd">            &quot;ME1&quot;: [&quot;ME1&quot;],</span>
-<span class="sd">            &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
-<span class="sd">            &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
-<span class="sd">        }</span>
+<span class="sd">            # organize habitat groups</span>
+<span class="sd">            groups = {</span>
+<span class="sd">                &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],</span>
+<span class="sd">                &quot;MB4_MB5_MB6&quot;: [&quot;MB4&quot;, &quot;MB5&quot;, &quot;MB6&quot;],</span>
+<span class="sd">                &quot;MC4_MC5_MC6&quot;: [&quot;MC4&quot;, &quot;MC5&quot;, &quot;MC6&quot;],</span>
+<span class="sd">                &quot;MD3&quot;: [&quot;MD3&quot;],</span>
+<span class="sd">                &quot;MD4_MD5_MD6&quot;: [&quot;MD4&quot;, &quot;MD5&quot;, &quot;MD6&quot;],</span>
+<span class="sd">                &quot;ME1&quot;: [&quot;ME1&quot;],</span>
+<span class="sd">                &quot;ME4_MF4_MF5&quot;: [&quot;ME4&quot;, &quot;MF4&quot;, &quot;MF5&quot;],</span>
+<span class="sd">                &quot;MG4_MG6&quot;: [&quot;MG4&quot;, &quot;MG6&quot;],</span>
+<span class="sd">            }</span>
 
-<span class="sd">        # call the function</span>
-<span class="sd">        # ----------------------------------------</span>
-<span class="sd">        output_file = module.setup_habitats(</span>
-<span class="sd">            input_db=input_db,</span>
-<span class="sd">            folder_output=output_dir,</span>
-<span class="sd">            input_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
-<span class="sd">            groups=groups,</span>
-<span class="sd">            field_name=&quot;code&quot;,</span>
-<span class="sd">            reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
-<span class="sd">            resolution=1000</span>
-<span class="sd">        )</span>
+<span class="sd">            # call the function</span>
+<span class="sd">            # ----------------------------------------</span>
+<span class="sd">            output_file = module.setup_habitats(</span>
+<span class="sd">                input_db=input_db,</span>
+<span class="sd">                folder_output=output_dir,</span>
+<span class="sd">                input_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
+<span class="sd">                groups=groups,</span>
+<span class="sd">                field_name=&quot;code&quot;,</span>
+<span class="sd">                reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">                resolution=1000</span>
+<span class="sd">            )</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
