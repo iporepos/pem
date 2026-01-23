@@ -1,0 +1,14 @@
+{
+    "about": 0.063,
+    "about_benefit_index": 0.039,
+    "about_conflict_index": 0.004,
+    "about_risk_index": 0.009,
+    "about_upg": 0.008,
+    "api": 0.003,
+    "development": 0.019,
+    "includes/ipsum": 0.001,
+    "includes/warning_dev": 0.001,
+    "index": 0.008,
+    "risk": 0.291,
+    "usage": 0.006
+}
