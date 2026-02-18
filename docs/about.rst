@@ -49,9 +49,9 @@ Input Data
 At the foundation level, the workflow integrates diverse spatial datasets, including:
 
 * **Bathymetry** – ocean depth and seabed morphology.
-* **Ocean Habitats** – distribution and characteristics of marine environments that provide ecosystem services.
-* **Ocean Users** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
-* **Land Hubs** – ports, cities, and infrastructure nodes that receives direct economic benefits from activities in the ocean.
+* **Habitats** – distribution and characteristics of marine environments that provide ecosystem services.
+* **Users** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
+* **Land Hubs** – ports, cities, and infrastructure nodes in land that receives direct economic benefits from activities in the ocean.
 * **Coastal features** - other important geographical features of the coastline that influence the definition of management units.
 
 These datasets serve as the basis for constructing higher-level spatial information layers.
@@ -96,10 +96,9 @@ coastline, and marine environments within the same planning structure.
             de desempenho e simulação de cenários.
 
 
-
-Within this space, several spatial features are represented: **land hubs** such
-as ports and coastal cities; **habitats**, which are sources of ecosystem
-services and may be sensitive to disturbance; and **users**, representing the
+Within this space, several spatial features are represented: **Land Hubs** such
+as ports and coastal cities; **Habitats**, which are sources of ecosystem
+services and may be sensitive to disturbance; and ocean **Users**, representing the
 various economic sectors that occupy and use ecosystem services.
 
 These elements coexist and interact across the ocean space grid, forming the physical and
@@ -115,6 +114,23 @@ conflicts arise where different users compete for the same space.
 Together, these dimensions define the integrative structure of the PEM framework, which
 supports both diagnostic evaluation and scenario-based simulation of marine use
 performance.
+
+Scenario-Based Analyses
+============================================
+
+All spatial indexes (:math:`B`, :math:`R`, and :math:`C`) are computed for specific
+use **Scenarios** of the ocean space.
+
+Scenarios may represent current conditions, projected developments, or management
+alternatives, allowing :math:`D` to serve as a comparative tool
+for evaluating policy or spatial planning options.
+
+Examples of a typical scenario setting in the PEM framework:
+
+1. ``baseline`` scenario, representing the observed conditions until the present moment.
+2. ``business-as-usual`` scenario, representing the projected future if no extra management or planning if taken.
+3. ``eco-development`` scenario, representing a simulated future where biodiversity conservation heavily is enforced.
+
 
 .. _about_upg:
 
@@ -221,7 +237,6 @@ incremental, making :math:`D` larger than :math:`B`,
 like an incentive to lower :math:`R` or :math:`C`.
 
 
-
 Spatial Indexes
 -------------------------------------------
 
@@ -232,38 +247,29 @@ The PEM framework is designed to help in this process. Through a series of
 converging analytical processes, the input data are transformed into this
 spatial index components.
 
-The **Benefit Index** quantifies the economic and social **benefit** derived
-from the use of every model cell in the ocean space.
 
 .. seealso::
 
-   Check out more information about the :ref:`Benefit Index <about-benefit-index>`
+    The **Benefit Index** quantifies the economic and social **benefit** derived
+    from the use of every model cell in the ocean space.
 
-The **Habitat Risk Index** captures the **sensitivity** of
-marine habitats exposed to human activities, considered here as ecosystem **stressors**.
+    Check out more about the in the :ref:`Benefit Index page <about-benefit-index>`
+
 
 .. seealso::
 
-   Check out more information about the :ref:`Habitat Risk Index <about-risk-index>`
+    The **Habitat Risk Index** captures the **sensitivity** of
+    marine habitats exposed to human activities, considered here as ecosystem **stressors**.
 
+    Check out more about in the :ref:`Habitat Risk Index page <about-risk-index>`
 
-The **Conflict Index** expresses the **intensity of overlap** or
-competition between different marine uses within the model cell.
 
 .. seealso::
 
-   Check out more information about the :ref:`Conflict Index <about-conflict-index>`
+    The **Conflict Index** expresses the **intensity of overlap** or
+    competition between different marine uses within the model cell.
 
+    Check out more about in the :ref:`Conflict Index page <about-conflict-index>`
 
-
-Scenario-Based Analyses
-============================================
-
-All spatial indexes (:math:`B`, :math:`R`, and :math:`C`) are computed for specific
-use **scenarios** of the ocean space.
-
-Scenarios may represent current conditions, projected developments, or management
-alternatives, allowing :math:`D` to serve as a comparative tool
-for evaluating policy or spatial planning options.
 
 

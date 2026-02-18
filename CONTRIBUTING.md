@@ -22,7 +22,6 @@ Of course, Git must be set as the version control system
 Alternatively, clone via terminal:
 
 ```bash
-# [CHECK THIS] adapt this for branches or other repos
 git clone https://github.com/iporepos/pem.git
 ``` 
 

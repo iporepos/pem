@@ -82,7 +82,9 @@ from qgis.core import QgsCoordinateReferenceSystem, QgsRasterLayer, QgsRasterBan
 # define constants in uppercase
 
 CRS_OPS = {
-    "5641": "+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80"
+    "5641": "+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80",
+    # SIRGAS 2000 BRAZIL POLYCONIC
+    "5881": "+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=poly +lat_0=0 +lon_0=-54 +x_0=5000000 +y_0=10000000 +ellps=GRS80",
 }
 
 INVEST_JSON = """
@@ -227,7 +229,7 @@ def setup_hra_model(
     habitat_field,
     habitat_groups,
     stressor_groups,
-    dst_crs="5641",
+    dst_crs="5880",
     suffix="",
 ):
     """
@@ -257,7 +259,7 @@ def setup_hra_model(
     :type habitat_groups: dict
     :param stressor_groups: A dictionary defining the stressor layers and their properties.
     :type stressor_groups: dict
-    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5641``
+    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5880``
     :type dst_crs: str
     :param suffix: String suffix for model runs
     :type suffix: str
@@ -295,22 +297,22 @@ def setup_hra_model(
             module = iu.module_from_spec(spec)
             spec.loader.exec_module(module)
 
-            # define the paths to input and output folders
+            # define major parameters
             # ----------------------------------------
-            input_dir = "path/to/dir"
-            output_dir = "path/to/dir"
+            project_dir = "path/to/dir"
+            scenario = "baseline"
+            habitat_type = "benthic"
 
-            # define the path to input database
+            # infer the paths to IO
             # ----------------------------------------
-            input_db = f"{input_dir}/pem.gpkg"
-
-            # define criteria table
-            criteria_table = f"{input_dir}/criteria_ben_pem.csv"
-
-            # define reference raster
-            reference_raster = f"{input_dir}/gebco_topobathymetry.tif"
+            input_dir =  f"{project_dir}/inputs"
+            output_dir = f"{project_dir}/outputs"
+            input_db = f"{input_dir}/layers.gpkg"
+            score_table = f"{input_dir}/risk/{scenario}/scores_{habitat_type}.csv"
+            reference_raster = f"{input_dir}/bathymetry.tif"
 
             # organize habitat groups
+            # ----------------------------------------
             habitat_groups = {
                 # Habitat group
                 "MB3_MC3": ["MB3", "MC3"],  # list of habitats names
@@ -324,6 +326,7 @@ def setup_hra_model(
             }
 
             # organize stressors groups
+            # ----------------------------------------
             stressor_groups = {
                 # stressor name
                 "MINERACAO": {
@@ -471,7 +474,7 @@ def setup_stressors(
     groups,
     reference_raster,
     is_blank=False,
-    resolution=400,
+    resolution=500,
     subfolder=True,
 ):
     """
@@ -493,7 +496,7 @@ def setup_stressors(
     :type reference_raster: str
     :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False
     :type is_blank: bool
-    :param resolution: The desired resolution (cell size) for the final output stressor rasters. Default value = 400
+    :param resolution: The desired resolution (cell size) for the final output stressor rasters. Default value = 500
     :type resolution: float
     :return: The path to the newly created run-specific output folder containing the stressor rasters and metadata.
     :rtype: str
@@ -505,7 +508,7 @@ def setup_stressors(
 
         #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.
         #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group's ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).
-        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5880).
         #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.
 
         Intermediate rasters are cleaned up at the end.
@@ -568,7 +571,7 @@ def setup_stressors(
                 input_db=input_db,
                 folder_output=output_dir,
                 groups=groups,
-                reference_raster=f"{input_dir}/raster.tif",
+                reference_raster="{input_dir}/bathymetry.tif",
                 is_blank=False,
                 resolution=1000
             )
@@ -682,7 +685,7 @@ def setup_habitats(
     field_name,
     reference_raster,
     is_blank=False,
-    resolution=400,
+    resolution=500,
     subfolder=True,
 ):
     """
@@ -707,7 +710,7 @@ def setup_habitats(
     :type reference_raster: str
     :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False
     :type is_blank: bool
-    :param resolution: The desired resolution (cell size) for the final output habitat rasters. Default value = 400
+    :param resolution: The desired resolution (cell size) for the final output habitat rasters. Default value = 500
     :type resolution: float
     :return: The path to the newly created run-specific output folder containing the habitat rasters and metadata.
     :rtype: str
@@ -720,7 +723,7 @@ def setup_habitats(
         #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.
         #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.
         #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.
-        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).
+        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5880).
         #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.
 
         Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.
@@ -776,7 +779,7 @@ def setup_habitats(
                 input_layer="habitats_bentonicos_sul_v2",
                 groups=groups,
                 field_name="code",
-                reference_raster=f"{input_dir}/raster.tif",
+                reference_raster=f"{input_dir}/bathymetry.tif",
                 resolution=1000
             )
 
@@ -1010,7 +1013,7 @@ def util_raster_reproject(
     output_raster,
     input_raster,
     dst_resolution,
-    dst_crs="5641",
+    dst_crs="5880",
     src_crs="4326",
     dtype=6,
     resampling=0,
@@ -1024,7 +1027,7 @@ def util_raster_reproject(
     :type input_raster: str
     :param dst_resolution: The desired resolution (cell size) for the output raster, usually in the units of the target CRS.
     :type dst_resolution: float
-    :param dst_crs: The EPSG code (as a string) for the target CRS. Default value = ``5641``
+    :param dst_crs: The EPSG code (as a string) for the target CRS. Default value = ``5880``
     :type dst_crs: str
     :param src_crs: The EPSG code (as a string) for the source CRS. Default value = ``4326``
     :type src_crs: str
@@ -1261,6 +1264,27 @@ def util_read_raster(file_input, n_band=1, metadata=True):
     raster_input = None
 
     return dc_output
+
+
+def util_get_raster_crs(file_input, code_only=True):
+    """
+    Extracts the Coordinate Reference System (CRS) from a raster file.
+
+    :param file_input: The file path to the raster source.
+    :type file_input: str
+    :param code_only: Whether to return only the numerical ID (e.g., ``31983``) or the full authority ID (e.g., ``EPSG:31983``). Default value = ``True``
+    :type code_only: bool
+    :return: The CRS identifier as a string.
+    :rtype: str
+    """
+    rlayer = QgsRasterLayer(raster_path, "my_raster")
+    crs = rlayer.crs()
+    # Returns string like 'EPSG:31983'
+    epsg_authid = crs.authid()
+    if code_only:
+        return crs.authid().split(":")[1]
+    else:
+        return epsg_authid
 
 
 # FUNCTIONS -- internal utils
