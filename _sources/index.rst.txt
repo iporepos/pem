@@ -28,11 +28,12 @@ use and management of Brazil’s marine environment. It supports the implementat
 **Marine Spatial Planning (MSP)** across the country, integrating ecological, social,
 and economic dimensions of the ocean.
 
-This repository hosts **R and Python scripts** that ensure **reproducibility** of the analytical
-methods and mapping procedures applied in the **PEM Sul** (*Southern Marine Spatial Plan*).
-Also, the repository hosts key notes on more general information, referred as the **PEM framework**.
+This repository hosts methodological notes and program scripts that ensure **reproducibility** of
+the mapping procedures applied in the **PEM Sul Project** (*Southern Marine Spatial Plan*, a branch
+of the nation-wide initiative). Also, the repository hosts key notes on more general information,
+referred as the **PEM framework**.
 
-Each script is designed to operate independently, targeting specific stages of
+Each program script is designed to run as a standalone process, targeting specific stages of
 the PEM framework.
 
 .. seealso::

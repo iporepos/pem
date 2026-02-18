@@ -460,7 +460,9 @@
 <span class="c1"># define constants in uppercase</span>
 
 <span class="n">CRS_OPS</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;5641&quot;</span><span class="p">:</span> <span class="s2">&quot;+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80&quot;</span>
+    <span class="s2">&quot;5641&quot;</span><span class="p">:</span> <span class="s2">&quot;+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=merc +lat_ts=-2 +lon_0=-43 +x_0=5000000 +y_0=10000000 +ellps=GRS80&quot;</span><span class="p">,</span>
+    <span class="c1"># SIRGAS 2000 BRAZIL POLYCONIC</span>
+    <span class="s2">&quot;5881&quot;</span><span class="p">:</span> <span class="s2">&quot;+proj=pipeline +step +proj=unitconvert +xy_in=deg +xy_out=rad +step +proj=poly +lat_0=0 +lon_0=-54 +x_0=5000000 +y_0=10000000 +ellps=GRS80&quot;</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="n">INVEST_JSON</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -610,7 +612,7 @@
     <span class="n">habitat_field</span><span class="p">,</span>
     <span class="n">habitat_groups</span><span class="p">,</span>
     <span class="n">stressor_groups</span><span class="p">,</span>
-    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5641&quot;</span><span class="p">,</span>
+    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5880&quot;</span><span class="p">,</span>
     <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -640,7 +642,7 @@
 <span class="sd">    :type habitat_groups: dict</span>
 <span class="sd">    :param stressor_groups: A dictionary defining the stressor layers and their properties.</span>
 <span class="sd">    :type stressor_groups: dict</span>
-<span class="sd">    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5641``</span>
+<span class="sd">    :param dst_crs: The EPSG code for the destination Coordinate Reference System (CRS). Default value = ``5880``</span>
 <span class="sd">    :type dst_crs: str</span>
 <span class="sd">    :param suffix: String suffix for model runs</span>
 <span class="sd">    :type suffix: str</span>
@@ -678,22 +680,22 @@
 <span class="sd">            module = iu.module_from_spec(spec)</span>
 <span class="sd">            spec.loader.exec_module(module)</span>
 
-<span class="sd">            # define the paths to input and output folders</span>
+<span class="sd">            # define major parameters</span>
 <span class="sd">            # ----------------------------------------</span>
-<span class="sd">            input_dir = &quot;path/to/dir&quot;</span>
-<span class="sd">            output_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            project_dir = &quot;path/to/dir&quot;</span>
+<span class="sd">            scenario = &quot;baseline&quot;</span>
+<span class="sd">            habitat_type = &quot;benthic&quot;</span>
 
-<span class="sd">            # define the path to input database</span>
+<span class="sd">            # infer the paths to IO</span>
 <span class="sd">            # ----------------------------------------</span>
-<span class="sd">            input_db = f&quot;{input_dir}/pem.gpkg&quot;</span>
-
-<span class="sd">            # define criteria table</span>
-<span class="sd">            criteria_table = f&quot;{input_dir}/criteria_ben_pem.csv&quot;</span>
-
-<span class="sd">            # define reference raster</span>
-<span class="sd">            reference_raster = f&quot;{input_dir}/gebco_topobathymetry.tif&quot;</span>
+<span class="sd">            input_dir =  f&quot;{project_dir}/inputs&quot;</span>
+<span class="sd">            output_dir = f&quot;{project_dir}/outputs&quot;</span>
+<span class="sd">            input_db = f&quot;{input_dir}/layers.gpkg&quot;</span>
+<span class="sd">            score_table = f&quot;{input_dir}/risk/{scenario}/scores_{habitat_type}.csv&quot;</span>
+<span class="sd">            reference_raster = f&quot;{input_dir}/bathymetry.tif&quot;</span>
 
 <span class="sd">            # organize habitat groups</span>
+<span class="sd">            # ----------------------------------------</span>
 <span class="sd">            habitat_groups = {</span>
 <span class="sd">                # Habitat group</span>
 <span class="sd">                &quot;MB3_MC3&quot;: [&quot;MB3&quot;, &quot;MC3&quot;],  # list of habitats names</span>
@@ -707,6 +709,7 @@
 <span class="sd">            }</span>
 
 <span class="sd">            # organize stressors groups</span>
+<span class="sd">            # ----------------------------------------</span>
 <span class="sd">            stressor_groups = {</span>
 <span class="sd">                # stressor name</span>
 <span class="sd">                &quot;MINERACAO&quot;: {</span>
@@ -857,7 +860,7 @@
     <span class="n">groups</span><span class="p">,</span>
     <span class="n">reference_raster</span><span class="p">,</span>
     <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
     <span class="n">subfolder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -879,7 +882,7 @@
 <span class="sd">    :type reference_raster: str</span>
 <span class="sd">    :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</span>
 <span class="sd">    :type is_blank: bool</span>
-<span class="sd">    :param resolution: The desired resolution (cell size) for the final output stressor rasters. Default value = 400</span>
+<span class="sd">    :param resolution: The desired resolution (cell size) for the final output stressor rasters. Default value = 500</span>
 <span class="sd">    :type resolution: float</span>
 <span class="sd">    :return: The path to the newly created run-specific output folder containing the stressor rasters and metadata.</span>
 <span class="sd">    :rtype: str</span>
@@ -891,7 +894,7 @@
 
 <span class="sd">        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template.</span>
 <span class="sd">        #. **Rasterization Loop:** For each group, the template raster is copied, and all vector layers listed under the group&#39;s ``layers`` key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</span>
-<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5880).</span>
 <span class="sd">        #. **Metadata:** An ``info_stressors.csv`` file is created, detailing the name, file path, and required **STRESSOR BUFFER (meters)** for each generated stressor raster.</span>
 
 <span class="sd">        Intermediate rasters are cleaned up at the end.</span>
@@ -954,7 +957,7 @@
 <span class="sd">                input_db=input_db,</span>
 <span class="sd">                folder_output=output_dir,</span>
 <span class="sd">                groups=groups,</span>
-<span class="sd">                reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">                reference_raster=&quot;{input_dir}/bathymetry.tif&quot;,</span>
 <span class="sd">                is_blank=False,</span>
 <span class="sd">                resolution=1000</span>
 <span class="sd">            )</span>
@@ -1071,7 +1074,7 @@
     <span class="n">field_name</span><span class="p">,</span>
     <span class="n">reference_raster</span><span class="p">,</span>
     <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span>
+    <span class="n">resolution</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
     <span class="n">subfolder</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1096,7 +1099,7 @@
 <span class="sd">    :type reference_raster: str</span>
 <span class="sd">    :param is_blank: [optional] If ``True``, the ``reference_raster`` is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</span>
 <span class="sd">    :type is_blank: bool</span>
-<span class="sd">    :param resolution: The desired resolution (cell size) for the final output habitat rasters. Default value = 400</span>
+<span class="sd">    :param resolution: The desired resolution (cell size) for the final output habitat rasters. Default value = 500</span>
 <span class="sd">    :type resolution: float</span>
 <span class="sd">    :return: The path to the newly created run-specific output folder containing the habitat rasters and metadata.</span>
 <span class="sd">    :rtype: str</span>
@@ -1109,7 +1112,7 @@
 <span class="sd">        #. **Vector Split:** Calls ``split_features`` to create a temporary GeoPackage where each habitat group is saved as a separate layer.</span>
 <span class="sd">        #. **Template Raster:** If ``is_blank`` is ``False``, a blank raster is generated from the ``reference_raster`` to serve as the template for rasterization.</span>
 <span class="sd">        #. **Rasterization Loop:** Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</span>
-<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5641).</span>
+<span class="sd">        #. **Reprojection:** The resulting raster is reprojected to the desired ``resolution`` (and default CRS of 5880).</span>
 <span class="sd">        #. **Metadata:** An ``info_habitats.csv`` file is created, detailing the name and file path for each generated habitat raster.</span>
 
 <span class="sd">        Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</span>
@@ -1165,7 +1168,7 @@
 <span class="sd">                input_layer=&quot;habitats_bentonicos_sul_v2&quot;,</span>
 <span class="sd">                groups=groups,</span>
 <span class="sd">                field_name=&quot;code&quot;,</span>
-<span class="sd">                reference_raster=f&quot;{input_dir}/raster.tif&quot;,</span>
+<span class="sd">                reference_raster=f&quot;{input_dir}/bathymetry.tif&quot;,</span>
 <span class="sd">                resolution=1000</span>
 <span class="sd">            )</span>
 
@@ -1408,7 +1411,7 @@
     <span class="n">output_raster</span><span class="p">,</span>
     <span class="n">input_raster</span><span class="p">,</span>
     <span class="n">dst_resolution</span><span class="p">,</span>
-    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5641&quot;</span><span class="p">,</span>
+    <span class="n">dst_crs</span><span class="o">=</span><span class="s2">&quot;5880&quot;</span><span class="p">,</span>
     <span class="n">src_crs</span><span class="o">=</span><span class="s2">&quot;4326&quot;</span><span class="p">,</span>
     <span class="n">dtype</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
     <span class="n">resampling</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
@@ -1422,7 +1425,7 @@
 <span class="sd">    :type input_raster: str</span>
 <span class="sd">    :param dst_resolution: The desired resolution (cell size) for the output raster, usually in the units of the target CRS.</span>
 <span class="sd">    :type dst_resolution: float</span>
-<span class="sd">    :param dst_crs: The EPSG code (as a string) for the target CRS. Default value = ``5641``</span>
+<span class="sd">    :param dst_crs: The EPSG code (as a string) for the target CRS. Default value = ``5880``</span>
 <span class="sd">    :type dst_crs: str</span>
 <span class="sd">    :param src_crs: The EPSG code (as a string) for the source CRS. Default value = ``4326``</span>
 <span class="sd">    :type src_crs: str</span>
@@ -1671,6 +1674,30 @@
     <span class="n">raster_input</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">dc_output</span></div>
+
+
+
+<div class="viewcode-block" id="util_get_raster_crs">
+<a class="viewcode-back" href="../../risk.html#pem.risk.util_get_raster_crs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_crs</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Extracts the Coordinate Reference System (CRS) from a raster file.</span>
+
+<span class="sd">    :param file_input: The file path to the raster source.</span>
+<span class="sd">    :type file_input: str</span>
+<span class="sd">    :param code_only: Whether to return only the numerical ID (e.g., ``31983``) or the full authority ID (e.g., ``EPSG:31983``). Default value = ``True``</span>
+<span class="sd">    :type code_only: bool</span>
+<span class="sd">    :return: The CRS identifier as a string.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rlayer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="n">raster_path</span><span class="p">,</span> <span class="s2">&quot;my_raster&quot;</span><span class="p">)</span>
+    <span class="n">crs</span> <span class="o">=</span> <span class="n">rlayer</span><span class="o">.</span><span class="n">crs</span><span class="p">()</span>
+    <span class="c1"># Returns string like &#39;EPSG:31983&#39;</span>
+    <span class="n">epsg_authid</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">code_only</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">epsg_authid</span></div>
 
 
 

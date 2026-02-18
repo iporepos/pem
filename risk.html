@@ -465,7 +465,7 @@ produce the final <strong>Risk Index raster</strong> (<code class="docutils lite
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_hra_model">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_criteria</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aoi_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stressor_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5641'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_criteria</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aoi_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stressor_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
 <dd><p>Sets up all necessary input layers and data structures for the HRA (Habitat Risk Assessment) model run.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -484,7 +484,7 @@ produce the final <strong>Risk Index raster</strong> (<code class="docutils lite
 <li><p><strong>habitat_field</strong> (<em>str</em>) – The name of the field in <code class="docutils literal notranslate"><span class="pre">habitat_layer</span></code> used to classify habitats into groups.</p></li>
 <li><p><strong>habitat_groups</strong> (<em>dict</em>) – A dictionary defining how habitats are grouped and processed.</p></li>
 <li><p><strong>stressor_groups</strong> (<em>dict</em>) – A dictionary defining the stressor layers and their properties.</p></li>
-<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code for the destination Coordinate Reference System (CRS). Default value = <code class="docutils literal notranslate"><span class="pre">5641</span></code></p></li>
+<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code for the destination Coordinate Reference System (CRS). Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
 <li><p><strong>suffix</strong> (<em>str</em>) – String suffix for model runs</p></li>
 </ul>
 </dd>
@@ -523,22 +523,22 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
-<span class="c1"># define the paths to input and output folders</span>
+<span class="c1"># define major parameters</span>
 <span class="c1"># ----------------------------------------</span>
-<span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
+<span class="n">project_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
+<span class="n">habitat_type</span> <span class="o">=</span> <span class="s2">&quot;benthic&quot;</span>
 
-<span class="c1"># define the path to input database</span>
+<span class="c1"># infer the paths to IO</span>
 <span class="c1"># ----------------------------------------</span>
-<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/pem.gpkg&quot;</span>
-
-<span class="c1"># define criteria table</span>
-<span class="n">criteria_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/criteria_ben_pem.csv&quot;</span>
-
-<span class="c1"># define reference raster</span>
-<span class="n">reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/gebco_topobathymetry.tif&quot;</span>
+<span class="n">input_dir</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/inputs&quot;</span>
+<span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/outputs&quot;</span>
+<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/layers.gpkg&quot;</span>
+<span class="n">score_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/scores_</span><span class="si">{</span><span class="n">habitat_type</span><span class="si">}</span><span class="s2">.csv&quot;</span>
+<span class="n">reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/bathymetry.tif&quot;</span>
 
 <span class="c1"># organize habitat groups</span>
+<span class="c1"># ----------------------------------------</span>
 <span class="n">habitat_groups</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># Habitat group</span>
     <span class="s2">&quot;MB3_MC3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">],</span>  <span class="c1"># list of habitats names</span>
@@ -552,6 +552,7 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 <span class="p">}</span>
 
 <span class="c1"># organize stressors groups</span>
+<span class="c1"># ----------------------------------------</span>
 <span class="n">stressor_groups</span> <span class="o">=</span> <span class="p">{</span>
     <span class="c1"># stressor name</span>
     <span class="s2">&quot;MINERACAO&quot;</span><span class="p">:</span> <span class="p">{</span>
@@ -590,7 +591,7 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_stressors">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_stressors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_stressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_stressors" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_stressors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_stressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_stressors" title="Link to this definition">#</a></dt>
 <dd><p>Sets up stressor layers by rasterizing multiple vector layers from a
 database into single stressor rasters and reprojecting them to a specified resolution.</p>
 <div class="admonition note">
@@ -605,7 +606,7 @@ database into single stressor rasters and reprojecting them to a specified resol
 <li><p><strong>groups</strong> (<em>dict</em>) – A dictionary defining the stressor groups. Keys are the desired output stressor names (e.g., <code class="docutils literal notranslate"><span class="pre">Coastal_Pollution</span></code>), and values are dictionaries containing two keys: <code class="docutils literal notranslate"><span class="pre">layers</span></code> (a list of vector layer names to be combined) and <code class="docutils literal notranslate"><span class="pre">buffer</span></code> (the required buffer distance in meters for subsequent analysis).</p></li>
 <li><p><strong>reference_raster</strong> (<em>str</em>) – The path to a raster file whose extent, CRS, and other properties will be used as a template for the output stressor rasters.</p></li>
 <li><p><strong>is_blank</strong> (<em>bool</em>) – [optional] If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</p></li>
-<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output stressor rasters. Default value = 400</p></li>
+<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output stressor rasters. Default value = 500</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -622,7 +623,7 @@ database into single stressor rasters and reprojecting them to a specified resol
 <ol class="arabic simple">
 <li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.</p></li>
 <li><p class="sd-card-text"><strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</p></li>
-<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5880).</p></li>
 <li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.</p></li>
 </ol>
 <p class="sd-card-text">Intermediate rasters are cleaned up at the end.</p>
@@ -681,7 +682,7 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
     <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
     <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
     <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/raster.tif&quot;</span><span class="p">,</span>
+    <span class="n">reference_raster</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{input_dir}</span><span class="s2">/bathymetry.tif&quot;</span><span class="p">,</span>
     <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span>
 <span class="p">)</span>
@@ -692,7 +693,7 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.setup_habitats">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_habitats" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_habitats" title="Link to this definition">#</a></dt>
 <dd><p>Sets up habitat layers by splitting a vector layer, rasterizing each resulting
 habitat group, and reprojecting the rasters to a specified resolution.</p>
 <div class="admonition note">
@@ -709,7 +710,7 @@ habitat group, and reprojecting the rasters to a specified resolution.</p>
 <li><p><strong>field_name</strong> (<em>str</em>) – The name of the attribute field in the input data used for grouping and querying the habitat features.</p></li>
 <li><p><strong>reference_raster</strong> (<em>str</em>) – The path to a raster file whose extent, CRS, and other properties will be used as a template for the output habitat rasters.</p></li>
 <li><p><strong>is_blank</strong> (<em>bool</em>) – [optional] If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</p></li>
-<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output habitat rasters. Default value = 400</p></li>
+<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output habitat rasters. Default value = 500</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -727,7 +728,7 @@ habitat group, and reprojecting the rasters to a specified resolution.</p>
 <li><p class="sd-card-text"><strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.</p></li>
 <li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.</p></li>
 <li><p class="sd-card-text"><strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</p></li>
-<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5641).</p></li>
+<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5880).</p></li>
 <li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.</p></li>
 </ol>
 <p class="sd-card-text">Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
@@ -781,7 +782,7 @@ Environment with <code class="docutils literal notranslate"><span class="pre">nu
     <span class="n">input_layer</span><span class="o">=</span><span class="s2">&quot;habitats_bentonicos_sul_v2&quot;</span><span class="p">,</span>
     <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
     <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/raster.tif&quot;</span><span class="p">,</span>
+    <span class="n">reference_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/bathymetry.tif&quot;</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span>
 <span class="p">)</span>
 </pre></div>
@@ -849,7 +850,7 @@ file and does not modify the input raster.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.util_raster_reproject">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_raster_reproject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5641'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_raster_reproject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_raster_reproject" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_raster_reproject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_raster_reproject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_raster_reproject" title="Link to this definition">#</a></dt>
 <dd><p>Reprojects and optionally resamples an input raster to a new Coordinate Reference System (CRS) and resolution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -857,7 +858,7 @@ file and does not modify the input raster.</p>
 <li><p><strong>output_raster</strong> (<em>str</em>) – The full path and filename for the resulting reprojected raster file.</p></li>
 <li><p><strong>input_raster</strong> (<em>str</em>) – The path to the source raster file to be reprojected.</p></li>
 <li><p><strong>dst_resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the output raster, usually in the units of the target CRS.</p></li>
-<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code (as a string) for the target CRS. Default value = <code class="docutils literal notranslate"><span class="pre">5641</span></code></p></li>
+<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code (as a string) for the target CRS. Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
 <li><p><strong>src_crs</strong> (<em>str</em>) – The EPSG code (as a string) for the source CRS. Default value = <code class="docutils literal notranslate"><span class="pre">4326</span></code></p></li>
 <li><p><strong>dtype</strong> (<em>int</em>) – The desired data type for the output raster bands (GDAL data type code). Default value = 6 (Float32)</p></li>
 <li><p><strong>resampling</strong> (<em>int</em>) – The resampling method to use (GDAL resampling code). Default value = 0 (Nearest Neighbour)</p></li>
@@ -978,6 +979,26 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 </dl>
 </dd></dl>
 
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_get_raster_crs">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_crs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_crs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_crs" title="Link to this definition">#</a></dt>
+<dd><p>Extracts the Coordinate Reference System (CRS) from a raster file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_input</strong> (<em>str</em>) – The file path to the raster source.</p></li>
+<li><p><strong>code_only</strong> (<em>bool</em>) – Whether to return only the numerical ID (e.g., <code class="docutils literal notranslate"><span class="pre">31983</span></code>) or the full authority ID (e.g., <code class="docutils literal notranslate"><span class="pre">EPSG:31983</span></code>). Default value = <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The CRS identifier as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -1038,6 +1059,7 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_fuzzify_raster"><code class="docutils literal notranslate"><span class="pre">util_fuzzify_raster()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_stats"><code class="docutils literal notranslate"><span class="pre">util_get_raster_stats()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_read_raster"><code class="docutils literal notranslate"><span class="pre">util_read_raster()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_crs"><code class="docutils literal notranslate"><span class="pre">util_get_raster_crs()</span></code></a></li>
 </ul>
   </nav></div>
 

@@ -430,9 +430,9 @@ transforms these datasets into <strong>spatially explicit indicators</strong> an
 <p>At the foundation level, the workflow integrates diverse spatial datasets, including:</p>
 <ul class="simple">
 <li><p><strong>Bathymetry</strong> – ocean depth and seabed morphology.</p></li>
-<li><p><strong>Ocean Habitats</strong> – distribution and characteristics of marine environments that provide ecosystem services.</p></li>
-<li><p><strong>Ocean Users</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
-<li><p><strong>Land Hubs</strong> – ports, cities, and infrastructure nodes that receives direct economic benefits from activities in the ocean.</p></li>
+<li><p><strong>Habitats</strong> – distribution and characteristics of marine environments that provide ecosystem services.</p></li>
+<li><p><strong>Users</strong> – spatial footprint of human activities across sectors such as fisheries, energy and transportation.</p></li>
+<li><p><strong>Land Hubs</strong> – ports, cities, and infrastructure nodes in land that receives direct economic benefits from activities in the ocean.</p></li>
 <li><p><strong>Coastal features</strong> - other important geographical features of the coastline that influence the definition of management units.</p></li>
 </ul>
 <p>These datasets serve as the basis for constructing higher-level spatial information layers.</p>
@@ -475,9 +475,9 @@ de desempenho e simulação de cenários.</span><a class="headerlink" href="#fig
 </figure>
 </div>
 </div>
-<p>Within this space, several spatial features are represented: <strong>land hubs</strong> such
-as ports and coastal cities; <strong>habitats</strong>, which are sources of ecosystem
-services and may be sensitive to disturbance; and <strong>users</strong>, representing the
+<p>Within this space, several spatial features are represented: <strong>Land Hubs</strong> such
+as ports and coastal cities; <strong>Habitats</strong>, which are sources of ecosystem
+services and may be sensitive to disturbance; and ocean <strong>Users</strong>, representing the
 various economic sectors that occupy and use ecosystem services.</p>
 <p>These elements coexist and interact across the ocean space grid, forming the physical and
 functional components of the system.</p>
@@ -489,6 +489,20 @@ conflicts arise where different users compete for the same space.</p>
 <p>Together, these dimensions define the integrative structure of the PEM framework, which
 supports both diagnostic evaluation and scenario-based simulation of marine use
 performance.</p>
+</section>
+<section id="scenario-based-analyses">
+<h2>Scenario-Based Analyses<a class="headerlink" href="#scenario-based-analyses" title="Link to this heading">#</a></h2>
+<p>All spatial indexes (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific
+use <strong>Scenarios</strong> of the ocean space.</p>
+<p>Scenarios may represent current conditions, projected developments, or management
+alternatives, allowing <span class="math notranslate nohighlight">\(D\)</span> to serve as a comparative tool
+for evaluating policy or spatial planning options.</p>
+<p>Examples of a typical scenario setting in the PEM framework:</p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">baseline</span></code> scenario, representing the observed conditions until the present moment.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">business-as-usual</span></code> scenario, representing the projected future if no extra management or planning if taken.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">eco-development</span></code> scenario, representing a simulated future where biodiversity conservation heavily is enforced.</p></li>
+</ol>
 </section>
 <section id="management-units">
 <span id="about-upg"></span><h2>Management Units<a class="headerlink" href="#management-units" title="Link to this heading">#</a></h2>
@@ -586,33 +600,25 @@ indexes: <span class="math notranslate nohighlight">\(B\)</span>, <span class="m
 <p>The PEM framework is designed to help in this process. Through a series of
 converging analytical processes, the input data are transformed into this
 spatial index components.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
 <p>The <strong>Benefit Index</strong> quantifies the economic and social <strong>benefit</strong> derived
 from the use of every model cell in the ocean space.</p>
+<p>Check out more about the in the <a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">Benefit Index page</span></a></p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">Benefit Index</span></a></p>
-</div>
 <p>The <strong>Habitat Risk Index</strong> captures the <strong>sensitivity</strong> of
 marine habitats exposed to human activities, considered here as ecosystem <strong>stressors</strong>.</p>
+<p>Check out more about in the <a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index page</span></a></p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index</span></a></p>
-</div>
 <p>The <strong>Conflict Index</strong> expresses the <strong>intensity of overlap</strong> or
 competition between different marine uses within the model cell.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Check out more information about the <a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">Conflict Index</span></a></p>
+<p>Check out more about in the <a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">Conflict Index page</span></a></p>
 </div>
 </section>
-</section>
-<section id="scenario-based-analyses">
-<h2>Scenario-Based Analyses<a class="headerlink" href="#scenario-based-analyses" title="Link to this heading">#</a></h2>
-<p>All spatial indexes (<span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span>) are computed for specific
-use <strong>scenarios</strong> of the ocean space.</p>
-<p>Scenarios may represent current conditions, projected developments, or management
-alternatives, allowing <span class="math notranslate nohighlight">\(D\)</span> to serve as a comparative tool
-for evaluating policy or spatial planning options.</p>
 </section>
 </section>
 
@@ -666,13 +672,13 @@ for evaluating policy or spatial planning options.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem-framework">PEM framework</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#input-data">Input Data</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-spatial-model">The Spatial Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-units">Management Units</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-performance-index">Use Performance Index</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-hyperspace">Performance Hyperspace</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indexes">Spatial Indexes</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
 </ul>
   </nav></div>
 
