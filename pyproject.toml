@@ -49,7 +49,7 @@ name = "pem"          # <-- [CHANGE THIS] set with your project name
 # Version number
 dynamic = ["version"]    # used for automated versioning
 # Short description
-description = "Scripts supporting the marine spatial planning in Brazil."
+description = "Methods and scripts supporting marine spatial planning in Brazil."
 # Keywords (optional) for search on PyPI
 keywords = [
   "python", 
