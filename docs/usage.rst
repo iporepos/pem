@@ -9,11 +9,16 @@ This guide describes how to install, configure, and use the **PEM framework**
 from source. The framework is organized as a collection of standalone Python
 modules, each targeting a specific analytical component.
 
+.. toctree::
+   :maxdepth: 1
+
+   Home <self>
+   usage_groups
+
 .. seealso::
 
    If you intend to extend or modify the framework, refer to
    :ref:`Development <development>`.
-
 
 .. _installation:
 
@@ -228,16 +233,20 @@ The structure below represents the recommended layout for a complete project.
 
 .. code-block:: text
 
-    pem-project/                          # Project root
+    pem-project/                           # Project root
     │
-    ├── inputs/                           # All model inputs
+    ├── inputs/                            # All model inputs
     │   │
-    │   ├── bathymetry.tif                 # Reference raster (resolution, extent, CRS)
+    │   ├── bathymetry.tif                 # Canonical raster (resolution, extent, CRS)
     │   │
-    │   ├── layers.gpkg                    # Core vector data container
-    │   ├── layers.gpkg|roi                # Region of Interest (polygon layer)
-    │   ├── layers.gpkg|hubs               # Land hubs (point layer)
-    │   ├── layers.gpkg|...                # Additional optional layers
+    │   ├── vectors.gpkg                    # Core vector data container
+    │   ├── vectors.gpkg|roi                # Region of Interest (polygon layer)
+    │   ├── vectors.gpkg|hubs               # Land hubs (point layer)
+    │   ├── vectors.gpkg|...                # Additional optional layers
+    │   │
+    │   ├── _sources/                      # Helper folder for sourced datasets
+    │   │
+    │   ├── benefit/                       # Benefit Index parameters and data
     │   │
     │   ├── habitats/                      # Habitat rasters
     │   │   ├── benthic.tif                # Benthic habitat map
@@ -256,17 +265,15 @@ The structure below represents the recommended layout for a complete project.
     │   │   │
     │   │   └── {scenario}/                # Alternative scenarios
     │   │
-    │   ├── risk/                          # Habitat Risk model parameters
-    │   │   ├── baseline/
-    │   │   │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
-    │   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-    │   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-    │   │   │   ├── stressors_pelagic.csv
-    │   │   │   └── scores_pelagic.csv
-    │   │   │
-    │   │   └── {scenario}/                # Alternative scenarios
-    │   │
-    │   └── benefit/                       # Benefit Index parameters and data
+    │   └── risk/                          # Habitat Risk model parameters
+    │       ├── baseline/
+    │       │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
+    │       │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
+    │       │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
+    │       │   ├── stressors_pelagic.csv
+    │       │   └── scores_pelagic.csv
+    │       │
+    │       └── {scenario}/                # Alternative scenarios
     │
     └── outputs/                           # Model outputs
         │
@@ -435,4 +442,14 @@ Before running any PEM module, verify:
 
 Failure to enforce spatial coherence at the project initialization stage
 is the most common source of downstream analytical errors.
+
+.. _tutorials:
+
+Tutorials
+============================================
+
+.. seealso::
+
+   Learn how to setup layer groups in the scripts in
+   :ref:`Tutorial: Defining Model Layer Groups <usage-groups>`.
 

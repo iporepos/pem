@@ -8,7 +8,7 @@ Testing routines for the pem.risk module
 
 .. warning::
 
-    Run this script in the QGIS python environment
+    Run this script in the QGIS python environment or via OSGeo4W
 
 
 """
@@ -19,19 +19,48 @@ Testing routines for the pem.risk module
 
 # Native imports
 # =======================================================================
+import sys, os, datetime
+import argparse
 import inspect
 import shutil
 from pathlib import Path
 from pprint import pprint
 import importlib.util as iu
 
+
+# QGIS imports
+# =======================================================================
+# Define the path to QGIS plugins (adjust if your OSGeo4W root is different)
+# For LTR, it's usually under apps\qgis-ltr\python\plugins
+PLUGIN_PATH = r"C:\OSGeo4W\apps\qgis-ltr\python\plugins"
+
+if PLUGIN_PATH not in sys.path:
+    sys.path.append(PLUGIN_PATH)
+
+from qgis.core import QgsApplication
+from processing.core.Processing import Processing
+
+# Initialize QGIS (Required for standalone scripts)
+# 1. Setup Paths
+# This must happen BEFORE initQgis
+os.environ["QT_QPA_PLATFORM"] = (
+    "offscreen"  # Prevents 'no display' errors on some systems
+)
+QgsApplication.setPrefixPath(r"C:\OSGeo4W\apps\qgis-ltr", True)
+QGS = QgsApplication([], False)
+QGS.initQgis()
+
+# Initialize the Processing framework
+Processing.initialize()
+
 # CONSTANTS
 # ***********************************************************************
 # ... {develop}
 
-here = Path(__file__).resolve()
-FOLDER_ROOT = here.parent.parent.parent
+HERE = Path(__file__).resolve()
+FOLDER_ROOT = HERE.parent.parent.parent
 DATA_DIR = FOLDER_ROOT / "tests/data/pemsul"
+OUTPUT_DIR = FOLDER_ROOT / "tests/outputs"
 
 # define the paths to this module
 # ----------------------------------------
@@ -66,6 +95,40 @@ def _print_passed_msg():
 def _print_failed_msg():
     print("\n >>> test failed.")
     return None
+
+
+def _get_timestamp():
+    now = datetime.datetime.now()
+    return str(now.strftime("%Y-%m-%dT%H%M%S"))
+
+
+def _make_run_folder(folder_output, run_name):
+    """
+    Creates a unique, time-stamped run folder within a specified output directory.
+
+    :param folder_output: The parent directory where the new run folder will be created.
+    :type folder_output: str or :class:`pathlib.Path`
+    :param run_name: The base name for the new folder. A timestamp will be appended to it.
+    :type run_name: str
+    :return: The absolute path to the newly created run folder.
+    :rtype: str
+
+    **Notes**
+
+    It appends a unique timestamp to the run name and ensures the
+    folder doesn't already exist before creating it.
+
+    """
+    while True:
+        ts = _get_timestamp()
+        folder_run = Path(folder_output) / f"{run_name}_{ts}"
+        if os.path.exists(folder_run):
+            time.sleep(1)
+        else:
+            os.mkdir(folder_run)
+            break
+
+    return os.path.abspath(folder_run)
 
 
 # FUNCTIONS -- assertions
@@ -231,37 +294,6 @@ def test_util_split_features():
         input_layer="habitats_bentonicos_sul_v2",
         groups=groups,
         field_name="code",  # field of habitat name
-    )
-
-    # Assertions
-    # ----------------------------------------
-    try:
-        assert_files(ls_files=[output_file])
-        _print_passed_msg()
-    except AssertionError:
-        _print_failed_msg()
-
-    return None
-
-
-def test_util_raster_blank():
-    func_name = inspect.currentframe().f_code.co_name
-    _print_func_name(func_name)
-
-    # define the path to output folder
-    # ----------------------------------------
-    output_dir = MODULE._make_run_folder(
-        folder_output=f"{DATA_DIR}/outputs", run_name=func_name
-    )
-
-    # define reference raster
-    # ----------------------------------------
-    reference_raster = f"{DATA_DIR}/gebco_topobathymetry.tif"
-
-    # call the function
-    # ----------------------------------------
-    output_file = MODULE.util_raster_blank(
-        output_raster=f"{output_dir}/blank.tif", input_raster=reference_raster
     )
 
     # Assertions
@@ -619,24 +651,64 @@ def test_compute_risk_index():
     return None
 
 
+def live_check():
+    print("This is a live check.")
+
+
+def get_arguments():
+
+    parser = argparse.ArgumentParser(
+        description="Run OSGeo Shell tester",
+        epilog="Usage example: python -m tests.bcmk.risk_tester --all",
+    )
+
+    parser.add_argument("--which", default=20, help="Which tests to run")
+
+    parser.add_argument(
+        "-a",
+        "--all",
+        action="store_true",
+        help="Run all tests",
+    )
+
+    args = parser.parse_args()
+
+    return args
+
+
 def main():
+
     print("\nTESTING risk.py\n")
 
-    # utils
-    test_util_raster_blank()
-    test_util_raster_reproject()
-    test_util_split_features()
-    test_util_layer_rasterize()
-    test_util_get_raster_stats()
-    test_util_fuzzify_raster()
+    args = get_arguments()
 
-    # setups
-    test_setup_stressors()
-    test_setup_habitats()
-    test_setup_hra_model()
+    f_which = int(args.which)
 
-    # computes
-    test_compute_risk_index()
+    is_all = args.all
+
+    dc_test_dispatcher = {
+        # utils
+        0: test_util_raster_blank,
+        2: test_util_raster_reproject,
+        3: test_util_split_features,
+        4: test_util_layer_rasterize,
+        5: test_util_get_raster_stats,
+        6: test_util_fuzzify_raster,
+        # setups
+        7: test_setup_stressors,
+        8: test_setup_habitats,
+        9: test_setup_hra_model,
+        # computes
+        10: test_compute_risk_index,
+        20: live_check,
+    }
+
+    if is_all:
+        for i in dc_test_dispatcher:
+            dc_test_dispatcher[i]()
+    else:
+        if f_which in dc_test_dispatcher:
+            dc_test_dispatcher[f_which]()
 
     return None
 
@@ -644,5 +716,7 @@ def main():
 # SCRIPT
 # ***********************************************************************
 # ... {develop}
+if __name__ == "__main__":
 
-main()
+    main()
+    QGS.exitQgis()
