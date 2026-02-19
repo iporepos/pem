@@ -50,7 +50,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="API" href="api.html" />
+    <link rel="next" title="Tutorial: Defining Model Layer Groups" href="usage_groups.html" />
     <link rel="prev" title="Conflict Index" href="about_conflict_index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -330,7 +330,11 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups.html">Tutorial: Defining Model Layer Groups</a></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -395,6 +399,12 @@
 <p>This guide describes how to install, configure, and use the <strong>PEM framework</strong>
 from source. The framework is organized as a collection of standalone Python
 modules, each targeting a specific analytical component.</p>
+<div class="toctree-wrapper compound">
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups.html">Tutorial: Defining Model Layer Groups</a></li>
+</ul>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>If you intend to extend or modify the framework, refer to
@@ -572,16 +582,20 @@ modules.</p>
 <p>Adherence to this directory structure is not mandatory but is strongly recommended.
 The rationale of the PEM framework relies on this layout.</p>
 </div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem-project/                          # Project root
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem-project/                           # Project root
 │
-├── inputs/                           # All model inputs
+├── inputs/                            # All model inputs
 │   │
-│   ├── bathymetry.tif                 # Reference raster (resolution, extent, CRS)
+│   ├── bathymetry.tif                 # Canonical raster (resolution, extent, CRS)
 │   │
-│   ├── layers.gpkg                    # Core vector data container
-│   ├── layers.gpkg|roi                # Region of Interest (polygon layer)
-│   ├── layers.gpkg|hubs               # Land hubs (point layer)
-│   ├── layers.gpkg|...                # Additional optional layers
+│   ├── vectors.gpkg                    # Core vector data container
+│   ├── vectors.gpkg|roi                # Region of Interest (polygon layer)
+│   ├── vectors.gpkg|hubs               # Land hubs (point layer)
+│   ├── vectors.gpkg|...                # Additional optional layers
+│   │
+│   ├── _sources/                      # Helper folder for sourced datasets
+│   │
+│   ├── benefit/                       # Benefit Index parameters and data
 │   │
 │   ├── habitats/                      # Habitat rasters
 │   │   ├── benthic.tif                # Benthic habitat map
@@ -600,17 +614,15 @@ The rationale of the PEM framework relies on this layout.</p>
 │   │   │
 │   │   └── {scenario}/                # Alternative scenarios
 │   │
-│   ├── risk/                          # Habitat Risk model parameters
-│   │   ├── baseline/
-│   │   │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
-│   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-│   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-│   │   │   ├── stressors_pelagic.csv
-│   │   │   └── scores_pelagic.csv
-│   │   │
-│   │   └── {scenario}/                # Alternative scenarios
-│   │
-│   └── benefit/                       # Benefit Index parameters and data
+│   └── risk/                          # Habitat Risk model parameters
+│       ├── baseline/
+│       │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
+│       │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
+│       │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
+│       │   ├── stressors_pelagic.csv
+│       │   └── scores_pelagic.csv
+│       │
+│       └── {scenario}/                # Alternative scenarios
 │
 └── outputs/                           # Model outputs
     │
@@ -760,6 +772,14 @@ must comply strictly with the bathymetry raster.</p>
 is the most common source of downstream analytical errors.</p>
 </section>
 </section>
+<section id="tutorials">
+<span id="id2"></span><h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h2>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup layer groups in the scripts in
+<a class="reference internal" href="usage_groups.html#usage-groups"><span class="std std-ref">Tutorial: Defining Model Layer Groups</span></a>.</p>
+</div>
+</section>
 </section>
 
 
@@ -782,11 +802,11 @@ is the most common source of downstream analytical errors.</p>
       </div>
     </a>
     <a class="right-next"
-       href="api.html"
+       href="usage_groups.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">API</p>
+        <p class="prev-next-title">Tutorial: Defining Model Layer Groups</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -829,6 +849,7 @@ is the most common source of downstream analytical errors.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment-verification-checklist">Alignment Verification Checklist</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials">Tutorials</a></li>
 </ul>
   </nav></div>
 

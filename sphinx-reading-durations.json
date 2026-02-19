@@ -1,6 +1,6 @@
 {
-    "about": 0.09,
-    "about_benefit_index": 0.043,
+    "about": 0.065,
+    "about_benefit_index": 0.047,
     "about_conflict_index": 0.004,
     "about_risk_index": 0.01,
     "about_upg": 0.008,
@@ -9,6 +9,7 @@
     "includes/ipsum": 0.001,
     "includes/warning_dev": 0.001,
     "index": 0.009,
-    "risk": 0.252,
-    "usage": 0.034
+    "risk": 0.306,
+    "usage": 0.036,
+    "usage_groups": 0.066
 }
