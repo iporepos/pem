@@ -100,7 +100,46 @@ def setup_folders(name, folder_base, scenarios=None):
     :return: A list of all directory paths created during the setup process.
     :rtype: list
 
-    todo script example
+    .. dropdown:: Script example
+        :icon: code-square
+
+        .. code-block:: python
+
+            # !WARNING: run this in QGIS Python Environment
+            import importlib.util as iu
+
+            # define the paths to the module
+            # ----------------------------------------
+            the_module = "path/to/project.py"  # change here
+
+            # define the base folder
+            # ----------------------------------------
+            folder_base = "path/to/folder"  # change here
+
+            # define project name
+            # ----------------------------------------
+            project_name = "narnia"  # change here
+
+            # define scenario names
+            # ----------------------------------------
+            # change here
+            scenarios = [
+                "baseline",
+                "utopia",
+                "distopia",
+            ]
+
+            # call the function
+            # ----------------------------------------
+            spec = iu.spec_from_file_location("module", the_module)
+            module = iu.module_from_spec(spec)
+            spec.loader.exec_module(module)
+
+            output_file = module.setup_folders(
+                name=project_name,
+                folder_base=folder_base,
+                scenarios=scenarios,
+            )
 
     """
     folder_base = Path(folder_base)
@@ -147,7 +186,7 @@ def setup_folders(name, folder_base, scenarios=None):
 
 def setup_oceanuse(folder_project, groups, scenario="baseline"):
     """
-    Configures the OceanUse analysis environment by processing vector and raster data into weighted thematic groups.
+    Configures the OceanUse analysis by processing vector and raster data into weighted thematic user groups.
 
     :param folder_project: The root directory path of the project.
     :type folder_project: str
@@ -166,6 +205,67 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
         2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.
         3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
         4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.
+
+    .. dropdown:: Script example
+        :icon: code-square
+
+        .. code-block:: python
+
+            # !WARNING: run this in QGIS Python Environment
+            import importlib.util as iu
+
+            # define the paths to the module
+            # ----------------------------------------
+            the_module = "path/to/project.py" # change here
+
+            # define the project folder
+            # ----------------------------------------
+            folder_project = "path/to/folder" # change here
+
+            # define the analysis scenario
+            # ----------------------------------------
+            scenario = "baseline" # change here
+
+            # define layer groups
+            # ----------------------------------------
+            # change "name", "field" and "weight"
+
+            group_fisheries = {
+                "vectors": [
+                    {"name": "fisheries_traps", "field": None, "weight": 2 },
+                    {"name": "fisheries_seines", "field": "intensity", "weight": 3 },
+                ],
+                "rasters": [
+                    {"name": "fisheries_gillnets.tif", "weight": 10 },
+                    {"name": "fisheries_longlines.tif", "weight": 5 },
+                ]
+            }
+            group_windfarms = {
+                "vectors": [
+                    {"name": "windfarms", "field": None, "weight": 5 },
+                ],
+            }
+
+            # setup groups dictionary
+            # ----------------------------------------
+            # define actual names for OceanUsers
+
+            groups = {
+                "fisheries": group_fisheries,
+                "windfarms": group_windfarms,
+            }
+
+            # call the function
+            # ----------------------------------------
+            spec = iu.spec_from_file_location("module", the_module)
+            module = iu.module_from_spec(spec)
+            spec.loader.exec_module(module)
+
+            output_file = module.setup_oceanuse(
+                folder_project=folder_project,
+                groups=groups,
+                scenario=scenario
+            )
 
     """
 

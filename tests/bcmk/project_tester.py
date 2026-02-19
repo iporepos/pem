@@ -339,52 +339,18 @@ def test_setup_oceanuse():
     # define layer groups
     # ----------------------------------------
     group_fisheries = {
-        # (required) List all vector layers that compounds to the use
         "vectors": [
-            # first vector layer
-            {
-                # mandatory entry
-                "name": "fisheries_01",
-                # optional keys (assumed None if missing)
-                "source": None,  # geopackage path. If None, then assumes from ./{project}/inputs/vectors.gpkg
-                "field": None,  # If None, burns constant 1 to raster
-                # global weight of the layer
-                "weight": None,  # If None, assumes 1
-            },
-            # second vector layer
-            {
-                "name": "fisheries_02",
-                "field": "intensity",
-            },
-            # ... add more layers if applicable
+            {"name": "fisheries_traps", "field": None, "weight": 2},
+            {"name": "fisheries_seines", "field": "intensity", "weight": 3},
         ],
-        # (optional) List all rasters layers
-        #   Raster layers can be either boolean or scalar variables
-        #   The merging process normalizes all values to the 0-1 range
         "rasters": [
-            # first raster layer (this is boolean/footprint)
-            {
-                "name": "fisheries_03.tif",
-                "weight": 5,  # If None, assumes 1
-            },
-            # second raster layer (this is scalar)
-            {
-                "name": "fisheries_04.tif",
-                "weight": 2,  # If None, assumes 1
-            },
+            {"name": "fisheries_gillnets.tif", "weight": 10},
+            {"name": "fisheries_longlines.tif", "weight": 5},
         ],
-        # "raster": []
     }
-
-    # Other group
     group_windfarms = {
         "vectors": [
-            {
-                "name": "windfarms",
-                "source": None,
-                "field": None,
-                "weight": None,
-            },
+            {"name": "windfarms", "field": None, "weight": 5},
         ],
     }
 
