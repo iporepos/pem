@@ -257,8 +257,8 @@ The structure below represents the recommended layout for a complete project.
     │   │   ├── conflict.csv               # Spatial conflict matrix
     │   │   │
     │   │   ├── baseline/                  # Baseline scenario
-    │   │   │   ├── oil-and-gas.tif        # user raster footprint
-    │   │   │   ├── fish-industrial.tif    # (suggested users)
+    │   │   │   ├── oilngas.tif            # raster footprint or density
+    │   │   │   ├── fisheries.tif          # (suggested users)
     │   │   │   ├── windfarms.tif
     │   │   │   ├── {username}.tif
     │   │   │   └── ...
@@ -301,7 +301,7 @@ The PEM Project presented above has some core design principles.
 
 **1. Scenario Isolation**
 
-Each scenario (e.g., ``baseline``, ``future-ssp1``) maintains:
+Each scenario (e.g., ``baseline``, ``ssp1``) maintains:
 
 - Dedicated ocean-use rasters.
 - Independent risk parameterization.

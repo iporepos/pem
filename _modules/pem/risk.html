@@ -494,7 +494,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="compute_risk_index">
-<a class="viewcode-back" href="../../risk.html#pem.risk.compute_risk_index">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.compute_risk_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">compute_risk_index</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">raster_hra_benthic</span><span class="p">,</span> <span class="n">raster_hra_pelagic</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Computes a final risk index raster by applying fuzzy logic to benthic and pelagic Human Risk Assessment (HRA) rasters.</span>
@@ -600,7 +600,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_hra_model">
-<a class="viewcode-back" href="../../risk.html#pem.risk.setup_hra_model">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_hra_model">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_model</span><span class="p">(</span>
     <span class="n">folder_output</span><span class="p">,</span>
     <span class="n">file_criteria</span><span class="p">,</span>
@@ -853,7 +853,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_stressors">
-<a class="viewcode-back" href="../../risk.html#pem.risk.setup_stressors">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_stressors">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_stressors</span><span class="p">(</span>
     <span class="n">folder_output</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
@@ -1065,7 +1065,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="setup_habitats">
-<a class="viewcode-back" href="../../risk.html#pem.risk.setup_habitats">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_habitats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span>
     <span class="n">folder_output</span><span class="p">,</span>
     <span class="n">input_db</span><span class="p">,</span>
@@ -1288,7 +1288,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_split_features">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_split_features">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_split_features">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_split_features</span><span class="p">(</span><span class="n">folder_output</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">field_name</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Splits features from a source GeoDataFrame into separate</span>
@@ -1369,7 +1369,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_raster_blank">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_blank">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_raster_blank">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_raster_blank</span><span class="p">(</span><span class="n">output_raster</span><span class="p">,</span> <span class="n">input_raster</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Creates a blank (zero-valued) raster based on the extent,</span>
@@ -1406,7 +1406,7 @@
 
 
 <div class="viewcode-block" id="util_raster_reproject">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_raster_reproject">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_raster_reproject">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_raster_reproject</span><span class="p">(</span>
     <span class="n">output_raster</span><span class="p">,</span>
     <span class="n">input_raster</span><span class="p">,</span>
@@ -1467,7 +1467,7 @@
 
 <span class="c1"># test developed</span>
 <div class="viewcode-block" id="util_layer_rasterize">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_layer_rasterize">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_layer_rasterize">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_layer_rasterize</span><span class="p">(</span>
     <span class="n">input_raster</span><span class="p">,</span> <span class="n">input_db</span><span class="p">,</span> <span class="n">input_layer</span><span class="p">,</span> <span class="n">input_table</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
 <span class="p">):</span>
@@ -1515,7 +1515,7 @@
 
 
 <div class="viewcode-block" id="util_fuzzify_raster">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_fuzzify_raster">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_fuzzify_raster">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_fuzzify_raster</span><span class="p">(</span>
     <span class="n">input_raster</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">,</span> <span class="n">lo</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">hi</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">use_percentiles</span><span class="o">=</span><span class="kc">False</span>
 <span class="p">):</span>
@@ -1581,7 +1581,7 @@
 
 
 <div class="viewcode-block" id="util_get_raster_stats">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_get_raster_stats">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_stats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the statistics for a specified band of a given raster file.</span>
@@ -1637,7 +1637,7 @@
 
 
 <div class="viewcode-block" id="util_read_raster">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_read_raster">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_read_raster">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_read_raster</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read a raster (GeoTIFF) file</span>
@@ -1678,7 +1678,7 @@
 
 
 <div class="viewcode-block" id="util_get_raster_crs">
-<a class="viewcode-back" href="../../risk.html#pem.risk.util_get_raster_crs">[docs]</a>
+<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_crs">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_crs</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts the Coordinate Reference System (CRS) from a raster file.</span>

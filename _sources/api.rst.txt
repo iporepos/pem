@@ -26,4 +26,5 @@ and extending the functionality of the project.
    :maxdepth: 1
 
    API <self>
-   risk
+   api_project
+   api_risk

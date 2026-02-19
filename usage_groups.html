@@ -470,6 +470,8 @@ A group may contain only vectors or only rasters.</p>
 <span id="usage-groups-vector"></span><h2>2. Vector Layer Group<a class="headerlink" href="#vector-layer-group" title="Link to this heading">#</a></h2>
 <p>Each vector layer must be defined as a Dictionary inside the
 <code class="docutils literal notranslate"><span class="pre">&quot;vectors&quot;</span></code> List.</p>
+<p>All layers are expected to be sourced from the <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code> file in the
+PEM Project.</p>
 <section id="mandatory-keys">
 <h3>Mandatory Keys<a class="headerlink" href="#mandatory-keys" title="Link to this heading">#</a></h3>
 <dl class="simple">
@@ -480,12 +482,6 @@ A group may contain only vectors or only rasters.</p>
 <section id="optional-keys">
 <h3>Optional Keys<a class="headerlink" href="#optional-keys" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">source</span></code> (str or None)</dt><dd><p>Path to the geopackage file.</p>
-<ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, defaults to: <code class="docutils literal notranslate"><span class="pre">./{project}/inputs/vectors.gpkg</span></code></p></li>
-<li><p>If not defined, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
-</ul>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">field</span></code> (str or None)</dt><dd><p>Attribute field used for rasterization.</p>
 <ul class="simple">
 <li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, a constant value of <code class="docutils literal notranslate"><span class="pre">1</span></code> is burned.</p></li>
@@ -504,7 +500,6 @@ A group may contain only vectors or only rasters.</p>
 <h3>Full Example<a class="headerlink" href="#full-example" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_01&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;/path/to/sourced.gpkg&quot;</span><span class="p">,</span>
     <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span>
     <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 <span class="p">}</span>
@@ -531,6 +526,8 @@ A group may contain only vectors or only rasters.</p>
 <li><p>Scalar layers (density, intensity, probability, etc.)</p></li>
 </ul>
 <p>All raster values are normalized to the 0–1 range during merging.</p>
+<p>All rasters are expected to be sourced from the <code class="docutils literal notranslate"><span class="pre">_inputs</span></code> folder under the
+PEM Project. Subfolder may vary depending on the processing routine.</p>
 <section id="id1">
 <h3>Mandatory Keys<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <dl class="simple">
@@ -541,12 +538,6 @@ A group may contain only vectors or only rasters.</p>
 <section id="id2">
 <h3>Optional Keys<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">source</span></code> (str or None)</dt><dd><p>Folder path containing the raster.</p>
-<ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, defaults to the expected raster folder in the PEM Project for the given function</p></li>
-<li><p>If not defined, defaults to <code class="docutils literal notranslate"><span class="pre">None</span></code></p></li>
-</ul>
-</dd>
 <dt><code class="docutils literal notranslate"><span class="pre">weight</span></code> (float or None)</dt><dd><p>Global weight multiplier.</p>
 <ul class="simple">
 <li><p>If <code class="docutils literal notranslate"><span class="pre">None</span></code>, defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p></li>
@@ -559,7 +550,6 @@ A group may contain only vectors or only rasters.</p>
 <h3>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fish_industry_footprints.tif&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;path/to/source_folder&quot;</span><span class="p">,</span>
     <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
@@ -600,11 +590,6 @@ A group may contain only vectors or only rasters.</p>
 <span class="p">}</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In the above example, <code class="docutils literal notranslate"><span class="pre">source</span></code> was fully omitted as we expect to defaults to the
-PEM Project folders</p>
-</div>
 </section>
 <section id="another-example-windfarms-group">
 <span id="usage-groups-example2"></span><h2>5. Another Example: Windfarms Group<a class="headerlink" href="#another-example-windfarms-group" title="Link to this heading">#</a></h2>
@@ -613,7 +598,6 @@ PEM Project folders</p>
     <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span>
             <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;windfarms&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
             <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
         <span class="p">},</span>
@@ -645,19 +629,16 @@ throughout the model.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">source</span></code></p></td>
-<td><p>Uses project expected path</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">field</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">field</span></code></p></td>
 <td><p>Burns constant value = 1</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">weight</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">weight</span></code></p></td>
 <td><p>Assumes weight = 1</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">rasters</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rasters</span></code></p></td>
 <td><p>No raster layers processed</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vectors</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">vectors</span></code></p></td>
 <td><p>No vector layers processed</p></td>
 </tr>
 </tbody>
@@ -673,10 +654,8 @@ an error is raised.</p>
 <span id="usage-groups-recommend"></span><h2>8. Recommended Best Practices<a class="headerlink" href="#recommended-best-practices" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p>Always define <code class="docutils literal notranslate"><span class="pre">name</span></code> explicitly.</p></li>
-<li><p>Omit optional keys instead of setting unnecessary <code class="docutils literal notranslate"><span class="pre">None</span></code> values.</p></li>
 <li><p>Use weights consistently across groups.</p></li>
 <li><p>Keep thematic logic separated by group.</p></li>
-<li><p>Document any non-default source paths clearly.</p></li>
 </ul>
 </section>
 <section id="typical-workflow">

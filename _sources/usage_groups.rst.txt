@@ -95,6 +95,9 @@ A group may contain only vectors or only rasters.
 Each vector layer must be defined as a Dictionary inside the
 ``"vectors"`` List.
 
+All layers are expected to be sourced from the ``vectors.gpkg`` file in the
+PEM Project.
+
 Mandatory Keys
 --------------
 
@@ -103,12 +106,6 @@ Mandatory Keys
 
 Optional Keys
 -------------
-
-``source`` (str or None)
-    Path to the geopackage file.
-
-    - If ``None``, defaults to: ``./{project}/inputs/vectors.gpkg``
-    - If not defined, defaults to ``None``
 
 ``field`` (str or None)
     Attribute field used for rasterization.
@@ -129,7 +126,6 @@ Full Example
 
     {
         "name": "fisheries_01",
-        "source": "/path/to/sourced.gpkg",
         "field": "intensity",
         "weight": 1,
     }
@@ -160,6 +156,9 @@ They can represent:
 
 All raster values are normalized to the 0–1 range during merging.
 
+All rasters are expected to be sourced from the ``_inputs`` folder under the
+PEM Project. Subfolder may vary depending on the processing routine.
+
 Mandatory Keys
 --------------
 
@@ -168,12 +167,6 @@ Mandatory Keys
 
 Optional Keys
 -------------
-
-``source`` (str or None)
-    Folder path containing the raster.
-
-    - If ``None``, defaults to the expected raster folder in the PEM Project for the given function
-    - If not defined, defaults to ``None``
 
 ``weight`` (float or None)
     Global weight multiplier.
@@ -188,7 +181,6 @@ Example
 
     {
         "name": "fish_industry_footprints.tif",
-        "source": "path/to/source_folder",
         "weight": 3,
     }
 
@@ -231,10 +223,6 @@ Example
         ],
     }
 
-.. note::
-
-    In the above example, ``source`` was fully omitted as we expect to defaults to the
-    PEM Project folders
 
 .. _usage-groups-example2:
 
@@ -249,7 +237,6 @@ Groups do not need both vectors and rasters.
         "vectors": [
             {
                 "name": "windfarms",
-                "source": None,
                 "field": None,
                 "weight": 3,
             },
@@ -284,8 +271,6 @@ If a key is missing or set to ``None``:
 +----------------+-------------------------------+
 | Parameter      | Default Behavior              |
 +================+===============================+
-| ``source``     | Uses project expected path    |
-+----------------+-------------------------------+
 | ``field``      | Burns constant value = 1      |
 +----------------+-------------------------------+
 | ``weight``     | Assumes weight = 1            |
@@ -308,10 +293,8 @@ If a key is missing or set to ``None``:
 ==============================
 
 - Always define ``name`` explicitly.
-- Omit optional keys instead of setting unnecessary ``None`` values.
 - Use weights consistently across groups.
 - Keep thematic logic separated by group.
-- Document any non-default source paths clearly.
 
 .. _usage-groups-workflow:
 

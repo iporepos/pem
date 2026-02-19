@@ -606,8 +606,8 @@ The rationale of the PEM framework relies on this layout.</p>
 │   │   ├── conflict.csv               # Spatial conflict matrix
 │   │   │
 │   │   ├── baseline/                  # Baseline scenario
-│   │   │   ├── oil-and-gas.tif        # user raster footprint
-│   │   │   ├── fish-industrial.tif    # (suggested users)
+│   │   │   ├── oilngas.tif            # raster footprint or density
+│   │   │   ├── fisheries.tif          # (suggested users)
 │   │   │   ├── windfarms.tif
 │   │   │   ├── {username}.tif
 │   │   │   └── ...
@@ -646,7 +646,7 @@ The rationale of the PEM framework relies on this layout.</p>
 <span id="project-design"></span><h3>Design Principles<a class="headerlink" href="#design-principles" title="Link to this heading">#</a></h3>
 <p>The PEM Project presented above has some core design principles.</p>
 <p><strong>1. Scenario Isolation</strong></p>
-<p>Each scenario (e.g., <code class="docutils literal notranslate"><span class="pre">baseline</span></code>, <code class="docutils literal notranslate"><span class="pre">future-ssp1</span></code>) maintains:</p>
+<p>Each scenario (e.g., <code class="docutils literal notranslate"><span class="pre">baseline</span></code>, <code class="docutils literal notranslate"><span class="pre">ssp1</span></code>) maintains:</p>
 <ul class="simple">
 <li><p>Dedicated ocean-use rasters.</p></li>
 <li><p>Independent risk parameterization.</p></li>

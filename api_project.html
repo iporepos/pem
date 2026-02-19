@@ -1,0 +1,917 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>pem.project module &#8212; pem 0.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_project';</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pem.risk module" href="api_risk.html" />
+    <link rel="prev" title="API" href="api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pem 0.0.1 documentation</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.project module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_risk.html">pem.risk module</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.project module</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-pem.project">
+<span id="pem-project-module"></span><span id="api-project"></span><h1>pem.project module<a class="headerlink" href="#module-pem.project" title="Link to this heading">#</a></h1>
+<p>{Short module description (1-3 sentences)}
+todo docstring</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.setup_folders">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_folders</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenarios</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_folders"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_folders" title="Link to this definition">#</a></dt>
+<dd><p>Initialize the directory structure for a PEM project.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function creates a standardized hierarchy of folders for inputs
+and outputs. It also handles the creation of scenario-specific subdirectories and
+intermediate folders within each output directory.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – The name of the project, used as the root folder name.</p></li>
+<li><p><strong>folder_base</strong> (str or <code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code>) – The base directory where the project structure will be created.</p></li>
+<li><p><strong>scenarios</strong> (<em>list</em>) – [optional] A list of scenario names to create specific subfolders for.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of all directory paths created during the setup process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define the base folder</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">folder_base</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define project name</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;narnia&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define scenario names</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="c1"># change here</span>
+<span class="n">scenarios</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utopia&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;distopia&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_folders</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">project_name</span><span class="p">,</span>
+    <span class="n">folder_base</span><span class="o">=</span><span class="n">folder_base</span><span class="p">,</span>
+    <span class="n">scenarios</span><span class="o">=</span><span class="n">scenarios</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.setup_oceanuse">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_oceanuse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'baseline'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_oceanuse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_oceanuse" title="Link to this definition">#</a></dt>
+<dd><p>Configures the OceanUse analysis by processing vector and raster data into weighted thematic user groups.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em>) – The root directory path of the project.</p></li>
+<li><p><strong>groups</strong> (<em>dict</em>) – The master Layer Group dictionary defining the hierarchical structure of raster and vector layers with their associated weights.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – The name of the analysis scenario, used for organizing output subdirectories. Default value = <code class="docutils literal notranslate"><span class="pre">baseline</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>[optional] No value is returned by this function.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function orchestrates a multi-step geospatial workflow:
+1. Validates the existence of project folders and core input files (bathymetry and vector databases).
+2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.
+3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
+4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">folder_project</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the analysis scenario</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define layer groups</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="c1"># change &quot;name&quot;, &quot;field&quot; and &quot;weight&quot;</span>
+
+<span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_traps&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_seines&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">3</span> <span class="p">},</span>
+    <span class="p">],</span>
+    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_gillnets.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">10</span> <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_longlines.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+    <span class="p">]</span>
+<span class="p">}</span>
+<span class="n">group_windfarms</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;windfarms&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+    <span class="p">],</span>
+<span class="p">}</span>
+
+<span class="c1"># setup groups dictionary</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="c1"># define actual names for OceanUsers</span>
+
+<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;fisheries&quot;</span><span class="p">:</span> <span class="n">group_fisheries</span><span class="p">,</span>
+    <span class="s2">&quot;windfarms&quot;</span><span class="p">:</span> <span class="n">group_windfarms</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_oceanuse</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder_project</span><span class="p">,</span>
+    <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_raster_blank">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_raster_blank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_raster_blank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_raster_blank" title="Link to this definition">#</a></dt>
+<dd><p>Creates a blank (zero-valued) raster based on the extent,
+resolution, and CRS of an existing input raster.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>output_raster</strong> (<em>str</em>) – name for the resulting blank raster file (without extension).</p></li>
+<li><p><strong>input_raster</strong> (<em>str</em>) – The path to the source raster file whose properties (extent, resolution, CRS) will be used.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The full path to the newly created blank raster file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p><strong>Notes</strong></p>
+<p>This function uses the QGIS processing algorithm <code class="docutils literal notranslate"><span class="pre">native:rastercalc</span></code>
+(Raster calculator). It works by multiplying every cell in the input
+raster by zero, effectively preserving the metadata (extent, resolution, CRS)
+while setting all data values to zero. The output raster is a new
+file and does not modify the input raster.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_layer_rasterize">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_layer_rasterize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">burn_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_layer_rasterize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_layer_rasterize" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_extractextent_vectors">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_extractextent_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_ext</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'extractextent'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_extractextent_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_extractextent_vectors" title="Link to this definition">#</a></dt>
+<dd><p>Extracts specific vector layers based on a spatial extent and saves them to a GeoPackage.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Iterates through a list of layers from an input database, clips each to the
+provided spatial bounds using the <code class="docutils literal notranslate"><span class="pre">native:extractbyextent</span></code> algorithm,
+and appends the result to a destination GeoPackage.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_db</strong> (<em>str</em>) – Path to the source database or vector file.</p></li>
+<li><p><strong>layers</strong> (<em>list</em>) – List of layer names to be extracted from the source.</p></li>
+<li><p><strong>folder_output</strong> (<em>str</em>) – Directory where the output file will be saved.</p></li>
+<li><p><strong>dst_ext</strong> (<em>dict</em>) – Dictionary containing the spatial bounds with keys <code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code>, and <code class="docutils literal notranslate"><span class="pre">ymax</span></code>.</p></li>
+<li><p><strong>dst_crs</strong> (<em>str</em>) – Coordinate Reference System identifier for the extent. Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
+<li><p><strong>name_out</strong> (<em>str</em>) – Filename for the output GeoPackage (without extension). Default value = <code class="docutils literal notranslate"><span class="pre">extractextent</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The file path to the generated GeoPackage.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_reproject_vectors">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_reproject_vectors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name_out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'reprojected'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_reproject_vectors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_reproject_vectors" title="Link to this definition">#</a></dt>
+<dd><p>Reprojects a list of vector layers from a source database to a specified coordinate
+reference system and saves them into a new GeoPackage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_db</strong> (<em>str</em>) – Path to the source database containing the layers.</p></li>
+<li><p><strong>layers</strong> (<em>list</em>) – List of layer names to be reprojected.</p></li>
+<li><p><strong>folder_output</strong> (<em>str</em>) – Directory path where the output GeoPackage will be stored.</p></li>
+<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code for the destination coordinate reference system. Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The file path to the generated GeoPackage containing the reprojected layers.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function utilizes <code class="docutils literal notranslate"><span class="pre">native:reprojectlayer</span></code> and stores all processed layers within a single <code class="docutils literal notranslate"><span class="pre">.gpkg</span></code> file named <code class="docutils literal notranslate"><span class="pre">reprojected.gpkg</span></code>.</p>
+</div>
+<p>todo script example</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_self_normalize_rasters">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_self_normalize_rasters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_rasters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_self_normalize_rasters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_self_normalize_rasters" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_get_raster_crs">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_crs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_get_raster_crs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_get_raster_crs" title="Link to this definition">#</a></dt>
+<dd><p>Extracts the Coordinate Reference System (CRS) from a raster file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_input</strong> (<em>str</em>) – The file path to the raster source.</p></li>
+<li><p><strong>code_only</strong> (<em>bool</em>) – Whether to return only the numerical ID (e.g., <code class="docutils literal notranslate"><span class="pre">31983</span></code>) or the full authority ID (e.g., <code class="docutils literal notranslate"><span class="pre">EPSG:31983</span></code>). Default value = <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The CRS identifier as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+<p>todo script example</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_get_raster_extent">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_extent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_get_raster_extent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_get_raster_extent" title="Link to this definition">#</a></dt>
+<dd><p>Retrieves the spatial bounding coordinates of a raster file as a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_input</strong> (<em>str</em>) – The path to the input raster file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the <code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code>, and <code class="docutils literal notranslate"><span class="pre">ymax</span></code> coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_get_raster_resolution">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_get_raster_resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_get_raster_resolution" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_get_vector_fields">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_get_vector_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_get_vector_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_get_vector_fields" title="Link to this definition">#</a></dt>
+<dd><p>Retrieves a list of all attribute field names from a specific layer within a vector file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_input</strong> (<em>str</em>) – The path to the source vector database or file.</p></li>
+<li><p><strong>layer_name</strong> (<em>str</em>) – The name of the specific layer to access.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the field names in the layer.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_read_raster">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_read_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_read_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_read_raster" title="Link to this definition">#</a></dt>
+<dd><p>Read a raster (GeoTIFF) file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_input</strong> (<em>str</em>) – path to raster file</p></li>
+<li><p><strong>n_band</strong> (<em>int</em>) – number of the band to read</p></li>
+<li><p><strong>metadata</strong> (<em>bool</em>) – option to return</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dictionary with “data” and (optional) “metadata”</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_write_raster">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_write_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dc_metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodata_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-99999</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_write_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_write_raster" title="Link to this definition">#</a></dt>
+<dd><p>Write a numpy array to raster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – 2D numpy array</p></li>
+<li><p><strong>dc_metadata</strong> (<em>dict</em>) – dict with metadata</p></li>
+<li><p><strong>file_output</strong> (<em>str</em>) – path to output raster file</p></li>
+<li><p><strong>n_band</strong> (<em>int</em>) – number of the band to write</p></li>
+<li><p><strong>nodata_value</strong> (<em>float</em><em> or </em><em>int</em>) – numeric value to represent NoData</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>path to the written file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_get_raster_stats">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_get_raster_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_get_raster_stats" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the statistics for a specified band of a given raster file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_raster</strong> (<em>str</em>) – Full path to the input raster file.</p></li>
+<li><p><strong>band</strong> (<em>int</em>) – The band number to calculate statistics for. Default value = <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the raster band’s mean, standard deviation, minimum, maximum, sum, and element count.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Notes</strong></p>
+<p>The function uses QGIS classes internally to read the raster and compute statistics.
+The keys in the returned dictionary are <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">sd</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">API</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="api_risk.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">pem.risk module</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.setup_folders"><code class="docutils literal notranslate"><span class="pre">setup_folders()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.setup_oceanuse"><code class="docutils literal notranslate"><span class="pre">setup_oceanuse()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_raster_blank"><code class="docutils literal notranslate"><span class="pre">util_raster_blank()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_layer_rasterize"><code class="docutils literal notranslate"><span class="pre">util_layer_rasterize()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_extractextent_vectors"><code class="docutils literal notranslate"><span class="pre">util_extractextent_vectors()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_reproject_vectors"><code class="docutils literal notranslate"><span class="pre">util_reproject_vectors()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_self_normalize_rasters"><code class="docutils literal notranslate"><span class="pre">util_self_normalize_rasters()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_crs"><code class="docutils literal notranslate"><span class="pre">util_get_raster_crs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_extent"><code class="docutils literal notranslate"><span class="pre">util_get_raster_extent()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_resolution"><code class="docutils literal notranslate"><span class="pre">util_get_raster_resolution()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_vector_fields"><code class="docutils literal notranslate"><span class="pre">util_get_vector_fields()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_read_raster"><code class="docutils literal notranslate"><span class="pre">util_read_raster()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_write_raster"><code class="docutils literal notranslate"><span class="pre">util_write_raster()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_stats"><code class="docutils literal notranslate"><span class="pre">util_get_raster_stats()</span></code></a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/api_project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, The Authors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
