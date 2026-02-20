@@ -1,19 +1,18 @@
 
-.. _usage-groups:
+.. _usage-groups-users:
 
-.. include:: ./includes/warning_dev.rst
-
-Tutorial: Defining Model Layer Groups
+Tutorial: Defining Ocean Users Groups
 ############################################
 
-.. _usage-groups-overview:
+.. _usage-groups-users-overview:
 
 Overview to Layer Groups
 ========================
 
-Defining *layer groups* is a core mechanism in the Python API of the PEM framework.
-Layer groups are the standardized interface used to feed spatial layers into the framework
-Python functions.
+Defining *Ocean User groups* is a core process in the PEM framework.
+
+The concept of *Layer groups* are the standardized interface used
+to feed spatial layers into the framework Python functions.
 
 Most high-level functions operate by:
 
@@ -45,7 +44,7 @@ pipeline.
 Because this structure is used throughout the system, correct group
 definition is essential for stable and reproducible results.
 
-.. _usage-groups-conceptual:
+.. _usage-groups-users-conceptual:
 
 Conceptual Structure
 ====================
@@ -65,7 +64,7 @@ The final dictionary structure looks like:
         ...
     }
 
-.. _usage-groups-definition:
+.. _usage-groups-users-definition:
 
 1. Defining a Group
 ===================
@@ -87,7 +86,7 @@ Example:
 The ``"vectors"`` and ``"rasters"`` keys are optional.
 A group may contain only vectors or only rasters.
 
-.. _usage-groups-vector:
+.. _usage-groups-users-vector:
 
 2. Vector Layer Group
 ==========================
@@ -142,7 +141,7 @@ Minimal Example
 
 If optional keys are omitted, the system assigns defaults automatically.
 
-.. _usage-groups-raster:
+.. _usage-groups-users-raster:
 
 3. Raster Layer Group
 ==========================
@@ -156,8 +155,9 @@ They can represent:
 
 All raster values are normalized to the 0–1 range during merging.
 
-All rasters are expected to be sourced from the ``_inputs`` folder under the
-PEM Project. Subfolder may vary depending on the processing routine.
+All rasters are expected to be sourced from the ``inputs`` folder under the
+PEM Project. Specific subfolder (e.g, ``inputs/_sources`` or ``inputs/habitats``)
+may vary depending on the processing routine.
 
 Mandatory Keys
 --------------
@@ -185,7 +185,7 @@ Example
     }
 
 
-.. _usage-groups-example:
+.. _usage-groups-users-example:
 
 4. Complete Example: Fisheries Group
 =====================================
@@ -224,7 +224,7 @@ Example
     }
 
 
-.. _usage-groups-example2:
+.. _usage-groups-users-example2:
 
 5. Another Example: Windfarms Group
 ====================================
@@ -243,7 +243,7 @@ Groups do not need both vectors and rasters.
         ],
     }
 
-.. _usage-groups-registering:
+.. _usage-groups-users-registering:
 
 6. Registering All Groups
 ==========================
@@ -261,7 +261,7 @@ After defining individual groups, register them in the master
 The key (e.g., ``"fisheries"``) becomes the group identifier used
 throughout the model.
 
-.. _usage-groups-defaults:
+.. _usage-groups-users-defaults:
 
 7. Default Behavior Summary
 ============================
@@ -287,7 +287,7 @@ If a key is missing or set to ``None``:
     an error is raised.
 
 
-.. _usage-groups-recommend:
+.. _usage-groups-users-recommend:
 
 8. Recommended Best Practices
 ==============================
@@ -296,7 +296,7 @@ If a key is missing or set to ``None``:
 - Use weights consistently across groups.
 - Keep thematic logic separated by group.
 
-.. _usage-groups-workflow:
+.. _usage-groups-users-workflow:
 
 9. Typical Workflow
 ===================

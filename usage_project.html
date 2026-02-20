@@ -1,0 +1,807 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="light">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tutorial: Setting Up a PEM Project &#8212; pem v0.0.1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "light";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=2fea6348"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'usage_project';</script>
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tutorial: Defining Ocean Users Groups" href="usage_groups_users.html" />
+    <link rel="prev" title="User Guide" href="usage.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="light">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">pem</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="about.html">
+    About
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="usage.html">
+    User Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
+    Development
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/iporepos/pem" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Home</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Setting Up a PEM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="usage.html" class="nav-link">User Guide</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Setting Up a PEM Project</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="tutorial-setting-up-a-pem-project">
+<span id="guide-project"></span><h1>Tutorial: Setting Up a PEM Project<a class="headerlink" href="#tutorial-setting-up-a-pem-project" title="Link to this heading">#</a></h1>
+<section id="overview-of-a-pem-project">
+<span id="guide-project-overview"></span><h2>Overview of a PEM Project<a class="headerlink" href="#overview-of-a-pem-project" title="Link to this heading">#</a></h2>
+<p>As introduced <a class="reference internal" href="usage.html#usage-pem-project"><span class="std std-ref">earlier</span></a>, a PEM Project must adhere to a
+well-defined and standardized file system structure. The framework assumes a
+deterministic file system organization so that scripts can systematically
+discover, read, merge, and write datasets without manual intervention.</p>
+<p>The typical project workflow is:</p>
+<ol class="arabic simple">
+<li><p>Create the file system exactly as specified <a class="reference internal" href="usage.html#usage-pem-project-folders"><span class="std std-ref">here</span></a>.</p></li>
+<li><p>Populate the input directories with the required raster and vector layers for each scenario.</p></li>
+<li><p>Compute the <strong>Habitat Risk Index</strong> for the defined scenarios.</p></li>
+<li><p>Compute the <strong>Conflict Index</strong> for the defined scenarios.</p></li>
+<li><p>Compute the <strong>Benefit Index</strong> for the defined scenarios.</p></li>
+<li><p>Compute the <strong>Performance Index</strong>, integrating the previous indices.</p></li>
+</ol>
+<p>Each stage can be executed using automated or semi-automated routines provided
+by the PEM scripts, ensuring reproducibility, traceability, and consistency
+across scenarios.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-file-directory-fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75Z"></path></svg></span><span class="sd-summary-text">PEM Project file system layout</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem-project/                           # Project base folder
+│
+├── inputs/                            # Folder for all model inputs
+│   │
+│   ├── bathymetry.tif                 # Canonical raster (resolution, extent, CRS)
+│   │
+│   ├── vectors.gpkg                   # Core vector data container
+│   ├── vectors.gpkg|roi               # Region of Interest (polygon layer)
+│   ├── vectors.gpkg|hubs              # Land hubs (point layer)
+│   ├── vectors.gpkg|habitat_benthic   # Benthic habitat map with attributes
+│   ├── vectors.gpkg|habitat_pelagic   # Pelagic habitat map with attributes
+│   ├── vectors.gpkg|...               # Additional optional layers
+│   │
+│   ├── _sources/                      # Helper folder for sourced datasets
+│   │
+│   ├── benefit/                       # Benefit Index parameters and data
+│   │
+│   ├── habitats/                      # Habitat rasters
+│   │   ├── benthic.tif                # Rasterized Benthic habitat map
+│   │   └── pelagic.tif                # Rasterized Pelagic habitat map
+│   │
+│   ├── risk/                          # Habitat Risk model parameters
+│   │   ├── baseline/
+│   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
+│   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
+│   │   │   ├── stressors_pelagic.csv
+│   │   │   └── scores_pelagic.csv
+│   │   │
+│   │   └── {scenario}/                # Alternative scenarios
+│   │
+│   ├── roi/
+│   │   ├── roi.shp                    # Shapefile for ROI (required by InVEST-HRA)
+│   │   └── roi.tif                    # Boolean raster for ROI
+│   │
+│   └── users/                         # Ocean users configuration
+│       ├── users.csv                  # Table of ocean users
+│       ├── users_conflict.csv         # Spatial conflict matrix
+│       │
+│       ├── baseline/                  # Baseline scenario
+│       │   ├── oilngas.tif            # raster footprint or density
+│       │   ├── fisheries.tif          # (suggested users)
+│       │   ├── windfarms.tif
+│       │   ├── {username}.tif
+│       │   └── ...
+│       │
+│       └── {scenario}/                # Alternative scenarios
+│
+└── outputs/                           # Model outputs
+    │
+    ├── baseline/
+    │   ├── baseline_iduse.tif         # Use Performance Index
+    │   ├── baseline_benefit.tif       # Benefit Index
+    │   ├── baseline_conflict.tif      # Conflict Index
+    │   ├── baseline_risk.tif          # Habitat Risk Index
+    │   │
+    │   └── intermediate/              # Intermediate artifacts
+    │       ├── baseline_hra_benthic.tif      # InVEST output
+    │       ├── baseline_hra_benthic_fz.tif   # fuzzy transform
+    │       ├── baseline_hra_pelagic.tif
+    │       └── baseline_hra_pelagic_fz.tif
+    │
+    └── {scenario}/                    # Alternative scenario outputs
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="run-script-setup-the-file-system">
+<span id="guide-project-setup"></span><h2>1. Run Script: Setup the File System<a class="headerlink" href="#run-script-setup-the-file-system" title="Link to this heading">#</a></h2>
+<p>The PEM directory structure can be generated programmatically using the
+<code class="docutils literal notranslate"><span class="pre">setup_folders</span></code> function available in the <code class="docutils literal notranslate"><span class="pre">project.py</span></code> module, as
+shown below.</p>
+<p>This procedure ensures that the project complies exactly with the required
+hierarchical layout expected by the framework.</p>
+<p>To execute the setup, the user must provide:</p>
+<ul class="simple">
+<li><p>The absolute path to the <code class="docutils literal notranslate"><span class="pre">project.py</span></code> module;</p></li>
+<li><p>The absolute path to a base directory where the project folder will be created;</p></li>
+<li><p>The project name;</p></li>
+<li><p>An optional list of scenario names.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">baseline</span></code> scenario is always generated, regardless of whether
+it is explicitly included in the scenarios list.</p>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module</span>
+<span class="n">src</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define the base folder</span>
+<span class="n">base</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define project name</span>
+<span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;narnia&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define scenario names</span>
+<span class="n">scenarios</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;utopia&quot;</span><span class="p">,</span>  <span class="c1"># change here</span>
+    <span class="s2">&quot;distopia&quot;</span><span class="p">,</span> <span class="c1"># change here</span>
+    <span class="c1"># add more if applicable</span>
+<span class="p">]</span>
+
+<span class="c1"># call the function (do not change this)</span>
+<span class="c1"># ----------------------------------------</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_folders</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+    <span class="n">folder_base</span><span class="o">=</span><span class="n">base</span><span class="p">,</span>
+    <span class="n">scenarios</span><span class="o">=</span><span class="n">scenarios</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></section>
+<section id="manually-populate-bathymetry">
+<span id="guide-project-bathymetry"></span><h2>2. Manually Populate Bathymetry<a class="headerlink" href="#manually-populate-bathymetry" title="Link to this heading">#</a></h2>
+<p>The file <code class="docutils literal notranslate"><span class="pre">bathymetry.tif</span></code> is the canonical raster of the PEM Project.
+It defines the reference grid, resolution, extent, and projected CRS used
+throughout all spatial computations.</p>
+<p>The user must place the file at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/bathymetry.tif
+</pre></div>
+</div>
+</section>
+<section id="populate-roi">
+<span id="guide-project-roi"></span><h2>3. Populate ROI<a class="headerlink" href="#populate-roi" title="Link to this heading">#</a></h2>
+<p>The ROI (Region of Interest) is a polygon vector layer delimiting the
+analysis domain.</p>
+<section id="manual-input">
+<span id="guide-project-roi-manul"></span><h3>Manual Input<a class="headerlink" href="#manual-input" title="Link to this heading">#</a></h3>
+<p>The user must provide the ROI layer at:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/vectors.gpkg|roi
+</pre></div>
+</div>
+<p>It is recommended that the ROI uses the same projected CRS as
+<code class="docutils literal notranslate"><span class="pre">bathymetry.tif</span></code>. If necessary, reprojection can be handled automatically
+by the framework.</p>
+</section>
+<section id="script-setup-roi">
+<span id="guide-project-roi-setup"></span><h3>Script: Setup ROI<a class="headerlink" href="#script-setup-roi" title="Link to this heading">#</a></h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis tincidunt erat eget iaculis. Mauris gravida ex quam, in porttitor lacus lobortis vitae. In a lacinia nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi et tempor sem. Nullam quam dolor, venenatis eget magna ut, accumsan mollis erat.</p>
+</section>
+</section>
+<section id="populate-ocean-habitats">
+<span id="guide-project-habitats"></span><h2>4. Populate Ocean Habitats<a class="headerlink" href="#populate-ocean-habitats" title="Link to this heading">#</a></h2>
+<p>Ocean benthic and pelagic habitat maps are required for the Habitat Risk Index
+assessment and for the delineation of biophysically grounded Management Units.</p>
+<p>During processing, habitat layers are rasterized onto the canonical grid and
+encoded as a categorical (qualitative) raster, where each cell represents a
+specific habitat group identifier.</p>
+<section id="guide-project-habitats-manual">
+<span id="id1"></span><h3>Manual Input<a class="headerlink" href="#guide-project-habitats-manual" title="Link to this heading">#</a></h3>
+<p>Habitats are polygon vector layers classified into:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/vectors.gpkg|habitat_benthic
+{project}/inputs/vectors.gpkg|habitat_pelagic
+</pre></div>
+</div>
+<p>These layers are later rasterized onto the canonical grid defined by
+<code class="docutils literal notranslate"><span class="pre">bathymetry.tif</span></code>.</p>
+<p>Technical recommendations:</p>
+<ul class="simple">
+<li><p>No overlapping polygons within the same layer.</p></li>
+<li><p>A unique identifier (ID or code) per habitat class.</p></li>
+<li><p>Prefer single-part geometries (avoid multipart features when possible).</p></li>
+</ul>
+<p>Habitat thematic detail is user-defined. The PEM framework allows
+aggregation into broader habitat groups at a later stage (e.g., grouping
+multiple mud-related classes into a single “mud” category).</p>
+</section>
+<section id="script-setup-habitats">
+<span id="guide-project-habitats-setup"></span><h3>Script: Setup Habitats<a class="headerlink" href="#script-setup-habitats" title="Link to this heading">#</a></h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis tincidunt erat eget iaculis. Mauris gravida ex quam, in porttitor lacus lobortis vitae. In a lacinia nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi et tempor sem. Nullam quam dolor, venenatis eget magna ut, accumsan mollis erat.</p>
+</section>
+</section>
+<section id="populate-ocean-users">
+<span id="guide-project-users"></span><h2>5. Populate Ocean Users<a class="headerlink" href="#populate-ocean-users" title="Link to this heading">#</a></h2>
+<p>Ocean Users represent spatially explicit human activities within the marine
+domain. Activities may overlap spatially both within the same economic sector
+and across different sectors.</p>
+<p>For each scenario, user layers are ultimately transformed into a continuous
+intensity quantitative raster, representing the relative magnitude or footprint of
+each activity across the ocean space.</p>
+<section id="manual-input-overview">
+<span id="guide-project-users-over"></span><h3>Manual Input: overview<a class="headerlink" href="#manual-input-overview" title="Link to this heading">#</a></h3>
+<p>Multiple layers geometries and formats may exist per user
+economic sector and per scenario.</p>
+<p>Examples:</p>
+<ul class="simple">
+<li><p>Offshore wind: turbines (points) and cable corridors (lines).</p></li>
+<li><p>Fisheries: polygon zones and rasterized intensity maps.</p></li>
+<li><p>Oil extraction: distinct layers for baseline and future expansion scenarios.</p></li>
+</ul>
+<p>Scenario grouping and categorization are handled later in the workflow.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup layer groups in the scripts in
+<a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
+</div>
+</section>
+<section id="manual-input-vector-layers">
+<span id="guide-project-users-vector"></span><h3>Manual Input: vector layers<a class="headerlink" href="#manual-input-vector-layers" title="Link to this heading">#</a></h3>
+<p>Vector users may be points, lines, or polygons. Layers may include
+numeric attributes representing intensity, density, or effort
+(e.g., <code class="docutils literal notranslate"><span class="pre">intensity</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>).</p>
+<p>The user must populate in the <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code> database, like:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/vectors.gpkg|ocean_user_a_baseline
+{project}/inputs/vectors.gpkg|ocean_user_a_utopia
+{project}/inputs/vectors.gpkg|ocean_user_b
+</pre></div>
+</div>
+<p>Recommendations:</p>
+<ul class="simple">
+<li><p>Ensure the spatial extent is equal to or larger than the canonical raster.</p></li>
+<li><p>Avoid using hyphens, blank space or any non-ASCII characters in layer naming</p></li>
+<li><p>Maintain consistent attribute naming for quantitative fields.</p></li>
+</ul>
+</section>
+<section id="manual-input-raster-layers">
+<span id="guide-project-users-raster"></span><h3>Manual Input: Raster Layers<a class="headerlink" href="#manual-input-raster-layers" title="Link to this heading">#</a></h3>
+<p>Raster layers for ocean users may represent:</p>
+<ul class="simple">
+<li><p>Boolean footprint layers; or</p></li>
+<li><p>Continuous scalar fields (e.g., intensity, density, heat maps).</p></li>
+</ul>
+<p>The user must place raster sources under:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/_sources/ocean_user_c
+{project}/inputs/_sources/ocean_user_d
+</pre></div>
+</div>
+<p>Recommendations:</p>
+<ul class="simple">
+<li><p>Ensure the spatial extent is equal to or larger than the canonical raster.</p></li>
+<li><p>Maintain consistent resolution when possible (resampling is handled during reprojection).</p></li>
+</ul>
+</section>
+<section id="script-setup-ocean-users">
+<span id="guide-project-users-setup"></span><h3>Script: Setup Ocean Users<a class="headerlink" href="#script-setup-ocean-users" title="Link to this heading">#</a></h3>
+<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis tincidunt erat eget iaculis. Mauris gravida ex quam, in porttitor lacus lobortis vitae. In a lacinia nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi et tempor sem. Nullam quam dolor, venenatis eget magna ut, accumsan mollis erat.</p>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="usage.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">User Guide</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="usage_groups_users.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Tutorial: Defining Ocean Users Groups</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-of-a-pem-project">Overview of a PEM Project</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#run-script-setup-the-file-system">1. Run Script: Setup the File System</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manually-populate-bathymetry">2. Manually Populate Bathymetry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#populate-roi">3. Populate ROI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input">Manual Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-setup-roi">Script: Setup ROI</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#populate-ocean-habitats">4. Populate Ocean Habitats</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guide-project-habitats-manual">Manual Input</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-setup-habitats">Script: Setup Habitats</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#populate-ocean-users">5. Populate Ocean Users</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-overview">Manual Input: overview</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-vector-layers">Manual Input: vector layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-raster-layers">Manual Input: Raster Layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-setup-ocean-users">Script: Setup Ocean Users</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/usage_project.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, The Authors.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

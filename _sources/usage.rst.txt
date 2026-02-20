@@ -1,7 +1,5 @@
 .. _usage:
 
-.. include:: ./includes/warning_dev.rst
-
 User Guide
 ############################################
 
@@ -13,14 +11,15 @@ modules, each targeting a specific analytical component.
    :maxdepth: 1
 
    Home <self>
-   usage_groups
+   usage_project
+   usage_groups_users
 
 .. seealso::
 
    If you intend to extend or modify the framework, refer to
    :ref:`Development <development>`.
 
-.. _installation:
+.. _usage-installation:
 
 Installation
 ============================================
@@ -45,7 +44,7 @@ https://github.com/iporepos/pem
    environment variables before attempting to clone the repository.
 
 
-.. _install-qgis:
+.. _usage-install-qgis:
 
 Install PyQGIS
 --------------------------------------------
@@ -58,13 +57,15 @@ All Python scripts are designed to run within the **QGIS Python environment**
 
 2. During installation, ensure that the bundled Python environment is included.
 
+3. During installation, ensure ``numpy``, ``pandas`` and ``geopandas`` Python packages are included.
+
 .. seealso::
 
    For PyQGIS scripting details, consult the
    `PyQGIS Developer Cookbook <https://docs.qgis.org/3.40/en/docs/pyqgis_developer_cookbook/index.html>`_.
 
 
-.. _install-invest:
+.. _usage-install-invest:
 
 Install InVEST Workbench
 --------------------------------------------
@@ -88,7 +89,7 @@ To ensure compatibility with the risk modeling workflow:
    methodological alignment with the InVEST Habitat Risk Assessment model.
 
 
-.. _run-scripts:
+.. _usage-run-scripts:
 
 Source Code
 ============================================
@@ -110,7 +111,7 @@ The repository follows a standard ``src`` layout:
 Each module encapsulates a logically distinct index within the PEM framework.
 
 
-.. _run-scripts-python:
+.. _usage-run-scripts-python:
 
 Running Python via PyQGIS
 --------------------------------------------
@@ -132,9 +133,11 @@ This approach ensures:
    Always execute the scripts from the **QGIS Python Console** or from a
    Python interpreter explicitly bound to the QGIS environment.
 
+.. todo change this code example
 
 .. dropdown:: Example: loading functions from the modules
     :icon: code-square
+    :open:
 
     The following template demonstrates how to dynamically load the module ``risk.py``
     (Habitat Risk Index utility) and execute one of its functions.
@@ -149,10 +152,6 @@ This approach ensures:
         # 1. Define the path to the target module (e.g., risk.py)
         # ------------------------------------------------------------------
         the_module = "path/to/risk.py"
-
-        spec = iu.spec_from_file_location("module", the_module)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
 
         # ------------------------------------------------------------------
         # 2. Define input and output directories
@@ -180,6 +179,11 @@ This approach ensures:
         # ------------------------------------------------------------------
         # 4. Execute the target function
         # ------------------------------------------------------------------
+        # do not change this part
+        spec = iu.spec_from_file_location("module", the_module)
+        module = iu.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
         output_file = module.setup_habitats(
             input_db=input_db,
             folder_output=output_dir,
@@ -207,7 +211,7 @@ This approach ensures:
        This ensures traceability of spatial preprocessing decisions.
 
 
-.. _project:
+.. _usage-pem-project:
 
 PEM Project
 ============================================
@@ -215,84 +219,25 @@ PEM Project
 The PEM framework may be deployed by the user under the concept
 of a **PEM Project**.
 
-.. _project-folders:
+.. _usage-pem-project-folders:
 
-Folder Structure
+File System Structure
 --------------------------------------------
 
-A file-based PEM Project can follow a standardized directory schema to ensure
+A file-based PEM Project can follow a standardized file system schema to ensure
 reproducibility, scenario management, and compatibility with all framework
 modules.
 
 The structure below represents the recommended layout for a complete project.
+
+.. include:: includes/project_layout.rst
 
 .. important::
 
    Adherence to this directory structure is not mandatory but is strongly recommended.
    The rationale of the PEM framework relies on this layout.
 
-.. code-block:: text
-
-    pem-project/                           # Project root
-    │
-    ├── inputs/                            # All model inputs
-    │   │
-    │   ├── bathymetry.tif                 # Canonical raster (resolution, extent, CRS)
-    │   │
-    │   ├── vectors.gpkg                    # Core vector data container
-    │   ├── vectors.gpkg|roi                # Region of Interest (polygon layer)
-    │   ├── vectors.gpkg|hubs               # Land hubs (point layer)
-    │   ├── vectors.gpkg|...                # Additional optional layers
-    │   │
-    │   ├── _sources/                      # Helper folder for sourced datasets
-    │   │
-    │   ├── benefit/                       # Benefit Index parameters and data
-    │   │
-    │   ├── habitats/                      # Habitat rasters
-    │   │   ├── benthic.tif                # Benthic habitat map
-    │   │   └── pelagic.tif                # Pelagic habitat map
-    │   │
-    │   ├── oceanuse/                      # Ocean use configuration
-    │   │   ├── oceanuse.csv               # Table of ocean users
-    │   │   ├── conflict.csv               # Spatial conflict matrix
-    │   │   │
-    │   │   ├── baseline/                  # Baseline scenario
-    │   │   │   ├── oilngas.tif            # raster footprint or density
-    │   │   │   ├── fisheries.tif          # (suggested users)
-    │   │   │   ├── windfarms.tif
-    │   │   │   ├── {username}.tif
-    │   │   │   └── ...
-    │   │   │
-    │   │   └── {scenario}/                # Alternative scenarios
-    │   │
-    │   └── risk/                          # Habitat Risk model parameters
-    │       ├── baseline/
-    │       │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
-    │       │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-    │       │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-    │       │   ├── stressors_pelagic.csv
-    │       │   └── scores_pelagic.csv
-    │       │
-    │       └── {scenario}/                # Alternative scenarios
-    │
-    └── outputs/                           # Model outputs
-        │
-        ├── baseline/
-        │   ├── baseline_iduse.tif         # Use Performance Index
-        │   ├── baseline_benefit.tif       # Benefit Index
-        │   ├── baseline_conflict.tif      # Conflict Index
-        │   ├── baseline_risk.tif          # Habitat Risk Index
-        │   │
-        │   └── intermediate/              # Intermediate artifacts
-        │       ├── baseline_hra_benthic.tif      # InVEST output
-        │       ├── baseline_hra_benthic_fz.tif   # fuzzy transform
-        │       ├── baseline_hra_pelagic.tif
-        │       └── baseline_hra_pelagic_fz.tif
-        │
-        └── {scenario}/                    # Alternative scenario outputs
-
-
-.. _project-design:
+.. _usage-pem-project-design:
 
 Design Principles
 --------------------------------------------
@@ -348,14 +293,19 @@ Intermediate model artifacts are explicitly separated under:
 This ensures traceability of derived layers such as InVEST-HRA results and
 their fuzzy-transformed counterparts.
 
-.. _project-technical:
+.. _usage-spatial:
 
-Technical Recommendations
+Spatial Reference
 ============================================
 
-The PEM framework is architected around a **single spatial reference raster**:
-the bathymetry layer. This raster defines the spatial standard for the entire
-project and governs:
+The PEM framework is architected around a **canonical/reference raster**:
+the **bathymetry** layer:
+
+.. code-block:: text
+
+    {project}/inputs/bathymetry.tif
+
+This reference raster defines the spatial standard for the entire project and is a template for:
 
 - Coordinate Reference System (CRS)
 - Projection
@@ -363,93 +313,36 @@ project and governs:
 - Grid alignment
 - Spatial extent (bounding box)
 
-Strict spatial consistency is mandatory for deterministic and valid results.
-
-Bathymetry as Spatial Reference
---------------------------------------------
-
-The file:
-
-.. code-block:: text
-
-    inputs/bathymetry.tif
-
-acts as the **authoritative spatial template** for the project.
-
-All raster outputs and intermediate layers are expected to:
-
-- Match its CRS exactly
-- Match its resolution exactly
-- Align to its pixel grid
-- Remain within its bounding box
-
 .. important::
 
    The bathymetry raster **must be projected**, not geodetic (i.e., not
    latitude/longitude).
 
-Rationale:
-
-1. PEM indices rely on **area-consistent spatial calculations**.
-2. Equal-area computations are invalid in geographic (degree-based) CRS.
-3. The InVEST Habitat Risk Assessment model requires projected inputs.
-4. Distance-based and raster-based operations assume metric units.
-
-Recommended practice:
-
-- Use an equal-area projection appropriate for your study region.
-- Ensure linear units are in meters.
-- Avoid on-the-fly reprojection during analysis.
-
-ROI (Region of Interest) Requirements
---------------------------------------------
-
-The ROI layer (e.g., ``layers.gpkg|roi`` or ``roi.shp`` under risk inputs)
-must comply strictly with the bathymetry raster.
-
-Requirements:
-
-1. Identical CRS and projection.
-2. Spatial extent fully contained within the bathymetry raster.
-3. No geometry outside the raster bounding box.
-4. Valid polygon geometry (no self-intersections).
-
-Non-compliance may result in:
-
-- Cropping inconsistencies
-- Misaligned rasterization
-- InVEST execution errors
-- Distorted area calculations
-
-Alignment Verification Checklist
---------------------------------------------
-
-Before running any PEM module, verify:
-
-- ``bathymetry.tif`` is projected (not EPSG:4326 or similar).
-- All habitat rasters match its resolution and grid alignment.
-- ROI polygon overlays perfectly without reprojection warnings.
-- All scenario rasters share identical dimensions and geotransform.
+   This is because equal-area computations are invalid in geographic (degree-based) CRS.
+   Also, the InVEST Habitat Risk Assessment model requires projected inputs.
 
 .. tip::
 
-   In QGIS, confirm alignment by checking:
+   For the Brazilian ocean space, the projected Coordinate Reference System (CRS)
+   we strongly recommend is `SIRGAS 2000 / Brazil Polyconic [EPSG 5880] <https://epsg.io/5880>`_.
 
-   - Layer CRS properties
-   - Raster resolution (pixel size)
-   - Extent coordinates
-   - On-the-fly reprojection disabled for validation
 
-Failure to enforce spatial coherence at the project initialization stage
-is the most common source of downstream analytical errors.
-
-.. _tutorials:
+.. _usage-tutorials:
 
 Tutorials
 ============================================
 
+This section provides step-by-step guides for configuring and operating the PEM workflow,
+from initial project setup to advanced model structuring and automation tasks.
+
+.. seealso::
+
+   Learn how to setup a PEM Project in
+   :ref:`Tutorial: Setting Up a PEM Project <guide-project>`.
+
 .. seealso::
 
    Learn how to setup layer groups in the scripts in
-   :ref:`Tutorial: Defining Model Layer Groups <usage-groups>`.
+   :ref:`Tutorial: Defining Ocean Users Groups <usage-groups-users>`.
 
+.. add more as needed

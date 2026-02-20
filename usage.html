@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>User Guide &#8212; pem 0.0.1 documentation</title>
+    <title>User Guide &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -40,7 +40,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=d45e8c67"></script>
+    <script src="_static/documentation_options.js?v=2fea6348"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -50,7 +50,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorial: Defining Model Layer Groups" href="usage_groups.html" />
+    <link rel="next" title="Tutorial: Setting Up a PEM Project" href="usage_project.html" />
     <link rel="prev" title="Conflict Index" href="about_conflict_index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -116,7 +116,7 @@
   
   
   
-    <p class="title logo__title">pem 0.0.1 documentation</p>
+    <p class="title logo__title">pem</p>
   
 </a></div>
     
@@ -332,7 +332,8 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Home</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups.html">Tutorial: Defining Model Layer Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
 </ul>
 </div>
 </nav></div>
@@ -390,19 +391,16 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="admonition warning" id="usage">
-<p class="admonition-title">Warning</p>
-<p>This section is under development.</p>
-</div>
-<section id="user-guide">
-<h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
+  <section id="user-guide">
+<span id="usage"></span><h1>User Guide<a class="headerlink" href="#user-guide" title="Link to this heading">#</a></h1>
 <p>This guide describes how to install, configure, and use the <strong>PEM framework</strong>
 from source. The framework is organized as a collection of standalone Python
 modules, each targeting a specific analytical component.</p>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups.html">Tutorial: Defining Model Layer Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
 </ul>
 </div>
 <div class="admonition seealso">
@@ -411,7 +409,7 @@ modules, each targeting a specific analytical component.</p>
 <a class="reference internal" href="development.html#development"><span class="std std-ref">Development</span></a>.</p>
 </div>
 <section id="installation">
-<span id="id1"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<span id="usage-installation"></span><h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
 <p>The PEM framework is distributed as source code. Each script is designed to
 run as an independent process within the broader workflow.</p>
 <p>Clone the official repository using <code class="docutils literal notranslate"><span class="pre">git</span></code>:</p>
@@ -427,13 +425,14 @@ run as an independent process within the broader workflow.</p>
 environment variables before attempting to clone the repository.</p>
 </div>
 <section id="install-pyqgis">
-<span id="install-qgis"></span><h3>Install PyQGIS<a class="headerlink" href="#install-pyqgis" title="Link to this heading">#</a></h3>
+<span id="usage-install-qgis"></span><h3>Install PyQGIS<a class="headerlink" href="#install-pyqgis" title="Link to this heading">#</a></h3>
 <p>All Python scripts are designed to run within the <strong>QGIS Python environment</strong>
 (PyQGIS). Therefore, installing QGIS is a mandatory prerequisite.</p>
 <ol class="arabic simple">
 <li><p>Download QGIS from the official website:
 <a class="reference external" href="https://qgis.org/download">https://qgis.org/download</a></p></li>
 <li><p>During installation, ensure that the bundled Python environment is included.</p></li>
+<li><p>During installation, ensure <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> Python packages are included.</p></li>
 </ol>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
@@ -442,7 +441,7 @@ environment variables before attempting to clone the repository.</p>
 </div>
 </section>
 <section id="install-invest-workbench">
-<span id="install-invest"></span><h3>Install InVEST Workbench<a class="headerlink" href="#install-invest-workbench" title="Link to this heading">#</a></h3>
+<span id="usage-install-invest"></span><h3>Install InVEST Workbench<a class="headerlink" href="#install-invest-workbench" title="Link to this heading">#</a></h3>
 <p>The <a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index page</span></a> — a core component of
 the PEM framework — is derived from the
 <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">Habitat Risk Assessment model</a>,
@@ -463,7 +462,7 @@ methodological alignment with the InVEST Habitat Risk Assessment model.</p>
 </section>
 </section>
 <section id="source-code">
-<span id="run-scripts"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
+<span id="usage-run-scripts"></span><h2>Source Code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h2>
 <p>The repository follows a standard <code class="docutils literal notranslate"><span class="pre">src</span></code> layout:</p>
 <div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem/                             # repository root
 ├── src/                         # source directory
@@ -478,7 +477,7 @@ methodological alignment with the InVEST Habitat Risk Assessment model.</p>
 </div>
 <p>Each module encapsulates a logically distinct index within the PEM framework.</p>
 <section id="running-python-via-pyqgis">
-<span id="run-scripts-python"></span><h3>Running Python via PyQGIS<a class="headerlink" href="#running-python-via-pyqgis" title="Link to this heading">#</a></h3>
+<span id="usage-run-scripts-python"></span><h3>Running Python via PyQGIS<a class="headerlink" href="#running-python-via-pyqgis" title="Link to this heading">#</a></h3>
 <p>All python modules defines functions that are documented in
 the <a class="reference internal" href="api.html#api"><span class="std std-ref">API page</span></a>.</p>
 <p>Because the framework is distributed as source code (not as an installed package),
@@ -494,7 +493,7 @@ the functions in the modules should be dynamically loaded using <code class="xre
 <p>Always execute the scripts from the <strong>QGIS Python Console</strong> or from a
 Python interpreter explicitly bound to the QGIS environment.</p>
 </div>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Example: loading functions from the modules</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <p class="sd-card-text">The following template demonstrates how to dynamically load the module <code class="docutils literal notranslate"><span class="pre">risk.py</span></code>
@@ -507,10 +506,6 @@ Python interpreter explicitly bound to the QGIS environment.</p>
 <span class="c1"># 1. Define the path to the target module (e.g., risk.py)</span>
 <span class="c1"># ------------------------------------------------------------------</span>
 <span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span>
-
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
 <span class="c1"># ------------------------------------------------------------------</span>
 <span class="c1"># 2. Define input and output directories</span>
@@ -538,6 +533,11 @@ Python interpreter explicitly bound to the QGIS environment.</p>
 <span class="c1"># ------------------------------------------------------------------</span>
 <span class="c1"># 4. Execute the target function</span>
 <span class="c1"># ------------------------------------------------------------------</span>
+<span class="c1"># do not change this part</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
 <span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_habitats</span><span class="p">(</span>
     <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
     <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
@@ -568,59 +568,62 @@ This ensures traceability of spatial preprocessing decisions.</p>
 </details></section>
 </section>
 <section id="pem-project">
-<span id="project"></span><h2>PEM Project<a class="headerlink" href="#pem-project" title="Link to this heading">#</a></h2>
+<span id="usage-pem-project"></span><h2>PEM Project<a class="headerlink" href="#pem-project" title="Link to this heading">#</a></h2>
 <p>The PEM framework may be deployed by the user under the concept
 of a <strong>PEM Project</strong>.</p>
-<section id="folder-structure">
-<span id="project-folders"></span><h3>Folder Structure<a class="headerlink" href="#folder-structure" title="Link to this heading">#</a></h3>
-<p>A file-based PEM Project can follow a standardized directory schema to ensure
+<section id="file-system-structure">
+<span id="usage-pem-project-folders"></span><h3>File System Structure<a class="headerlink" href="#file-system-structure" title="Link to this heading">#</a></h3>
+<p>A file-based PEM Project can follow a standardized file system schema to ensure
 reproducibility, scenario management, and compatibility with all framework
 modules.</p>
 <p>The structure below represents the recommended layout for a complete project.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Adherence to this directory structure is not mandatory but is strongly recommended.
-The rationale of the PEM framework relies on this layout.</p>
-</div>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem-project/                           # Project root
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-file-directory-fill" viewBox="0 0 16 16" aria-hidden="true"><path d="M1.75 1A1.75 1.75 0 0 0 0 2.75v10.5C0 14.216.784 15 1.75 15h12.5A1.75 1.75 0 0 0 16 13.25v-8.5A1.75 1.75 0 0 0 14.25 3H7.5a.25.25 0 0 1-.2-.1l-.9-1.2C6.07 1.26 5.55 1 5 1H1.75Z"></path></svg></span><span class="sd-summary-text">PEM Project file system layout</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>pem-project/                           # Project base folder
 │
-├── inputs/                            # All model inputs
+├── inputs/                            # Folder for all model inputs
 │   │
 │   ├── bathymetry.tif                 # Canonical raster (resolution, extent, CRS)
 │   │
-│   ├── vectors.gpkg                    # Core vector data container
-│   ├── vectors.gpkg|roi                # Region of Interest (polygon layer)
-│   ├── vectors.gpkg|hubs               # Land hubs (point layer)
-│   ├── vectors.gpkg|...                # Additional optional layers
+│   ├── vectors.gpkg                   # Core vector data container
+│   ├── vectors.gpkg|roi               # Region of Interest (polygon layer)
+│   ├── vectors.gpkg|hubs              # Land hubs (point layer)
+│   ├── vectors.gpkg|habitat_benthic   # Benthic habitat map with attributes
+│   ├── vectors.gpkg|habitat_pelagic   # Pelagic habitat map with attributes
+│   ├── vectors.gpkg|...               # Additional optional layers
 │   │
 │   ├── _sources/                      # Helper folder for sourced datasets
 │   │
 │   ├── benefit/                       # Benefit Index parameters and data
 │   │
 │   ├── habitats/                      # Habitat rasters
-│   │   ├── benthic.tif                # Benthic habitat map
-│   │   └── pelagic.tif                # Pelagic habitat map
+│   │   ├── benthic.tif                # Rasterized Benthic habitat map
+│   │   └── pelagic.tif                # Rasterized Pelagic habitat map
 │   │
-│   ├── oceanuse/                      # Ocean use configuration
-│   │   ├── oceanuse.csv               # Table of ocean users
-│   │   ├── conflict.csv               # Spatial conflict matrix
-│   │   │
-│   │   ├── baseline/                  # Baseline scenario
-│   │   │   ├── oilngas.tif            # raster footprint or density
-│   │   │   ├── fisheries.tif          # (suggested users)
-│   │   │   ├── windfarms.tif
-│   │   │   ├── {username}.tif
-│   │   │   └── ...
+│   ├── risk/                          # Habitat Risk model parameters
+│   │   ├── baseline/
+│   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
+│   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
+│   │   │   ├── stressors_pelagic.csv
+│   │   │   └── scores_pelagic.csv
 │   │   │
 │   │   └── {scenario}/                # Alternative scenarios
 │   │
-│   └── risk/                          # Habitat Risk model parameters
-│       ├── baseline/
-│       │   ├── roi.shp                # ROI shapefile (required by InVEST-HRA)
-│       │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-│       │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-│       │   ├── stressors_pelagic.csv
-│       │   └── scores_pelagic.csv
+│   ├── roi/
+│   │   ├── roi.shp                    # Shapefile for ROI (required by InVEST-HRA)
+│   │   └── roi.tif                    # Boolean raster for ROI
+│   │
+│   └── users/                         # Ocean users configuration
+│       ├── users.csv                  # Table of ocean users
+│       ├── users_conflict.csv         # Spatial conflict matrix
+│       │
+│       ├── baseline/                  # Baseline scenario
+│       │   ├── oilngas.tif            # raster footprint or density
+│       │   ├── fisheries.tif          # (suggested users)
+│       │   ├── windfarms.tif
+│       │   ├── {username}.tif
+│       │   └── ...
 │       │
 │       └── {scenario}/                # Alternative scenarios
 │
@@ -641,9 +644,15 @@ The rationale of the PEM framework relies on this layout.</p>
     └── {scenario}/                    # Alternative scenario outputs
 </pre></div>
 </div>
+</div>
+</details><div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Adherence to this directory structure is not mandatory but is strongly recommended.
+The rationale of the PEM framework relies on this layout.</p>
+</div>
 </section>
 <section id="design-principles">
-<span id="project-design"></span><h3>Design Principles<a class="headerlink" href="#design-principles" title="Link to this heading">#</a></h3>
+<span id="usage-pem-project-design"></span><h3>Design Principles<a class="headerlink" href="#design-principles" title="Link to this heading">#</a></h3>
 <p>The PEM Project presented above has some core design principles.</p>
 <p><strong>1. Scenario Isolation</strong></p>
 <p>Each scenario (e.g., <code class="docutils literal notranslate"><span class="pre">baseline</span></code>, <code class="docutils literal notranslate"><span class="pre">ssp1</span></code>) maintains:</p>
@@ -684,11 +693,14 @@ of intermediate artifacts.</p>
 their fuzzy-transformed counterparts.</p>
 </section>
 </section>
-<section id="technical-recommendations">
-<span id="project-technical"></span><h2>Technical Recommendations<a class="headerlink" href="#technical-recommendations" title="Link to this heading">#</a></h2>
-<p>The PEM framework is architected around a <strong>single spatial reference raster</strong>:
-the bathymetry layer. This raster defines the spatial standard for the entire
-project and governs:</p>
+<section id="spatial-reference">
+<span id="usage-spatial"></span><h2>Spatial Reference<a class="headerlink" href="#spatial-reference" title="Link to this heading">#</a></h2>
+<p>The PEM framework is architected around a <strong>canonical/reference raster</strong>:
+the <strong>bathymetry</strong> layer:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/bathymetry.tif
+</pre></div>
+</div>
+<p>This reference raster defines the spatial standard for the entire project and is a template for:</p>
 <ul class="simple">
 <li><p>Coordinate Reference System (CRS)</p></li>
 <li><p>Projection</p></li>
@@ -696,88 +708,32 @@ project and governs:</p>
 <li><p>Grid alignment</p></li>
 <li><p>Spatial extent (bounding box)</p></li>
 </ul>
-<p>Strict spatial consistency is mandatory for deterministic and valid results.</p>
-<section id="bathymetry-as-spatial-reference">
-<h3>Bathymetry as Spatial Reference<a class="headerlink" href="#bathymetry-as-spatial-reference" title="Link to this heading">#</a></h3>
-<p>The file:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>inputs/bathymetry.tif
-</pre></div>
-</div>
-<p>acts as the <strong>authoritative spatial template</strong> for the project.</p>
-<p>All raster outputs and intermediate layers are expected to:</p>
-<ul class="simple">
-<li><p>Match its CRS exactly</p></li>
-<li><p>Match its resolution exactly</p></li>
-<li><p>Align to its pixel grid</p></li>
-<li><p>Remain within its bounding box</p></li>
-</ul>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>The bathymetry raster <strong>must be projected</strong>, not geodetic (i.e., not
 latitude/longitude).</p>
+<p>This is because equal-area computations are invalid in geographic (degree-based) CRS.
+Also, the InVEST Habitat Risk Assessment model requires projected inputs.</p>
 </div>
-<p>Rationale:</p>
-<ol class="arabic simple">
-<li><p>PEM indices rely on <strong>area-consistent spatial calculations</strong>.</p></li>
-<li><p>Equal-area computations are invalid in geographic (degree-based) CRS.</p></li>
-<li><p>The InVEST Habitat Risk Assessment model requires projected inputs.</p></li>
-<li><p>Distance-based and raster-based operations assume metric units.</p></li>
-</ol>
-<p>Recommended practice:</p>
-<ul class="simple">
-<li><p>Use an equal-area projection appropriate for your study region.</p></li>
-<li><p>Ensure linear units are in meters.</p></li>
-<li><p>Avoid on-the-fly reprojection during analysis.</p></li>
-</ul>
-</section>
-<section id="roi-region-of-interest-requirements">
-<h3>ROI (Region of Interest) Requirements<a class="headerlink" href="#roi-region-of-interest-requirements" title="Link to this heading">#</a></h3>
-<p>The ROI layer (e.g., <code class="docutils literal notranslate"><span class="pre">layers.gpkg|roi</span></code> or <code class="docutils literal notranslate"><span class="pre">roi.shp</span></code> under risk inputs)
-must comply strictly with the bathymetry raster.</p>
-<p>Requirements:</p>
-<ol class="arabic simple">
-<li><p>Identical CRS and projection.</p></li>
-<li><p>Spatial extent fully contained within the bathymetry raster.</p></li>
-<li><p>No geometry outside the raster bounding box.</p></li>
-<li><p>Valid polygon geometry (no self-intersections).</p></li>
-</ol>
-<p>Non-compliance may result in:</p>
-<ul class="simple">
-<li><p>Cropping inconsistencies</p></li>
-<li><p>Misaligned rasterization</p></li>
-<li><p>InVEST execution errors</p></li>
-<li><p>Distorted area calculations</p></li>
-</ul>
-</section>
-<section id="alignment-verification-checklist">
-<h3>Alignment Verification Checklist<a class="headerlink" href="#alignment-verification-checklist" title="Link to this heading">#</a></h3>
-<p>Before running any PEM module, verify:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">bathymetry.tif</span></code> is projected (not EPSG:4326 or similar).</p></li>
-<li><p>All habitat rasters match its resolution and grid alignment.</p></li>
-<li><p>ROI polygon overlays perfectly without reprojection warnings.</p></li>
-<li><p>All scenario rasters share identical dimensions and geotransform.</p></li>
-</ul>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>In QGIS, confirm alignment by checking:</p>
-<ul class="simple">
-<li><p>Layer CRS properties</p></li>
-<li><p>Raster resolution (pixel size)</p></li>
-<li><p>Extent coordinates</p></li>
-<li><p>On-the-fly reprojection disabled for validation</p></li>
-</ul>
+<p>For the Brazilian ocean space, the projected Coordinate Reference System (CRS)
+we strongly recommend is <a class="reference external" href="https://epsg.io/5880">SIRGAS 2000 / Brazil Polyconic [EPSG 5880]</a>.</p>
 </div>
-<p>Failure to enforce spatial coherence at the project initialization stage
-is the most common source of downstream analytical errors.</p>
-</section>
 </section>
 <section id="tutorials">
-<span id="id2"></span><h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h2>
+<span id="usage-tutorials"></span><h2>Tutorials<a class="headerlink" href="#tutorials" title="Link to this heading">#</a></h2>
+<p>This section provides step-by-step guides for configuring and operating the PEM workflow,
+from initial project setup to advanced model structuring and automation tasks.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup a PEM Project in
+<a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>.</p>
+</div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>Learn how to setup layer groups in the scripts in
-<a class="reference internal" href="usage_groups.html#usage-groups"><span class="std std-ref">Tutorial: Defining Model Layer Groups</span></a>.</p>
+<a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
 </div>
 </section>
 </section>
@@ -802,11 +758,11 @@ is the most common source of downstream analytical errors.</p>
       </div>
     </a>
     <a class="right-next"
-       href="usage_groups.html"
+       href="usage_project.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorial: Defining Model Layer Groups</p>
+        <p class="prev-next-title">Tutorial: Setting Up a PEM Project</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -839,16 +795,11 @@ is the most common source of downstream analytical errors.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem-project">PEM Project</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#folder-structure">Folder Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#file-system-structure">File System Structure</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#design-principles">Design Principles</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-recommendations">Technical Recommendations</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bathymetry-as-spatial-reference">Bathymetry as Spatial Reference</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#roi-region-of-interest-requirements">ROI (Region of Interest) Requirements</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#alignment-verification-checklist">Alignment Verification Checklist</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-reference">Spatial Reference</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tutorials">Tutorials</a></li>
 </ul>
   </nav></div>
