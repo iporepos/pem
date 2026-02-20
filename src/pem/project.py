@@ -24,6 +24,10 @@ import os, pprint
 # External imports
 # =======================================================================
 import numpy as np
+import geopandas as gpd
+import fiona
+
+# qgis stuff
 import processing
 from osgeo import gdal
 from qgis.core import (
@@ -77,11 +81,46 @@ def _folder_checker(ls):
             raise FileNotFoundError(f" >>> check for {p}")
 
 
+def _get_project_vars(folder_project):
+
+    pvars = {}
+
+    folder_project = Path(folder_project)
+    pvars["folder_project"] = folder_project
+    pvars["folder_inputs"] = folder_project / "inputs"
+    pvars["folder_outputs"] = folder_project / "outputs"
+
+    # infer input database
+    # ----------------------------------------
+    pvars["vectors"] = pvars["folder_inputs"] / "vectors.gpkg"
+
+    # infer reference raster
+    # ----------------------------------------
+    pvars["refraster"] = pvars["folder_inputs"] / "bathymetry.tif"
+
+    # run checks
+    # ----------------------------------------
+    ls = [folder_project]
+    _folder_checker(ls)
+
+    ls = [pvars["vectors"], pvars["refraster"]]
+    _file_checker(ls)
+
+    # get extra parameters
+    # ===============================================
+    pvars["crs"] = util_get_raster_crs(pvars["refraster"], code_only=True)
+    pvars["ext"] = util_get_raster_extent(pvars["refraster"])
+    res_dc = util_get_raster_resolution(pvars["refraster"])
+    pvars["res"] = res_dc["xres"]
+
+    return pvars
+
+
 # FUNCTIONS -- Project-level
 # =======================================================================
 
 
-def setup_folders(name, folder_base, scenarios=None):
+def setup_project(name, folder_base, scenarios=None):
     """
     Initialize the directory structure for a PEM project.
 
@@ -155,16 +194,17 @@ def setup_folders(name, folder_base, scenarios=None):
         folder_base / name,
         folder_base / f"{name}/inputs",
         folder_base / f"{name}/inputs/_sources",
-        folder_base / f"{name}/inputs/habitats",
-        folder_base / f"{name}/inputs/oceanuse/baseline",
-        folder_base / f"{name}/inputs/risk/baseline",
         folder_base / f"{name}/inputs/benefit",
+        folder_base / f"{name}/inputs/habitats",
+        folder_base / f"{name}/inputs/risk/baseline",
+        folder_base / f"{name}/inputs/roi",
+        folder_base / f"{name}/inputs/users/baseline",
         d_output / "baseline",
     ]
 
     if scenarios is not None:
         ls_scenarios_bases = [
-            folder_base / f"{name}/inputs/oceanuse",
+            folder_base / f"{name}/inputs/users",
             folder_base / f"{name}/inputs/risk",
             folder_base / f"{name}/outputs",
         ]
@@ -184,7 +224,184 @@ def setup_folders(name, folder_base, scenarios=None):
     return ls
 
 
-def setup_oceanuse(folder_project, groups, scenario="baseline"):
+def setup_roi(folder_project):
+    # todo docstring
+
+    pvars = _get_project_vars(folder_project)
+
+    folder_output = pvars["folder_inputs"] / "roi"
+
+    input_db = pvars["vectors"]
+    dst_crs = pvars["crs"]
+    layer = "roi"
+
+    # reproject to SHP
+    # -----------------------------------
+
+    src_file = "{}|layername={}".format(input_db, layer)
+    dst_file = f"{folder_output}/{layer}.shp"
+
+    dc_params = {
+        "INPUT": src_file,
+        "TARGET_CRS": QgsCoordinateReferenceSystem(f"EPSG:{dst_crs}"),
+        "CONVERT_CURVED_GEOMETRIES": False,
+        "OPERATION": CRS_OPS[dst_crs],
+        "OUTPUT": dst_file,
+    }
+    processing.run("native:reprojectlayer", dc_params)
+
+    # make blank
+    # -----------------------------------
+    raster_output = f"{folder_output}/roi.tif"
+    util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
+
+    # rasterize
+    # -----------------------------------
+    util_rasterize_layer(
+        input_raster=raster_output,
+        input_db=None,
+        input_layer=dst_file,
+        burn_value=1,
+    )
+
+    return [dst_file, raster_output]
+
+
+def setup_habitats(folder_project, habitat_field="code", groups=None, to_byte=True):
+
+    # todo docstring
+
+    pvars = _get_project_vars(folder_project)
+
+    folder_output = pvars["folder_inputs"] / "habitats"
+
+    input_db = pvars["vectors"]
+    dst_crs = pvars["crs"]
+    layers = ["habitats_benthic", "habitats_pelagic"]
+
+    # reproject layers
+    # -----------------------------------
+    output_db = util_reproject_vectors(
+        input_db=input_db,
+        layers=layers,
+        folder_output=folder_output,
+        dst_crs=dst_crs,
+        name_out="habitats",
+    )
+
+    ls_outputs = list()
+
+    for hab in layers:
+
+        hab_type = hab.split("_")[-1]
+
+        input_layer = f"{output_db}|layername={hab}"
+
+        # group rows
+        # -----------------------------------
+        layer_grouped = hab + "_grouped"
+        dst_out_a = "ogr:dbname='{}' table=".format(output_db)
+        dst_out_b = '"{}" (geom)'.format(layer_grouped)
+        dst_out = dst_out_a + dst_out_b
+
+        # add a 'raster' field with unique number the dissolved layer
+        dc_params = {
+            "INPUT": input_layer,
+            "FIELD_NAME": "raster",
+            "FIELD_TYPE": 1,
+            "FIELD_LENGTH": 20,
+            "FIELD_PRECISION": 2,
+            "FORMULA": "$id",
+            "OUTPUT": dst_out,
+        }
+        processing.run("native:fieldcalculator", dc_params)
+
+        # handle groups
+        # -----------------------------------
+        gdf = gpd.read_file(output_db, layer=layer_grouped)
+
+        rules = groups[hab_type]
+        if rules is not None:
+
+            # --- 1. Build the lookup dictionaries ---
+            name_mapping = {}
+            id_mapping = {}
+            current_id = 1
+
+            for rule in rules:
+                group_name = rule["name"]
+
+                # Assign a new ID only if we haven't seen this group_name yet
+                if group_name not in id_mapping:
+                    id_mapping[group_name] = current_id
+                    current_id += 1
+
+                # Map each individual value to its target group_name
+                for val in rule["values"]:
+                    name_mapping[val] = group_name
+
+            # Map the values to the new columns
+            gdf["group_name"] = gdf[habitat_field].map(name_mapping).fillna("UNGROUPED")
+            gdf["group_id"] = gdf["group_name"].map(id_mapping).fillna(0).astype(int)
+
+            # Set raster as the group id
+            gdf["raster"] = gdf["group_id"].values
+        else:
+            gdf["group_name"] = gdf[habitat_field]
+            gdf["group_id"] = gdf["raster"]
+
+        # Overwrite layer
+        gdf.to_file(output_db, layer=layer_grouped, driver="GPKG")
+
+        # Clean up
+        with fiona.Env():
+            fiona.remove(output_db, layer=hab, driver="GPKG")
+
+        # get raster blank
+        # -----------------------------------
+        raster_output = f"{folder_output}/{hab}.tif"
+        util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
+        ls_outputs.append(raster_output)
+
+        # rasterize field
+        # -----------------------------------
+        util_rasterize_layer(
+            input_raster=raster_output,
+            input_db=output_db,
+            input_layer=layer_grouped,
+            use_field="raster",
+        )
+
+    # align no-data standard and data type
+    # -----------------------------------
+    for r in ls_outputs:
+        nm = Path(r).stem + "_aux.tif"
+        file_out = Path(r).parent / nm
+        dc_params = {
+            "INPUT": str(r),
+            "TARGET_CRS": None,
+            "NODATA": -99999,
+            "COPY_SUBDATASETS": False,
+            "OPTIONS": None,
+            "EXTRA": "",
+            "DATA_TYPE": 6,
+            "OUTPUT": str(file_out),
+        }
+
+        if to_byte:
+            dc_params["NODATA"] = 255
+            dc_params["DATA_TYPE"] = 1
+
+        processing.run("gdal:translate", dc_params)
+
+        # clear and remove
+        os.remove(r)
+        os.rename(src=file_out, dst=r)
+
+    return ls_outputs
+
+
+def setup_users(folder_project, groups, scenario="baseline"):
     """
     Configures the OceanUse analysis by processing vector and raster data into weighted thematic user groups.
 
@@ -215,19 +432,15 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
             import importlib.util as iu
 
             # define the paths to the module
-            # ----------------------------------------
             the_module = "path/to/project.py" # change here
 
             # define the project folder
-            # ----------------------------------------
             folder_project = "path/to/folder" # change here
 
             # define the analysis scenario
-            # ----------------------------------------
             scenario = "baseline" # change here
 
             # define layer groups
-            # ----------------------------------------
             # change "name", "field" and "weight"
 
             group_fisheries = {
@@ -247,21 +460,19 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
             }
 
             # setup groups dictionary
-            # ----------------------------------------
-            # define actual names for OceanUsers
-
+            # define actual names for Ocean Users
             groups = {
                 "fisheries": group_fisheries,
                 "windfarms": group_windfarms,
             }
 
             # call the function
-            # ----------------------------------------
+            # do not change here
             spec = iu.spec_from_file_location("module", the_module)
             module = iu.module_from_spec(spec)
             spec.loader.exec_module(module)
 
-            output_file = module.setup_oceanuse(
+            output_file = module.setup_users(
                 folder_project=folder_project,
                 groups=groups,
                 scenario=scenario
@@ -278,42 +489,42 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
             ls_weights.append(w)
         return ls_weights
 
-    folder_project = Path(folder_project)
-    folder_inputs = folder_project / "inputs"
-    folder_output = folder_project / f"inputs/oceanuse/{scenario}"
+    pvars = _get_project_vars(folder_project=folder_project)
+
+    folder_project = pvars["folder_project"]
+    folder_inputs = pvars["folder_inputs"]
+
+    # get specific folders
+    # ===============================================
+    folder_output = folder_project / f"inputs/users/{scenario}"
     folder_outputs_interm = folder_project / f"outputs/{scenario}/intermediate"
     folder_sources = folder_inputs / "_sources"
 
+    # get files
+    # ===============================================
+    input_db = pvars["vectors"]
+    reference_raster = pvars["refraster"]
+
+    # get extra parameters
+    # ===============================================
+    dst_crs = pvars["crs"]
+    dst_ext = pvars["ext"]
+    dst_res = pvars["res"]
+
     # master check up
     # ===============================================
+
+    _folder_checker([folder_outputs_interm])
+    _file_checker([input_db, reference_raster])
+
     for k in groups:
         if "vectors" not in groups[k].keys() and "rasters" not in groups[k].keys():
             raise KeyError(
                 f"On '{k}' group >> neither 'vectors' or 'rasters' keys were found"
             )
 
-    # infer input database
-    # ----------------------------------------
-    input_db = folder_inputs / "vectors.gpkg"
-
-    # infer reference raster
-    # ----------------------------------------
-    reference_raster = folder_inputs / "bathymetry.tif"
-
-    # run checks
-    # ----------------------------------------
-    ls = [folder_project, folder_outputs_interm]
-    _folder_checker(ls)
-
-    ls = [input_db, reference_raster]
-    _file_checker(ls)
-
-    # get extra parameters
+    # enter main loop
     # ===============================================
-    dst_crs = util_get_raster_crs(reference_raster, code_only=True)
-    dst_ext = util_get_raster_extent(reference_raster)
-    res_dc = util_get_raster_resolution(reference_raster)
-    dst_res = res_dc["xres"]
 
     for g in groups:
         ls_rasters = list()
@@ -321,7 +532,7 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
         # setup vectors
         # ===============================================
         if "vectors" in groups[g]:
-            ls = _setup_oceanuse_vectors(
+            ls = _setup_users_vectors(
                 input_db=input_db,
                 groups=groups[g],
                 dst_crs=dst_crs,
@@ -337,7 +548,7 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
         # setup rasters
         # ===============================================
         if "rasters" in groups[g]:
-            ls = _setup_oceanuse_rasters(
+            ls = _setup_users_rasters(
                 folder_sources=folder_sources,
                 groups=groups[g],
                 dst_crs=dst_crs,
@@ -352,24 +563,35 @@ def setup_oceanuse(folder_project, groups, scenario="baseline"):
 
         # normalize
         # ===============================================
-        ls_normalized = util_self_normalize_rasters(ls_rasters=ls_rasters)
+        ls_normalized = util_normalize_rasters(ls_rasters=ls_rasters)
 
         if len(ls_normalized) > 1:
             # map algebra
             # ===============================================
             file_output = folder_outputs_interm / f"{g}_wavg.tif"
-            file_raster = _get_oceanuse_algebra(ls_rasters, ls_weights, file_output)
+            file_raster = _setup_users_algebra(
+                ls_normalized, ls_weights, file_output, reference_raster
+            )
 
             # normalize
             # ===============================================
-            ls_normalized = util_self_normalize_rasters(ls_rasters=[file_raster])
+            ls_normalized = util_normalize_rasters(ls_rasters=[file_raster])
 
-        shutil.copy(src=ls_normalized[0], dst=folder_output / f"{g}.tif")
+        dc = {
+            "INPUT": str(ls_normalized[0]),
+            "BAND": 1,
+            "FILL_VALUE": 0,
+            "CREATE_OPTIONS": None,
+            "OUTPUT": str(folder_output / f"{g}.tif"),
+        }
+        processing.run("native:fillnodata", dc)
 
     return None
 
 
-def _get_oceanuse_algebra(ls_rasters, ls_weights, file_output, in_nodata=-99999):
+def _setup_users_algebra(
+    ls_rasters, ls_weights, file_output, reference_raster, in_nodata=-99999
+):
     if len(ls_rasters) != len(ls_weights):
         raise ValueError("List of files and weights not the same size")
 
@@ -378,6 +600,7 @@ def _get_oceanuse_algebra(ls_rasters, ls_weights, file_output, in_nodata=-99999)
     out_metadata = None
 
     for i in range(len(ls_rasters)):
+        w = float(ls_weights[i])
         # 1. Read the raster
         raster_dict = util_read_raster(ls_rasters[i])
 
@@ -393,7 +616,7 @@ def _get_oceanuse_algebra(ls_rasters, ls_weights, file_output, in_nodata=-99999)
             out_metadata = raster_dict.get("metadata")
 
         # 5. Multiply the map by its weight and add it to the running total
-        weighted_sum += data * ls_weights[i]
+        weighted_sum += data * w
 
     # 6. Calculate the final weighted average
     # Note: If a pixel has NaN in ANY of the input rasters,
@@ -401,19 +624,20 @@ def _get_oceanuse_algebra(ls_rasters, ls_weights, file_output, in_nodata=-99999)
     weighted_avg = weighted_sum / total_weight
 
     # 7. Convert NaNs back to the NoData value for the final TIF
-    final_data = np.nan_to_num(weighted_avg, nan=-99999)
+    final_data = np.nan_to_num(weighted_avg, nan=in_nodata)
 
     # 8. Write to disk
     util_write_raster(
         grid_output=final_data,  # Pass the cleaned data, not the array with NaNs
         dc_metadata=out_metadata,
         file_output=str(file_output),
+        nodata_value=in_nodata,
     )
 
     return file_output
 
 
-def _setup_oceanuse_rasters(
+def _setup_users_rasters(
     folder_sources, groups, dst_crs, dst_ext, dst_res, folder_output
 ):
 
@@ -452,7 +676,7 @@ def _setup_oceanuse_rasters(
     return ls_outputs
 
 
-def _setup_oceanuse_vectors(
+def _setup_users_vectors(
     input_db, groups, dst_crs, dst_ext, folder_output, reference_raster
 ):
 
@@ -468,7 +692,7 @@ def _setup_oceanuse_vectors(
         layers=layers,
         folder_output=folder_output,
         dst_crs=dst_crs,
-        name_out="oceanuse_reprojected",
+        name_out="users_reprojected",
     )
 
     # clip/extract
@@ -479,7 +703,7 @@ def _setup_oceanuse_vectors(
         folder_output=folder_output,
         dst_crs=dst_crs,
         dst_ext=dst_ext,
-        name_out="oceanuse_extracted",
+        name_out="users_extracted",
     )
 
     # rasterize
@@ -504,19 +728,21 @@ def _setup_oceanuse_vectors(
             ls_fields = util_get_vector_fields(extracted, layer_name=name)
             if field not in ls_fields:
                 raise ValueError(f"Field '{field}' not found in database.")
-            file_output = util_layer_rasterize(
+            file_output = util_rasterize_layer(
                 input_raster=file_raster,
                 input_db=extracted,
                 input_layer=name,
                 use_field=field,
+                extra="-add",
             )
 
         else:
-            file_output = util_layer_rasterize(
+            file_output = util_rasterize_layer(
                 input_raster=file_raster,
                 input_db=extracted,
                 input_layer=name,
                 burn_value=1,
+                extra="-add",
             )
         ls_outputs.append(Path(file_raster))
     return ls_outputs
@@ -556,10 +782,10 @@ def util_raster_blank(output_raster, input_raster):
     return output_raster
 
 
-def util_layer_rasterize(
+def util_rasterize_layer(
     input_raster,
-    input_db,
-    input_layer,
+    input_db=None,
+    input_layer=None,
     burn_value=1,
     use_field=None,
     add=False,
@@ -567,7 +793,10 @@ def util_layer_rasterize(
 ):
     # todo docstring
 
-    input_vector = "{}|layername={}".format(input_db, input_layer)
+    input_vector = str(input_layer)
+
+    if input_db is not None:
+        input_vector = "{}|layername={}".format(input_db, input_layer)
 
     dc_parameters = {
         "INPUT": input_vector,
@@ -615,13 +844,25 @@ def util_extractextent_vectors(
     """
     dst_file = "{}/{}.gpkg".format(folder_output, name_out)
     dst_extent = f'{dst_ext["xmin"]},{dst_ext["xmax"]},{dst_ext["ymin"]},{dst_ext["ymax"]} [EPSG:{dst_crs}]'
+
     for layer in layers:
         src_file = "{}|layername={}".format(input_db, layer)
+
+        # 1. Fix Geometries first using a temporary output
+        fix_params = {
+            "INPUT": src_file,
+            "OUTPUT": "TEMPORARY_OUTPUT",  # This keeps the result in memory
+        }
+        fixed_layer = processing.run("native:fixgeometries", fix_params)["OUTPUT"]
+
+        # 2. Define your destination
         dst_out = "ogr:dbname='{}' table=".format(dst_file) + '"{}" (geom)'.format(
             layer
         )
+
+        # 3. Run the extraction using the 'fixed_layer' as input
         dc_params = {
-            "INPUT": src_file,
+            "INPUT": fixed_layer,  # Using the temporary layer here
             "EXTENT": dst_extent,
             "CLIP": True,
             "OUTPUT": dst_out,
@@ -678,7 +919,7 @@ def util_reproject_vectors(
     return dst_file
 
 
-def util_self_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
+def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     # todo docstring
     ls_new_rasters = list()
     for r in ls_rasters:
@@ -692,9 +933,10 @@ def util_self_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
         else:
             vmax = dc_stats["min"]
 
-        vmax = dc_stats["p99"]
-        if vmax == vmin:
-            vmax = dc_stats["max"]
+        vmax = dc_stats["max"]
+
+        if vmin == vmax:
+            vmax = vmax + 1
 
         dc_specs = {
             "INPUT": str(p),
@@ -712,6 +954,59 @@ def util_self_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
 # FUNCTIONS -- Module-level
 # =======================================================================
 # ... {develop}
+
+
+def util_get_raster_stats(input_raster, band=1, full=False):
+    """
+    Calculates the statistics for a specified band of a given raster file.
+
+    :param input_raster: Full path to the input raster file.
+    :type input_raster: str
+    :param band: The band number to calculate statistics for. Default value = ``1``
+    :type band: int
+    :return: A dictionary containing the raster band's mean, standard deviation, minimum, maximum, sum, and element count.
+    :rtype: dict
+
+    **Notes**
+
+    The function uses QGIS classes internally to read the raster and compute statistics.
+    The keys in the returned dictionary are ``mean``, ``sd``, ``min``, ``max``, ``sum``, and ``count``.
+
+    """
+    dc_stats = None
+    if full:
+        dc_raster = util_read_raster(
+            file_input=input_raster, n_band=band, metadata=None
+        )
+        data = dc_raster["data"]
+        dc_stats = {
+            "mean": float(np.nanmean(data)),
+            "sd": float(np.nanstd(data)),
+            "min": float(np.nanmin(data)),
+            "max": float(np.nanmax(data)),
+            "sum": float(np.nansum(data)),
+            "count": float(np.count_nonzero(~np.isnan(data))),  # number of valid pixels
+            "p01": float(np.nanpercentile(data, 1)),
+            "p05": float(np.nanpercentile(data, 5)),
+            "p25": float(np.nanpercentile(data, 25)),
+            "p50": float(np.nanpercentile(data, 50)),  # median
+            "p75": float(np.nanpercentile(data, 75)),
+            "p95": float(np.nanpercentile(data, 95)),
+            "p99": float(np.nanpercentile(data, 99)),
+        }
+    else:
+        layer = QgsRasterLayer(input_raster, "raster")
+        provider = layer.dataProvider()
+        stats = provider.bandStatistics(band, QgsRasterBandStats.All, layer.extent(), 0)
+        dc_stats = {
+            "mean": stats.mean,
+            "sd": stats.stdDev,
+            "min": stats.minimumValue,
+            "max": stats.maximumValue,
+            "sum": stats.sum,
+            "count": stats.elementCount,
+        }
+    return dc_stats
 
 
 def util_get_raster_crs(file_input, code_only=True):
@@ -890,59 +1185,6 @@ def util_write_raster(
     raster_output = None
 
     return file_output
-
-
-def util_get_raster_stats(input_raster, band=1, full=False):
-    """
-    Calculates the statistics for a specified band of a given raster file.
-
-    :param input_raster: Full path to the input raster file.
-    :type input_raster: str
-    :param band: The band number to calculate statistics for. Default value = ``1``
-    :type band: int
-    :return: A dictionary containing the raster band's mean, standard deviation, minimum, maximum, sum, and element count.
-    :rtype: dict
-
-    **Notes**
-
-    The function uses QGIS classes internally to read the raster and compute statistics.
-    The keys in the returned dictionary are ``mean``, ``sd``, ``min``, ``max``, ``sum``, and ``count``.
-
-    """
-    dc_stats = None
-    if full:
-        dc_raster = util_read_raster(
-            file_input=input_raster, n_band=band, metadata=None
-        )
-        data = dc_raster["data"]
-        dc_stats = {
-            "mean": float(np.nanmean(data)),
-            "sd": float(np.nanstd(data)),
-            "min": float(np.nanmin(data)),
-            "max": float(np.nanmax(data)),
-            "sum": float(np.nansum(data)),
-            "count": float(np.count_nonzero(~np.isnan(data))),  # number of valid pixels
-            "p01": float(np.nanpercentile(data, 1)),
-            "p05": float(np.nanpercentile(data, 5)),
-            "p25": float(np.nanpercentile(data, 25)),
-            "p50": float(np.nanpercentile(data, 50)),  # median
-            "p75": float(np.nanpercentile(data, 75)),
-            "p95": float(np.nanpercentile(data, 95)),
-            "p99": float(np.nanpercentile(data, 99)),
-        }
-    else:
-        layer = QgsRasterLayer(input_raster, "raster")
-        provider = layer.dataProvider()
-        stats = provider.bandStatistics(band, QgsRasterBandStats.All, layer.extent(), 0)
-        dc_stats = {
-            "mean": stats.mean,
-            "sd": stats.stdDev,
-            "min": stats.minimumValue,
-            "max": stats.maximumValue,
-            "sum": stats.sum,
-            "count": stats.elementCount,
-        }
-    return dc_stats
 
 
 # CLASSES

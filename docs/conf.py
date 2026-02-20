@@ -49,7 +49,7 @@ sys.path.insert(0, os.path.abspath("../src"))  # <-- [CHECK THIS] src layout
 project = "pem"  # <-- [CHANGE HERE]
 copyright = "2025, The Authors"  # <-- [CHANGE HERE]
 author = "Iporã Possantti"  # <-- [CHANGE HERE]
-release = "0.0.1"  # <-- [CHANGE HERE]
+release = "v0.0.1"  # <-- [CHANGE HERE]
 
 
 # GENERAL CONFIGS
@@ -85,6 +85,7 @@ autodoc_mock_imports = [
     "scipy",
     "pandas",
     "geopandas",
+    "fiona",
     "rasterio",
     "processing",
     "qgis",
@@ -150,5 +151,11 @@ html_logo = (
 
 html_theme_options = {
     "github_url": "https://github.com/iporepos/pem",
+    "logo": {
+        "text": "pem",
+        "image_light": None,
+        "image_dark": None,
+    },
+    "navbar_start": ["navbar-logo"],
     "navbar_end": ["theme-switcher", "navbar-icon-links"],
 }

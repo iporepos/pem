@@ -16,12 +16,6 @@ Welcome to ``pem`` documentation page!
 
 Methods and scripts for marine spatial planning in Brazil.
 
-.. remove this note after enter maintenance mode [CHANGE THIS]:
-
-.. warning::
-
-   This project is under active development.
-
 The **PEM Project** (*Planejamento Espacial Marinho do Brasil*, or *Marine Spatial Planning for Brazil*)
 is a brazilian national initiative focused on developing **spatially explicit guidelines** for the sustainable
 use and management of Brazil’s marine environment. It supports the implementation of

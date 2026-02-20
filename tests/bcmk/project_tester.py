@@ -25,9 +25,11 @@ import inspect
 import shutil
 from os.path import isdir
 from pathlib import Path
-from pprint import pprint
+import pprint
 import importlib.util as iu
 
+
+import geopandas as gpd
 
 # QGIS imports
 # =======================================================================
@@ -201,7 +203,7 @@ def test_util_get_vector_fields():
 
     # define input database
     # ----------------------------------------
-    layer_name = "fisheries_02"
+    layer_name = "fisheries_traps"
 
     ls = MODULE.util_get_vector_fields(file_input=file_input, layer_name=layer_name)
     print(ls)
@@ -244,7 +246,7 @@ def test_util_raster_blank():
     return None
 
 
-def test_util_layer_rasterize():
+def test_util_rasterize_layer():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
 
@@ -268,18 +270,18 @@ def test_util_layer_rasterize():
 
     # call the function
     # ----------------------------------------
-    output_file1 = MODULE.util_layer_rasterize(
+    output_file1 = MODULE.util_rasterize_layer(
         input_raster=input_raster1,
         input_db=input_db,
-        input_layer="fisheries_01",
+        input_layer="fisheries_seines",
         burn_value=666,
         extra="",
     )
 
-    output_file2 = MODULE.util_layer_rasterize(
+    output_file2 = MODULE.util_rasterize_layer(
         input_raster=input_raster2,
         input_db=input_db,
-        input_layer="fisheries_02",
+        input_layer="fisheries_traps",
         use_field="intensity",
         extra="",
     )
@@ -305,7 +307,7 @@ def test_util_reproject_vectors():
 
     # define the layers list
     # ----------------------------------------
-    layers = ["fisheries_01", "fisheries_02"]
+    layers = ["fisheries_traps", "fisheries_seines"]
 
     folder_output = _make_run_folder(OUTPUT_DIR, "reproject-vectors")
 
@@ -324,58 +326,13 @@ def test_util_reproject_vectors():
     return None
 
 
-def test_setup_oceanuse():
-    func_name = inspect.currentframe().f_code.co_name
-    _print_func_name(func_name)
-
-    # define folder project
-    # ----------------------------------------
-    folder_project = DATA_DIR
-
-    # define scenario
-    # ----------------------------------------
-    scenario = "baseline"
-
-    # define layer groups
-    # ----------------------------------------
-    group_fisheries = {
-        "vectors": [
-            {"name": "fisheries_traps", "field": None, "weight": 2},
-            {"name": "fisheries_seines", "field": "intensity", "weight": 3},
-        ],
-        "rasters": [
-            {"name": "fisheries_gillnets.tif", "weight": 10},
-            {"name": "fisheries_longlines.tif", "weight": 5},
-        ],
-    }
-    group_windfarms = {
-        "vectors": [
-            {"name": "windfarms", "field": None, "weight": 5},
-        ],
-    }
-
-    # setup groups dictionary
-    # ----------------------------------------
-    groups = {
-        "fisheries": group_fisheries,
-        "windfarms": group_windfarms,
-    }
-
-    MODULE.setup_oceanuse(
-        folder_project=folder_project, groups=groups, scenario=scenario
-    )
-
-    _print_passed_msg()
-    return None
-
-
-def test_setup_folders():
+def test_setup_project():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
 
     # call the function
     # ----------------------------------------
-    ls_output = MODULE.setup_folders(
+    ls_output = MODULE.setup_project(
         name="narnia",
         folder_base=DATA_DIR.parent,
         scenarios=["baseline", "bau", "utopia"],
@@ -393,6 +350,166 @@ def test_setup_folders():
     return None
 
 
+def test_setup_roi():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # call the function
+    # ----------------------------------------
+    ls_output = MODULE.setup_roi(folder_project)
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_habitats():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define habitats grouping scheme
+    group_benthic = [
+        {"name": "benthic_a", "values": ["MB3", "MC3"]},
+        {"name": "benthic_b", "values": ["MB4", "MB5", "MB6"]},
+        {"name": "benthic_b", "values": ["MC4", "MC5", "MC6"]},
+        {"name": "benthic_c", "values": ["MD3"]},
+        {"name": "benthic_d", "values": ["MD4", "MD5", "MD6"]},
+        {"name": "benthic_e", "values": ["ME1"]},
+        {"name": "benthic_f", "values": ["ME4", "MF4", "MF5"]},
+        {"name": "benthic_f", "values": ["MG4", "MG6"]},
+    ]
+
+    group_pelagic = None  # if None, habitats are not grouped.
+
+    groups = {"benthic": group_benthic, "pelagic": group_pelagic}
+
+    # call the function
+    # ----------------------------------------
+    ls_output = MODULE.setup_habitats(
+        folder_project=folder_project,
+        habitat_field="code",
+        groups=groups,
+    )
+
+    output_db = DATA_DIR / "inputs/habitats/habitats.gpkg"
+    layer = "habitats_benthic_grouped"
+    gdf = gpd.read_file(output_db, layer=layer)
+
+    print(gdf.info())
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_users():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # define layer groups
+    # ----------------------------------------
+
+    group_fisheries = {
+        "vectors": [
+            {"name": "fisheries_traps", "field": None, "weight": 1},
+            {"name": "fisheries_seines", "field": "intensity", "weight": 1},
+        ],
+        "rasters": [
+            {"name": "fisheries_gillnets.tif", "weight": 5},
+            {"name": "pesca_drifting_longlines.tif", "weight": 2},
+            {"name": "pesca_gillnets.tif", "weight": 2},
+            {"name": "pesca_pole_and_line.tif", "weight": 2},
+            {"name": "pesca_pots_and_traps.tif", "weight": 2},
+            {"name": "pesca_purse_seines.tif", "weight": 2},
+            {"name": "pesca_trawlers.tif", "weight": 2},
+            {"name": "pesca_set_longlines.tif", "weight": 2},
+        ],
+    }
+
+    group_offshorewind = {
+        "vectors": [
+            {"name": "windfarms", "field": None, "weight": 1},
+            {"name": "eolico_linhas_transmissao", "field": None, "weight": 3},
+            {"name": "eolico_torres", "field": None, "weight": 5},
+        ],
+    }
+
+    group_minerals = {
+        "vectors": [
+            {"name": "petroleo_blocos_concessao", "field": None, "weight": 2},
+            {"name": "mineracao_processos", "field": None, "weight": 3},
+        ],
+        "rasters": [
+            {"name": "petroleo_densidade_navios.tif", "weight": 5},
+        ],
+    }
+
+    group_cargo = {
+        "vectors": [
+            {"name": "navegacao_portos", "field": None, "weight": 3},
+            {"name": "navegacao_estaleiros", "field": None, "weight": 2},
+            {"name": "pdz_area_porto", "field": None, "weight": 2},
+            {"name": "pdz_bacias_evolucao", "field": None, "weight": 2},
+            {"name": "pdz_fundeadouros", "field": None, "weight": 2},
+        ],
+        "rasters": [
+            {"name": "navegacao_densidade.tif", "weight": 1},
+        ],
+    }
+
+    group_tourism = {
+        "vectors": [
+            {"name": "turismo_esportes_nauticos", "field": None, "weight": 1},
+            {"name": "turismo_infra_sul", "field": None, "weight": 2},
+            {"name": "turismo_mergulho_autonomo", "field": None, "weight": 1},
+        ],
+    }
+
+    # setup groups dictionary
+    # ----------------------------------------
+    groups = {
+        "fisheries": group_fisheries,
+        "offshorewind": group_offshorewind,
+        "minerals": group_minerals,
+        "cargo": group_cargo,
+        "tourism": group_tourism,
+    }
+
+    MODULE.setup_users(folder_project=folder_project, groups=groups, scenario=scenario)
+
+    _print_passed_msg()
+
+    return None
+
+
 def live_check():
     print("This is a live check.")
 
@@ -404,7 +521,7 @@ def get_arguments():
         epilog="Usage example: python -m tests.bcmk.risk_tester --all",
     )
 
-    parser.add_argument("--which", default=20, help="Which tests to run")
+    parser.add_argument("--which", default=0, help="Which tests to run")
 
     parser.add_argument(
         "-a",
@@ -429,15 +546,17 @@ def main():
     is_all = args.all
 
     dc_test_dispatcher = {
-        0: test_setup_folders,
-        1: test_util_get_raster_crs,
-        2: test_setup_oceanuse,
-        3: test_util_reproject_vectors,
-        4: test_util_get_vector_fields,
-        5: test_util_raster_blank,
-        6: test_util_layer_rasterize,
-        7: test_get_raster_resolution,
-        20: live_check,
+        0: live_check,
+        1: test_setup_project,
+        2: test_setup_roi,
+        3: test_setup_habitats,
+        4: test_setup_users,
+        101: test_util_reproject_vectors,
+        102: test_util_get_vector_fields,
+        103: test_util_raster_blank,
+        104: test_util_rasterize_layer,
+        105: test_get_raster_resolution,
+        106: test_util_get_raster_crs,
     }
 
     if is_all:
@@ -453,10 +572,12 @@ def main():
 if __name__ == "__main__":
 
     print(" >>> purging outputs ...")
-    # shutil.rmtree(OUTPUT_DIR)
+    shutil.rmtree(OUTPUT_DIR)
+    shutil.rmtree(DATA_DIR / "inputs/habitats")
 
     print(" >>> resetting outputs ...")
-    # os.mkdir(OUTPUT_DIR)
+    os.mkdir(OUTPUT_DIR)
+    os.mkdir(DATA_DIR / "inputs/habitats")
 
     print(" >>> running main ...")
     main()
