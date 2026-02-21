@@ -423,26 +423,26 @@ intermediate folders within each output directory.</p>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
 <span class="c1"># define the paths to the module</span>
-<span class="c1"># ----------------------------------------</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span>  <span class="c1"># change here</span>
 
 <span class="c1"># define the base folder</span>
-<span class="c1"># ----------------------------------------</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="n">folder_base</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span>  <span class="c1"># change here</span>
 
 <span class="c1"># define project name</span>
-<span class="c1"># ----------------------------------------</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="n">project_name</span> <span class="o">=</span> <span class="s2">&quot;narnia&quot;</span>  <span class="c1"># change here</span>
 
 <span class="c1"># define scenario names</span>
-<span class="c1"># ----------------------------------------</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># change here</span>
 <span class="n">scenarios</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
@@ -451,7 +451,8 @@ intermediate folders within each output directory.</p>
 <span class="p">]</span>
 
 <span class="c1"># call the function</span>
-<span class="c1"># ----------------------------------------</span>
+<span class="c1"># ------------------------------------------------------</span>
+
 <span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
@@ -461,6 +462,8 @@ intermediate folders within each output directory.</p>
     <span class="n">folder_base</span><span class="o">=</span><span class="n">folder_base</span><span class="p">,</span>
     <span class="n">scenarios</span><span class="o">=</span><span class="n">scenarios</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -469,12 +472,139 @@ intermediate folders within each output directory.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_roi">
 <span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_roi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_roi" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;
+second, it initializes a blank raster based on the project’s reference raster; and finally, it rasterizes the
+vector ROI onto that blank raster with a burn value of 1.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>folder_project</strong> (<em>str</em>) – The root directory path of the project containing necessary configuration and variables.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list containing the file path to the reprojected Shapefile and the path to the generated ROI raster.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">output_files</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_roi</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_habitats">
-<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'code'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_byte</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_habitats" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_byte</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_habitats" title="Link to this definition">#</a></dt>
+<dd><p>Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
+optional attribute grouping based on a lookup dictionary, and conversion to raster format.
+The final outputs are standardized rasters with consistent NoData values and data types
+(Byte or Float32) to ensure compatibility with downstream analysis.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em>) – The root directory path of the project containing necessary configuration and variables.</p></li>
+<li><p><strong>habitat_field</strong> (<em>str</em>) – The attribute field name in the vector data representing the habitat classification.</p></li>
+<li><p><strong>groups</strong> (<em>dict</em>) – A dictionary containing grouping rules for benthic and pelagic habitats to aggregate specific classes.</p></li>
+<li><p><strong>to_byte</strong> (<em>bool</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the output raster will be exported as Byte (8-bit) with NoData 255; otherwise, Float32 with NoData -99999. Default value = <code class="docutils literal notranslate"><span class="pre">True</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of file paths to the generated habitat TIF files.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define habitat code/id field</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;code&quot;</span>
+
+<span class="c1"># define habitats grouping scheme for benthic</span>
+<span class="c1"># ------------------------------------------------------</span>
+
+<span class="n">group_benthic</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_a&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_b&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_b&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_c&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_d&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_e&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_f&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_f&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">]},</span>
+<span class="p">]</span>
+
+<span class="c1"># define habitats grouping scheme for pelagic</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">group_pelagic</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># if None, habitats are not grouped.</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_habitats</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+    <span class="n">habitat_field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
+    <span class="n">groups</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">&quot;benthic&quot;</span><span class="p">:</span> <span class="n">group_benthic</span><span class="p">,</span>
+        <span class="s2">&quot;pelagic&quot;</span><span class="p">:</span> <span class="n">group_pelagic</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_users">
@@ -504,24 +634,29 @@ intermediate folders within each output directory.</p>
 3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
 4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</p>
 </div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
 <span class="c1"># define the paths to the module</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
-<span class="n">folder_project</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the analysis scenario</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define layer groups</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># change &quot;name&quot;, &quot;field&quot; and &quot;weight&quot;</span>
 
+<span class="c1"># this user has both vector and raster layers</span>
 <span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_traps&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span> <span class="p">},</span>
@@ -532,30 +667,43 @@ intermediate folders within each output directory.</p>
         <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_longlines.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
     <span class="p">]</span>
 <span class="p">}</span>
+<span class="c1"># this user has only vector layers</span>
 <span class="n">group_windfarms</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;windfarms&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;eolico_linhas_transmissao&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">1</span> <span class="p">},</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;eolico_torres&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">5</span> <span class="p">},</span>
     <span class="p">],</span>
 <span class="p">}</span>
 
+<span class="c1"># this user has only raster layers</span>
+<span class="n">group_cargo</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span>
+        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;navegacao_densidade.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="p">]</span>
+<span class="p">}</span>
 <span class="c1"># setup groups dictionary</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># define actual names for Ocean Users</span>
 <span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;fisheries&quot;</span><span class="p">:</span> <span class="n">group_fisheries</span><span class="p">,</span>
     <span class="s2">&quot;windfarms&quot;</span><span class="p">:</span> <span class="n">group_windfarms</span><span class="p">,</span>
+    <span class="s2">&quot;cargo&quot;</span><span class="p">:</span> <span class="n">group_cargo</span><span class="p">,</span>
 <span class="p">}</span>
 
 <span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
 <span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_users</span><span class="p">(</span>
-    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder_project</span><span class="p">,</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
     <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
     <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
 <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

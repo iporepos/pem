@@ -403,7 +403,7 @@
 <span class="c1"># =======================================================================</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">fiona</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
 <span class="c1"># qgis stuff</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">processing</span>
@@ -519,46 +519,7 @@
 <span class="sd">    :return: A list of all directory paths created during the setup process.</span>
 <span class="sd">    :rtype: list</span>
 
-<span class="sd">    .. dropdown:: Script example</span>
-<span class="sd">        :icon: code-square</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            # !WARNING: run this in QGIS Python Environment</span>
-<span class="sd">            import importlib.util as iu</span>
-
-<span class="sd">            # define the paths to the module</span>
-<span class="sd">            # ----------------------------------------</span>
-<span class="sd">            the_module = &quot;path/to/project.py&quot;  # change here</span>
-
-<span class="sd">            # define the base folder</span>
-<span class="sd">            # ----------------------------------------</span>
-<span class="sd">            folder_base = &quot;path/to/folder&quot;  # change here</span>
-
-<span class="sd">            # define project name</span>
-<span class="sd">            # ----------------------------------------</span>
-<span class="sd">            project_name = &quot;narnia&quot;  # change here</span>
-
-<span class="sd">            # define scenario names</span>
-<span class="sd">            # ----------------------------------------</span>
-<span class="sd">            # change here</span>
-<span class="sd">            scenarios = [</span>
-<span class="sd">                &quot;baseline&quot;,</span>
-<span class="sd">                &quot;utopia&quot;,</span>
-<span class="sd">                &quot;distopia&quot;,</span>
-<span class="sd">            ]</span>
-
-<span class="sd">            # call the function</span>
-<span class="sd">            # ----------------------------------------</span>
-<span class="sd">            spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
-<span class="sd">            module = iu.module_from_spec(spec)</span>
-<span class="sd">            spec.loader.exec_module(module)</span>
-
-<span class="sd">            output_file = module.setup_folders(</span>
-<span class="sd">                name=project_name,</span>
-<span class="sd">                folder_base=folder_base,</span>
-<span class="sd">                scenarios=scenarios,</span>
-<span class="sd">            )</span>
+<span class="sd">    .. include:: includes/examples/project_setup_project.rst</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folder_base</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_base</span><span class="p">)</span>
@@ -608,7 +569,23 @@
 <div class="viewcode-block" id="setup_roi">
 <a class="viewcode-back" href="../../api_project.html#pem.project.setup_roi">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_roi</span><span class="p">(</span><span class="n">folder_project</span><span class="p">):</span>
-    <span class="c1"># todo docstring</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">         This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;</span>
+<span class="sd">         second, it initializes a blank raster based on the project&#39;s reference raster; and finally, it rasterizes the</span>
+<span class="sd">         vector ROI onto that blank raster with a burn value of 1.</span>
+
+<span class="sd">    :param folder_project: The root directory path of the project containing necessary configuration and variables.</span>
+<span class="sd">    :type folder_project: str</span>
+<span class="sd">    :return: A list containing the file path to the reprojected Shapefile and the path to the generated ROI raster.</span>
+<span class="sd">    :rtype: list</span>
+
+<span class="sd">    .. include:: includes/examples/project_setup_roi.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
@@ -653,9 +630,31 @@
 
 <div class="viewcode-block" id="setup_habitats">
 <a class="viewcode-back" href="../../api_project.html#pem.project.setup_habitats">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">habitat_field</span><span class="o">=</span><span class="s2">&quot;code&quot;</span><span class="p">,</span> <span class="n">groups</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_byte</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">habitat_field</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">to_byte</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.</span>
 
-    <span class="c1"># todo docstring</span>
+<span class="sd">    .. note::</span>
+
+<span class="sd">         This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,</span>
+<span class="sd">         optional attribute grouping based on a lookup dictionary, and conversion to raster format.</span>
+<span class="sd">         The final outputs are standardized rasters with consistent NoData values and data types</span>
+<span class="sd">         (Byte or Float32) to ensure compatibility with downstream analysis.</span>
+
+<span class="sd">    :param folder_project: The root directory path of the project containing necessary configuration and variables.</span>
+<span class="sd">    :type folder_project: str</span>
+<span class="sd">    :param habitat_field: The attribute field name in the vector data representing the habitat classification.</span>
+<span class="sd">    :type habitat_field: str</span>
+<span class="sd">    :param groups: A dictionary containing grouping rules for benthic and pelagic habitats to aggregate specific classes.</span>
+<span class="sd">    :type groups: dict</span>
+<span class="sd">    :param to_byte: If ``True``, the output raster will be exported as Byte (8-bit) with NoData 255; otherwise, Float32 with NoData -99999. Default value = ``True``</span>
+<span class="sd">    :type to_byte: bool</span>
+<span class="sd">    :return: A list of file paths to the generated habitat TIF files.</span>
+<span class="sd">    :rtype: list</span>
+
+<span class="sd">    .. include:: includes/examples/project_setup_habitats.rst</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
@@ -736,12 +735,13 @@
             <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">habitat_field</span><span class="p">]</span>
             <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;group_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;raster&quot;</span><span class="p">]</span>
 
-        <span class="c1"># Overwrite layer</span>
+        <span class="c1"># Save csv</span>
         <span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer_grouped</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;GPKG&quot;</span><span class="p">)</span>
 
-        <span class="c1"># Clean up</span>
-        <span class="k">with</span> <span class="n">fiona</span><span class="o">.</span><span class="n">Env</span><span class="p">():</span>
-            <span class="n">fiona</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">hab</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;GPKG&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">gdf</span><span class="p">[[</span><span class="s2">&quot;group_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group_name&quot;</span><span class="p">]])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">&quot;group_id&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;group_id&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># get raster blank</span>
         <span class="c1"># -----------------------------------</span>
@@ -784,6 +784,9 @@
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">file_out</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
 
+    <span class="c1"># Clean up</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_db</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">ls_outputs</span></div>
 
 
@@ -812,60 +815,7 @@
 <span class="sd">        3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.</span>
 <span class="sd">        4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</span>
 
-<span class="sd">    .. dropdown:: Script example</span>
-<span class="sd">        :icon: code-square</span>
-
-<span class="sd">        .. code-block:: python</span>
-
-<span class="sd">            # !WARNING: run this in QGIS Python Environment</span>
-<span class="sd">            import importlib.util as iu</span>
-
-<span class="sd">            # define the paths to the module</span>
-<span class="sd">            the_module = &quot;path/to/project.py&quot; # change here</span>
-
-<span class="sd">            # define the project folder</span>
-<span class="sd">            folder_project = &quot;path/to/folder&quot; # change here</span>
-
-<span class="sd">            # define the analysis scenario</span>
-<span class="sd">            scenario = &quot;baseline&quot; # change here</span>
-
-<span class="sd">            # define layer groups</span>
-<span class="sd">            # change &quot;name&quot;, &quot;field&quot; and &quot;weight&quot;</span>
-
-<span class="sd">            group_fisheries = {</span>
-<span class="sd">                &quot;vectors&quot;: [</span>
-<span class="sd">                    {&quot;name&quot;: &quot;fisheries_traps&quot;, &quot;field&quot;: None, &quot;weight&quot;: 2 },</span>
-<span class="sd">                    {&quot;name&quot;: &quot;fisheries_seines&quot;, &quot;field&quot;: &quot;intensity&quot;, &quot;weight&quot;: 3 },</span>
-<span class="sd">                ],</span>
-<span class="sd">                &quot;rasters&quot;: [</span>
-<span class="sd">                    {&quot;name&quot;: &quot;fisheries_gillnets.tif&quot;, &quot;weight&quot;: 10 },</span>
-<span class="sd">                    {&quot;name&quot;: &quot;fisheries_longlines.tif&quot;, &quot;weight&quot;: 5 },</span>
-<span class="sd">                ]</span>
-<span class="sd">            }</span>
-<span class="sd">            group_windfarms = {</span>
-<span class="sd">                &quot;vectors&quot;: [</span>
-<span class="sd">                    {&quot;name&quot;: &quot;windfarms&quot;, &quot;field&quot;: None, &quot;weight&quot;: 5 },</span>
-<span class="sd">                ],</span>
-<span class="sd">            }</span>
-
-<span class="sd">            # setup groups dictionary</span>
-<span class="sd">            # define actual names for Ocean Users</span>
-<span class="sd">            groups = {</span>
-<span class="sd">                &quot;fisheries&quot;: group_fisheries,</span>
-<span class="sd">                &quot;windfarms&quot;: group_windfarms,</span>
-<span class="sd">            }</span>
-
-<span class="sd">            # call the function</span>
-<span class="sd">            # do not change here</span>
-<span class="sd">            spec = iu.spec_from_file_location(&quot;module&quot;, the_module)</span>
-<span class="sd">            module = iu.module_from_spec(spec)</span>
-<span class="sd">            spec.loader.exec_module(module)</span>
-
-<span class="sd">            output_file = module.setup_users(</span>
-<span class="sd">                folder_project=folder_project,</span>
-<span class="sd">                groups=groups,</span>
-<span class="sd">                scenario=scenario</span>
-<span class="sd">            )</span>
+<span class="sd">    .. include:: includes/examples/project_setup_users.rst</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 

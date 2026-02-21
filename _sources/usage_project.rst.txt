@@ -35,7 +35,7 @@ across scenarios.
 =======================================
 
 The PEM directory structure can be generated programmatically using the
-``setup_folders`` function available in the ``project.py`` module, as
+``setup_folders()`` function available in the ``project.py`` module, as
 shown below.
 
 This procedure ensures that the project complies exactly with the required
@@ -53,43 +53,7 @@ To execute the setup, the user must provide:
     The ``baseline`` scenario is always generated, regardless of whether
     it is explicitly included in the scenarios list.
 
-.. dropdown:: Script sample
-    :icon: code-square
-    :open:
-
-    .. code-block:: python
-
-        # !WARNING: run this in QGIS Python Environment
-        import importlib.util as iu
-
-        # define the paths to the module
-        src = "path/to/project.py"  # change here
-
-        # define the base folder
-        base = "path/to/folder"  # change here
-
-        # define project name
-        name = "narnia"  # change here
-
-        # define scenario names
-        scenarios = [
-            "baseline",
-            "utopia",  # change here
-            "distopia", # change here
-            # add more if applicable
-        ]
-
-        # call the function (do not change this)
-        # ----------------------------------------
-        spec = iu.spec_from_file_location("module", src)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
-
-        output_file = module.setup_folders(
-            name=name,
-            folder_base=base,
-            scenarios=scenarios,
-        )
+.. include:: includes/examples/project_setup_project.rst
 
 .. _guide-project-bathymetry:
 
@@ -140,6 +104,7 @@ Script: Setup ROI
 
 .. include:: includes/ipsum.rst
 
+.. include:: includes/examples/project_setup_roi.rst
 
 .. _guide-project-habitats:
 
@@ -187,6 +152,7 @@ Script: Setup Habitats
 
 .. include:: includes/ipsum.rst
 
+.. include:: includes/examples/project_setup_habitats.rst
 
 .. _guide-project-users:
 
@@ -203,11 +169,11 @@ each activity across the ocean space.
 
 .. _guide-project-users-over:
 
-Manual Input: overview
+Ocean User Mapping Overview
 -------------------------------
 
-Multiple layers geometries and formats may exist per user
-economic sector and per scenario.
+Multiple layers geometries and formats may spatially represent a Ocean User
+economic sector across multiple scenarios.
 
 Examples:
 
@@ -215,7 +181,7 @@ Examples:
 - Fisheries: polygon zones and rasterized intensity maps.
 - Oil extraction: distinct layers for baseline and future expansion scenarios.
 
-Scenario grouping and categorization are handled later in the workflow.
+Therefore, the user may populate these different data sources accordingly.
 
 .. seealso::
 
@@ -282,4 +248,4 @@ Script: Setup Ocean Users
 
 .. include:: includes/ipsum.rst
 
-
+.. include:: includes/examples/project_setup_users.rst
