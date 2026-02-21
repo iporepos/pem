@@ -25,7 +25,7 @@ import os, pprint
 # =======================================================================
 import numpy as np
 import geopandas as gpd
-import fiona
+import pandas as pd
 
 # qgis stuff
 import processing
@@ -139,46 +139,7 @@ def setup_project(name, folder_base, scenarios=None):
     :return: A list of all directory paths created during the setup process.
     :rtype: list
 
-    .. dropdown:: Script example
-        :icon: code-square
-
-        .. code-block:: python
-
-            # !WARNING: run this in QGIS Python Environment
-            import importlib.util as iu
-
-            # define the paths to the module
-            # ----------------------------------------
-            the_module = "path/to/project.py"  # change here
-
-            # define the base folder
-            # ----------------------------------------
-            folder_base = "path/to/folder"  # change here
-
-            # define project name
-            # ----------------------------------------
-            project_name = "narnia"  # change here
-
-            # define scenario names
-            # ----------------------------------------
-            # change here
-            scenarios = [
-                "baseline",
-                "utopia",
-                "distopia",
-            ]
-
-            # call the function
-            # ----------------------------------------
-            spec = iu.spec_from_file_location("module", the_module)
-            module = iu.module_from_spec(spec)
-            spec.loader.exec_module(module)
-
-            output_file = module.setup_folders(
-                name=project_name,
-                folder_base=folder_base,
-                scenarios=scenarios,
-            )
+    .. include:: includes/examples/project_setup_project.rst
 
     """
     folder_base = Path(folder_base)
@@ -225,7 +186,23 @@ def setup_project(name, folder_base, scenarios=None):
 
 
 def setup_roi(folder_project):
-    # todo docstring
+    """
+    Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.
+
+    .. note::
+
+         This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;
+         second, it initializes a blank raster based on the project's reference raster; and finally, it rasterizes the
+         vector ROI onto that blank raster with a burn value of 1.
+
+    :param folder_project: The root directory path of the project containing necessary configuration and variables.
+    :type folder_project: str
+    :return: A list containing the file path to the reprojected Shapefile and the path to the generated ROI raster.
+    :rtype: list
+
+    .. include:: includes/examples/project_setup_roi.rst
+
+    """
 
     pvars = _get_project_vars(folder_project)
 
@@ -267,9 +244,31 @@ def setup_roi(folder_project):
     return [dst_file, raster_output]
 
 
-def setup_habitats(folder_project, habitat_field="code", groups=None, to_byte=True):
+def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
+    """
+    Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.
 
-    # todo docstring
+    .. note::
+
+         This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
+         optional attribute grouping based on a lookup dictionary, and conversion to raster format.
+         The final outputs are standardized rasters with consistent NoData values and data types
+         (Byte or Float32) to ensure compatibility with downstream analysis.
+
+    :param folder_project: The root directory path of the project containing necessary configuration and variables.
+    :type folder_project: str
+    :param habitat_field: The attribute field name in the vector data representing the habitat classification.
+    :type habitat_field: str
+    :param groups: A dictionary containing grouping rules for benthic and pelagic habitats to aggregate specific classes.
+    :type groups: dict
+    :param to_byte: If ``True``, the output raster will be exported as Byte (8-bit) with NoData 255; otherwise, Float32 with NoData -99999. Default value = ``True``
+    :type to_byte: bool
+    :return: A list of file paths to the generated habitat TIF files.
+    :rtype: list
+
+    .. include:: includes/examples/project_setup_habitats.rst
+
+    """
 
     pvars = _get_project_vars(folder_project)
 
@@ -350,12 +349,13 @@ def setup_habitats(folder_project, habitat_field="code", groups=None, to_byte=Tr
             gdf["group_name"] = gdf[habitat_field]
             gdf["group_id"] = gdf["raster"]
 
-        # Overwrite layer
+        # Save csv
         gdf.to_file(output_db, layer=layer_grouped, driver="GPKG")
 
-        # Clean up
-        with fiona.Env():
-            fiona.remove(output_db, layer=hab, driver="GPKG")
+        df = pd.DataFrame(gdf[["group_id", "group_name"]])
+        df = df.drop_duplicates(subset="group_id")
+        df = df.sort_values(by="group_id")
+        df.to_csv(f"{folder_output}/{hab}.csv", sep=";", encoding="utf-8", index=False)
 
         # get raster blank
         # -----------------------------------
@@ -398,6 +398,9 @@ def setup_habitats(folder_project, habitat_field="code", groups=None, to_byte=Tr
         os.remove(r)
         os.rename(src=file_out, dst=r)
 
+    # Clean up
+    os.remove(output_db)
+
     return ls_outputs
 
 
@@ -423,60 +426,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
         3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
         4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.
 
-    .. dropdown:: Script example
-        :icon: code-square
-
-        .. code-block:: python
-
-            # !WARNING: run this in QGIS Python Environment
-            import importlib.util as iu
-
-            # define the paths to the module
-            the_module = "path/to/project.py" # change here
-
-            # define the project folder
-            folder_project = "path/to/folder" # change here
-
-            # define the analysis scenario
-            scenario = "baseline" # change here
-
-            # define layer groups
-            # change "name", "field" and "weight"
-
-            group_fisheries = {
-                "vectors": [
-                    {"name": "fisheries_traps", "field": None, "weight": 2 },
-                    {"name": "fisheries_seines", "field": "intensity", "weight": 3 },
-                ],
-                "rasters": [
-                    {"name": "fisheries_gillnets.tif", "weight": 10 },
-                    {"name": "fisheries_longlines.tif", "weight": 5 },
-                ]
-            }
-            group_windfarms = {
-                "vectors": [
-                    {"name": "windfarms", "field": None, "weight": 5 },
-                ],
-            }
-
-            # setup groups dictionary
-            # define actual names for Ocean Users
-            groups = {
-                "fisheries": group_fisheries,
-                "windfarms": group_windfarms,
-            }
-
-            # call the function
-            # do not change here
-            spec = iu.spec_from_file_location("module", the_module)
-            module = iu.module_from_spec(spec)
-            spec.loader.exec_module(module)
-
-            output_file = module.setup_users(
-                folder_project=folder_project,
-                groups=groups,
-                scenario=scenario
-            )
+    .. include:: includes/examples/project_setup_users.rst
 
     """
 

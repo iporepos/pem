@@ -381,7 +381,12 @@ def test_setup_habitats():
     # ----------------------------------------
     folder_project = DATA_DIR
 
+    # define habitat code/id field
+    # ----------------------------------------
+    habitat_field = "code"
+
     # define habitats grouping scheme
+    # ----------------------------------------
     group_benthic = [
         {"name": "benthic_a", "values": ["MB3", "MC3"]},
         {"name": "benthic_b", "values": ["MB4", "MB5", "MB6"]},
@@ -395,21 +400,13 @@ def test_setup_habitats():
 
     group_pelagic = None  # if None, habitats are not grouped.
 
-    groups = {"benthic": group_benthic, "pelagic": group_pelagic}
-
     # call the function
     # ----------------------------------------
     ls_output = MODULE.setup_habitats(
         folder_project=folder_project,
         habitat_field="code",
-        groups=groups,
+        groups={"benthic": group_benthic, "pelagic": group_pelagic},
     )
-
-    output_db = DATA_DIR / "inputs/habitats/habitats.gpkg"
-    layer = "habitats_benthic_grouped"
-    gdf = gpd.read_file(output_db, layer=layer)
-
-    print(gdf.info())
 
     # Assertions
     # ----------------------------------------
