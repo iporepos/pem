@@ -396,568 +396,227 @@
                   
   <section id="module-pem.risk">
 <span id="pem-risk-module"></span><span id="api-risk"></span><h1>pem.risk module<a class="headerlink" href="#module-pem.risk" title="Link to this heading">#</a></h1>
-<p>Module for pre- and post-processing routines supporting the Habitat Risk Index workflow.</p>
-<p>This module provides a collection of helper functions for organizing, rasterizing, and
-reprojecting spatial data layers used in the InVEST Habitat Risk model. It is intended
-to be executed within the <strong>QGIS Python environment</strong> and relies on its processing framework
-(<cite>processing</cite> algorithms, CRS handling, rasterization utilities, etc.).</p>
+<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">risk</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Refer to the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>
-documentation for theoretical and technical details regarding input data
-preparation for the Habitat Risk Index.</p>
+<p>Learn how to derive the Habitat Risk Index in
+<a class="reference internal" href="usage_risk.html#guide-risk"><span class="std std-ref">Tutorial: Habitat Risk Index</span></a>.</p>
 </div>
-<p><strong>Requirements</strong></p>
-<p>The following libraries and environment are required:</p>
-<ul class="simple">
-<li><p>QGIS 3 (Python environment)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">numpy</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">geopandas</span></code></p></li>
-</ul>
-<p><strong>Overview</strong></p>
-<p>This module includes routines for:</p>
-<ul class="simple">
-<li><p>Preparing and rasterizing stressor and habitat layers.</p></li>
-<li><p>Reprojecting rasters and generating blank templates.</p></li>
-<li><p>Splitting vector datasets into grouped layers.</p></li>
-<li><p>Creating structured, time-stamped output directories for reproducible runs.</p></li>
-</ul>
-<p>Each function performs a self-contained processing step designed to integrate
-smoothly with other spatial workflows in QGIS.</p>
-<p><strong>Examples</strong></p>
-<p>Scripted usage examples are provided in the docstrings of each function.
-No global examples are included at module level.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.compute_risk_index">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">compute_risk_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raster_hra_benthic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raster_hra_pelagic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#compute_risk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.compute_risk_index" title="Link to this definition">#</a></dt>
-<dd><p>Computes a final risk index raster by applying fuzzy logic to benthic and pelagic Human Risk Assessment (HRA) rasters.</p>
+<dt class="sig sig-object py" id="pem.risk.get_risk_index">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">get_risk_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_benthic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_pelagic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#get_risk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.get_risk_index" title="Link to this definition">#</a></dt>
+<dd><p>Calculate and normalize the total risk index by combining
+benthic and pelagic Habitat Risk Assessment (HRA) results.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_output</strong> (<em>str</em>) – The path to the main output folder where a new run-specific subfolder will be created.</p></li>
-<li><p><strong>raster_hra_benthic</strong> (<em>str</em>) – Full path to the input benthic HRA raster.</p></li>
-<li><p><strong>raster_hra_pelagic</strong> (<em>str</em>) – Full path to the input pelagic HRA raster.</p></li>
+<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
+<li><p><strong>hra_benthic</strong> (<em>str</em>) – Path to the benthic HRA raster file</p></li>
+<li><p><strong>hra_pelagic</strong> (<em>str</em>) – Path to the pelagic HRA raster file</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the run-specific output folder containing the resulting risk index rasters.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">The function executes the following steps:</p>
-<ol class="arabic simple">
-<li><p class="sd-card-text">Creates a unique run output subfolder within <code class="docutils literal notranslate"><span class="pre">folder_output</span></code>.</p></li>
-<li><p class="sd-card-text"><strong>Fuzzifies</strong> both the benthic and pelagic HRA rasters using <code class="docutils literal notranslate"><span class="pre">util_fuzzify_raster</span></code> with a
-lower bound of 0 and an upper bound calculated from the <strong>99th percentile</strong> of each raster (<code class="docutils literal notranslate"><span class="pre">use_percentiles=True</span></code>). This produces <code class="docutils literal notranslate"><span class="pre">risk_b.tif</span></code> and <code class="docutils literal notranslate"><span class="pre">risk_p.tif</span></code>.</p></li>
-<li><p class="sd-card-text"><strong>Sums</strong> the original (non-fuzzified) benthic and pelagic HRA rasters using QGIS’s raster calculator
-(<code class="docutils literal notranslate"><span class="pre">native:rastercalc</span></code>) to create an intermediate sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>).</p></li>
-<li><p class="sd-card-text"><strong>Fuzzifies</strong> the resulting sum raster (<code class="docutils literal notranslate"><span class="pre">hra_sum.tif</span></code>) using the same 0 to 99th percentile bounds to
-produce the final <strong>Risk Index raster</strong> (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>).</p></li>
-</ol>
-<p class="sd-card-text">The final risk index raster (<code class="docutils literal notranslate"><span class="pre">risk.tif</span></code>) represents the combined and normalized risk.</p>
-</div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_model">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_criteria</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aoi_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stressor_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
-<dd><p>Sets up all necessary input layers and data structures for the HRA (Habitat Risk Assessment) model run.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This script is a utility for running the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_output</strong> (<em>str</em>) – Path to the main output directory where all generated files will be stored.</p></li>
-<li><p><strong>file_criteria</strong> (<em>str</em>) – Path to criteria table for habitat sensitivity</p></li>
-<li><p><strong>input_db</strong> (<em>str</em>) – Path to the GeoPackage file containing the input vector layers.</p></li>
-<li><p><strong>reference_raster</strong> (<em>str</em>) – Path to the raster used as a spatial template for model rasters.</p></li>
-<li><p><strong>resolution</strong> (<em>float</em>) – The target spatial resolution (pixel size) for the model outputs.</p></li>
-<li><p><strong>aoi_layer</strong> (<em>str</em>) – The name of the vector layer in <code class="docutils literal notranslate"><span class="pre">input_db</span></code> defining the Area of Interest (AOI).</p></li>
-<li><p><strong>habitat_layer</strong> (<em>str</em>) – The name of the vector layer in <code class="docutils literal notranslate"><span class="pre">input_db</span></code> containing the habitat features.</p></li>
-<li><p><strong>habitat_field</strong> (<em>str</em>) – The name of the field in <code class="docutils literal notranslate"><span class="pre">habitat_layer</span></code> used to classify habitats into groups.</p></li>
-<li><p><strong>habitat_groups</strong> (<em>dict</em>) – A dictionary defining how habitats are grouped and processed.</p></li>
-<li><p><strong>stressor_groups</strong> (<em>dict</em>) – A dictionary defining the stressor layers and their properties.</p></li>
-<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code for the destination Coordinate Reference System (CRS). Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
-<li><p><strong>suffix</strong> (<em>str</em>) – String suffix for model runs</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the newly created main output folder for the model run.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">This function prepares the environment by creating output folders,
-reprojecting the AOI, creating a blank reference raster,
-and running <code class="docutils literal notranslate"><span class="pre">setup_habitats</span></code> and <code class="docutils literal notranslate"><span class="pre">setup_stressors</span></code> to
-prepare those inputs. It also generates a combined <code class="docutils literal notranslate"><span class="pre">info.csv</span></code> table.</p>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
-Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to this module</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span>
-
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="c1"># define major parameters</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">project_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
-<span class="n">habitat_type</span> <span class="o">=</span> <span class="s2">&quot;benthic&quot;</span>
-
-<span class="c1"># infer the paths to IO</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">input_dir</span> <span class="o">=</span>  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/inputs&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">project_dir</span><span class="si">}</span><span class="s2">/outputs&quot;</span>
-<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/layers.gpkg&quot;</span>
-<span class="n">score_table</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/scores_</span><span class="si">{</span><span class="n">habitat_type</span><span class="si">}</span><span class="s2">.csv&quot;</span>
-<span class="n">reference_raster</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/bathymetry.tif&quot;</span>
-
-<span class="c1"># organize habitat groups</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">habitat_groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># Habitat group</span>
-    <span class="s2">&quot;MB3_MC3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">],</span>  <span class="c1"># list of habitats names</span>
-    <span class="s2">&quot;MB4_MB5_MB6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MC4_MC5_MC6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD4_MD5_MD6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME4_MF4_MF5&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MG4_MG6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">],</span>
-<span class="p">}</span>
-
-<span class="c1"># organize stressors groups</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">stressor_groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="c1"># stressor name</span>
-    <span class="s2">&quot;MINERACAO&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="c1"># list of layers in input database</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mineracao_processos&quot;</span><span class="p">,</span> <span class="s2">&quot;mineracao_areas_potenciais&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span> <span class="c1"># in meters</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;TURISMO&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;turismo_atividades_esportivas_sul&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;EOLICAS&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;eolico_parques&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">folder_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_hra_model</span><span class="p">(</span>
-    <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">file_criteria</span><span class="o">=</span><span class="n">criteria_table</span><span class="p">,</span>
-    <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="c1"># in meters</span>
-    <span class="n">aoi_layer</span><span class="o">=</span><span class="s2">&quot;sul&quot;</span><span class="p">,</span>
-    <span class="n">habitat_layer</span><span class="o">=</span><span class="s2">&quot;habitats_bentonicos_sul_v2&quot;</span><span class="p">,</span>
-    <span class="n">habitat_field</span><span class="o">=</span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
-    <span class="n">habitat_groups</span><span class="o">=</span><span class="n">habitat_groups</span><span class="p">,</span>
-    <span class="n">stressor_groups</span><span class="o">=</span><span class="n">stressor_groups</span><span class="p">,</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_stressors">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_stressors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_stressors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_stressors" title="Link to this definition">#</a></dt>
-<dd><p>Sets up stressor layers by rasterizing multiple vector layers from a
-database into single stressor rasters and reprojecting them to a specified resolution.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This script is a utility for running the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_output</strong> (<em>str</em>) – The base directory where a new run-specific folder for all outputs will be created.</p></li>
-<li><p><strong>input_db</strong> (<em>str</em>) – The path to the source vector database (e.g., GeoPackage) containing the stressor layers.</p></li>
-<li><p><strong>groups</strong> (<em>dict</em>) – A dictionary defining the stressor groups. Keys are the desired output stressor names (e.g., <code class="docutils literal notranslate"><span class="pre">Coastal_Pollution</span></code>), and values are dictionaries containing two keys: <code class="docutils literal notranslate"><span class="pre">layers</span></code> (a list of vector layer names to be combined) and <code class="docutils literal notranslate"><span class="pre">buffer</span></code> (the required buffer distance in meters for subsequent analysis).</p></li>
-<li><p><strong>reference_raster</strong> (<em>str</em>) – The path to a raster file whose extent, CRS, and other properties will be used as a template for the output stressor rasters.</p></li>
-<li><p><strong>is_blank</strong> (<em>bool</em>) – [optional] If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</p></li>
-<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output stressor rasters. Default value = 500</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the newly created run-specific output folder containing the stressor rasters and metadata.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">This function combines features from multiple vector layers into a single output stressor raster for each defined group.</p>
-<ol class="arabic simple">
-<li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template.</p></li>
-<li><p class="sd-card-text"><strong>Rasterization Loop:</strong> For each group, the template raster is copied, and all vector layers listed under the group’s <code class="docutils literal notranslate"><span class="pre">layers</span></code> key are sequentially rasterized onto the copy using a burn value of 1 (features are present).</p></li>
-<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5880).</p></li>
-<li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_stressors.csv</span></code> file is created, detailing the name, file path, and required <strong>STRESSOR BUFFER (meters)</strong> for each generated stressor raster.</p></li>
-</ol>
-<p class="sd-card-text">Intermediate rasters are cleaned up at the end.</p>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
-Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to this module</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span>
-
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="c1"># define the paths to input and output folders</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-
-<span class="c1"># define the path to input database</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/pem.gpkg&quot;</span>
-
-<span class="c1"># organize stressors groups</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;MINERACAO&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;mineracao_processos&quot;</span><span class="p">,</span> <span class="s2">&quot;mineracao_areas_potenciais&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
-        <span class="s2">&quot;raster&quot;</span><span class="p">:</span> <span class="kc">None</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;TURISMO&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;turismo_atividades_esportivas_sul&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
-        <span class="s2">&quot;raster&quot;</span><span class="p">:</span> <span class="kc">None</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;EOLICAS&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;layers&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;eolico_parques&quot;</span><span class="p">],</span>
-        <span class="s2">&quot;buffer&quot;</span><span class="p">:</span> <span class="mi">10000</span><span class="p">,</span>
-        <span class="s2">&quot;raster&quot;</span><span class="p">:</span> <span class="kc">None</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_stressors</span><span class="p">(</span>
-    <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
-    <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{input_dir}</span><span class="s2">/bathymetry.tif&quot;</span><span class="p">,</span>
-    <span class="n">is_blank</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_habitats">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_blank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subfolder</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_habitats" title="Link to this definition">#</a></dt>
-<dd><p>Sets up habitat layers by splitting a vector layer, rasterizing each resulting
-habitat group, and reprojecting the rasters to a specified resolution.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This script is a utility for running the <a class="reference external" href="https://naturalcapitalproject.stanford.edu/invest/habitat-risk-assessment">InVEST Habitat Risk model</a>.</p>
-</div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_output</strong> (<em>str</em>) – The base directory where a new run-specific folder for all outputs will be created.</p></li>
-<li><p><strong>input_db</strong> (<em>str</em>) – The path to the source vector database (e.g., GeoPackage) containing the habitat features.</p></li>
-<li><p><strong>input_layer</strong> (<em>str</em>) – The name of the layer or table within the <code class="docutils literal notranslate"><span class="pre">input_db</span></code> to read the features from.</p></li>
-<li><p><strong>groups</strong> (<em>dict</em>) – A dictionary defining the habitat groups: keys are the desired output habitat names (layer names), and values are lists of string values from <code class="docutils literal notranslate"><span class="pre">field_name</span></code> to include in that habitat layer.</p></li>
-<li><p><strong>field_name</strong> (<em>str</em>) – The name of the attribute field in the input data used for grouping and querying the habitat features.</p></li>
-<li><p><strong>reference_raster</strong> (<em>str</em>) – The path to a raster file whose extent, CRS, and other properties will be used as a template for the output habitat rasters.</p></li>
-<li><p><strong>is_blank</strong> (<em>bool</em>) – [optional] If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> is assumed to be a blank (zero-valued) template already, skipping the internal blanking step. Default value = False</p></li>
-<li><p><strong>resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the final output habitat rasters. Default value = 500</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the newly created run-specific output folder containing the habitat rasters and metadata.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">This function orchestrates a multi-step process:</p>
-<ol class="arabic simple">
-<li><p class="sd-card-text"><strong>Vector Split:</strong> Calls <code class="docutils literal notranslate"><span class="pre">split_features</span></code> to create a temporary GeoPackage where each habitat group is saved as a separate layer.</p></li>
-<li><p class="sd-card-text"><strong>Template Raster:</strong> If <code class="docutils literal notranslate"><span class="pre">is_blank</span></code> is <code class="docutils literal notranslate"><span class="pre">False</span></code>, a blank raster is generated from the <code class="docutils literal notranslate"><span class="pre">reference_raster</span></code> to serve as the template for rasterization.</p></li>
-<li><p class="sd-card-text"><strong>Rasterization Loop:</strong> Each habitat layer is individually rasterized onto a copy of the template raster, setting the habitat cells to a burn value of 1.</p></li>
-<li><p class="sd-card-text"><strong>Reprojection:</strong> The resulting raster is reprojected to the desired <code class="docutils literal notranslate"><span class="pre">resolution</span></code> (and default CRS of 5880).</p></li>
-<li><p class="sd-card-text"><strong>Metadata:</strong> An <code class="docutils literal notranslate"><span class="pre">info_habitats.csv</span></code> file is created, detailing the name and file path for each generated habitat raster.</p></li>
-</ol>
-<p class="sd-card-text">Temporary files (split GeoPackage and intermediate rasters) are cleaned up at the end.</p>
-</div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script sample</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p class="sd-card-text">The following script is expected to be executed under the QGIS Python
-Environment with <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> installed.</p>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to this module</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span>
-
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="c1"># define the paths to input and output folders</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/dir&quot;</span>
-
-<span class="c1"># define the path to input database</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/pem.gpkg&quot;</span>
-
-<span class="c1"># organize habitat groups</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;MB3_MC3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MB4_MB5_MB6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MC4_MC5_MC6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD4_MD5_MD6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME4_MF4_MF5&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MG4_MG6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">],</span>
-<span class="p">}</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ----------------------------------------</span>
-<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_habitats</span><span class="p">(</span>
-    <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
-    <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">input_layer</span><span class="o">=</span><span class="s2">&quot;habitats_bentonicos_sul_v2&quot;</span><span class="p">,</span>
-    <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
-    <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/bathymetry.tif&quot;</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span>
-<span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_split_features">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_split_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_split_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_split_features" title="Link to this definition">#</a></dt>
-<dd><p>Splits features from a source GeoDataFrame into separate
-layers within a single GeoPackage file based on predefined groups of field values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_output</strong> (<em>str</em>) – The base directory where a new run-specific folder for the outputs will be created.</p></li>
-<li><p><strong>input_db</strong> (<em>str</em>) – The path to the source vector database (e.g., a GeoPackage file).</p></li>
-<li><p><strong>input_layer</strong> (<em>str</em>) – The name of the layer or table within the <code class="docutils literal notranslate"><span class="pre">input_db</span></code> to read the features from.</p></li>
-<li><p><strong>groups</strong> (<em>dict</em>) – A dictionary where keys are the desired output layer names (groups) and values are lists of string values from <code class="docutils literal notranslate"><span class="pre">field_name</span></code> to include in that layer.</p></li>
-<li><p><strong>field_name</strong> (<em>str</em>) – The name of the attribute field in the input data used for grouping and querying the features.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the output GeoPackage file containing the newly created layers.</p>
+<dd class="field-even"><p>Path to the generated normalized risk raster</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>The function first reads the entire layer into a single GeoDataFrame.
-It then iterates through the <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary, querying the GeoDataFrame
-for features where the value in <code class="docutils literal notranslate"><span class="pre">field_name</span></code> matches any of the values in
-the group’s list. All resulting group GeoDataFrames are concatenated and
-saved as separate layers (named after the group keys) into a new GeoPackage
-file called <code class="docutils literal notranslate"><span class="pre">split.gpkg</span></code> within a run-specific subfolder in <code class="docutils literal notranslate"><span class="pre">folder_output</span></code>.</p>
-</dd></dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">The function reprojects and resamples input HRA rasters to a common grid, sums the
+overlapping layers using raster calculation, and applies a normalization process
+to produce a final risk map.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module file</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define scenario</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
+
+<span class="c1"># define paths to InVEST HRA outputs</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">hra_benthic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
+<span class="n">hra_pelagic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_risk_index</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span><span class="p">,</span>
+    <span class="n">hra_benthic</span><span class="o">=</span><span class="n">hra_benthic</span><span class="p">,</span>
+    <span class="n">hra_pelagic</span><span class="o">=</span><span class="n">hra_pelagic</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_raster_blank">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_raster_blank</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_raster_blank"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_raster_blank" title="Link to this definition">#</a></dt>
-<dd><p>Creates a blank (zero-valued) raster based on the extent,
-resolution, and CRS of an existing input raster.</p>
+<dt class="sig sig-object py" id="pem.risk.setup_hra_model">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
+<dd><p>Execute the full configuration suite required to initialize an InVEST HRA model.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>output_raster</strong> (<em>str</em>) – name for the resulting blank raster file (without extension).</p></li>
-<li><p><strong>input_raster</strong> (<em>str</em>) – The path to the source raster file whose properties (extent, resolution, CRS) will be used.</p></li>
+<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The full path to the newly created blank raster file.</p>
+<dd class="field-even"><p>Always returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module file</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define scenario</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_hra_model</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.setup_hra_scores">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_scores" title="Link to this definition">#</a></dt>
+<dd><p>Generate the CSV scoring matrices for habitats and stressors based on project info tables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths to the generated score CSV files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.setup_hra_info">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_info" title="Link to this definition">#</a></dt>
+<dd><p>Create the HRA information tables linking habitat
+and stressor names to their respective file paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
+<li><p><strong>buffers</strong> (<em>int</em>) – The buffer distance for stressors in meters. Default value = 10000</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths to the generated info CSV files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.setup_hra_json">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_json" title="Link to this definition">#</a></dt>
+<dd><p>Configure and save InVEST model parameter files in JSON format for the specified scenario.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths to the created JSON configuration files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_generate_hra_scores">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_generate_hra_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">habitats</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stressors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_generate_hra_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_generate_hra_scores" title="Link to this definition">#</a></dt>
+<dd><p>Create a standardized HRA criteria template CSV with default
+ratings for resilience and overlap attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>habitats</strong> (<em>list</em>) – List of habitat names to include as columns</p></li>
+<li><p><strong>stressors</strong> (<em>list</em>) – List of stressor names to include as row groups</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – Destination path for the generated CSV</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path where the CSV was saved</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p><strong>Notes</strong></p>
-<p>This function uses the QGIS processing algorithm <code class="docutils literal notranslate"><span class="pre">native:rastercalc</span></code>
-(Raster calculator). It works by multiplying every cell in the input
-raster by zero, effectively preserving the metadata (extent, resolution, CRS)
-while setting all data values to zero. The output raster is a new
-file and does not modify the input raster.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_raster_reproject">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_raster_reproject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dst_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'5880'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">src_crs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'4326'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resampling</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_raster_reproject"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_raster_reproject" title="Link to this definition">#</a></dt>
-<dd><p>Reprojects and optionally resamples an input raster to a new Coordinate Reference System (CRS) and resolution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>output_raster</strong> (<em>str</em>) – The full path and filename for the resulting reprojected raster file.</p></li>
-<li><p><strong>input_raster</strong> (<em>str</em>) – The path to the source raster file to be reprojected.</p></li>
-<li><p><strong>dst_resolution</strong> (<em>float</em>) – The desired resolution (cell size) for the output raster, usually in the units of the target CRS.</p></li>
-<li><p><strong>dst_crs</strong> (<em>str</em>) – The EPSG code (as a string) for the target CRS. Default value = <code class="docutils literal notranslate"><span class="pre">5880</span></code></p></li>
-<li><p><strong>src_crs</strong> (<em>str</em>) – The EPSG code (as a string) for the source CRS. Default value = <code class="docutils literal notranslate"><span class="pre">4326</span></code></p></li>
-<li><p><strong>dtype</strong> (<em>int</em>) – The desired data type for the output raster bands (GDAL data type code). Default value = 6 (Float32)</p></li>
-<li><p><strong>resampling</strong> (<em>int</em>) – The resampling method to use (GDAL resampling code). Default value = 0 (Nearest Neighbour)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The full path to the newly created output raster file.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<p><strong>Notes</strong></p>
-<p>This function uses the QGIS processing algorithm <code class="docutils literal notranslate"><span class="pre">gdal:warpreproject</span></code>.
-The default NoData value is set to <code class="docutils literal notranslate"><span class="pre">-99999</span></code>.
-Common values for <code class="docutils literal notranslate"><span class="pre">dtype</span></code> include 1 (Byte), 4 (Int32), 6 (Float32).
-Common values for <code class="docutils literal notranslate"><span class="pre">resampling</span></code> include 0 (Nearest Neighbour), 1 (Bilinear), 2 (Cubic).
-The output path is constructed using the <code class="docutils literal notranslate"><span class="pre">output_raster</span></code> parameter.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_layer_rasterize">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_layer_rasterize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_db</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">burn_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_layer_rasterize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_layer_rasterize" title="Link to this definition">#</a></dt>
-<dd><p>Rasterizes a vector layer from a database into an existing raster file, assigning a fixed burn value.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_raster</strong> (<em>str</em>) – The path to the existing raster file to be modified (must be writable).</p></li>
-<li><p><strong>input_db</strong> (<em>str</em>) – The path or connection string to the vector database (e.g., GeoPackage, PostGIS connection).</p></li>
-<li><p><strong>input_layer</strong> (<em>str</em>) – The name of the vector layer or table to rasterize.</p></li>
-<li><p><strong>input_table</strong> (<em>str</em><em> or </em><em>None</em>) – [optional] The schema or parent table name if the <code class="docutils literal notranslate"><span class="pre">input_layer</span></code> is a sub-table or view (e.g., for PostGIS).</p></li>
-<li><p><strong>burn_value</strong> (<em>int</em><em> or </em><em>float</em>) – The fixed value to burn into the raster cells covered by the vector features. Default value = 1</p></li>
-<li><p><strong>extra</strong> (<em>str</em>) – Additional command-line options passed directly to the underlying GDAL tool. Default value = <code class="docutils literal notranslate"><span class="pre">''</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The path to the modified input raster file.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<p><strong>Notes</strong></p>
-<p>This function uses the QGIS processing algorithm <code class="docutils literal notranslate"><span class="pre">gdal:rasterize_over_fixed_value</span></code>, which modifies the <code class="docutils literal notranslate"><span class="pre">input_raster</span></code> in place. If <code class="docutils literal notranslate"><span class="pre">input_table</span></code> is not provided, it assumes a standard layer format (e.g., GeoPackage layer). If <code class="docutils literal notranslate"><span class="pre">input_table</span></code> is provided, it constructs a PostgreSQL-like table reference.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_fuzzify_raster">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_fuzzify_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_percentiles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_fuzzify_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_fuzzify_raster" title="Link to this definition">#</a></dt>
-<dd><p>Applies a linear membership fuzzy set function to a raster, reclassifying values between a low and high bound.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_raster</strong> (<em>str</em>) – Full path to the input raster file.</p></li>
-<li><p><strong>output_raster</strong> (<em>str</em>) – Full path for the output fuzzy raster file.</p></li>
-<li><p><strong>lo</strong> (<em>float</em><em> or </em><em>int</em>) – [optional] The lower bound for the linear membership function. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it defaults to the minimum value (or 1st percentile if <code class="docutils literal notranslate"><span class="pre">use_percentiles</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
-<li><p><strong>hi</strong> (<em>float</em><em> or </em><em>int</em>) – [optional] The upper bound for the linear membership function. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, it defaults to the maximum value (or 99th percentile if <code class="docutils literal notranslate"><span class="pre">use_percentiles</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
-<li><p><strong>use_percentiles</strong> (<em>bool</em>) – Use the 1st and 99th percentiles as default bounds instead of the absolute min/max when <code class="docutils literal notranslate"><span class="pre">lo</span></code> or <code class="docutils literal notranslate"><span class="pre">hi</span></code> are <code class="docutils literal notranslate"><span class="pre">None</span></code>. Default value = <code class="docutils literal notranslate"><span class="pre">False</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The file path of the resulting fuzzy raster.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>str</p>
-</dd>
-</dl>
-<p><strong>Notes</strong></p>
-<p>This function uses the QGIS processing algorithm <code class="docutils literal notranslate"><span class="pre">native:fuzzifyrasterlinearmembership</span></code>.
-Values in the input raster are reclassified:
-- Values $le$ <code class="docutils literal notranslate"><span class="pre">lo</span></code> get a fuzzy membership value of 0.
-- Values $ge$ <code class="docutils literal notranslate"><span class="pre">hi</span></code> get a fuzzy membership value of 1.
-- Values between <code class="docutils literal notranslate"><span class="pre">lo</span></code> and <code class="docutils literal notranslate"><span class="pre">hi</span></code> are linearly interpolated between 0 and 1.
-The internal call to <code class="docutils literal notranslate"><span class="pre">util_get_raster_stats</span></code> is assumed to return ‘p01’ and ‘p99’ keys when <code class="docutils literal notranslate"><span class="pre">full=True</span></code>.</p>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.util_get_raster_stats">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_stats" title="Link to this definition">#</a></dt>
-<dd><p>Calculates the statistics for a specified band of a given raster file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>input_raster</strong> (<em>str</em>) – Full path to the input raster file.</p></li>
-<li><p><strong>band</strong> (<em>int</em>) – The band number to calculate statistics for. Default value = <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary containing the raster band’s mean, standard deviation, minimum, maximum, sum, and element count.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
-</dd>
-</dl>
-<p><strong>Notes</strong></p>
-<p>The function uses QGIS classes internally to read the raster and compute statistics.
-The keys in the returned dictionary are <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">sd</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
-</dd></dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This utility builds a complex multi-column table where each habitat receives columns for
+<code class="docutils literal notranslate"><span class="pre">RATING</span></code>, <code class="docutils literal notranslate"><span class="pre">DQ</span></code> (Data Quality), and <code class="docutils literal notranslate"><span class="pre">WEIGHT</span></code>. It includes predefined rows for
+recruitment, mortality, connectivity, and various stressor-overlap properties.</p>
+</div>
+</details></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.util_read_raster">
@@ -981,6 +640,29 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_write_raster">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_write_raster</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dc_metadata</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_output</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodata_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-99999</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_write_raster"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_write_raster" title="Link to this definition">#</a></dt>
+<dd><p>Write a numpy array to raster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_output</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>) – 2D numpy array</p></li>
+<li><p><strong>dc_metadata</strong> (<em>dict</em>) – dict with metadata</p></li>
+<li><p><strong>file_output</strong> (<em>str</em>) – path to output raster file</p></li>
+<li><p><strong>n_band</strong> (<em>int</em>) – number of the band to write</p></li>
+<li><p><strong>nodata_value</strong> (<em>float</em><em> or </em><em>int</em>) – numeric value to represent NoData</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>path to the written file</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pem.risk.util_get_raster_crs">
 <span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_crs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">code_only</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_crs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_crs" title="Link to this definition">#</a></dt>
 <dd><p>Extracts the Coordinate Reference System (CRS) from a raster file.</p>
@@ -998,6 +680,56 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_get_raster_extent">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_extent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_extent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_extent" title="Link to this definition">#</a></dt>
+<dd><p>Retrieves the spatial bounding coordinates of a raster file as a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_input</strong> (<em>str</em>) – The path to the input raster file.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the <code class="docutils literal notranslate"><span class="pre">xmin</span></code>, <code class="docutils literal notranslate"><span class="pre">xmax</span></code>, <code class="docutils literal notranslate"><span class="pre">ymin</span></code>, and <code class="docutils literal notranslate"><span class="pre">ymax</span></code> coordinates.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_get_raster_resolution">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_resolution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_input</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_resolution"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_resolution" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_normalize_rasters">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_normalize_rasters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_rasters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_normalize_rasters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_normalize_rasters" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.risk.util_get_raster_stats">
+<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">util_get_raster_stats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">band</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#util_get_raster_stats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.util_get_raster_stats" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the statistics for a specified band of a given raster file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input_raster</strong> (<em>str</em>) – Full path to the input raster file.</p></li>
+<li><p><strong>band</strong> (<em>int</em>) – The band number to calculate statistics for. Default value = <code class="docutils literal notranslate"><span class="pre">1</span></code></p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the raster band’s mean, standard deviation, minimum, maximum, sum, and element count.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+<p><strong>Notes</strong></p>
+<p>The function uses QGIS classes internally to read the raster and compute statistics.
+The keys in the returned dictionary are <code class="docutils literal notranslate"><span class="pre">mean</span></code>, <code class="docutils literal notranslate"><span class="pre">sd</span></code>, <code class="docutils literal notranslate"><span class="pre">min</span></code>, <code class="docutils literal notranslate"><span class="pre">max</span></code>, <code class="docutils literal notranslate"><span class="pre">sum</span></code>, and <code class="docutils literal notranslate"><span class="pre">count</span></code>.</p>
 </dd></dl>
 
 </section>
@@ -1049,18 +781,19 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.compute_risk_index"><code class="docutils literal notranslate"><span class="pre">compute_risk_index()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.get_risk_index"><code class="docutils literal notranslate"><span class="pre">get_risk_index()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_model"><code class="docutils literal notranslate"><span class="pre">setup_hra_model()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_stressors"><code class="docutils literal notranslate"><span class="pre">setup_stressors()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_habitats"><code class="docutils literal notranslate"><span class="pre">setup_habitats()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_split_features"><code class="docutils literal notranslate"><span class="pre">util_split_features()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_raster_blank"><code class="docutils literal notranslate"><span class="pre">util_raster_blank()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_raster_reproject"><code class="docutils literal notranslate"><span class="pre">util_raster_reproject()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_layer_rasterize"><code class="docutils literal notranslate"><span class="pre">util_layer_rasterize()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_fuzzify_raster"><code class="docutils literal notranslate"><span class="pre">util_fuzzify_raster()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_stats"><code class="docutils literal notranslate"><span class="pre">util_get_raster_stats()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_scores"><code class="docutils literal notranslate"><span class="pre">setup_hra_scores()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_info"><code class="docutils literal notranslate"><span class="pre">setup_hra_info()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_json"><code class="docutils literal notranslate"><span class="pre">setup_hra_json()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_generate_hra_scores"><code class="docutils literal notranslate"><span class="pre">util_generate_hra_scores()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_read_raster"><code class="docutils literal notranslate"><span class="pre">util_read_raster()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_write_raster"><code class="docutils literal notranslate"><span class="pre">util_write_raster()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_crs"><code class="docutils literal notranslate"><span class="pre">util_get_raster_crs()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_extent"><code class="docutils literal notranslate"><span class="pre">util_get_raster_extent()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_resolution"><code class="docutils literal notranslate"><span class="pre">util_get_raster_resolution()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_normalize_rasters"><code class="docutils literal notranslate"><span class="pre">util_normalize_rasters()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.util_get_raster_stats"><code class="docutils literal notranslate"><span class="pre">util_get_raster_stats()</span></code></a></li>
 </ul>
   </nav></div>
 

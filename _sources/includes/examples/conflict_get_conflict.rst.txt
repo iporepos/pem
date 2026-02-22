@@ -9,11 +9,15 @@
 
         # define the paths to the module file
         # ------------------------------------------------------
-        file = "path/to/project.py" # change here
+        file = "path/to/conflict.py" # change here
 
         # define the project folder
         # ------------------------------------------------------
         folder = "path/to/folder" # change here
+
+        # define scenario
+        # ------------------------------------------------------
+        scenario = "baseline"
 
         # call the function
         # ------------------------------------------------------
@@ -22,8 +26,9 @@
         module = iu.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        output_files = module.setup_roi(
-            folder_project=folder,
+        output = module.get_conflict_index(
+            folder_project=folder_project,
+            scenario=scenario
         )
 
         print(" ----- DONE -----")

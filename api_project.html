@@ -396,18 +396,16 @@
                   
   <section id="module-pem.project">
 <span id="pem-project-module"></span><span id="api-project"></span><h1>pem.project module<a class="headerlink" href="#module-pem.project" title="Link to this heading">#</a></h1>
-<p>{Short module description (1-3 sentences)}
-todo docstring</p>
+<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">project</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup a PEM Project in
+<a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>.</p>
+</div>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_project">
 <span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_project</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">folder_base</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenarios</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_project"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_project" title="Link to this definition">#</a></dt>
 <dd><p>Initialize the directory structure for a PEM project.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function creates a standardized hierarchy of folders for inputs
-and outputs. It also handles the creation of scenario-specific subdirectories and
-intermediate folders within each output directory.</p>
-</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -425,13 +423,20 @@ intermediate folders within each output directory.</p>
 </dl>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function creates a standardized hierarchy of folders for inputs
+and outputs. It also handles the creation of scenario-specific subdirectories and
+intermediate folders within each output directory.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span>  <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the base folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -453,7 +458,7 @@ intermediate folders within each output directory.</p>
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -472,13 +477,8 @@ intermediate folders within each output directory.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_roi">
 <span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_roi</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_roi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_roi" title="Link to this definition">#</a></dt>
-<dd><p>Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;
-second, it initializes a blank raster based on the project’s reference raster; and finally, it rasterizes the
-vector ROI onto that blank raster with a burn value of 1.</p>
-</div>
+<dd><p>Prepares and processes the <code class="docutils literal notranslate"><span class="pre">roi</span></code> layer (Region of Interest)by reprojecting
+vector data and generating a corresponding raster mask.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>folder_project</strong> (<em>str</em>) – The root directory path of the project containing necessary configuration and variables.</p>
@@ -490,15 +490,26 @@ vector ROI onto that blank raster with a burn value of 1.</p>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
+<div class="important admonition">
+<p class="admonition-title">Expected sourced files</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">roi</span></code> layer is expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/vectors.gpkg|roi
+</pre></div>
+</div>
+<p>Also, the reference raster is expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/bathymetry.tif
+</pre></div>
+</div>
+</div>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -507,7 +518,7 @@ vector ROI onto that blank raster with a burn value of 1.</p>
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -524,14 +535,8 @@ vector ROI onto that blank raster with a burn value of 1.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.setup_habitats">
 <span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">setup_habitats</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">habitat_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">to_byte</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#setup_habitats"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.setup_habitats" title="Link to this definition">#</a></dt>
-<dd><p>Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
-optional attribute grouping based on a lookup dictionary, and conversion to raster format.
-The final outputs are standardized rasters with consistent NoData values and data types
-(Byte or Float32) to ensure compatibility with downstream analysis.</p>
-</div>
+<dd><p>Sets up habitat layers by reprojecting vector data, applying
+grouping logic, and generating categorized raster masks.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -550,13 +555,34 @@ The final outputs are standardized rasters with consistent NoData values and dat
 </dl>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
+optional attribute grouping based on a lookup dictionary, and conversion to raster format.
+The final outputs are standardized rasters with consistent NoData values and data types
+(Byte or Float32) to ensure compatibility with downstream analysis.
+Also, a CSV file is generated for each habitat type for tracking the raster cell values.</p>
+</div>
+</details><div class="important admonition">
+<p class="admonition-title">Expected sourced files</p>
+<p>The habitats layers are expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/vectors.gpkg|habitat_benthic
+./{project}/inputs/vectors.gpkg|habitat_pelagic
+</pre></div>
+</div>
+<p>Also, the reference raster is expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/bathymetry.tif
+</pre></div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -587,7 +613,7 @@ The final outputs are standardized rasters with consistent NoData values and dat
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -625,24 +651,43 @@ The final outputs are standardized rasters with consistent NoData values and dat
 <dd class="field-odd"><p>None</p>
 </dd>
 </dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3">
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">This function orchestrates a multi-step geospatial workflow:
-1. Validates the existence of project folders and core input files (bathymetry and vector databases).
-2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.
-3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
-4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</p>
+<dl class="simple">
+<dt>This function orchestrates a multi-step geospatial workflow:</dt><dd><ol class="arabic simple">
+<li><p class="sd-card-text">Validates the existence of project folders and core input files (bathymetry and vector databases).</p></li>
+<li><p class="sd-card-text">Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.</p></li>
+<li><p class="sd-card-text">Processes defined groups by clipping/rasterizing vectors and aligning external rasters.</p></li>
+<li><p class="sd-card-text">Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</p></li>
+</ol>
+</dd>
+</dl>
 </div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+</details><div class="important admonition">
+<p class="admonition-title">Expected sourced files</p>
+<p>The users vector layers are expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/vectors.gpkg|{user-vector-layer}
+</pre></div>
+</div>
+<p>The users raster layers are expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/_sources/{user-raster-layer}.tif
+</pre></div>
+</div>
+<p>Also, the reference raster is expected to be sourced from:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>./{project}/inputs/bathymetry.tif
+</pre></div>
+</div>
+</div>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -693,7 +738,7 @@ The final outputs are standardized rasters with consistent NoData values and dat
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -802,7 +847,29 @@ reference system and saves them into a new GeoPackage.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.util_normalize_rasters">
 <span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_normalize_rasters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ls_rasters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fz'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_normalize_rasters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_normalize_rasters" title="Link to this definition">#</a></dt>
-<dd></dd></dl>
+<dd><p>Apply linear fuzzy membership to normalize raster values between 0 and 1 using their min/max statistics.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The function calculates the minimum and maximum values of each input raster and uses
+them as boundaries for a linear membership function. If the minimum and maximum
+values are identical, the maximum is incremented by 1 to avoid division by zero.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ls_rasters</strong> (<em>list</em>) – List of paths to the raster files to be normalized</p></li>
+<li><p><strong>suffix</strong> (<em>str</em>) – String to append to the filename of the generated rasters. Default value = <code class="docutils literal notranslate"><span class="pre">fz</span></code></p></li>
+<li><p><strong>force_vmin</strong> (<em>int</em>) – [optional] Manual lower bound for normalization; if <code class="docutils literal notranslate"><span class="pre">None</span></code>, the raster minimum is used. Default value = 0</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of paths to the newly created normalized raster files</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.util_get_raster_stats">
@@ -845,7 +912,6 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
-<p>todo script example</p>
 </dd></dl>
 
 <dl class="py function">
@@ -889,6 +955,11 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.project.util_raster_boolean">
+<span class="sig-prename descclassname"><span class="pre">pem.project.</span></span><span class="sig-name descname"><span class="pre">util_raster_boolean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_raster</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_raster</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/project.html#util_raster_boolean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.project.util_raster_boolean" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.project.util_read_raster">
@@ -997,6 +1068,7 @@ The keys in the returned dictionary are <code class="docutils literal notranslat
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_extent"><code class="docutils literal notranslate"><span class="pre">util_get_raster_extent()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_raster_resolution"><code class="docutils literal notranslate"><span class="pre">util_get_raster_resolution()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_get_vector_fields"><code class="docutils literal notranslate"><span class="pre">util_get_vector_fields()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_raster_boolean"><code class="docutils literal notranslate"><span class="pre">util_raster_boolean()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_read_raster"><code class="docutils literal notranslate"><span class="pre">util_read_raster()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.project.util_write_raster"><code class="docutils literal notranslate"><span class="pre">util_write_raster()</span></code></a></li>
 </ul>

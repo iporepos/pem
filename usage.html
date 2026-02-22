@@ -333,7 +333,10 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean User Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -400,7 +403,10 @@ modules, each targeting a specific analytical component.</p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean User Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
 </ul>
 </div>
 <div class="admonition seealso">
@@ -434,10 +440,14 @@ environment variables before attempting to clone the repository.</p>
 <li><p>During installation, ensure that the bundled Python environment is included.</p></li>
 <li><p>During installation, ensure <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">pandas</span></code> and <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> Python packages are included.</p></li>
 </ol>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>For PyQGIS scripting details, consult the
-<a class="reference external" href="https://docs.qgis.org/3.40/en/docs/pyqgis_developer_cookbook/index.html">PyQGIS Developer Cookbook</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> Python package is not included as default for most QGIS versions.</p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For Windows users, installing QGIS via the OSGeo4W system is recommended. This allows the user
+to select all Python packages needed.</p>
 </div>
 </section>
 <section id="install-invest-workbench">
@@ -493,63 +503,46 @@ the functions in the modules should be dynamically loaded using <code class="xre
 <p>Always execute the scripts from the <strong>QGIS Python Console</strong> or from a
 Python interpreter explicitly bound to the QGIS environment.</p>
 </div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>For PyQGIS scripting details, consult the
+<a class="reference external" href="https://docs.qgis.org/3.40/en/docs/pyqgis_developer_cookbook/index.html">PyQGIS Developer Cookbook</a>.</p>
+</div>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Example: loading functions from the modules</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">The following template demonstrates how to dynamically load the module <code class="docutils literal notranslate"><span class="pre">risk.py</span></code>
-(Habitat Risk Index utility) and execute one of its functions.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># WARNING: run this in QGIS Python Environment</span>
-
+<p class="sd-card-text">The following template demonstrates how to dynamically load the module <code class="docutils literal notranslate"><span class="pre">project.py</span></code>
+and execute one of its functions</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="c1"># 1. Define the path to the target module (e.g., risk.py)</span>
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span>
+<span class="c1"># define the paths to the module file</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="c1"># 2. Define input and output directories</span>
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="n">input_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/input_dir&quot;</span>
-<span class="n">output_dir</span> <span class="o">=</span> <span class="s2">&quot;path/to/output_dir&quot;</span>
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
 
-<span class="c1"># Path to the GeoPackage database</span>
-<span class="n">input_db</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/pem.gpkg&quot;</span>
-
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="c1"># 3. Define analytical parameters</span>
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;MB3_MC3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MB4_MB5_MB6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MC4_MC5_MC6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MD4_MD5_MD6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;ME4_MF4_MF5&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">],</span>
-    <span class="s2">&quot;MG4_MG6&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">],</span>
-<span class="p">}</span>
-
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="c1"># 4. Execute the target function</span>
-<span class="c1"># ------------------------------------------------------------------</span>
-<span class="c1"># do not change this part</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
-<span class="n">output_file</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_habitats</span><span class="p">(</span>
-    <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
-    <span class="n">folder_output</span><span class="o">=</span><span class="n">output_dir</span><span class="p">,</span>
-    <span class="n">input_layer</span><span class="o">=</span><span class="s2">&quot;habitats_bentonicos_sul_v2&quot;</span><span class="p">,</span>
-    <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">,</span>
-    <span class="n">field_name</span><span class="o">=</span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
-    <span class="n">reference_raster</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">input_dir</span><span class="si">}</span><span class="s2">/raster.tif&quot;</span><span class="p">,</span>
-    <span class="n">resolution</span><span class="o">=</span><span class="mi">1000</span>
+<span class="n">output_files</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_roi</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
 <span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sd-card-text">The workflow follows four conceptual stages:</p>
+</div>
+</details><p class="sd-card-text">The workflow follows four conceptual stages:</p>
 <ol class="arabic simple">
 <li><p class="sd-card-text"><strong>Dynamic module binding</strong> via <code class="docutils literal notranslate"><span class="pre">importlib</span></code>.</p></li>
 <li><p class="sd-card-text"><strong>Path configuration</strong> for input/output resources.</p></li>
@@ -598,28 +591,36 @@ modules.</p>
 │   ├── benefit/                       # Benefit Index parameters and data
 │   │
 │   ├── habitats/                      # Habitat rasters
-│   │   ├── benthic.tif                # Rasterized Benthic habitat map
-│   │   └── pelagic.tif                # Rasterized Pelagic habitat map
+│   │   ├── habitats_benthic.tif       # Rasterized Benthic habitat map
+│   │   ├── habitats_benthic.csv       # Benthic habitat table
+│   │   ├── habitats_pelagic.tif       # Rasterized Pelagic habitat map
+│   │   ├── habitats_pelagic.csv       # Benthic habitat table
+│   │   ├── benthic/                   # Benthic habitat footprints
+│   │   │   ├── {habitat-group}.tif    # habitat group footprint
+│   │   │   └── ...
+│   │   └── pelagic/                   # Pelagic habitat footprints
+│   │       ├── {habitat-group}.tif    # habitat group footprint
+│   │       └── ...
 │   │
 │   ├── risk/                          # Habitat Risk model parameters
 │   │   ├── baseline/
-│   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-│   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-│   │   │   ├── stressors_pelagic.csv
-│   │   │   └── scores_pelagic.csv
-│   │   │
+│   │   │   ├── benthic_info.csv       # Benthic info table for InVEST-HRA model
+│   │   │   ├── benthic_scores.csv     # Benthic score table for InVEST-HRA model
+│   │   │   ├── benthic_model.json     # Benthic run-file for InVEST-HRA model
+│   │   │   ├── pelagic_info.csv       # Pelagic info table for InVEST-HRA model
+│   │   │   ├── pelagic_scores.csv     # Pelagic score table for InVEST-HRA model
+│   │   │   └── pelagic_model.json     # Benthic run-file for InVEST-HRA model
 │   │   └── {scenario}/                # Alternative scenarios
+│   │       └── ...
 │   │
 │   ├── roi/
 │   │   ├── roi.shp                    # Shapefile for ROI (required by InVEST-HRA)
 │   │   └── roi.tif                    # Boolean raster for ROI
 │   │
 │   └── users/                         # Ocean users configuration
-│       ├── users.csv                  # Table of ocean users
-│       ├── users_conflict.csv         # Spatial conflict matrix
-│       │
 │       ├── baseline/                  # Baseline scenario
-│       │   ├── oilngas.tif            # raster footprint or density
+│       │   ├── conflict.csv           # Spatial user conflict matrix
+│       │   ├── oilngas.tif            # user raster footprint or density
 │       │   ├── fisheries.tif          # (suggested users)
 │       │   ├── windfarms.tif
 │       │   ├── {username}.tif
@@ -628,18 +629,13 @@ modules.</p>
 │       └── {scenario}/                # Alternative scenarios
 │
 └── outputs/                           # Model outputs
-    │
     ├── baseline/
     │   ├── baseline_iduse.tif         # Use Performance Index
     │   ├── baseline_benefit.tif       # Benefit Index
     │   ├── baseline_conflict.tif      # Conflict Index
     │   ├── baseline_risk.tif          # Habitat Risk Index
-    │   │
     │   └── intermediate/              # Intermediate artifacts
-    │       ├── baseline_hra_benthic.tif      # InVEST output
-    │       ├── baseline_hra_benthic_fz.tif   # fuzzy transform
-    │       ├── baseline_hra_pelagic.tif
-    │       └── baseline_hra_pelagic_fz.tif
+    │       └── ...
     │
     └── {scenario}/                    # Alternative scenario outputs
 </pre></div>
@@ -732,8 +728,23 @@ from initial project setup to advanced model structuring and automation tasks.</
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Learn how to setup layer groups in the scripts in
+<p>Learn how to setup habitat groups in the scripts in
+<a class="reference internal" href="usage_groups_habitats.html#usage-groups-habitats"><span class="std std-ref">Tutorial: Defining Ocean Habitat Groups</span></a>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to user groups in the scripts in
 <a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to derive the Habitat Risk Index in
+<a class="reference internal" href="usage_risk.html#guide-risk"><span class="std std-ref">Tutorial: Habitat Risk Index</span></a>.</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to derive the Conflict Index in
+<a class="reference internal" href="usage_conflict.html#guide-conflict"><span class="std std-ref">Tutorial: Conflict Index</span></a>.</p>
 </div>
 </section>
 </section>

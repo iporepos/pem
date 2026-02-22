@@ -1,78 +1,48 @@
-
 .. _usage-groups-users:
 
-Tutorial: Defining Ocean Users Groups
-############################################
+Tutorial: Defining Ocean User Groups
+####################################
 
-.. _usage-groups-users-overview:
+Ocean User groups define how human-use layers are provided to the PEM model.
 
-Overview to Layer Groups
-========================
+This grouping system applies **only to Ocean Users**.
+Ocean Habitats use a different grouping structure.
 
-Defining *Ocean User groups* is a core process in the PEM framework.
+Each group represents one thematic activity (e.g., fisheries, windfarms)
+and may contain vector and/or raster layers.
 
-The concept of *Layer groups* are the standardized interface used
-to feed spatial layers into the framework Python functions.
+.. seealso::
 
-Most high-level functions operate by:
+   Learn how to setup habitat groups in the scripts in
+   :ref:`Tutorial: Defining Ocean Habitat Groups <usage-groups-habitats>`.
 
-- Collecting layers from one or more groups
-- Rasterizing vectors when necessary
-- Normalizing raster values to a 0–1 range
-- Applying global weight factors
-- Merging layers into composite outputs
+Concept
+=======
 
-Layer Groups exist to streamline complex spatial workflows. A model may
-combine:
+Ocean User inputs are structured in three levels:
 
-- Multiple vector layers
-- Multiple raster layers
-- Only vectors
-- Only rasters
-- Or both
+1. Individual layer definitions
+2. Thematic groups
+3. A master ``groups`` dictionary
 
-Additionally, layers often require:
-
-- A **weight factor** (global multiplier)
-- A **field attribute** for rasterization (when learning from vectors)
-
-Instead of redefining input logic for every function, the group
-structure centralizes these parameters. This ensures consistency,
-modularity, and predictable behavior across the entire modeling
-pipeline.
-
-Because this structure is used throughout the system, correct group
-definition is essential for stable and reproducible results.
-
-.. _usage-groups-users-conceptual:
-
-Conceptual Structure
-====================
-
-At the highest level, the inputs are defined as:
-
-1. Individual layer definitions (vector or raster)
-2. Layer groups (thematic collections)
-3. A master ``groups`` Python Dictionary
-
-The final dictionary structure looks like:
+Final structure:
 
 .. code-block:: python
 
     groups = {
         "group_name": group_definition,
-        ...
+        # ... other groups
     }
 
-.. _usage-groups-users-definition:
 
-1. Defining a Group
-===================
 
-Each group is a Python Dictionary with up to two keys:
+Group Structure
+===============
 
-- ``"vectors"`` → Python List of vector layer definitions
-- ``"rasters"`` → Python List of raster layer definitions
+Each group is a Python dictionary with up to two optional keys:
+
+- ``"vectors"`` → list of vector layer definitions
+- ``"rasters"`` → list of raster layer definitions
 
 Example:
 
@@ -83,173 +53,102 @@ Example:
         "rasters": [...],
     }
 
-The ``"vectors"`` and ``"rasters"`` keys are optional.
 A group may contain only vectors or only rasters.
+If both are missing or empty, an error is raised.
 
-.. _usage-groups-users-vector:
+Vector Layer Definition
+=======================
 
-2. Vector Layer Group
-==========================
-
-Each vector layer must be defined as a Dictionary inside the
-``"vectors"`` List.
-
-All layers are expected to be sourced from the ``vectors.gpkg`` file in the
-PEM Project.
-
-Mandatory Keys
---------------
-
-``name`` (str)
-    Name of the vector layer inside the geopackage.
-
-Optional Keys
--------------
-
-``field`` (str or None)
-    Attribute field used for rasterization.
-
-    - If ``None``, a constant value of ``1`` is burned.
-    - If not defined, defaults to ``None``
-
-``weight`` (float or None)
-    Global weight multiplier for this layer.
-
-    - If ``None``, defaults to ``1``.
-    - If not defined, defaults to ``None``
-
-Full Example
-------------
+Vector layers must exist inside ``vectors.gpkg``.
+Each vector is defined as:
 
 .. code-block:: python
 
     {
-        "name": "fisheries_01",
-        "field": "intensity",
-        "weight": 1,
+        "name": "layer_name",      # required
+        "field": "attribute",      # optional
+        "weight": 1.0,             # optional
     }
 
-Minimal Example
----------------
+Parameters
+----------
+
+``name`` (str)
+    Layer name inside ``vectors.gpkg``. (required)
+
+``field`` (str or None)
+    Attribute used for rasterization.
+    - If ``None`` or omitted → constant value ``1`` is burned.
+
+``weight`` (float or None)
+    Global multiplier applied after normalization.
+    - If ``None`` or omitted → defaults to ``1``.
+
+Example:
 
 .. code-block:: python
 
     {
         "name": "fisheries_02",
         "field": "intensity",
+        "weight": 2
     }
 
-If optional keys are omitted, the system assigns defaults automatically.
 
-.. _usage-groups-users-raster:
+Raster Layer Definition
+=======================
 
-3. Raster Layer Group
-==========================
-
-Raster layers are defined inside the ``"rasters"`` List.
-
-They can represent:
-
-- Boolean layers (presence/absence, footprints)
-- Scalar layers (density, intensity, probability, etc.)
-
-All raster values are normalized to the 0–1 range during merging.
-
-All rasters are expected to be sourced from the ``inputs`` folder under the
-PEM Project. Specific subfolder (e.g, ``inputs/_sources`` or ``inputs/habitats``)
-may vary depending on the processing routine.
-
-Mandatory Keys
---------------
-
-``name`` (str)
-    Filename of the raster.
-
-Optional Keys
--------------
-
-``weight`` (float or None)
-    Global weight multiplier.
-
-    - If ``None``, defaults to ``1``.
-    - If not defined, defaults to ``None``
-
-Example
--------
+Raster files must be located in the project ``inputs/_sources`` directory.
+Each raster is defined as:
 
 .. code-block:: python
 
     {
-        "name": "fish_industry_footprints.tif",
-        "weight": 3,
+        "name": "filename.tif",    # required
+        "weight": 1.0,             # optional
     }
 
+Parameters
+----------
 
-.. _usage-groups-users-example:
+``name`` (str)
+    Raster filename. (required)
 
-4. Complete Example: Fisheries Group
-=====================================
+``weight`` (float or None)
+    Global multiplier.
+    - If ``None`` or omitted → defaults to ``1``.
+
+All rasters are normalized to the 0–1 range before merging.
+
+
+Complete Example
+================
 
 .. code-block:: python
 
     group_fisheries = {
 
         "vectors": [
-
-            {
-                "name": "fisheries_01",
-                "weight": 2,
-            },
-
-            {
-                "name": "fisheries_02",
-                "field": "intensity",
-            },
-
+            {"name": "fisheries_01", "weight": 2},
+            {"name": "fisheries_02", "field": "intensity"},
         ],
 
         "rasters": [
-
-            {
-                "name": "fish_industry_footprints.tif",
-                "weight": 3,
-            },
-
-            {
-                "name": "fish_industry_density.tif",
-                "weight": 4,
-            },
-
+            {"name": "fish_industry_footprints.tif", "weight": 3},
+            {"name": "fish_industry_density.tif", "weight": 4},
         ],
     }
-
-
-.. _usage-groups-users-example2:
-
-5. Another Example: Windfarms Group
-====================================
-
-Groups do not need both vectors and rasters.
-
-.. code-block:: python
 
     group_windfarms = {
+
         "vectors": [
-            {
-                "name": "windfarms",
-                "field": None,
-                "weight": 3,
-            },
+            {"name": "lines", "field": None, "weight": 2},
+            {"name": "turbines", "field": "intensity", "weight": 1},
         ],
+
     }
 
-.. _usage-groups-users-registering:
-
-6. Registering All Groups
-==========================
-
-After defining individual groups, register them in the master
-``groups`` Dictionary.
+Registering groups:
 
 .. code-block:: python
 
@@ -258,51 +157,12 @@ After defining individual groups, register them in the master
         "windfarms": group_windfarms,
     }
 
-The key (e.g., ``"fisheries"``) becomes the group identifier used
-throughout the model.
+The dictionary key (e.g., ``"fisheries"``) is the group identifier used by the model.
 
-.. _usage-groups-users-defaults:
-
-7. Default Behavior Summary
-============================
-
-If a key is missing or set to ``None``:
-
-+----------------+-------------------------------+
-| Parameter      | Default Behavior              |
-+================+===============================+
-| ``field``      | Burns constant value = 1      |
-+----------------+-------------------------------+
-| ``weight``     | Assumes weight = 1            |
-+----------------+-------------------------------+
-| ``rasters``    | No raster layers processed    |
-+----------------+-------------------------------+
-| ``vectors``    | No vector layers processed    |
-+----------------+-------------------------------+
-
-
-.. warning::
-
-    If both ``rasters`` or ``vectors`` are missing or empty, then
-    an error is raised.
-
-
-.. _usage-groups-users-recommend:
-
-8. Recommended Best Practices
-==============================
-
-- Always define ``name`` explicitly.
-- Use weights consistently across groups.
-- Keep thematic logic separated by group.
-
-.. _usage-groups-users-workflow:
-
-9. Typical Workflow
-===================
+Workflow Summary
+================
 
 1. Define vector and raster layers.
-2. Organize them into thematic groups.
-3. Register groups in the master Dictionary.
+2. Organize them into thematic Ocean User groups.
+3. Register groups in ``groups`` dictionary.
 4. Pass ``groups`` to the model parser.
-

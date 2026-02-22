@@ -382,11 +382,15 @@
 <span class="c1"># See pyproject.toml for authors/maintainers.</span>
 <span class="c1"># See LICENSE for license details.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">{Short module description (1-3 sentences)}</span>
-<span class="sd">todo docstring</span>
+<span class="sd">This is the complete API reference for the ``project`` python module of the ``pem`` system.</span>
+
+<span class="sd">.. seealso::</span>
+
+<span class="sd">   Learn how to setup a PEM Project in</span>
+<span class="sd">   :ref:`Tutorial: Setting Up a PEM Project &lt;guide-project&gt;`.</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
+
 
 <span class="c1"># IMPORTS</span>
 <span class="c1"># ***********************************************************************</span>
@@ -396,6 +400,7 @@
 <span class="c1"># =======================================================================</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">pprint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
 
 <span class="c1"># ... {develop}</span>
 
@@ -459,6 +464,18 @@
             <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt;&gt;&gt; check for </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt;&gt;&gt; pem @ project: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_message_end</span><span class="p">():</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_heading</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="s2">&quot;=&quot;</span><span class="p">)</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">):</span>
 
     <span class="n">pvars</span> <span class="o">=</span> <span class="p">{}</span>
@@ -504,12 +521,6 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Initialize the directory structure for a PEM project.</span>
 
-<span class="sd">    .. note::</span>
-
-<span class="sd">       This function creates a standardized hierarchy of folders for inputs</span>
-<span class="sd">       and outputs. It also handles the creation of scenario-specific subdirectories and</span>
-<span class="sd">       intermediate folders within each output directory.</span>
-
 <span class="sd">    :param name: The name of the project, used as the root folder name.</span>
 <span class="sd">    :type name: str</span>
 <span class="sd">    :param folder_base: The base directory where the project structure will be created.</span>
@@ -519,15 +530,23 @@
 <span class="sd">    :return: A list of all directory paths created during the setup process.</span>
 <span class="sd">    :rtype: list</span>
 
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
+<span class="sd">        :open:</span>
+
+<span class="sd">        This function creates a standardized hierarchy of folders for inputs</span>
+<span class="sd">        and outputs. It also handles the creation of scenario-specific subdirectories and</span>
+<span class="sd">        intermediate folders within each output directory.</span>
+
 <span class="sd">    .. include:: includes/examples/project_setup_project.rst</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">folder_base</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_base</span><span class="p">)</span>
 
     <span class="nb">print</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="s2">&quot;=&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Setting up PEM project</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project base folder: </span><span class="si">{</span><span class="n">folder_base</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setting up PEM project</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project name: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Project base folder: </span><span class="si">{</span><span class="n">folder_base</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
     <span class="n">d_output</span> <span class="o">=</span> <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/outputs&quot;</span>
 
@@ -537,6 +556,8 @@
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/_sources&quot;</span><span class="p">,</span>
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/benefit&quot;</span><span class="p">,</span>
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/habitats&quot;</span><span class="p">,</span>
+        <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/habitats/benthic&quot;</span><span class="p">,</span>
+        <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/habitats/pelagic&quot;</span><span class="p">,</span>
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/risk/baseline&quot;</span><span class="p">,</span>
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/roi&quot;</span><span class="p">,</span>
         <span class="n">folder_base</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">/inputs/users/baseline&quot;</span><span class="p">,</span>
@@ -570,22 +591,34 @@
 <a class="viewcode-back" href="../../api_project.html#pem.project.setup_roi">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_roi</span><span class="p">(</span><span class="n">folder_project</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.</span>
-
-<span class="sd">    .. note::</span>
-
-<span class="sd">         This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;</span>
-<span class="sd">         second, it initializes a blank raster based on the project&#39;s reference raster; and finally, it rasterizes the</span>
-<span class="sd">         vector ROI onto that blank raster with a burn value of 1.</span>
+<span class="sd">    Prepares and processes the ``roi`` layer (Region of Interest)by reprojecting</span>
+<span class="sd">    vector data and generating a corresponding raster mask.</span>
 
 <span class="sd">    :param folder_project: The root directory path of the project containing necessary configuration and variables.</span>
 <span class="sd">    :type folder_project: str</span>
 <span class="sd">    :return: A list containing the file path to the reprojected Shapefile and the path to the generated ROI raster.</span>
 <span class="sd">    :rtype: list</span>
 
+<span class="sd">    .. admonition:: Expected sourced files</span>
+<span class="sd">        :class: important</span>
+
+<span class="sd">        The ``roi`` layer is expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/vectors.gpkg|roi</span>
+
+<span class="sd">        Also, the reference raster is expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/bathymetry.tif</span>
+
 <span class="sd">    .. include:: includes/examples/project_setup_roi.rst</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_heading</span><span class="p">()</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup ROI&quot;</span><span class="p">)</span>
 
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
@@ -597,6 +630,7 @@
 
     <span class="c1"># reproject to SHP</span>
     <span class="c1"># -----------------------------------</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Reprojecting sourced roi vector ...&quot;</span><span class="p">)</span>
 
     <span class="n">src_file</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">|layername=</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">input_db</span><span class="p">,</span> <span class="n">layer</span><span class="p">)</span>
     <span class="n">dst_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">layer</span><span class="si">}</span><span class="s2">.shp&quot;</span>
@@ -612,11 +646,13 @@
 
     <span class="c1"># make blank</span>
     <span class="c1"># -----------------------------------</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Generating blank raster ...&quot;</span><span class="p">)</span>
     <span class="n">raster_output</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/roi.tif&quot;</span>
     <span class="n">util_raster_blank</span><span class="p">(</span><span class="n">output_raster</span><span class="o">=</span><span class="n">raster_output</span><span class="p">,</span> <span class="n">input_raster</span><span class="o">=</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
 
     <span class="c1"># rasterize</span>
     <span class="c1"># -----------------------------------</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Rasterizing ROI ...&quot;</span><span class="p">)</span>
     <span class="n">util_rasterize_layer</span><span class="p">(</span>
         <span class="n">input_raster</span><span class="o">=</span><span class="n">raster_output</span><span class="p">,</span>
         <span class="n">input_db</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -624,6 +660,7 @@
         <span class="n">burn_value</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="n">_message_end</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">dst_file</span><span class="p">,</span> <span class="n">raster_output</span><span class="p">]</span></div>
 
 
@@ -632,14 +669,9 @@
 <a class="viewcode-back" href="../../api_project.html#pem.project.setup_habitats">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_habitats</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">habitat_field</span><span class="p">,</span> <span class="n">groups</span><span class="p">,</span> <span class="n">to_byte</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.</span>
+<span class="sd">    Sets up habitat layers by reprojecting vector data, applying</span>
+<span class="sd">    grouping logic, and generating categorized raster masks.</span>
 
-<span class="sd">    .. note::</span>
-
-<span class="sd">         This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,</span>
-<span class="sd">         optional attribute grouping based on a lookup dictionary, and conversion to raster format.</span>
-<span class="sd">         The final outputs are standardized rasters with consistent NoData values and data types</span>
-<span class="sd">         (Byte or Float32) to ensure compatibility with downstream analysis.</span>
 
 <span class="sd">    :param folder_project: The root directory path of the project containing necessary configuration and variables.</span>
 <span class="sd">    :type folder_project: str</span>
@@ -652,10 +684,39 @@
 <span class="sd">    :return: A list of file paths to the generated habitat TIF files.</span>
 <span class="sd">    :rtype: list</span>
 
+<span class="sd">    .. dropdown:: Extra notes</span>
+<span class="sd">        :icon: bookmark-fill</span>
+<span class="sd">        :open:</span>
+
+<span class="sd">        This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,</span>
+<span class="sd">        optional attribute grouping based on a lookup dictionary, and conversion to raster format.</span>
+<span class="sd">        The final outputs are standardized rasters with consistent NoData values and data types</span>
+<span class="sd">        (Byte or Float32) to ensure compatibility with downstream analysis.</span>
+<span class="sd">        Also, a CSV file is generated for each habitat type for tracking the raster cell values.</span>
+
+
+<span class="sd">    .. admonition:: Expected sourced files</span>
+<span class="sd">        :class: important</span>
+
+<span class="sd">        The habitats layers are expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/vectors.gpkg|habitat_benthic</span>
+<span class="sd">            ./{project}/inputs/vectors.gpkg|habitat_pelagic</span>
+
+<span class="sd">        Also, the reference raster is expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/bathymetry.tif</span>
+
+
 <span class="sd">    .. include:: includes/examples/project_setup_habitats.rst</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-
+    <span class="n">_heading</span><span class="p">()</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup Habitats&quot;</span><span class="p">)</span>
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
     <span class="n">folder_output</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;habitats&quot;</span>
@@ -666,6 +727,7 @@
 
     <span class="c1"># reproject layers</span>
     <span class="c1"># -----------------------------------</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Reprojecting layers ...&quot;</span><span class="p">)</span>
     <span class="n">output_db</span> <span class="o">=</span> <span class="n">util_reproject_vectors</span><span class="p">(</span>
         <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
         <span class="n">layers</span><span class="o">=</span><span class="n">layers</span><span class="p">,</span>
@@ -680,6 +742,8 @@
 
         <span class="n">hab_type</span> <span class="o">=</span> <span class="n">hab</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Handling </span><span class="si">{</span><span class="n">hab_type</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+
         <span class="n">input_layer</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">output_db</span><span class="si">}</span><span class="s2">|layername=</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">&quot;</span>
 
         <span class="c1"># group rows</span>
@@ -690,6 +754,7 @@
         <span class="n">dst_out</span> <span class="o">=</span> <span class="n">dst_out_a</span> <span class="o">+</span> <span class="n">dst_out_b</span>
 
         <span class="c1"># add a &#39;raster&#39; field with unique number the dissolved layer</span>
+        <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Adding raster field&quot;</span><span class="p">)</span>
         <span class="n">dc_params</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="n">input_layer</span><span class="p">,</span>
             <span class="s2">&quot;FIELD_NAME&quot;</span><span class="p">:</span> <span class="s2">&quot;raster&quot;</span><span class="p">,</span>
@@ -703,6 +768,7 @@
 
         <span class="c1"># handle groups</span>
         <span class="c1"># -----------------------------------</span>
+        <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Handling groups ...&quot;</span><span class="p">)</span>
         <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">output_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer_grouped</span><span class="p">)</span>
 
         <span class="n">rules</span> <span class="o">=</span> <span class="n">groups</span><span class="p">[</span><span class="n">hab_type</span><span class="p">]</span>
@@ -735,9 +801,10 @@
             <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">habitat_field</span><span class="p">]</span>
             <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;group_id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;raster&quot;</span><span class="p">]</span>
 
-        <span class="c1"># Save csv</span>
+        <span class="c1"># Save</span>
         <span class="n">gdf</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">layer_grouped</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">&quot;GPKG&quot;</span><span class="p">)</span>
 
+        <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Saving CSV ...&quot;</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">gdf</span><span class="p">[[</span><span class="s2">&quot;group_id&quot;</span><span class="p">,</span> <span class="s2">&quot;group_name&quot;</span><span class="p">]])</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="s2">&quot;group_id&quot;</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;group_id&quot;</span><span class="p">)</span>
@@ -745,12 +812,14 @@
 
         <span class="c1"># get raster blank</span>
         <span class="c1"># -----------------------------------</span>
+        <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Generating blank raster ...&quot;</span><span class="p">)</span>
         <span class="n">raster_output</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">folder_output</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.tif&quot;</span>
         <span class="n">util_raster_blank</span><span class="p">(</span><span class="n">output_raster</span><span class="o">=</span><span class="n">raster_output</span><span class="p">,</span> <span class="n">input_raster</span><span class="o">=</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
         <span class="n">ls_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">raster_output</span><span class="p">)</span>
 
         <span class="c1"># rasterize field</span>
         <span class="c1"># -----------------------------------</span>
+        <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Rasterizing ...&quot;</span><span class="p">)</span>
         <span class="n">util_rasterize_layer</span><span class="p">(</span>
             <span class="n">input_raster</span><span class="o">=</span><span class="n">raster_output</span><span class="p">,</span>
             <span class="n">input_db</span><span class="o">=</span><span class="n">output_db</span><span class="p">,</span>
@@ -760,6 +829,7 @@
 
     <span class="c1"># align no-data standard and data type</span>
     <span class="c1"># -----------------------------------</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Aligning rasters ...&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ls_outputs</span><span class="p">:</span>
         <span class="n">nm</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s2">&quot;_aux.tif&quot;</span>
         <span class="n">file_out</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">nm</span>
@@ -784,9 +854,27 @@
         <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">file_out</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
 
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- Splitting habitat groups ...&quot;</span><span class="p">)</span>
+
+        <span class="n">hab</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">.csv&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Iterate over rows as dictionaries</span>
+        <span class="k">for</span> <span class="n">row_dict</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">):</span>
+            <span class="n">g_name</span> <span class="o">=</span> <span class="n">row_dict</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span>
+            <span class="n">g_id</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">row_dict</span><span class="p">[</span><span class="s2">&quot;group_id&quot;</span><span class="p">])</span>
+            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- Group: </span><span class="si">{</span><span class="n">g_name</span><span class="si">}</span><span class="s2"> Id: </span><span class="si">{</span><span class="n">g_id</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+
+            <span class="n">fo</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">g_name</span><span class="si">}</span><span class="s2">.tif&quot;</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">fo</span><span class="o">.</span><span class="n">parent</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="n">util_raster_boolean</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">g_id</span><span class="p">,</span> <span class="n">fo</span><span class="p">)</span>
+
     <span class="c1"># Clean up</span>
     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">output_db</span><span class="p">)</span>
 
+    <span class="n">_message_end</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">ls_outputs</span></div>
 
 
@@ -808,12 +896,35 @@
 
 <span class="sd">    .. dropdown:: Extra notes</span>
 <span class="sd">        :icon: bookmark-fill</span>
+<span class="sd">        :open:</span>
 
 <span class="sd">        This function orchestrates a multi-step geospatial workflow:</span>
-<span class="sd">        1. Validates the existence of project folders and core input files (bathymetry and vector databases).</span>
-<span class="sd">        2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.</span>
-<span class="sd">        3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.</span>
-<span class="sd">        4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</span>
+<span class="sd">         1. Validates the existence of project folders and core input files (bathymetry and vector databases).</span>
+<span class="sd">         2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.</span>
+<span class="sd">         3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.</span>
+<span class="sd">         4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.</span>
+
+<span class="sd">    .. admonition:: Expected sourced files</span>
+<span class="sd">        :class: important</span>
+
+<span class="sd">        The users vector layers are expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/vectors.gpkg|{user-vector-layer}</span>
+
+<span class="sd">        The users raster layers are expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/_sources/{user-raster-layer}.tif</span>
+
+<span class="sd">        Also, the reference raster is expected to be sourced from:</span>
+
+<span class="sd">        .. code-block:: text</span>
+
+<span class="sd">            ./{project}/inputs/bathymetry.tif</span>
+
 
 <span class="sd">    .. include:: includes/examples/project_setup_users.rst</span>
 
@@ -828,6 +939,9 @@
             <span class="n">ls_weights</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">w</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ls_weights</span>
 
+    <span class="n">_heading</span><span class="p">()</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Setup Users at </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="o">=</span><span class="n">folder_project</span><span class="p">)</span>
 
     <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span>
@@ -837,6 +951,10 @@
     <span class="c1"># ===============================================</span>
     <span class="n">folder_output</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;inputs/users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">folder_outputs_interm</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;outputs/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/intermediate&quot;</span>
+    <span class="n">folder_outputs_interm_sub</span> <span class="o">=</span> <span class="n">folder_outputs_interm</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;users&quot;</span>
+    <span class="n">folder_outputs_interm_sub</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">folder_outputs_interm_sub2</span> <span class="o">=</span> <span class="n">folder_outputs_interm_sub</span> <span class="o">/</span> <span class="s2">&quot;rasterized&quot;</span>
+    <span class="n">folder_outputs_interm_sub2</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">folder_sources</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">&quot;_sources&quot;</span>
 
     <span class="c1"># get files</span>
@@ -853,7 +971,14 @@
     <span class="c1"># master check up</span>
     <span class="c1"># ===============================================</span>
 
-    <span class="n">_folder_checker</span><span class="p">([</span><span class="n">folder_outputs_interm</span><span class="p">])</span>
+    <span class="n">_folder_checker</span><span class="p">(</span>
+        <span class="p">[</span>
+            <span class="n">folder_output</span><span class="p">,</span>
+            <span class="n">folder_outputs_interm</span><span class="p">,</span>
+            <span class="n">folder_outputs_interm_sub</span><span class="p">,</span>
+            <span class="n">folder_outputs_interm_sub2</span><span class="p">,</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
     <span class="n">_file_checker</span><span class="p">([</span><span class="n">input_db</span><span class="p">,</span> <span class="n">reference_raster</span><span class="p">])</span>
 
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
@@ -864,19 +989,20 @@
 
     <span class="c1"># enter main loop</span>
     <span class="c1"># ===============================================</span>
-
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Starting ...&quot;</span><span class="p">)</span>
         <span class="n">ls_rasters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">ls_weights</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="c1"># setup vectors</span>
         <span class="c1"># ===============================================</span>
         <span class="k">if</span> <span class="s2">&quot;vectors&quot;</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">]:</span>
+            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Vectors layers ...&quot;</span><span class="p">)</span>
             <span class="n">ls</span> <span class="o">=</span> <span class="n">_setup_users_vectors</span><span class="p">(</span>
                 <span class="n">input_db</span><span class="o">=</span><span class="n">input_db</span><span class="p">,</span>
                 <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">],</span>
                 <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span>
                 <span class="n">dst_ext</span><span class="o">=</span><span class="n">dst_ext</span><span class="p">,</span>
-                <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_outputs_interm</span><span class="p">,</span>
+                <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_outputs_interm_sub2</span><span class="p">,</span>
                 <span class="n">reference_raster</span><span class="o">=</span><span class="n">reference_raster</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">ls_rasters</span> <span class="o">=</span> <span class="n">ls_rasters</span> <span class="o">+</span> <span class="n">ls</span><span class="p">[:]</span>
@@ -887,13 +1013,14 @@
         <span class="c1"># setup rasters</span>
         <span class="c1"># ===============================================</span>
         <span class="k">if</span> <span class="s2">&quot;rasters&quot;</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">]:</span>
+            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Raster layers ...&quot;</span><span class="p">)</span>
             <span class="n">ls</span> <span class="o">=</span> <span class="n">_setup_users_rasters</span><span class="p">(</span>
                 <span class="n">folder_sources</span><span class="o">=</span><span class="n">folder_sources</span><span class="p">,</span>
                 <span class="n">groups</span><span class="o">=</span><span class="n">groups</span><span class="p">[</span><span class="n">g</span><span class="p">],</span>
                 <span class="n">dst_crs</span><span class="o">=</span><span class="n">dst_crs</span><span class="p">,</span>
                 <span class="n">dst_ext</span><span class="o">=</span><span class="n">dst_ext</span><span class="p">,</span>
                 <span class="n">dst_res</span><span class="o">=</span><span class="n">dst_res</span><span class="p">,</span>
-                <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_outputs_interm</span><span class="p">,</span>
+                <span class="n">folder_output</span><span class="o">=</span><span class="n">folder_outputs_interm_sub2</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="n">ls_rasters</span> <span class="o">=</span> <span class="n">ls_rasters</span> <span class="o">+</span> <span class="n">ls</span><span class="p">[:]</span>
 
@@ -902,12 +1029,14 @@
 
         <span class="c1"># normalize</span>
         <span class="c1"># ===============================================</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Normalizing layers ...&quot;</span><span class="p">)</span>
         <span class="n">ls_normalized</span> <span class="o">=</span> <span class="n">util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="n">ls_rasters</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ls_normalized</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="c1"># map algebra</span>
             <span class="c1"># ===============================================</span>
-            <span class="n">file_output</span> <span class="o">=</span> <span class="n">folder_outputs_interm</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_wavg.tif&quot;</span>
+            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Map Algebra ...&quot;</span><span class="p">)</span>
+            <span class="n">file_output</span> <span class="o">=</span> <span class="n">folder_outputs_interm_sub</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">_wavg.tif&quot;</span>
             <span class="n">file_raster</span> <span class="o">=</span> <span class="n">_setup_users_algebra</span><span class="p">(</span>
                 <span class="n">ls_normalized</span><span class="p">,</span> <span class="n">ls_weights</span><span class="p">,</span> <span class="n">file_output</span><span class="p">,</span> <span class="n">reference_raster</span>
             <span class="p">)</span>
@@ -916,6 +1045,7 @@
             <span class="c1"># ===============================================</span>
             <span class="n">ls_normalized</span> <span class="o">=</span> <span class="n">util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="p">[</span><span class="n">file_raster</span><span class="p">])</span>
 
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Filling no-data ...&quot;</span><span class="p">)</span>
         <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">ls_normalized</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="s2">&quot;BAND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
@@ -924,7 +1054,9 @@
             <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_output</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">),</span>
         <span class="p">}</span>
         <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:fillnodata&quot;</span><span class="p">,</span> <span class="n">dc</span><span class="p">)</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Concluded ...&quot;</span><span class="p">)</span>
 
+    <span class="n">_message_end</span><span class="p">()</span>
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
@@ -1274,7 +1406,24 @@
 <div class="viewcode-block" id="util_normalize_rasters">
 <a class="viewcode-back" href="../../api_project.html#pem.project.util_normalize_rasters">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;fz&quot;</span><span class="p">,</span> <span class="n">force_vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-    <span class="c1"># todo docstring</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply linear fuzzy membership to normalize raster values between 0 and 1 using their min/max statistics.</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        The function calculates the minimum and maximum values of each input raster and uses</span>
+<span class="sd">        them as boundaries for a linear membership function. If the minimum and maximum</span>
+<span class="sd">        values are identical, the maximum is incremented by 1 to avoid division by zero.</span>
+
+<span class="sd">    :param ls_rasters: List of paths to the raster files to be normalized</span>
+<span class="sd">    :type ls_rasters: list</span>
+<span class="sd">    :param suffix: String to append to the filename of the generated rasters. Default value = ``fz``</span>
+<span class="sd">    :type suffix: str</span>
+<span class="sd">    :param force_vmin: [optional] Manual lower bound for normalization; if ``None``, the raster minimum is used. Default value = 0</span>
+<span class="sd">    :type force_vmin: int</span>
+<span class="sd">    :return: List of paths to the newly created normalized raster files</span>
+<span class="sd">    :rtype: list</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ls_new_rasters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ls_rasters</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
@@ -1380,8 +1529,6 @@
 <span class="sd">    :return: The CRS identifier as a string.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    todo script example</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">rlayer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
     <span class="n">crs</span> <span class="o">=</span> <span class="n">rlayer</span><span class="o">.</span><span class="n">crs</span><span class="p">()</span>
@@ -1421,7 +1568,7 @@
 <div class="viewcode-block" id="util_get_raster_resolution">
 <a class="viewcode-back" href="../../api_project.html#pem.project.util_get_raster_resolution">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_resolution</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
-
+    <span class="c1"># todo docstring</span>
     <span class="c1"># Create a raster layer object</span>
     <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
     <span class="n">res_x</span> <span class="o">=</span> <span class="n">raster_layer</span><span class="o">.</span><span class="n">rasterUnitsPerPixelX</span><span class="p">()</span>
@@ -1460,6 +1607,20 @@
     <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">fields</span><span class="p">:</span>
         <span class="n">ls</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">name</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">ls</span></div>
+
+
+
+<div class="viewcode-block" id="util_raster_boolean">
+<a class="viewcode-back" href="../../api_project.html#pem.project.util_raster_boolean">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">util_raster_boolean</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">output_raster</span><span class="p">):</span>
+    <span class="c1"># todo docstring</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="n">util_read_raster</span><span class="p">(</span><span class="n">input_raster</span><span class="p">)</span>
+
+    <span class="n">bool_grid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">dc</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)</span>
+
+    <span class="n">util_write_raster</span><span class="p">(</span><span class="n">bool_grid</span><span class="p">,</span> <span class="n">dc</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">],</span> <span class="n">output_raster</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
 
 
 
@@ -1546,12 +1707,12 @@
     <span class="c1"># Get the band</span>
     <span class="n">out_band</span> <span class="o">=</span> <span class="n">raster_output</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="n">n_band</span><span class="p">)</span>
 
-    <span class="c1"># Write the new data to the new raster</span>
-    <span class="n">out_band</span><span class="o">.</span><span class="n">WriteArray</span><span class="p">(</span><span class="n">grid_output</span><span class="p">)</span>
-
     <span class="c1"># Assign the NoData value to the band</span>
     <span class="k">if</span> <span class="n">nodata_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">out_band</span><span class="o">.</span><span class="n">SetNoDataValue</span><span class="p">(</span><span class="n">nodata_value</span><span class="p">)</span>
+
+    <span class="c1"># Write the new data to the new raster</span>
+    <span class="n">out_band</span><span class="o">.</span><span class="n">WriteArray</span><span class="p">(</span><span class="n">grid_output</span><span class="p">)</span>
 
     <span class="c1"># Flush the cache to disk to prevent corrupted files</span>
     <span class="n">out_band</span><span class="o">.</span><span class="n">FlushCache</span><span class="p">()</span>

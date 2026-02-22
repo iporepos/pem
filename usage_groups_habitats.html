@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial: Defining Ocean User Groups &#8212; pem v0.0.1 documentation</title>
+    <title>Tutorial: Defining Ocean Habitat Groups &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,12 +46,12 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'usage_groups_users';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'usage_groups_habitats';</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorial: Habitat Risk Index" href="usage_risk.html" />
-    <link rel="prev" title="Tutorial: Defining Ocean Habitat Groups" href="usage_groups_habitats.html" />
+    <link rel="next" title="Tutorial: Defining Ocean User Groups" href="usage_groups_users.html" />
+    <link rel="prev" title="Tutorial: Setting Up a PEM Project" href="usage_project.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -333,8 +333,8 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Defining Ocean User Groups</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Defining Ocean Habitat Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean User Groups</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
 </ul>
@@ -380,7 +380,7 @@
     
     <li class="breadcrumb-item"><a href="usage.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Defining Ocean User Groups</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Defining Ocean Habitat Groups</span></li>
   </ul>
 </nav>
 </div>
@@ -397,148 +397,120 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tutorial-defining-ocean-user-groups">
-<span id="usage-groups-users"></span><h1>Tutorial: Defining Ocean User Groups<a class="headerlink" href="#tutorial-defining-ocean-user-groups" title="Link to this heading">#</a></h1>
-<p>Ocean User groups define how human-use layers are provided to the PEM model.</p>
-<p>This grouping system applies <strong>only to Ocean Users</strong>.
-Ocean Habitats use a different grouping structure.</p>
-<p>Each group represents one thematic activity (e.g., fisheries, windfarms)
-and may contain vector and/or raster layers.</p>
+  <section id="tutorial-defining-ocean-habitat-groups">
+<span id="usage-groups-habitats"></span><h1>Tutorial: Defining Ocean Habitat Groups<a class="headerlink" href="#tutorial-defining-ocean-habitat-groups" title="Link to this heading">#</a></h1>
+<p>Ocean Habitat grouping defines how benthic and pelagic habitat polygons
+are aggregated into broader thematic habitat classes.</p>
+<p>This grouping system applies <strong>only to Ocean Habitats</strong>.
+Ocean Users use a different grouping structure.</p>
+<p>Habitat grouping is optional.
+If no grouping is defined, each habitat category is processed individually.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Learn how to setup habitat groups in the scripts in
-<a class="reference internal" href="usage_groups_habitats.html#usage-groups-habitats"><span class="std std-ref">Tutorial: Defining Ocean Habitat Groups</span></a>.</p>
+<p>Learn how to user groups in the scripts in
+<a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
 </div>
 <section id="concept">
 <h2>Concept<a class="headerlink" href="#concept" title="Link to this heading">#</a></h2>
-<p>Ocean User inputs are structured in three levels:</p>
+<p>Habitat inputs are polygon layers stored in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">habitats_benthic</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">habitats_pelagic</span></code></p></li>
+</ul>
+<p>Each polygon contains a categorical field (e.g., habitat code).</p>
+<p>Grouping allows users to:</p>
+<ul class="simple">
+<li><p>Merge multiple habitat codes into broader ecological classes</p></li>
+<li><p>Reduce model complexity</p></li>
+<li><p>Align categories with assessment needs</p></li>
+</ul>
+</section>
+<section id="grouping-structure">
+<h2>Grouping Structure<a class="headerlink" href="#grouping-structure" title="Link to this heading">#</a></h2>
+<p>Habitat grouping is defined by:</p>
 <ol class="arabic simple">
-<li><p>Individual layer definitions</p></li>
-<li><p>Thematic groups</p></li>
+<li><p>The categorical field name</p></li>
+<li><p>A list of grouping definitions (per habitat type)</p></li>
 <li><p>A master <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary</p></li>
 </ol>
-<p>Final structure:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;group_name&quot;</span><span class="p">:</span> <span class="n">group_definition</span><span class="p">,</span>
-    <span class="c1"># ... other groups</span>
+<p>Example structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;code&quot;</span>
+
+<span class="n">group_benthic</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sandy_bottoms&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;muddy_bottoms&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;mixed_sediments&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;deep_mud&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;consolidated_mud&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;biogenic_reef&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;rocky_reef&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;hard_substrate&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">]},</span>
+<span class="p">]</span>
+
+<span class="n">group_pelagic</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># no grouping applied</span>
+
+<span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;benthic&quot;</span><span class="p">:</span> <span class="n">group_benthic</span><span class="p">,</span>
+    <span class="s2">&quot;pelagic&quot;</span><span class="p">:</span> <span class="n">group_pelagic</span><span class="p">,</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="group-structure">
-<h2>Group Structure<a class="headerlink" href="#group-structure" title="Link to this heading">#</a></h2>
-<p>Each group is a Python dictionary with up to two optional keys:</p>
+<section id="group-definition">
+<h2>Group Definition<a class="headerlink" href="#group-definition" title="Link to this heading">#</a></h2>
+<p>Each group entry is a dictionary with two required keys:</p>
+<dl class="simple">
+<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> (str)</dt><dd><p>Name of the aggregated habitat class.</p>
+</dd>
+<dt><code class="docutils literal notranslate"><span class="pre">values</span></code> (list[str])</dt><dd><p>List of categorical values from the habitat field that
+will be merged into this group.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;sandy_bottoms&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">]}</span>
+</pre></div>
+</div>
+</section>
+<section id="no-grouping">
+<h2>No Grouping<a class="headerlink" href="#no-grouping" title="Link to this heading">#</a></h2>
+<p>If a habitat type is set to <code class="docutils literal notranslate"><span class="pre">None</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_pelagic</span> <span class="o">=</span> <span class="kc">None</span>
+</pre></div>
+</div>
+<p>Then:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;vectors&quot;</span></code> → list of vector layer definitions</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;rasters&quot;</span></code> → list of raster layer definitions</p></li>
+<li><p>No aggregation is performed</p></li>
+<li><p>Each unique category in the habitat field is treated as an independent class</p></li>
 </ul>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>
-    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>A group may contain only vectors or only rasters.
-If both are missing or empty, an error is raised.</p>
 </section>
-<section id="vector-layer-definition">
-<h2>Vector Layer Definition<a class="headerlink" href="#vector-layer-definition" title="Link to this heading">#</a></h2>
-<p>Vector layers must exist inside <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>.
-Each vector is defined as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;layer_name&quot;</span><span class="p">,</span>      <span class="c1"># required</span>
-    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span>      <span class="c1"># optional</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>             <span class="c1"># optional</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> (str)</dt><dd><p>Layer name inside <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>. (required)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">field</span></code> (str or None)</dt><dd><p>Attribute used for rasterization.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → constant value <code class="docutils literal notranslate"><span class="pre">1</span></code> is burned.</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">weight</span></code> (float or None)</dt><dd><p>Global multiplier applied after normalization.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-</dd>
-</dl>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_02&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-</section>
-<section id="raster-layer-definition">
-<h2>Raster Layer Definition<a class="headerlink" href="#raster-layer-definition" title="Link to this heading">#</a></h2>
-<p>Raster files must be located in the project <code class="docutils literal notranslate"><span class="pre">inputs/_sources</span></code> directory.
-Each raster is defined as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;filename.tif&quot;</span><span class="p">,</span>    <span class="c1"># required</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>             <span class="c1"># optional</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> (str)</dt><dd><p>Raster filename. (required)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">weight</span></code> (float or None)</dt><dd><p>Global multiplier.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-</dd>
-</dl>
-<p>All rasters are normalized to the 0–1 range before merging.</p>
-</section>
-</section>
-<section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_01&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_02&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">},</span>
-    <span class="p">],</span>
-
-    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fish_industry_footprints.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fish_industry_density.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
-    <span class="p">],</span>
-<span class="p">}</span>
-
-<span class="n">group_windfarms</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;turbines&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-    <span class="p">],</span>
-
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Registering groups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;fisheries&quot;</span><span class="p">:</span> <span class="n">group_fisheries</span><span class="p">,</span>
-    <span class="s2">&quot;windfarms&quot;</span><span class="p">:</span> <span class="n">group_windfarms</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The dictionary key (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;fisheries&quot;</span></code>) is the group identifier used by the model.</p>
+<section id="important-rules">
+<h2>Important Rules<a class="headerlink" href="#important-rules" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">habitats_benthic</span></code> and <code class="docutils literal notranslate"><span class="pre">habitats_pelagic</span></code> must exist in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>.</p></li>
+<li><p>The specified <code class="docutils literal notranslate"><span class="pre">field</span></code> must exist in both layers.</p></li>
+<li><p>Each categorical value should appear in only one group.</p></li>
+<li><p>If a value is not included in any group, it remains ungrouped.</p></li>
+</ul>
 </section>
 <section id="workflow-summary">
 <h2>Workflow Summary<a class="headerlink" href="#workflow-summary" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Define vector and raster layers.</p></li>
-<li><p>Organize them into thematic Ocean User groups.</p></li>
-<li><p>Register groups in <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary.</p></li>
-<li><p>Pass <code class="docutils literal notranslate"><span class="pre">groups</span></code> to the model parser.</p></li>
+<li><p>Ensure <code class="docutils literal notranslate"><span class="pre">habitats_benthic</span></code> and/or <code class="docutils literal notranslate"><span class="pre">habitats_pelagic</span></code> exist.</p></li>
+<li><p>Define the categorical habitat field.</p></li>
+<li><p>Create grouping lists (or set to <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></li>
+<li><p>Register them in the <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">setup_habitats</span></code>.</p></li>
 </ol>
+</section>
+<section id="when-to-group">
+<h2>When to Group<a class="headerlink" href="#when-to-group" title="Link to this heading">#</a></h2>
+<p>Grouping is recommended when:</p>
+<ul class="simple">
+<li><p>Habitat codes are highly detailed.</p></li>
+<li><p>Ecological interpretation requires broader classes.</p></li>
+<li><p>Model simplification improves interpretability.</p></li>
+</ul>
+<p>If detailed habitat resolution is required, grouping can be omitted.</p>
 </section>
 </section>
 
@@ -553,20 +525,20 @@ Each raster is defined as:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="usage_groups_habitats.html"
+       href="usage_project.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Tutorial: Defining Ocean Habitat Groups</p>
+        <p class="prev-next-title">Tutorial: Setting Up a PEM Project</p>
       </div>
     </a>
     <a class="right-next"
-       href="usage_risk.html"
+       href="usage_groups_users.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorial: Habitat Risk Index</p>
+        <p class="prev-next-title">Tutorial: Defining Ocean User Groups</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -590,17 +562,12 @@ Each raster is defined as:</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concept">Concept</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-structure">Group Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-layer-definition">Vector Layer Definition</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raster-layer-definition">Raster Layer Definition</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Parameters</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#grouping-structure">Grouping Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-definition">Group Definition</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#no-grouping">No Grouping</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#important-rules">Important Rules</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-summary">Workflow Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#when-to-group">When to Group</a></li>
 </ul>
   </nav></div>
 
@@ -608,7 +575,7 @@ Each raster is defined as:</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/usage_groups_users.rst.txt"
+      <li><a href="_sources/usage_groups_habitats.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

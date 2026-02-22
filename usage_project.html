@@ -50,7 +50,7 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorial: Defining Ocean Users Groups" href="usage_groups_users.html" />
+    <link rel="next" title="Tutorial: Defining Ocean Habitat Groups" href="usage_groups_habitats.html" />
     <link rel="prev" title="User Guide" href="usage.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -333,7 +333,10 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Home</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Setting Up a PEM Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean Users Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean User Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -435,28 +438,36 @@ across scenarios.</p>
 │   ├── benefit/                       # Benefit Index parameters and data
 │   │
 │   ├── habitats/                      # Habitat rasters
-│   │   ├── benthic.tif                # Rasterized Benthic habitat map
-│   │   └── pelagic.tif                # Rasterized Pelagic habitat map
+│   │   ├── habitats_benthic.tif       # Rasterized Benthic habitat map
+│   │   ├── habitats_benthic.csv       # Benthic habitat table
+│   │   ├── habitats_pelagic.tif       # Rasterized Pelagic habitat map
+│   │   ├── habitats_pelagic.csv       # Benthic habitat table
+│   │   ├── benthic/                   # Benthic habitat footprints
+│   │   │   ├── {habitat-group}.tif    # habitat group footprint
+│   │   │   └── ...
+│   │   └── pelagic/                   # Pelagic habitat footprints
+│   │       ├── {habitat-group}.tif    # habitat group footprint
+│   │       └── ...
 │   │
 │   ├── risk/                          # Habitat Risk model parameters
 │   │   ├── baseline/
-│   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-│   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-│   │   │   ├── stressors_pelagic.csv
-│   │   │   └── scores_pelagic.csv
-│   │   │
+│   │   │   ├── benthic_info.csv       # Benthic info table for InVEST-HRA model
+│   │   │   ├── benthic_scores.csv     # Benthic score table for InVEST-HRA model
+│   │   │   ├── benthic_model.json     # Benthic run-file for InVEST-HRA model
+│   │   │   ├── pelagic_info.csv       # Pelagic info table for InVEST-HRA model
+│   │   │   ├── pelagic_scores.csv     # Pelagic score table for InVEST-HRA model
+│   │   │   └── pelagic_model.json     # Benthic run-file for InVEST-HRA model
 │   │   └── {scenario}/                # Alternative scenarios
+│   │       └── ...
 │   │
 │   ├── roi/
 │   │   ├── roi.shp                    # Shapefile for ROI (required by InVEST-HRA)
 │   │   └── roi.tif                    # Boolean raster for ROI
 │   │
 │   └── users/                         # Ocean users configuration
-│       ├── users.csv                  # Table of ocean users
-│       ├── users_conflict.csv         # Spatial conflict matrix
-│       │
 │       ├── baseline/                  # Baseline scenario
-│       │   ├── oilngas.tif            # raster footprint or density
+│       │   ├── conflict.csv           # Spatial user conflict matrix
+│       │   ├── oilngas.tif            # user raster footprint or density
 │       │   ├── fisheries.tif          # (suggested users)
 │       │   ├── windfarms.tif
 │       │   ├── {username}.tif
@@ -465,18 +476,13 @@ across scenarios.</p>
 │       └── {scenario}/                # Alternative scenarios
 │
 └── outputs/                           # Model outputs
-    │
     ├── baseline/
     │   ├── baseline_iduse.tif         # Use Performance Index
     │   ├── baseline_benefit.tif       # Benefit Index
     │   ├── baseline_conflict.tif      # Conflict Index
     │   ├── baseline_risk.tif          # Habitat Risk Index
-    │   │
     │   └── intermediate/              # Intermediate artifacts
-    │       ├── baseline_hra_benthic.tif      # InVEST output
-    │       ├── baseline_hra_benthic_fz.tif   # fuzzy transform
-    │       ├── baseline_hra_pelagic.tif
-    │       └── baseline_hra_pelagic_fz.tif
+    │       └── ...
     │
     └── {scenario}/                    # Alternative scenario outputs
 </pre></div>
@@ -508,9 +514,9 @@ it is explicitly included in the scenarios list.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">the_module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span>  <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the base folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -532,7 +538,7 @@ it is explicitly included in the scenarios list.</p>
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">the_module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -580,9 +586,9 @@ by the framework.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -591,7 +597,7 @@ by the framework.</p>
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -615,8 +621,8 @@ specific habitat group identifier.</p>
 <section id="guide-project-habitats-manual">
 <span id="id1"></span><h3>Manual Input<a class="headerlink" href="#guide-project-habitats-manual" title="Link to this heading">#</a></h3>
 <p>Habitats are polygon vector layers classified into:</p>
-<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/vectors.gpkg|habitat_benthic
-{project}/inputs/vectors.gpkg|habitat_pelagic
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>{project}/inputs/vectors.gpkg|habitats_benthic
+{project}/inputs/vectors.gpkg|habitats_pelagic
 </pre></div>
 </div>
 <p>These layers are later rasterized onto the canonical grid defined by
@@ -624,8 +630,9 @@ specific habitat group identifier.</p>
 <p>Technical recommendations:</p>
 <ul class="simple">
 <li><p>No overlapping polygons within the same layer.</p></li>
-<li><p>A unique identifier (ID or code) per habitat class.</p></li>
+<li><p>A unique categorical identifier (ID or code) per habitat class.</p></li>
 <li><p>Prefer single-part geometries (avoid multipart features when possible).</p></li>
+<li><p>Ensure spatial extent is equal to or larger than the canonical raster.</p></li>
 </ul>
 <p>Habitat thematic detail is user-defined. The PEM framework allows
 aggregation into broader habitat groups at a later stage (e.g., grouping
@@ -633,16 +640,29 @@ multiple mud-related classes into a single “mud” category).</p>
 </section>
 <section id="script-setup-habitats">
 <span id="guide-project-habitats-setup"></span><h3>Script: Setup Habitats<a class="headerlink" href="#script-setup-habitats" title="Link to this heading">#</a></h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis tincidunt erat eget iaculis. Mauris gravida ex quam, in porttitor lacus lobortis vitae. In a lacinia nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi et tempor sem. Nullam quam dolor, venenatis eget magna ut, accumsan mollis erat.</p>
+<p>After preparing <code class="docutils literal notranslate"><span class="pre">habitats_benthic</span></code> and/or <code class="docutils literal notranslate"><span class="pre">habitats_pelagic</span></code>,
+run the <code class="docutils literal notranslate"><span class="pre">setup_habitats()</span></code> function from <code class="docutils literal notranslate"><span class="pre">project.py</span></code>.</p>
+<p>The function:</p>
+<ul class="simple">
+<li><p>Optionally applies habitat grouping (if defined).</p></li>
+<li><p>Rasterizes habitats onto the canonical grid.</p></li>
+<li><p>Generates a CSV file for raster cell value interpretation.</p></li>
+</ul>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup habitat groups in the scripts in
+<a class="reference internal" href="usage_groups_habitats.html#usage-groups-habitats"><span class="std std-ref">Tutorial: Defining Ocean Habitat Groups</span></a>.</p>
+</div>
+<p>Example script:</p>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -673,7 +693,7 @@ multiple mud-related classes into a single “mud” category).</p>
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -711,15 +731,10 @@ economic sector across multiple scenarios.</p>
 <li><p>Oil extraction: distinct layers for baseline and future expansion scenarios.</p></li>
 </ul>
 <p>Therefore, the user may populate these different data sources accordingly.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Learn how to setup layer groups in the scripts in
-<a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
-</div>
 </section>
 <section id="manual-input-vector-layers">
-<span id="guide-project-users-vector"></span><h3>Manual Input: vector layers<a class="headerlink" href="#manual-input-vector-layers" title="Link to this heading">#</a></h3>
-<p>Vector users may be points, lines, or polygons. Layers may include
+<span id="guide-project-users-vector"></span><h3>Manual Input: Vector layers<a class="headerlink" href="#manual-input-vector-layers" title="Link to this heading">#</a></h3>
+<p>A vector Ocean User may be points, lines, or polygons. Layers may include
 numeric attributes representing intensity, density, or effort
 (e.g., <code class="docutils literal notranslate"><span class="pre">intensity</span></code>, <code class="docutils literal notranslate"><span class="pre">density</span></code>).</p>
 <p>The user must populate in the <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code> database, like:</p>
@@ -755,16 +770,22 @@ numeric attributes representing intensity, density, or effort
 </section>
 <section id="script-setup-ocean-users">
 <span id="guide-project-users-setup"></span><h3>Script: Setup Ocean Users<a class="headerlink" href="#script-setup-ocean-users" title="Link to this heading">#</a></h3>
-<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla mollis tincidunt erat eget iaculis. Mauris gravida ex quam, in porttitor lacus lobortis vitae. In a lacinia nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Morbi et tempor sem. Nullam quam dolor, venenatis eget magna ut, accumsan mollis erat.</p>
+<p>After all manual inputs for vector and raster layers, run the <code class="docutils literal notranslate"><span class="pre">setup_users()</span></code> function
+from <code class="docutils literal notranslate"><span class="pre">project.py</span></code> module. Note that Ocean Users must be grouped using the structured dictionary.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how to setup layer groups in the scripts in
+<a class="reference internal" href="usage_groups_users.html#usage-groups-users"><span class="std std-ref">Tutorial: Defining Ocean Users Groups</span></a>.</p>
+</div>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<span class="c1"># define the paths to the module</span>
+<span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">module</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -815,7 +836,7 @@ numeric attributes representing intensity, density, or effort
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">module</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -853,11 +874,11 @@ numeric attributes representing intensity, density, or effort
       </div>
     </a>
     <a class="right-next"
-       href="usage_groups_users.html"
+       href="usage_groups_habitats.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorial: Defining Ocean Users Groups</p>
+        <p class="prev-next-title">Tutorial: Defining Ocean Habitat Groups</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -895,7 +916,7 @@ numeric attributes representing intensity, density, or effort
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#populate-ocean-users">5. Populate Ocean Users</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ocean-user-mapping-overview">Ocean User Mapping Overview</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-vector-layers">Manual Input: vector layers</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-vector-layers">Manual Input: Vector layers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-input-raster-layers">Manual Input: Raster Layers</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#script-setup-ocean-users">Script: Setup Ocean Users</a></li>
 </ul>
