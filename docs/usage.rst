@@ -14,6 +14,8 @@ modules, each targeting a specific analytical component.
    usage_project
    usage_groups_habitats
    usage_groups_users
+   usage_risk
+   usage_conflict
 
 .. seealso::
 
@@ -308,5 +310,15 @@ from initial project setup to advanced model structuring and automation tasks.
 
    Learn how to user groups in the scripts in
    :ref:`Tutorial: Defining Ocean Users Groups <usage-groups-users>`.
+
+.. seealso::
+
+   Learn how to derive the Habitat Risk Index in
+   :ref:`Tutorial: Habitat Risk Index <guide-risk>`.
+
+.. seealso::
+
+   Learn how to derive the Conflict Index in
+   :ref:`Tutorial: Conflict Index <guide-conflict>`.
 
 .. add more as needed

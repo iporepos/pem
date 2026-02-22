@@ -7,9 +7,9 @@
         # !WARNING: run this in QGIS Python Environment
         import importlib.util as iu
 
-        # define the paths to the module
+        # define the paths to the module file
         # ------------------------------------------------------
-        module = "path/to/project.py" # change here
+        file = "path/to/project.py" # change here
 
         # define the project folder
         # ------------------------------------------------------
@@ -60,7 +60,7 @@
         # call the function
         # ------------------------------------------------------
         # do not change here
-        spec = iu.spec_from_file_location("module", module)
+        spec = iu.spec_from_file_location("module", file)
         module = iu.module_from_spec(spec)
         spec.loader.exec_module(module)
 

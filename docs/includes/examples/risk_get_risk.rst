@@ -9,11 +9,20 @@
 
         # define the paths to the module file
         # ------------------------------------------------------
-        file = "path/to/project.py" # change here
+        file = "path/to/risk.py" # change here
 
         # define the project folder
         # ------------------------------------------------------
         folder = "path/to/folder" # change here
+
+        # define scenario
+        # ------------------------------------------------------
+        scenario = "baseline"
+
+        # define paths to InVEST HRA outputs
+        # ------------------------------------------------------
+        hra_benthic = "path/to/TOTAL_RISK_Ecosystem**_pelagic.tif"
+        hra_pelagic = "path/to/TOTAL_RISK_Ecosystem**_pelagic.tif"
 
         # call the function
         # ------------------------------------------------------
@@ -22,8 +31,11 @@
         module = iu.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        output_files = module.setup_roi(
+        ls_output = module.get_risk_index(
             folder_project=folder,
+            scenario=scenario,
+            hra_benthic=hra_benthic,
+            hra_pelagic=hra_pelagic
         )
 
         print(" ----- DONE -----")

@@ -9,11 +9,15 @@
 
         # define the paths to the module file
         # ------------------------------------------------------
-        file = "path/to/project.py" # change here
+        file = "path/to/risk.py" # change here
 
         # define the project folder
         # ------------------------------------------------------
         folder = "path/to/folder" # change here
+
+        # define scenario
+        # ------------------------------------------------------
+        scenario = "baseline"
 
         # call the function
         # ------------------------------------------------------
@@ -22,8 +26,9 @@
         module = iu.module_from_spec(spec)
         spec.loader.exec_module(module)
 
-        output_files = module.setup_roi(
+        ls_output = module.setup_hra_model(
             folder_project=folder,
+            scenario=scenario
         )
 
         print(" ----- DONE -----")

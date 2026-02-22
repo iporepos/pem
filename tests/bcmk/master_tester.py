@@ -12,6 +12,7 @@ Testing routines for the pem.risk module
 
 
 """
+import glob
 
 # IMPORTS
 # ***********************************************************************
@@ -40,7 +41,7 @@ PLUGIN_PATH = r"C:\OSGeo4W\apps\qgis-ltr\python\plugins"
 if PLUGIN_PATH not in sys.path:
     sys.path.append(PLUGIN_PATH)
 
-from qgis.core import QgsApplication
+from qgis.core import QgsApplication, QgsProject
 from processing.core.Processing import Processing
 
 # Initialize QGIS (Required for standalone scripts)
@@ -67,13 +68,9 @@ OUTPUT_DIR = FOLDER_ROOT / "tests/outputs"
 
 # define the paths to this module
 # ----------------------------------------
-FILE_MODULE = FOLDER_ROOT / "src/pem/project.py"
-
-# setup module with importlib
-# ----------------------------------------
-IU_SPEC = iu.spec_from_file_location("module", FILE_MODULE)
-MODULE = iu.module_from_spec(IU_SPEC)
-IU_SPEC.loader.exec_module(MODULE)
+MODULE_PROJECT = FOLDER_ROOT / "src/pem/project.py"
+MODULE_RISK = FOLDER_ROOT / "src/pem/risk.py"
+MODULE_CONFLICT = FOLDER_ROOT / "src/pem/conflict.py"
 
 
 # FUNCTIONS
@@ -150,6 +147,9 @@ def assert_files(ls_files):
 def test_util_get_raster_crs():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define input raster
     # ----------------------------------------
@@ -157,7 +157,7 @@ def test_util_get_raster_crs():
 
     # call the function
     # ----------------------------------------
-    crs_code = MODULE.util_get_raster_crs(file_input=file_input, code_only=True)
+    crs_code = module.util_get_raster_crs(file_input=file_input, code_only=True)
 
     try:
         assert crs_code == "5880", f"Expected 5880, got: {crs_code}"
@@ -171,6 +171,9 @@ def test_util_get_raster_crs():
 def test_get_raster_resolution():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define input raster
     # ----------------------------------------
@@ -178,7 +181,7 @@ def test_get_raster_resolution():
 
     # call the function
     # ----------------------------------------
-    dc_res = MODULE.util_get_raster_resolution(
+    dc_res = module.util_get_raster_resolution(
         file_input=file_input,
     )
 
@@ -196,6 +199,9 @@ def test_get_raster_resolution():
 def test_util_get_vector_fields():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define input database
     # ----------------------------------------
@@ -205,7 +211,7 @@ def test_util_get_vector_fields():
     # ----------------------------------------
     layer_name = "fisheries_traps"
 
-    ls = MODULE.util_get_vector_fields(file_input=file_input, layer_name=layer_name)
+    ls = module.util_get_vector_fields(file_input=file_input, layer_name=layer_name)
     print(ls)
 
     try:
@@ -220,6 +226,9 @@ def test_util_get_vector_fields():
 def test_util_raster_blank():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define the path to output folder
     # ----------------------------------------
@@ -231,7 +240,7 @@ def test_util_raster_blank():
 
     # call the function
     # ----------------------------------------
-    output_file = MODULE.util_raster_blank(
+    output_file = module.util_raster_blank(
         output_raster=f"{output_dir}/blank.tif", input_raster=reference_raster
     )
 
@@ -249,6 +258,9 @@ def test_util_raster_blank():
 def test_util_rasterize_layer():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define the path to output folder
     # ----------------------------------------
@@ -270,7 +282,7 @@ def test_util_rasterize_layer():
 
     # call the function
     # ----------------------------------------
-    output_file1 = MODULE.util_rasterize_layer(
+    output_file1 = module.util_rasterize_layer(
         input_raster=input_raster1,
         input_db=input_db,
         input_layer="fisheries_seines",
@@ -278,7 +290,7 @@ def test_util_rasterize_layer():
         extra="",
     )
 
-    output_file2 = MODULE.util_rasterize_layer(
+    output_file2 = module.util_rasterize_layer(
         input_raster=input_raster2,
         input_db=input_db,
         input_layer="fisheries_traps",
@@ -300,6 +312,9 @@ def test_util_rasterize_layer():
 def test_util_reproject_vectors():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define the input database
     # ----------------------------------------
@@ -313,7 +328,7 @@ def test_util_reproject_vectors():
 
     # call the function
     # ----------------------------------------
-    f = MODULE.util_reproject_vectors(
+    f = module.util_reproject_vectors(
         input_db=input_db, layers=layers, folder_output=folder_output
     )
 
@@ -326,13 +341,40 @@ def test_util_reproject_vectors():
     return None
 
 
+def test_util_generate_hra_scores():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    out = module.util_generate_hra_scores(
+        habitats=["habitat2", "HEY", "THISS", "OKGO"],
+        stressors=["TEST", "TES666", "OKOKOKO"],
+        output_path=OUTPUT_DIR / "test_scores.csv",
+    )
+
+    try:
+        assert out.is_file()
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+
 def test_setup_project():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
 
     # call the function
     # ----------------------------------------
-    ls_output = MODULE.setup_project(
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_project(
         name="narnia",
         folder_base=DATA_DIR.parent,
         scenarios=["baseline", "bau", "utopia"],
@@ -354,13 +396,21 @@ def test_setup_roi():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
 
+    # define module file
+    # ----------------------------------------
+    file = MODULE_PROJECT
+
     # define folder project
     # ----------------------------------------
     folder_project = DATA_DIR
 
     # call the function
     # ----------------------------------------
-    ls_output = MODULE.setup_roi(folder_project)
+    IU_SPEC = iu.spec_from_file_location("module", file)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_roi(folder_project)
 
     # Assertions
     # ----------------------------------------
@@ -376,6 +426,9 @@ def test_setup_roi():
 def test_setup_habitats():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define folder project
     # ----------------------------------------
@@ -402,7 +455,7 @@ def test_setup_habitats():
 
     # call the function
     # ----------------------------------------
-    ls_output = MODULE.setup_habitats(
+    ls_output = module.setup_habitats(
         folder_project=folder_project,
         habitat_field="code",
         groups={"benthic": group_benthic, "pelagic": group_pelagic},
@@ -422,6 +475,9 @@ def test_setup_habitats():
 def test_setup_users():
     func_name = inspect.currentframe().f_code.co_name
     _print_func_name(func_name)
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_PROJECT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
 
     # define folder project
     # ----------------------------------------
@@ -500,15 +556,316 @@ def test_setup_users():
         "tourism": group_tourism,
     }
 
-    MODULE.setup_users(folder_project=folder_project, groups=groups, scenario=scenario)
+    module.setup_users(folder_project=folder_project, groups=groups, scenario=scenario)
 
     _print_passed_msg()
 
     return None
 
 
+def test_get_risk_index():
+
+    pass
+
+
+def test_setup_hra_scores():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_hra_info(folder_project=folder_project, scenario=scenario)
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_hra_info():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_hra_info(folder_project=folder_project, scenario=scenario)
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_hra_scores():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_hra_scores(
+        folder_project=folder_project, scenario=scenario
+    )
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_hra_json():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    ls_output = module.setup_hra_json(folder_project=folder_project, scenario=scenario)
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(ls_output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_get_risk_index():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # define HRA benthic output
+    # ----------------------------------------
+    hra_dir = folder_project / f"outputs/{scenario}/intermediate/hra/outputs"
+    hra_benthic = glob.glob(f"{hra_dir}/TOTAL*_Ecosystem_*benthic.tif")[0]
+    hra_pelagic = glob.glob(f"{hra_dir}/TOTAL*_Ecosystem_*pelagic.tif")[0]
+
+    print(hra_benthic)
+    print(hra_pelagic)
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_RISK)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    output = module.get_risk_index(
+        folder_project=folder_project,
+        scenario=scenario,
+        hra_benthic=hra_benthic,
+        hra_pelagic=hra_pelagic,
+    )
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files([output])
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_get_conflict_index():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_CONFLICT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    output = module.get_conflict_index(folder_project=folder_project, scenario=scenario)
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files(output)
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
+def test_setup_conflict_matrix():
+    func_name = inspect.currentframe().f_code.co_name
+    _print_func_name(func_name)
+
+    # define module file
+    file = MODULE_RISK
+    # ----------------------------------------
+
+    # define folder project
+    # ----------------------------------------
+    folder_project = DATA_DIR
+
+    # define user scenario
+    # ----------------------------------------
+    scenario = "baseline"
+
+    # call the function
+    # ----------------------------------------
+    IU_SPEC = iu.spec_from_file_location("module", MODULE_CONFLICT)
+    module = iu.module_from_spec(IU_SPEC)
+    IU_SPEC.loader.exec_module(module)
+
+    output = module.setup_conflict_matrix(
+        folder_project=folder_project, scenario=scenario
+    )
+
+    # Assertions
+    # ----------------------------------------
+    try:
+        assert_files([output])
+        _print_passed_msg()
+    except AssertionError:
+        _print_failed_msg()
+
+    return None
+
+
 def live_check():
     print("This is a live check.")
+
+
+def reset():
+
+    d1 = DATA_DIR / "inputs/users/baseline"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+
+    d1 = DATA_DIR / "inputs/users/utopia"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+
+    d1 = DATA_DIR / "inputs/roi"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+
+    d1 = DATA_DIR / "inputs/habitats"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+
+    d1 = DATA_DIR / "outputs/baseline"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+    d2 = d1 / "intermediate"
+    d2.mkdir(exist_ok=True)
+
+    d1 = DATA_DIR / "outputs/utopia"
+    shutil.rmtree(d1)
+    d1.mkdir(exist_ok=True)
+    d2 = d1 / "intermediate"
+    d2.mkdir(exist_ok=True)
+
+    print("--- purged")
 
 
 def get_arguments():
@@ -534,7 +891,7 @@ def get_arguments():
 
 def main():
 
-    print("\nTESTING project.py\n")
+    print("\nTESTING\n")
 
     args = get_arguments()
 
@@ -543,17 +900,25 @@ def main():
     is_all = args.all
 
     dc_test_dispatcher = {
-        0: live_check,
+        0: reset,
         1: test_setup_project,
         2: test_setup_roi,
         3: test_setup_habitats,
         4: test_setup_users,
+        5: test_setup_hra_info,
+        6: test_setup_hra_scores,
+        7: test_setup_hra_json,
+        8: test_get_risk_index,
+        9: test_setup_conflict_matrix,
+        10: test_get_conflict_index,
         101: test_util_reproject_vectors,
         102: test_util_get_vector_fields,
         103: test_util_raster_blank,
         104: test_util_rasterize_layer,
         105: test_get_raster_resolution,
         106: test_util_get_raster_crs,
+        107: test_util_generate_hra_scores,
+        1000: live_check,
     }
 
     if is_all:
@@ -568,15 +933,6 @@ def main():
 
 if __name__ == "__main__":
 
-    print(" >>> purging outputs ...")
-    shutil.rmtree(OUTPUT_DIR)
-    shutil.rmtree(DATA_DIR / "inputs/habitats")
-
-    print(" >>> resetting outputs ...")
-    os.mkdir(OUTPUT_DIR)
-    os.mkdir(DATA_DIR / "inputs/habitats")
-
-    print(" >>> running main ...")
     main()
 
     QGS.exitQgis()

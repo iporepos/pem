@@ -4,11 +4,15 @@
 # See pyproject.toml for authors/maintainers.
 # See LICENSE for license details.
 """
-{Short module description (1-3 sentences)}
-todo docstring
+This is the complete API reference for the ``project`` python module of the ``pem`` system.
+
+.. seealso::
+
+   Learn how to setup a PEM Project in
+   :ref:`Tutorial: Setting Up a PEM Project <guide-project>`.
 
 """
-import shutil
+
 
 # IMPORTS
 # ***********************************************************************
@@ -18,6 +22,7 @@ import shutil
 # =======================================================================
 from pathlib import Path
 import os, pprint
+import shutil
 
 # ... {develop}
 
@@ -79,6 +84,18 @@ def _folder_checker(ls):
         p = Path(f)
         if not p.is_dir():
             raise FileNotFoundError(f" >>> check for {p}")
+
+
+def _message(msg):
+    print(f" >>> pem @ project: {msg}")
+
+
+def _message_end():
+    _message("DONE")
+
+
+def _heading():
+    print(80 * "=")
 
 
 def _get_project_vars(folder_project):
@@ -147,9 +164,9 @@ def setup_project(name, folder_base, scenarios=None):
     folder_base = Path(folder_base)
 
     print(80 * "=")
-    print("Setting up PEM project\n")
-    print(f"Project name: {name}")
-    print(f"Project base folder: {folder_base}")
+    _message("Setting up PEM project\n")
+    _message(f"Project name: {name}")
+    _message(f"Project base folder: {folder_base}")
 
     d_output = folder_base / f"{name}/outputs"
 
@@ -159,6 +176,8 @@ def setup_project(name, folder_base, scenarios=None):
         folder_base / f"{name}/inputs/_sources",
         folder_base / f"{name}/inputs/benefit",
         folder_base / f"{name}/inputs/habitats",
+        folder_base / f"{name}/inputs/habitats/benthic",
+        folder_base / f"{name}/inputs/habitats/pelagic",
         folder_base / f"{name}/inputs/risk/baseline",
         folder_base / f"{name}/inputs/roi",
         folder_base / f"{name}/inputs/users/baseline",
@@ -215,6 +234,8 @@ def setup_roi(folder_project):
     .. include:: includes/examples/project_setup_roi.rst
 
     """
+    _heading()
+    _message("Setup ROI")
 
     pvars = _get_project_vars(folder_project)
 
@@ -226,6 +247,7 @@ def setup_roi(folder_project):
 
     # reproject to SHP
     # -----------------------------------
+    _message("Reprojecting sourced roi vector ...")
 
     src_file = "{}|layername={}".format(input_db, layer)
     dst_file = f"{folder_output}/{layer}.shp"
@@ -241,11 +263,13 @@ def setup_roi(folder_project):
 
     # make blank
     # -----------------------------------
+    _message("Generating blank raster ...")
     raster_output = f"{folder_output}/roi.tif"
     util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
 
     # rasterize
     # -----------------------------------
+    _message("Rasterizing ROI ...")
     util_rasterize_layer(
         input_raster=raster_output,
         input_db=None,
@@ -253,6 +277,7 @@ def setup_roi(folder_project):
         burn_value=1,
     )
 
+    _message_end()
     return [dst_file, raster_output]
 
 
@@ -304,7 +329,8 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
     .. include:: includes/examples/project_setup_habitats.rst
 
     """
-
+    _heading()
+    _message("Setup Habitats")
     pvars = _get_project_vars(folder_project)
 
     folder_output = pvars["folder_inputs"] / "habitats"
@@ -315,6 +341,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
 
     # reproject layers
     # -----------------------------------
+    _message("Reprojecting layers ...")
     output_db = util_reproject_vectors(
         input_db=input_db,
         layers=layers,
@@ -329,6 +356,8 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
 
         hab_type = hab.split("_")[-1]
 
+        _message(f"Handling {hab_type} ...")
+
         input_layer = f"{output_db}|layername={hab}"
 
         # group rows
@@ -339,6 +368,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
         dst_out = dst_out_a + dst_out_b
 
         # add a 'raster' field with unique number the dissolved layer
+        _message("Adding raster field")
         dc_params = {
             "INPUT": input_layer,
             "FIELD_NAME": "raster",
@@ -352,6 +382,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
 
         # handle groups
         # -----------------------------------
+        _message("Handling groups ...")
         gdf = gpd.read_file(output_db, layer=layer_grouped)
 
         rules = groups[hab_type]
@@ -384,9 +415,10 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
             gdf["group_name"] = gdf[habitat_field]
             gdf["group_id"] = gdf["raster"]
 
-        # Save csv
+        # Save
         gdf.to_file(output_db, layer=layer_grouped, driver="GPKG")
 
+        _message("Saving CSV ...")
         df = pd.DataFrame(gdf[["group_id", "group_name"]])
         df = df.drop_duplicates(subset="group_id")
         df = df.sort_values(by="group_id")
@@ -394,12 +426,14 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
 
         # get raster blank
         # -----------------------------------
+        _message("Generating blank raster ...")
         raster_output = f"{folder_output}/{hab}.tif"
         util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
         ls_outputs.append(raster_output)
 
         # rasterize field
         # -----------------------------------
+        _message("Rasterizing ...")
         util_rasterize_layer(
             input_raster=raster_output,
             input_db=output_db,
@@ -409,6 +443,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
 
     # align no-data standard and data type
     # -----------------------------------
+    _message("Aligning rasters ...")
     for r in ls_outputs:
         nm = Path(r).stem + "_aux.tif"
         file_out = Path(r).parent / nm
@@ -433,9 +468,27 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
         os.remove(r)
         os.rename(src=file_out, dst=r)
 
+        _message(f"{hab} -- Splitting habitat groups ...")
+
+        hab = str(Path(r).stem).split("_")[-1]
+        df = pd.read_csv(f"{Path(r).parent}/{Path(r).stem}.csv", sep=";")
+
+        # Iterate over rows as dictionaries
+        for row_dict in df.to_dict(orient="records"):
+            g_name = row_dict["group_name"]
+            g_id = int(row_dict["group_id"])
+            _message(f"{hab} -- Group: {g_name} Id: {g_id} ...")
+
+            fo = Path(r).parent / f"{hab}/{g_name}.tif"
+            d = fo.parent
+            d.mkdir(exist_ok=True)
+
+            util_raster_boolean(r, g_id, fo)
+
     # Clean up
     os.remove(output_db)
 
+    _message_end()
     return ls_outputs
 
 
@@ -497,6 +550,9 @@ def setup_users(folder_project, groups, scenario="baseline"):
             ls_weights.append(w)
         return ls_weights
 
+    _heading()
+    _message(f"Setup Users at {scenario}")
+
     pvars = _get_project_vars(folder_project=folder_project)
 
     folder_project = pvars["folder_project"]
@@ -506,6 +562,10 @@ def setup_users(folder_project, groups, scenario="baseline"):
     # ===============================================
     folder_output = folder_project / f"inputs/users/{scenario}"
     folder_outputs_interm = folder_project / f"outputs/{scenario}/intermediate"
+    folder_outputs_interm_sub = folder_outputs_interm / f"users"
+    folder_outputs_interm_sub.mkdir(exist_ok=True)
+    folder_outputs_interm_sub2 = folder_outputs_interm_sub / "rasterized"
+    folder_outputs_interm_sub2.mkdir(exist_ok=True)
     folder_sources = folder_inputs / "_sources"
 
     # get files
@@ -522,7 +582,14 @@ def setup_users(folder_project, groups, scenario="baseline"):
     # master check up
     # ===============================================
 
-    _folder_checker([folder_outputs_interm])
+    _folder_checker(
+        [
+            folder_output,
+            folder_outputs_interm,
+            folder_outputs_interm_sub,
+            folder_outputs_interm_sub2,
+        ]
+    )
     _file_checker([input_db, reference_raster])
 
     for k in groups:
@@ -533,19 +600,20 @@ def setup_users(folder_project, groups, scenario="baseline"):
 
     # enter main loop
     # ===============================================
-
     for g in groups:
+        _message(f"{scenario} {g} \t-- Starting ...")
         ls_rasters = list()
         ls_weights = list()
         # setup vectors
         # ===============================================
         if "vectors" in groups[g]:
+            _message(f"{scenario} {g} \t-- Vectors layers ...")
             ls = _setup_users_vectors(
                 input_db=input_db,
                 groups=groups[g],
                 dst_crs=dst_crs,
                 dst_ext=dst_ext,
-                folder_output=folder_outputs_interm,
+                folder_output=folder_outputs_interm_sub2,
                 reference_raster=reference_raster,
             )
             ls_rasters = ls_rasters + ls[:]
@@ -556,13 +624,14 @@ def setup_users(folder_project, groups, scenario="baseline"):
         # setup rasters
         # ===============================================
         if "rasters" in groups[g]:
+            _message(f"{scenario} {g} \t-- Raster layers ...")
             ls = _setup_users_rasters(
                 folder_sources=folder_sources,
                 groups=groups[g],
                 dst_crs=dst_crs,
                 dst_ext=dst_ext,
                 dst_res=dst_res,
-                folder_output=folder_outputs_interm,
+                folder_output=folder_outputs_interm_sub2,
             )
             ls_rasters = ls_rasters + ls[:]
 
@@ -571,12 +640,14 @@ def setup_users(folder_project, groups, scenario="baseline"):
 
         # normalize
         # ===============================================
+        _message(f"{scenario} {g} \t-- Normalizing layers ...")
         ls_normalized = util_normalize_rasters(ls_rasters=ls_rasters)
 
         if len(ls_normalized) > 1:
             # map algebra
             # ===============================================
-            file_output = folder_outputs_interm / f"{g}_wavg.tif"
+            _message(f"{scenario} {g} \t-- Map Algebra ...")
+            file_output = folder_outputs_interm_sub / f"{g}_wavg.tif"
             file_raster = _setup_users_algebra(
                 ls_normalized, ls_weights, file_output, reference_raster
             )
@@ -585,6 +656,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
             # ===============================================
             ls_normalized = util_normalize_rasters(ls_rasters=[file_raster])
 
+        _message(f"{scenario} {g} \t-- Filling no-data ...")
         dc = {
             "INPUT": str(ls_normalized[0]),
             "BAND": 1,
@@ -593,7 +665,9 @@ def setup_users(folder_project, groups, scenario="baseline"):
             "OUTPUT": str(folder_output / f"{g}.tif"),
         }
         processing.run("native:fillnodata", dc)
+        _message(f"{scenario} {g} \t-- Concluded ...")
 
+    _message_end()
     return None
 
 
@@ -928,7 +1002,24 @@ def util_reproject_vectors(
 
 
 def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
-    # todo docstring
+    """
+    Apply linear fuzzy membership to normalize raster values between 0 and 1 using their min/max statistics.
+
+    .. note::
+
+        The function calculates the minimum and maximum values of each input raster and uses
+        them as boundaries for a linear membership function. If the minimum and maximum
+        values are identical, the maximum is incremented by 1 to avoid division by zero.
+
+    :param ls_rasters: List of paths to the raster files to be normalized
+    :type ls_rasters: list
+    :param suffix: String to append to the filename of the generated rasters. Default value = ``fz``
+    :type suffix: str
+    :param force_vmin: [optional] Manual lower bound for normalization; if ``None``, the raster minimum is used. Default value = 0
+    :type force_vmin: int
+    :return: List of paths to the newly created normalized raster files
+    :rtype: list
+    """
     ls_new_rasters = list()
     for r in ls_rasters:
         p = Path(r)
@@ -1028,8 +1119,6 @@ def util_get_raster_crs(file_input, code_only=True):
     :return: The CRS identifier as a string.
     :rtype: str
 
-    todo script example
-
     """
     rlayer = QgsRasterLayer(str(file_input), "Raster Layer")
     crs = rlayer.crs()
@@ -1063,7 +1152,7 @@ def util_get_raster_extent(file_input):
 
 
 def util_get_raster_resolution(file_input):
-
+    # todo docstring
     # Create a raster layer object
     raster_layer = QgsRasterLayer(str(file_input), "Raster Layer")
     res_x = raster_layer.rasterUnitsPerPixelX()
@@ -1099,6 +1188,17 @@ def util_get_vector_fields(file_input, layer_name):
     for field in fields:
         ls.append(field.name())
     return ls
+
+
+def util_raster_boolean(input_raster, value, output_raster):
+    # todo docstring
+    dc = util_read_raster(input_raster)
+
+    bool_grid = np.where(dc["data"] == value, 1.0, 0.0)
+
+    util_write_raster(bool_grid, dc["metadata"], output_raster)
+
+    return None
 
 
 def util_read_raster(file_input, n_band=1, metadata=True):
@@ -1179,12 +1279,12 @@ def util_write_raster(
     # Get the band
     out_band = raster_output.GetRasterBand(n_band)
 
-    # Write the new data to the new raster
-    out_band.WriteArray(grid_output)
-
     # Assign the NoData value to the band
     if nodata_value is not None:
         out_band.SetNoDataValue(nodata_value)
+
+    # Write the new data to the new raster
+    out_band.WriteArray(grid_output)
 
     # Flush the cache to disk to prevent corrupted files
     out_band.FlushCache()

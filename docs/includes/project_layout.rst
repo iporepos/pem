@@ -22,28 +22,36 @@
         │   ├── benefit/                       # Benefit Index parameters and data
         │   │
         │   ├── habitats/                      # Habitat rasters
-        │   │   ├── benthic.tif                # Rasterized Benthic habitat map
-        │   │   └── pelagic.tif                # Rasterized Pelagic habitat map
+        │   │   ├── habitats_benthic.tif       # Rasterized Benthic habitat map
+        │   │   ├── habitats_benthic.csv       # Benthic habitat table
+        │   │   ├── habitats_pelagic.tif       # Rasterized Pelagic habitat map
+        │   │   ├── habitats_pelagic.csv       # Benthic habitat table
+        │   │   ├── benthic/                   # Benthic habitat footprints
+        │   │   │   ├── {habitat-group}.tif    # habitat group footprint
+        │   │   │   └── ...
+        │   │   └── pelagic/                   # Pelagic habitat footprints
+        │   │       ├── {habitat-group}.tif    # habitat group footprint
+        │   │       └── ...
         │   │
         │   ├── risk/                          # Habitat Risk model parameters
         │   │   ├── baseline/
-        │   │   │   ├── stressors_benthic.csv  # Stressor table (required by InVEST-HRA)
-        │   │   │   ├── scores_benthic.csv     # Criteria scores (required by InVEST-HRA)
-        │   │   │   ├── stressors_pelagic.csv
-        │   │   │   └── scores_pelagic.csv
-        │   │   │
+        │   │   │   ├── benthic_info.csv       # Benthic info table for InVEST-HRA model
+        │   │   │   ├── benthic_scores.csv     # Benthic score table for InVEST-HRA model
+        │   │   │   ├── benthic_model.json     # Benthic run-file for InVEST-HRA model
+        │   │   │   ├── pelagic_info.csv       # Pelagic info table for InVEST-HRA model
+        │   │   │   ├── pelagic_scores.csv     # Pelagic score table for InVEST-HRA model
+        │   │   │   └── pelagic_model.json     # Benthic run-file for InVEST-HRA model
         │   │   └── {scenario}/                # Alternative scenarios
+        │   │       └── ...
         │   │
         │   ├── roi/
         │   │   ├── roi.shp                    # Shapefile for ROI (required by InVEST-HRA)
         │   │   └── roi.tif                    # Boolean raster for ROI
         │   │
         │   └── users/                         # Ocean users configuration
-        │       ├── users.csv                  # Table of ocean users
-        │       ├── users_conflict.csv         # Spatial conflict matrix
-        │       │
         │       ├── baseline/                  # Baseline scenario
-        │       │   ├── oilngas.tif            # raster footprint or density
+        │       │   ├── conflict.csv           # Spatial user conflict matrix
+        │       │   ├── oilngas.tif            # user raster footprint or density
         │       │   ├── fisheries.tif          # (suggested users)
         │       │   ├── windfarms.tif
         │       │   ├── {username}.tif
@@ -52,17 +60,12 @@
         │       └── {scenario}/                # Alternative scenarios
         │
         └── outputs/                           # Model outputs
-            │
             ├── baseline/
             │   ├── baseline_iduse.tif         # Use Performance Index
             │   ├── baseline_benefit.tif       # Benefit Index
             │   ├── baseline_conflict.tif      # Conflict Index
             │   ├── baseline_risk.tif          # Habitat Risk Index
-            │   │
             │   └── intermediate/              # Intermediate artifacts
-            │       ├── baseline_hra_benthic.tif      # InVEST output
-            │       ├── baseline_hra_benthic_fz.tif   # fuzzy transform
-            │       ├── baseline_hra_pelagic.tif
-            │       └── baseline_hra_pelagic_fz.tif
+            │       └── ...
             │
             └── {scenario}/                    # Alternative scenario outputs
