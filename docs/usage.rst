@@ -12,6 +12,7 @@ modules, each targeting a specific analytical component.
 
    Home <self>
    usage_project
+   usage_groups_habitats
    usage_groups_users
 
 .. seealso::
@@ -59,10 +60,14 @@ All Python scripts are designed to run within the **QGIS Python environment**
 
 3. During installation, ensure ``numpy``, ``pandas`` and ``geopandas`` Python packages are included.
 
-.. seealso::
+.. warning::
 
-   For PyQGIS scripting details, consult the
-   `PyQGIS Developer Cookbook <https://docs.qgis.org/3.40/en/docs/pyqgis_developer_cookbook/index.html>`_.
+    The ``geopandas`` Python package is not included as default for most QGIS versions.
+
+.. tip::
+
+    For Windows users, installing QGIS via the OSGeo4W system is recommended. This allows the user
+    to select all Python packages needed.
 
 
 .. _usage-install-invest:
@@ -133,66 +138,20 @@ This approach ensures:
    Always execute the scripts from the **QGIS Python Console** or from a
    Python interpreter explicitly bound to the QGIS environment.
 
-.. todo change this code example
+.. seealso::
+
+   For PyQGIS scripting details, consult the
+   `PyQGIS Developer Cookbook <https://docs.qgis.org/3.40/en/docs/pyqgis_developer_cookbook/index.html>`_.
+
 
 .. dropdown:: Example: loading functions from the modules
     :icon: code-square
     :open:
 
-    The following template demonstrates how to dynamically load the module ``risk.py``
-    (Habitat Risk Index utility) and execute one of its functions.
+    The following template demonstrates how to dynamically load the module ``project.py``
+    and execute one of its functions
 
-    .. code-block:: python
-
-        # WARNING: run this in QGIS Python Environment
-
-        import importlib.util as iu
-
-        # ------------------------------------------------------------------
-        # 1. Define the path to the target module (e.g., risk.py)
-        # ------------------------------------------------------------------
-        the_module = "path/to/risk.py"
-
-        # ------------------------------------------------------------------
-        # 2. Define input and output directories
-        # ------------------------------------------------------------------
-        input_dir = "path/to/input_dir"
-        output_dir = "path/to/output_dir"
-
-        # Path to the GeoPackage database
-        input_db = f"{input_dir}/pem.gpkg"
-
-        # ------------------------------------------------------------------
-        # 3. Define analytical parameters
-        # ------------------------------------------------------------------
-        groups = {
-            "MB3_MC3": ["MB3", "MC3"],
-            "MB4_MB5_MB6": ["MB4", "MB5", "MB6"],
-            "MC4_MC5_MC6": ["MC4", "MC5", "MC6"],
-            "MD3": ["MD3"],
-            "MD4_MD5_MD6": ["MD4", "MD5", "MD6"],
-            "ME1": ["ME1"],
-            "ME4_MF4_MF5": ["ME4", "MF4", "MF5"],
-            "MG4_MG6": ["MG4", "MG6"],
-        }
-
-        # ------------------------------------------------------------------
-        # 4. Execute the target function
-        # ------------------------------------------------------------------
-        # do not change this part
-        spec = iu.spec_from_file_location("module", the_module)
-        module = iu.module_from_spec(spec)
-        spec.loader.exec_module(module)
-
-        output_file = module.setup_habitats(
-            input_db=input_db,
-            folder_output=output_dir,
-            input_layer="habitats_bentonicos_sul_v2",
-            groups=groups,
-            field_name="code",
-            reference_raster=f"{input_dir}/raster.tif",
-            resolution=1000
-        )
+    .. include:: includes/examples/project_setup_roi.rst
 
     The workflow follows four conceptual stages:
 
@@ -342,7 +301,12 @@ from initial project setup to advanced model structuring and automation tasks.
 
 .. seealso::
 
-   Learn how to setup layer groups in the scripts in
+   Learn how to setup habitat groups in the scripts in
+   :ref:`Tutorial: Defining Ocean Habitat Groups <usage-groups-habitats>`.
+
+.. seealso::
+
+   Learn how to user groups in the scripts in
    :ref:`Tutorial: Defining Ocean Users Groups <usage-groups-users>`.
 
 .. add more as needed

@@ -124,12 +124,6 @@ def setup_project(name, folder_base, scenarios=None):
     """
     Initialize the directory structure for a PEM project.
 
-    .. note::
-
-       This function creates a standardized hierarchy of folders for inputs
-       and outputs. It also handles the creation of scenario-specific subdirectories and
-       intermediate folders within each output directory.
-
     :param name: The name of the project, used as the root folder name.
     :type name: str
     :param folder_base: The base directory where the project structure will be created.
@@ -138,6 +132,14 @@ def setup_project(name, folder_base, scenarios=None):
     :type scenarios: list
     :return: A list of all directory paths created during the setup process.
     :rtype: list
+
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
+        :open:
+
+        This function creates a standardized hierarchy of folders for inputs
+        and outputs. It also handles the creation of scenario-specific subdirectories and
+        intermediate folders within each output directory.
 
     .. include:: includes/examples/project_setup_project.rst
 
@@ -187,18 +189,28 @@ def setup_project(name, folder_base, scenarios=None):
 
 def setup_roi(folder_project):
     """
-    Prepares and processes the Region of Interest (ROI) by reprojecting vector data and generating a corresponding raster mask.
-
-    .. note::
-
-         This function automates a three-step workflow: first, it reprojects the ROI layer from the project database to a Shapefile;
-         second, it initializes a blank raster based on the project's reference raster; and finally, it rasterizes the
-         vector ROI onto that blank raster with a burn value of 1.
+    Prepares and processes the ``roi`` layer (Region of Interest)by reprojecting
+    vector data and generating a corresponding raster mask.
 
     :param folder_project: The root directory path of the project containing necessary configuration and variables.
     :type folder_project: str
     :return: A list containing the file path to the reprojected Shapefile and the path to the generated ROI raster.
     :rtype: list
+
+    .. admonition:: Expected sourced files
+        :class: important
+
+        The ``roi`` layer is expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/vectors.gpkg|roi
+
+        Also, the reference raster is expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/bathymetry.tif
 
     .. include:: includes/examples/project_setup_roi.rst
 
@@ -246,14 +258,9 @@ def setup_roi(folder_project):
 
 def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
     """
-    Sets up habitat layers by reprojecting vector data, applying grouping logic, and generating categorized raster masks.
+    Sets up habitat layers by reprojecting vector data, applying
+    grouping logic, and generating categorized raster masks.
 
-    .. note::
-
-         This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
-         optional attribute grouping based on a lookup dictionary, and conversion to raster format.
-         The final outputs are standardized rasters with consistent NoData values and data types
-         (Byte or Float32) to ensure compatibility with downstream analysis.
 
     :param folder_project: The root directory path of the project containing necessary configuration and variables.
     :type folder_project: str
@@ -265,6 +272,34 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
     :type to_byte: bool
     :return: A list of file paths to the generated habitat TIF files.
     :rtype: list
+
+    .. dropdown:: Extra notes
+        :icon: bookmark-fill
+        :open:
+
+        This function processes both benthic and pelagic habitat layers. It handles spatial reprojection,
+        optional attribute grouping based on a lookup dictionary, and conversion to raster format.
+        The final outputs are standardized rasters with consistent NoData values and data types
+        (Byte or Float32) to ensure compatibility with downstream analysis.
+        Also, a CSV file is generated for each habitat type for tracking the raster cell values.
+
+
+    .. admonition:: Expected sourced files
+        :class: important
+
+        The habitats layers are expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/vectors.gpkg|habitat_benthic
+            ./{project}/inputs/vectors.gpkg|habitat_pelagic
+
+        Also, the reference raster is expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/bathymetry.tif
+
 
     .. include:: includes/examples/project_setup_habitats.rst
 
@@ -419,12 +454,35 @@ def setup_users(folder_project, groups, scenario="baseline"):
 
     .. dropdown:: Extra notes
         :icon: bookmark-fill
+        :open:
 
         This function orchestrates a multi-step geospatial workflow:
-        1. Validates the existence of project folders and core input files (bathymetry and vector databases).
-        2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.
-        3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
-        4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.
+         1. Validates the existence of project folders and core input files (bathymetry and vector databases).
+         2. Extracts spatial metadata (CRS, Extent, Resolution) from the reference raster.
+         3. Processes defined groups by clipping/rasterizing vectors and aligning external rasters.
+         4. Applies normalization and weighted map algebra to layers within each group to produce a final thematic surface.
+
+    .. admonition:: Expected sourced files
+        :class: important
+
+        The users vector layers are expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/vectors.gpkg|{user-vector-layer}
+
+        The users raster layers are expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/_sources/{user-raster-layer}.tif
+
+        Also, the reference raster is expected to be sourced from:
+
+        .. code-block:: text
+
+            ./{project}/inputs/bathymetry.tif
+
 
     .. include:: includes/examples/project_setup_users.rst
 

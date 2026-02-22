@@ -106,6 +106,7 @@ Script: Setup ROI
 
 .. include:: includes/examples/project_setup_roi.rst
 
+
 .. _guide-project-habitats:
 
 4. Populate Ocean Habitats
@@ -118,6 +119,8 @@ During processing, habitat layers are rasterized onto the canonical grid and
 encoded as a categorical (qualitative) raster, where each cell represents a
 specific habitat group identifier.
 
+
+
 .. _guide-project-habitats-manual:
 
 Manual Input
@@ -127,8 +130,8 @@ Habitats are polygon vector layers classified into:
 
 .. code-block:: text
 
-    {project}/inputs/vectors.gpkg|habitat_benthic
-    {project}/inputs/vectors.gpkg|habitat_pelagic
+    {project}/inputs/vectors.gpkg|habitats_benthic
+    {project}/inputs/vectors.gpkg|habitats_pelagic
 
 These layers are later rasterized onto the canonical grid defined by
 ``bathymetry.tif``.
@@ -136,21 +139,35 @@ These layers are later rasterized onto the canonical grid defined by
 Technical recommendations:
 
 - No overlapping polygons within the same layer.
-- A unique identifier (ID or code) per habitat class.
+- A unique categorical identifier (ID or code) per habitat class.
 - Prefer single-part geometries (avoid multipart features when possible).
+- Ensure spatial extent is equal to or larger than the canonical raster.
 
 Habitat thematic detail is user-defined. The PEM framework allows
 aggregation into broader habitat groups at a later stage (e.g., grouping
 multiple mud-related classes into a single “mud” category).
+
 
 .. _guide-project-habitats-setup:
 
 Script: Setup Habitats
 -------------------------------
 
-.. todo develop
+After preparing ``habitats_benthic`` and/or ``habitats_pelagic``,
+run the ``setup_habitats()`` function from ``project.py``.
 
-.. include:: includes/ipsum.rst
+The function:
+
+- Optionally applies habitat grouping (if defined).
+- Rasterizes habitats onto the canonical grid.
+- Generates a CSV file for raster cell value interpretation.
+
+.. seealso::
+
+   Learn how to setup habitat groups in the scripts in
+   :ref:`Tutorial: Defining Ocean Habitat Groups <usage-groups-habitats>`.
+
+Example script:
 
 .. include:: includes/examples/project_setup_habitats.rst
 
@@ -183,19 +200,12 @@ Examples:
 
 Therefore, the user may populate these different data sources accordingly.
 
-.. seealso::
-
-   Learn how to setup layer groups in the scripts in
-   :ref:`Tutorial: Defining Ocean Users Groups <usage-groups-users>`.
-
-
-
 .. _guide-project-users-vector:
 
-Manual Input: vector layers
+Manual Input: Vector layers
 -------------------------------
 
-Vector users may be points, lines, or polygons. Layers may include
+A vector Ocean User may be points, lines, or polygons. Layers may include
 numeric attributes representing intensity, density, or effort
 (e.g., ``intensity``, ``density``).
 
@@ -238,14 +248,18 @@ Recommendations:
 - Maintain consistent resolution when possible (resampling is handled during reprojection).
 
 
-
 .. _guide-project-users-setup:
 
 Script: Setup Ocean Users
 -------------------------------
 
-.. todo develop
+After all manual inputs for vector and raster layers, run the ``setup_users()`` function
+from ``project.py`` module. Note that Ocean Users must be grouped using the structured dictionary.
 
-.. include:: includes/ipsum.rst
+.. seealso::
+
+   Learn how to setup layer groups in the scripts in
+   :ref:`Tutorial: Defining Ocean Users Groups <usage-groups-users>`.
 
 .. include:: includes/examples/project_setup_users.rst
+
