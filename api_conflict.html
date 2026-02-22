@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pem.risk &#8212; pem v0.0.1 documentation</title>
+    <title>pem.conflict &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,12 +46,12 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_risk';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_conflict';</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pem.conflict" href="api_conflict.html" />
-    <link rel="prev" title="pem.project" href="api_project.html" />
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="pem.risk" href="api_risk.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -333,8 +333,8 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api_project.html">pem.project</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.risk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_conflict.html">pem.conflict</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_risk.html">pem.risk</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.conflict</a></li>
 </ul>
 </div>
 </nav></div>
@@ -378,7 +378,7 @@
     
     <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.risk</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.conflict</span></li>
   </ul>
 </nav>
 </div>
@@ -395,41 +395,34 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pem.risk">
-<span id="pem-risk"></span><span id="api-risk"></span><h1>pem.risk<a class="headerlink" href="#module-pem.risk" title="Link to this heading">#</a></h1>
-<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">risk</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Learn how to derive the Habitat Risk Index in
-<a class="reference internal" href="usage_risk.html#guide-risk"><span class="std std-ref">Tutorial: Habitat Risk Index</span></a>.</p>
-</div>
+  <section id="module-pem.conflict">
+<span id="pem-conflict"></span><span id="api-conflict"></span><h1>pem.conflict<a class="headerlink" href="#module-pem.conflict" title="Link to this heading">#</a></h1>
+<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">conflict</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.get_risk_index">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">get_risk_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_benthic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_pelagic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#get_risk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.get_risk_index" title="Link to this definition">#</a></dt>
-<dd><p>Calculate and normalize the total risk index by combining
-benthic and pelagic Habitat Risk Assessment (HRA) results.</p>
+<dt class="sig sig-object py" id="pem.conflict.get_conflict_index">
+<span class="sig-prename descclassname"><span class="pre">pem.conflict.</span></span><span class="sig-name descname"><span class="pre">get_conflict_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/conflict.html#get_conflict_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.conflict.get_conflict_index" title="Link to this definition">#</a></dt>
+<dd><p>Calculate the spatial conflict index by performing
+weighted pairwise overlaps between user activity rasters.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
 <li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-<li><p><strong>hra_benthic</strong> (<em>str</em>) – Path to the benthic HRA raster file</p></li>
-<li><p><strong>hra_pelagic</strong> (<em>str</em>) – Path to the pelagic HRA raster file</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Path to the generated normalized risk raster</p>
+<dd class="field-even"><p>A list containing the path to the final normalized conflict raster</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></p>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 <details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">The function reprojects and resamples input HRA rasters to a common grid, sums the
-overlapping layers using raster calculation, and applies a normalization process
-to produce a final risk map.</p>
+<p class="sd-card-text">The function identifies all unique pairs of user activities and computes their intersection
+using raster multiplication. Each resulting overlap is normalized and then weighted based
+on a conflict matrix (CSV) before being aggregated into a final, normalized conflict map.</p>
 </div>
 </details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
@@ -439,68 +432,7 @@ to produce a final risk map.</p>
 
 <span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
-
-<span class="c1"># define the project folder</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
-
-<span class="c1"># define scenario</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
-
-<span class="c1"># define paths to InVEST HRA outputs</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">hra_benthic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
-<span class="n">hra_pelagic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_risk_index</span><span class="p">(</span>
-    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
-    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span><span class="p">,</span>
-    <span class="n">hra_benthic</span><span class="o">=</span><span class="n">hra_benthic</span><span class="p">,</span>
-    <span class="n">hra_pelagic</span><span class="o">=</span><span class="n">hra_pelagic</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_model">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
-<dd><p>Execute the full configuration suite required to initialize an InVEST HRA model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Always returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to the module file</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/conflict.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -517,8 +449,8 @@ to produce a final risk map.</p>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
-<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_hra_model</span><span class="p">(</span>
-    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_conflict_index</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder_project</span><span class="p">,</span>
     <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
 <span class="p">)</span>
 
@@ -529,9 +461,10 @@ to produce a final risk map.</p>
 </details></dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_scores">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_scores" title="Link to this definition">#</a></dt>
-<dd><p>Generate the CSV scoring matrices for habitats and stressors based on project info tables.</p>
+<dt class="sig sig-object py" id="pem.conflict.setup_conflict_matrix">
+<span class="sig-prename descclassname"><span class="pre">pem.conflict.</span></span><span class="sig-name descname"><span class="pre">setup_conflict_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/conflict.html#setup_conflict_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.conflict.setup_conflict_matrix" title="Link to this definition">#</a></dt>
+<dd><p>Initialize a blank lower-triangular conflict matrix CSV
+for all user activity rasters in a scenario.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -540,55 +473,54 @@ to produce a final risk map.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the generated score CSV files</p>
+<dd class="field-even"><p>Path to the generated conflict matrix CSV</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></p>
 </dd>
 </dl>
-</dd></dl>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<p class="sd-card-text">This utility scans the scenario directory for raster files and creates a square
+symmetric-ready CSV. The lower triangle is initialized with <code class="docutils literal notranslate"><span class="pre">1</span></code> and the rest
+with <code class="docutils literal notranslate"><span class="pre">0</span></code>, serving as a template for users to define conflict weights between activities.</p>
+</div>
+</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_info">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_info" title="Link to this definition">#</a></dt>
-<dd><p>Create the HRA information tables linking habitat
-and stressor names to their respective file paths.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-<li><p><strong>buffers</strong> (<em>int</em>) – The buffer distance for stressors in meters. Default value = 10000</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the generated info CSV files</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="c1"># define the paths to the module file</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/conflict.py&quot;</span> <span class="c1"># change here</span>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_json">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_json" title="Link to this definition">#</a></dt>
-<dd><p>Configure and save InVEST model parameter files in JSON format for the specified scenario.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the created JSON configuration files</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+
+<span class="c1"># define scenario</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_conflict_matrix</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder_project</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details></dd></dl>
 
 </section>
 
@@ -603,20 +535,20 @@ and stressor names to their respective file paths.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_project.html"
+       href="api_risk.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pem.project</p>
+        <p class="prev-next-title">pem.risk</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_conflict.html"
+       href="development.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pem.conflict</p>
+        <p class="prev-next-title">Development</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -639,11 +571,8 @@ and stressor names to their respective file paths.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.get_risk_index"><code class="docutils literal notranslate"><span class="pre">get_risk_index()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_model"><code class="docutils literal notranslate"><span class="pre">setup_hra_model()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_scores"><code class="docutils literal notranslate"><span class="pre">setup_hra_scores()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_info"><code class="docutils literal notranslate"><span class="pre">setup_hra_info()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_json"><code class="docutils literal notranslate"><span class="pre">setup_hra_json()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.conflict.get_conflict_index"><code class="docutils literal notranslate"><span class="pre">get_conflict_index()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.conflict.setup_conflict_matrix"><code class="docutils literal notranslate"><span class="pre">setup_conflict_matrix()</span></code></a></li>
 </ul>
   </nav></div>
 
@@ -651,7 +580,7 @@ and stressor names to their respective file paths.</p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/api_risk.rst.txt"
+      <li><a href="_sources/api_conflict.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div></div>

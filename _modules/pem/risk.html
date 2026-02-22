@@ -502,9 +502,9 @@
 
     <span class="c1"># get extra parameters</span>
     <span class="c1"># ===============================================</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util_get_raster_crs</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">],</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">util_get_raster_extent</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
-    <span class="n">res_dc</span> <span class="o">=</span> <span class="n">util_get_raster_resolution</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_crs</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">],</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_extent</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
+    <span class="n">res_dc</span> <span class="o">=</span> <span class="n">_util_get_raster_resolution</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
     <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;res&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_dc</span><span class="p">[</span><span class="s2">&quot;xres&quot;</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">pvars</span>
@@ -610,7 +610,7 @@
     <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:rastercalc&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
 
     <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Normalizing HRA ...&quot;</span><span class="p">)</span>
-    <span class="n">ls</span> <span class="o">=</span> <span class="n">util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">)])</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="n">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">)])</span>
     <span class="n">fo_sub2</span> <span class="o">=</span> <span class="n">ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">fo_sub2</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">fo</span><span class="p">)</span>
 
@@ -692,7 +692,7 @@
 
         <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_scores.csv&quot;</span>
         <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- saving table ...&quot;</span><span class="p">)</span>
-        <span class="n">util_generate_hra_scores</span><span class="p">(</span>
+        <span class="n">_util_generate_hra_scores</span><span class="p">(</span>
             <span class="n">habitats</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_habitats</span><span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">]),</span>
             <span class="n">stressors</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_stressors</span><span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">]),</span>
             <span class="n">output_path</span><span class="o">=</span><span class="n">fo</span><span class="p">,</span>
@@ -875,9 +875,7 @@
 
 
 
-<div class="viewcode-block" id="util_generate_hra_scores">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_generate_hra_scores">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_generate_hra_scores</span><span class="p">(</span><span class="n">habitats</span><span class="p">,</span> <span class="n">stressors</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_generate_hra_scores</span><span class="p">(</span><span class="n">habitats</span><span class="p">,</span> <span class="n">stressors</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Create a standardized HRA criteria template CSV with default</span>
 <span class="sd">    ratings for resilience and overlap attributes.</span>
@@ -1025,13 +1023,10 @@
 
     <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">output_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">output_path</span></div>
+    <span class="k">return</span> <span class="n">output_path</span>
 
 
-
-<div class="viewcode-block" id="util_read_raster">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_read_raster">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_read_raster</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_read_raster</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Read a raster (GeoTIFF) file</span>
 
@@ -1066,13 +1061,10 @@
     <span class="c1"># -- Close the raster</span>
     <span class="n">raster_input</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">dc_output</span></div>
+    <span class="k">return</span> <span class="n">dc_output</span>
 
 
-
-<div class="viewcode-block" id="util_write_raster">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_write_raster">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_write_raster</span><span class="p">(</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_write_raster</span><span class="p">(</span>
     <span class="n">grid_output</span><span class="p">,</span> <span class="n">dc_metadata</span><span class="p">,</span> <span class="n">file_output</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nodata_value</span><span class="o">=-</span><span class="mi">99999</span>
 <span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
@@ -1125,13 +1117,10 @@
     <span class="c1"># Close</span>
     <span class="n">raster_output</span> <span class="o">=</span> <span class="kc">None</span>
 
-    <span class="k">return</span> <span class="n">file_output</span></div>
+    <span class="k">return</span> <span class="n">file_output</span>
 
 
-
-<div class="viewcode-block" id="util_get_raster_crs">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_crs">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_crs</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_crs</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Extracts the Coordinate Reference System (CRS) from a raster file.</span>
 
@@ -1150,13 +1139,10 @@
     <span class="k">if</span> <span class="n">code_only</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">epsg_authid</span></div>
+        <span class="k">return</span> <span class="n">epsg_authid</span>
 
 
-
-<div class="viewcode-block" id="util_get_raster_extent">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_extent">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_extent</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_extent</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Retrieves the spatial bounding coordinates of a raster file as a dictionary.</span>
 
@@ -1174,13 +1160,10 @@
         <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">xMaximum</span><span class="p">(),</span>
         <span class="s2">&quot;ymin&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMinimum</span><span class="p">(),</span>
         <span class="s2">&quot;ymax&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMaximum</span><span class="p">(),</span>
-    <span class="p">}</span></div>
+    <span class="p">}</span>
 
 
-
-<div class="viewcode-block" id="util_get_raster_resolution">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_resolution">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_resolution</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_resolution</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
     <span class="c1"># todo docstring</span>
     <span class="c1"># Create a raster layer object</span>
     <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
@@ -1190,13 +1173,10 @@
     <span class="k">return</span> <span class="p">{</span>
         <span class="s2">&quot;xres&quot;</span><span class="p">:</span> <span class="n">res_x</span><span class="p">,</span>
         <span class="s2">&quot;yres&quot;</span><span class="p">:</span> <span class="n">res_y</span><span class="p">,</span>
-    <span class="p">}</span></div>
+    <span class="p">}</span>
 
 
-
-<div class="viewcode-block" id="util_normalize_rasters">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_normalize_rasters">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;fz&quot;</span><span class="p">,</span> <span class="n">force_vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;fz&quot;</span><span class="p">,</span> <span class="n">force_vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="c1"># todo docstring</span>
     <span class="n">ls_new_rasters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ls_rasters</span><span class="p">:</span>
@@ -1204,7 +1184,7 @@
         <span class="n">file_output</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">.tif&quot;</span>
 
         <span class="c1"># get values</span>
-        <span class="n">dc_stats</span> <span class="o">=</span> <span class="n">util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">dc_stats</span> <span class="o">=</span> <span class="n">_util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force_vmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vmin</span> <span class="o">=</span> <span class="n">force_vmin</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1225,13 +1205,10 @@
         <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:fuzzifyrasterlinearmembership&quot;</span><span class="p">,</span> <span class="n">dc_specs</span><span class="p">)</span>
         <span class="n">ls_new_rasters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_output</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">ls_new_rasters</span></div>
+    <span class="k">return</span> <span class="n">ls_new_rasters</span>
 
 
-
-<div class="viewcode-block" id="util_get_raster_stats">
-<a class="viewcode-back" href="../../api_risk.html#pem.risk.util_get_raster_stats">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calculates the statistics for a specified band of a given raster file.</span>
 
@@ -1250,7 +1227,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">dc_stats</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
-        <span class="n">dc_raster</span> <span class="o">=</span> <span class="n">util_read_raster</span><span class="p">(</span>
+        <span class="n">dc_raster</span> <span class="o">=</span> <span class="n">_util_read_raster</span><span class="p">(</span>
             <span class="n">file_input</span><span class="o">=</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">)</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">dc_raster</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
@@ -1281,8 +1258,7 @@
             <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
             <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">elementCount</span><span class="p">,</span>
         <span class="p">}</span>
-    <span class="k">return</span> <span class="n">dc_stats</span></div>
-
+    <span class="k">return</span> <span class="n">dc_stats</span>
 
 
 <span class="c1"># SCRIPT</span>

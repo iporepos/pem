@@ -1,6 +1,6 @@
 .. _api-risk:
 
-pem.risk module
+pem.risk
 ############################################
 
 .. automodule:: pem.risk
