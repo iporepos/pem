@@ -157,7 +157,7 @@ def test_util_get_raster_crs():
 
     # call the function
     # ----------------------------------------
-    crs_code = module.util_get_raster_crs(file_input=file_input, code_only=True)
+    crs_code = module._util_get_raster_crs(file_input=file_input, code_only=True)
 
     try:
         assert crs_code == "5880", f"Expected 5880, got: {crs_code}"
@@ -181,7 +181,7 @@ def test_get_raster_resolution():
 
     # call the function
     # ----------------------------------------
-    dc_res = module.util_get_raster_resolution(
+    dc_res = module._util_get_raster_resolution(
         file_input=file_input,
     )
 
@@ -211,7 +211,7 @@ def test_util_get_vector_fields():
     # ----------------------------------------
     layer_name = "fisheries_traps"
 
-    ls = module.util_get_vector_fields(file_input=file_input, layer_name=layer_name)
+    ls = module._util_get_vector_fields(file_input=file_input, layer_name=layer_name)
     print(ls)
 
     try:
@@ -240,7 +240,7 @@ def test_util_raster_blank():
 
     # call the function
     # ----------------------------------------
-    output_file = module.util_raster_blank(
+    output_file = module._util_raster_blank(
         output_raster=f"{output_dir}/blank.tif", input_raster=reference_raster
     )
 
@@ -282,7 +282,7 @@ def test_util_rasterize_layer():
 
     # call the function
     # ----------------------------------------
-    output_file1 = module.util_rasterize_layer(
+    output_file1 = module._util_rasterize_layer(
         input_raster=input_raster1,
         input_db=input_db,
         input_layer="fisheries_seines",
@@ -290,7 +290,7 @@ def test_util_rasterize_layer():
         extra="",
     )
 
-    output_file2 = module.util_rasterize_layer(
+    output_file2 = module._util_rasterize_layer(
         input_raster=input_raster2,
         input_db=input_db,
         input_layer="fisheries_traps",
@@ -328,7 +328,7 @@ def test_util_reproject_vectors():
 
     # call the function
     # ----------------------------------------
-    f = module.util_reproject_vectors(
+    f = module._util_reproject_vectors(
         input_db=input_db, layers=layers, folder_output=folder_output
     )
 
@@ -351,7 +351,7 @@ def test_util_generate_hra_scores():
     module = iu.module_from_spec(IU_SPEC)
     IU_SPEC.loader.exec_module(module)
 
-    out = module.util_generate_hra_scores(
+    out = module._util_generate_hra_scores(
         habitats=["habitat2", "HEY", "THISS", "OKGO"],
         stressors=["TEST", "TES666", "OKOKOKO"],
         output_path=OUTPUT_DIR / "test_scores.csv",

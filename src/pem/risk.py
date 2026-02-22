@@ -124,9 +124,9 @@ def _get_project_vars(folder_project):
 
     # get extra parameters
     # ===============================================
-    pvars["crs"] = util_get_raster_crs(pvars["refraster"], code_only=True)
-    pvars["ext"] = util_get_raster_extent(pvars["refraster"])
-    res_dc = util_get_raster_resolution(pvars["refraster"])
+    pvars["crs"] = _util_get_raster_crs(pvars["refraster"], code_only=True)
+    pvars["ext"] = _util_get_raster_extent(pvars["refraster"])
+    res_dc = _util_get_raster_resolution(pvars["refraster"])
     pvars["res"] = res_dc["xres"]
 
     return pvars
@@ -230,7 +230,7 @@ def get_risk_index(folder_project, scenario, hra_benthic, hra_pelagic):
     processing.run("native:rastercalc", dc_parameters)
 
     _message("Normalizing HRA ...")
-    ls = util_normalize_rasters(ls_rasters=[str(fo_sub)])
+    ls = _util_normalize_rasters(ls_rasters=[str(fo_sub)])
     fo_sub2 = ls[0]
     shutil.copy(src=fo_sub2, dst=fo)
 
@@ -306,7 +306,7 @@ def setup_hra_scores(folder_project, scenario):
 
         fo = folder_risk / f"{hab}_scores.csv"
         _message(f"{prefix} -- saving table ...")
-        util_generate_hra_scores(
+        _util_generate_hra_scores(
             habitats=list(df_habitats["NAME"]),
             stressors=list(df_stressors["NAME"]),
             output_path=fo,
@@ -482,7 +482,7 @@ def setup_hra_json(folder_project, scenario):
     return ls_outputs
 
 
-def util_generate_hra_scores(habitats, stressors, output_path):
+def _util_generate_hra_scores(habitats, stressors, output_path):
     """
     Create a standardized HRA criteria template CSV with default
     ratings for resilience and overlap attributes.
@@ -633,7 +633,7 @@ def util_generate_hra_scores(habitats, stressors, output_path):
     return output_path
 
 
-def util_read_raster(file_input, n_band=1, metadata=True):
+def _util_read_raster(file_input, n_band=1, metadata=True):
     """
     Read a raster (GeoTIFF) file
 
@@ -671,7 +671,7 @@ def util_read_raster(file_input, n_band=1, metadata=True):
     return dc_output
 
 
-def util_write_raster(
+def _util_write_raster(
     grid_output, dc_metadata, file_output, n_band=1, nodata_value=-99999
 ):
     """
@@ -727,7 +727,7 @@ def util_write_raster(
     return file_output
 
 
-def util_get_raster_crs(file_input, code_only=True):
+def _util_get_raster_crs(file_input, code_only=True):
     """
     Extracts the Coordinate Reference System (CRS) from a raster file.
 
@@ -749,7 +749,7 @@ def util_get_raster_crs(file_input, code_only=True):
         return epsg_authid
 
 
-def util_get_raster_extent(file_input):
+def _util_get_raster_extent(file_input):
     """
     Retrieves the spatial bounding coordinates of a raster file as a dictionary.
 
@@ -770,7 +770,7 @@ def util_get_raster_extent(file_input):
     }
 
 
-def util_get_raster_resolution(file_input):
+def _util_get_raster_resolution(file_input):
     # todo docstring
     # Create a raster layer object
     raster_layer = QgsRasterLayer(str(file_input), "Raster Layer")
@@ -783,7 +783,7 @@ def util_get_raster_resolution(file_input):
     }
 
 
-def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
+def _util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     # todo docstring
     ls_new_rasters = list()
     for r in ls_rasters:
@@ -791,7 +791,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
         file_output = p.parent / f"{p.stem}_{suffix}.tif"
 
         # get values
-        dc_stats = util_get_raster_stats(input_raster=str(p), full=True)
+        dc_stats = _util_get_raster_stats(input_raster=str(p), full=True)
         if force_vmin is not None:
             vmin = force_vmin
         else:
@@ -815,7 +815,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     return ls_new_rasters
 
 
-def util_get_raster_stats(input_raster, band=1, full=False):
+def _util_get_raster_stats(input_raster, band=1, full=False):
     """
     Calculates the statistics for a specified band of a given raster file.
 
@@ -834,7 +834,7 @@ def util_get_raster_stats(input_raster, band=1, full=False):
     """
     dc_stats = None
     if full:
-        dc_raster = util_read_raster(
+        dc_raster = _util_read_raster(
             file_input=input_raster, n_band=band, metadata=None
         )
         data = dc_raster["data"]

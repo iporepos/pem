@@ -1,6 +1,6 @@
 .. _api-project:
 
-pem.project module
+pem.project
 ############################################
 
 .. automodule:: pem.project

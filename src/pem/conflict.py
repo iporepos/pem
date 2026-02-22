@@ -89,9 +89,9 @@ def _get_project_vars(folder_project):
 
     # get extra parameters
     # ===============================================
-    pvars["crs"] = util_get_raster_crs(pvars["refraster"], code_only=True)
-    pvars["ext"] = util_get_raster_extent(pvars["refraster"])
-    res_dc = util_get_raster_resolution(pvars["refraster"])
+    pvars["crs"] = _util_get_raster_crs(pvars["refraster"], code_only=True)
+    pvars["ext"] = _util_get_raster_extent(pvars["refraster"])
+    res_dc = _util_get_raster_resolution(pvars["refraster"])
     pvars["res"] = res_dc["xres"]
 
     return pvars
@@ -182,7 +182,7 @@ def get_conflict_index(folder_project, scenario):
             ls_conflicts.append(fo_sub)
 
     _message(f"Normalizing ...")
-    ls_conflicts_fz = util_normalize_rasters(ls_conflicts)
+    ls_conflicts_fz = _util_normalize_rasters(ls_conflicts)
 
     _message(f"Loading conflict table ...")
     f_df = folder_users / "conflict.csv"
@@ -200,7 +200,7 @@ def get_conflict_index(folder_project, scenario):
 
         w = get_lower_value(df, a, b)
 
-        raster_dict = util_read_raster(f)
+        raster_dict = _util_read_raster(f)
 
         # 2. Extract data and convert to float32
         data = raster_dict["data"].astype(np.float32)
@@ -215,13 +215,13 @@ def get_conflict_index(folder_project, scenario):
     file_output = folder_output_sub / "conflict_wsum.tif"
 
     _message(f"Saving sum ...")
-    util_write_raster(
+    _util_write_raster(
         grid_output=weighted_sum,  # Pass the cleaned data, not the array with NaNs
         dc_metadata=out_metadata,
         file_output=str(file_output),
     )
     _message(f"Normalizing sum ...")
-    ls = util_normalize_rasters([str(file_output)])
+    ls = _util_normalize_rasters([str(file_output)])
 
     fo = folder_output / f"{scenario}_conflict.tif"
     shutil.copy(src=ls[0], dst=fo)
@@ -279,7 +279,7 @@ def setup_conflict_matrix(folder_project, scenario):
     return fo
 
 
-def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
+def _util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     """
     Apply linear fuzzy membership to normalize raster values between 0 and 1 using their min/max statistics.
 
@@ -304,7 +304,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
         file_output = p.parent / f"{p.stem}_{suffix}.tif"
 
         # get values
-        dc_stats = util_get_raster_stats(input_raster=str(p), full=True)
+        dc_stats = _util_get_raster_stats(input_raster=str(p), full=True)
         if force_vmin is not None:
             vmin = force_vmin
         else:
@@ -328,7 +328,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     return ls_new_rasters
 
 
-def util_get_raster_crs(file_input, code_only=True):
+def _util_get_raster_crs(file_input, code_only=True):
     """
     Extracts the Coordinate Reference System (CRS) from a raster file.
 
@@ -350,7 +350,7 @@ def util_get_raster_crs(file_input, code_only=True):
         return epsg_authid
 
 
-def util_get_raster_extent(file_input):
+def _util_get_raster_extent(file_input):
     """
     Retrieves the spatial bounding coordinates of a raster file as a dictionary.
 
@@ -371,7 +371,7 @@ def util_get_raster_extent(file_input):
     }
 
 
-def util_get_raster_resolution(file_input):
+def _util_get_raster_resolution(file_input):
     # todo docstring
     # Create a raster layer object
     raster_layer = QgsRasterLayer(str(file_input), "Raster Layer")
@@ -384,7 +384,7 @@ def util_get_raster_resolution(file_input):
     }
 
 
-def util_get_raster_stats(input_raster, band=1, full=False):
+def _util_get_raster_stats(input_raster, band=1, full=False):
     """
     Calculates the statistics for a specified band of a given raster file.
 
@@ -403,7 +403,7 @@ def util_get_raster_stats(input_raster, band=1, full=False):
     """
     dc_stats = None
     if full:
-        dc_raster = util_read_raster(
+        dc_raster = _util_read_raster(
             file_input=input_raster, n_band=band, metadata=None
         )
         data = dc_raster["data"]
@@ -437,7 +437,7 @@ def util_get_raster_stats(input_raster, band=1, full=False):
     return dc_stats
 
 
-def util_read_raster(file_input, n_band=1, metadata=True):
+def _util_read_raster(file_input, n_band=1, metadata=True):
     """
     Read a raster (GeoTIFF) file
 
@@ -475,7 +475,7 @@ def util_read_raster(file_input, n_band=1, metadata=True):
     return dc_output
 
 
-def util_write_raster(
+def _util_write_raster(
     grid_output, dc_metadata, file_output, n_band=1, nodata_value=-99999
 ):
     """

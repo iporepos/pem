@@ -125,9 +125,9 @@ def _get_project_vars(folder_project):
 
     # get extra parameters
     # ===============================================
-    pvars["crs"] = util_get_raster_crs(pvars["refraster"], code_only=True)
-    pvars["ext"] = util_get_raster_extent(pvars["refraster"])
-    res_dc = util_get_raster_resolution(pvars["refraster"])
+    pvars["crs"] = _util_get_raster_crs(pvars["refraster"], code_only=True)
+    pvars["ext"] = _util_get_raster_extent(pvars["refraster"])
+    res_dc = _util_get_raster_resolution(pvars["refraster"])
     pvars["res"] = res_dc["xres"]
 
     return pvars
@@ -265,12 +265,12 @@ def setup_roi(folder_project):
     # -----------------------------------
     _message("Generating blank raster ...")
     raster_output = f"{folder_output}/roi.tif"
-    util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
+    _util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
 
     # rasterize
     # -----------------------------------
     _message("Rasterizing ROI ...")
-    util_rasterize_layer(
+    _util_rasterize_layer(
         input_raster=raster_output,
         input_db=None,
         input_layer=dst_file,
@@ -342,7 +342,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
     # reproject layers
     # -----------------------------------
     _message("Reprojecting layers ...")
-    output_db = util_reproject_vectors(
+    output_db = _util_reproject_vectors(
         input_db=input_db,
         layers=layers,
         folder_output=folder_output,
@@ -428,13 +428,13 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
         # -----------------------------------
         _message("Generating blank raster ...")
         raster_output = f"{folder_output}/{hab}.tif"
-        util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
+        _util_raster_blank(output_raster=raster_output, input_raster=pvars["refraster"])
         ls_outputs.append(raster_output)
 
         # rasterize field
         # -----------------------------------
         _message("Rasterizing ...")
-        util_rasterize_layer(
+        _util_rasterize_layer(
             input_raster=raster_output,
             input_db=output_db,
             input_layer=layer_grouped,
@@ -483,7 +483,7 @@ def setup_habitats(folder_project, habitat_field, groups, to_byte=True):
             d = fo.parent
             d.mkdir(exist_ok=True)
 
-            util_raster_boolean(r, g_id, fo)
+            _util_raster_boolean(r, g_id, fo)
 
     # Clean up
     os.remove(output_db)
@@ -641,7 +641,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
         # normalize
         # ===============================================
         _message(f"{scenario} {g} \t-- Normalizing layers ...")
-        ls_normalized = util_normalize_rasters(ls_rasters=ls_rasters)
+        ls_normalized = _util_normalize_rasters(ls_rasters=ls_rasters)
 
         if len(ls_normalized) > 1:
             # map algebra
@@ -654,7 +654,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
 
             # normalize
             # ===============================================
-            ls_normalized = util_normalize_rasters(ls_rasters=[file_raster])
+            ls_normalized = _util_normalize_rasters(ls_rasters=[file_raster])
 
         _message(f"{scenario} {g} \t-- Filling no-data ...")
         dc = {
@@ -684,7 +684,7 @@ def _setup_users_algebra(
     for i in range(len(ls_rasters)):
         w = float(ls_weights[i])
         # 1. Read the raster
-        raster_dict = util_read_raster(ls_rasters[i])
+        raster_dict = _util_read_raster(ls_rasters[i])
 
         # 2. Extract data and convert to float32
         data = raster_dict["data"].astype(np.float32)
@@ -709,7 +709,7 @@ def _setup_users_algebra(
     final_data = np.nan_to_num(weighted_avg, nan=in_nodata)
 
     # 8. Write to disk
-    util_write_raster(
+    _util_write_raster(
         grid_output=final_data,  # Pass the cleaned data, not the array with NaNs
         dc_metadata=out_metadata,
         file_output=str(file_output),
@@ -733,7 +733,7 @@ def _setup_users_rasters(
         name = layer_dc["name"]
         file_output = f"{folder_output}/{name}"
         file_input_raster = folder_sources / name
-        src_crs = util_get_raster_crs(file_input_raster, code_only=True)
+        src_crs = _util_get_raster_crs(file_input_raster, code_only=True)
 
         dst_extent = f'{dst_ext["xmin"]},{dst_ext["xmax"]},{dst_ext["ymin"]},{dst_ext["ymax"]} [EPSG:{dst_crs}]'
 
@@ -769,7 +769,7 @@ def _setup_users_vectors(
 
     # reproject
     # ===============================================
-    reprojected = util_reproject_vectors(
+    reprojected = _util_reproject_vectors(
         input_db=input_db,
         layers=layers,
         folder_output=folder_output,
@@ -779,7 +779,7 @@ def _setup_users_vectors(
 
     # clip/extract
     # ===============================================
-    extracted = util_extractextent_vectors(
+    extracted = _util_extractextent_vectors(
         input_db=reprojected,
         layers=layers,
         folder_output=folder_output,
@@ -794,7 +794,7 @@ def _setup_users_vectors(
     for layer_dc in groups["vectors"]:
         name = layer_dc["name"]
 
-        file_raster = util_raster_blank(
+        file_raster = _util_raster_blank(
             output_raster=f"{folder_output}/{name}.tif", input_raster=reference_raster
         )
 
@@ -807,10 +807,10 @@ def _setup_users_vectors(
 
         if use_field:
             # rasterize field
-            ls_fields = util_get_vector_fields(extracted, layer_name=name)
+            ls_fields = _util_get_vector_fields(extracted, layer_name=name)
             if field not in ls_fields:
                 raise ValueError(f"Field '{field}' not found in database.")
-            file_output = util_rasterize_layer(
+            file_output = _util_rasterize_layer(
                 input_raster=file_raster,
                 input_db=extracted,
                 input_layer=name,
@@ -819,7 +819,7 @@ def _setup_users_vectors(
             )
 
         else:
-            file_output = util_rasterize_layer(
+            file_output = _util_rasterize_layer(
                 input_raster=file_raster,
                 input_db=extracted,
                 input_layer=name,
@@ -830,7 +830,7 @@ def _setup_users_vectors(
     return ls_outputs
 
 
-def util_raster_blank(output_raster, input_raster):
+def _util_raster_blank(output_raster, input_raster):
     """
     Creates a blank (zero-valued) raster based on the extent,
     resolution, and CRS of an existing input raster.
@@ -864,7 +864,7 @@ def util_raster_blank(output_raster, input_raster):
     return output_raster
 
 
-def util_rasterize_layer(
+def _util_rasterize_layer(
     input_raster,
     input_db=None,
     input_layer=None,
@@ -897,7 +897,7 @@ def util_rasterize_layer(
     return input_raster
 
 
-def util_extractextent_vectors(
+def _util_extractextent_vectors(
     input_db, layers, folder_output, dst_ext, dst_crs="5880", name_out="extractextent"
 ):
     """
@@ -954,7 +954,7 @@ def util_extractextent_vectors(
     return dst_file
 
 
-def util_reproject_vectors(
+def _util_reproject_vectors(
     input_db, layers, folder_output, dst_crs="5880", name_out="reprojected"
 ):
     """
@@ -1001,7 +1001,7 @@ def util_reproject_vectors(
     return dst_file
 
 
-def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
+def _util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
     """
     Apply linear fuzzy membership to normalize raster values between 0 and 1 using their min/max statistics.
 
@@ -1026,7 +1026,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
         file_output = p.parent / f"{p.stem}_{suffix}.tif"
 
         # get values
-        dc_stats = util_get_raster_stats(input_raster=str(p), full=True)
+        dc_stats = _util_get_raster_stats(input_raster=str(p), full=True)
         if force_vmin is not None:
             vmin = force_vmin
         else:
@@ -1055,7 +1055,7 @@ def util_normalize_rasters(ls_rasters, suffix="fz", force_vmin=0):
 # ... {develop}
 
 
-def util_get_raster_stats(input_raster, band=1, full=False):
+def _util_get_raster_stats(input_raster, band=1, full=False):
     """
     Calculates the statistics for a specified band of a given raster file.
 
@@ -1074,7 +1074,7 @@ def util_get_raster_stats(input_raster, band=1, full=False):
     """
     dc_stats = None
     if full:
-        dc_raster = util_read_raster(
+        dc_raster = _util_read_raster(
             file_input=input_raster, n_band=band, metadata=None
         )
         data = dc_raster["data"]
@@ -1108,7 +1108,7 @@ def util_get_raster_stats(input_raster, band=1, full=False):
     return dc_stats
 
 
-def util_get_raster_crs(file_input, code_only=True):
+def _util_get_raster_crs(file_input, code_only=True):
     """
     Extracts the Coordinate Reference System (CRS) from a raster file.
 
@@ -1130,7 +1130,7 @@ def util_get_raster_crs(file_input, code_only=True):
         return epsg_authid
 
 
-def util_get_raster_extent(file_input):
+def _util_get_raster_extent(file_input):
     """
     Retrieves the spatial bounding coordinates of a raster file as a dictionary.
 
@@ -1151,7 +1151,7 @@ def util_get_raster_extent(file_input):
     }
 
 
-def util_get_raster_resolution(file_input):
+def _util_get_raster_resolution(file_input):
     # todo docstring
     # Create a raster layer object
     raster_layer = QgsRasterLayer(str(file_input), "Raster Layer")
@@ -1164,7 +1164,7 @@ def util_get_raster_resolution(file_input):
     }
 
 
-def util_get_vector_fields(file_input, layer_name):
+def _util_get_vector_fields(file_input, layer_name):
     """
     Retrieves a list of all attribute field names from a specific layer within a vector file.
 
@@ -1190,18 +1190,18 @@ def util_get_vector_fields(file_input, layer_name):
     return ls
 
 
-def util_raster_boolean(input_raster, value, output_raster):
+def _util_raster_boolean(input_raster, value, output_raster):
     # todo docstring
-    dc = util_read_raster(input_raster)
+    dc = _util_read_raster(input_raster)
 
     bool_grid = np.where(dc["data"] == value, 1.0, 0.0)
 
-    util_write_raster(bool_grid, dc["metadata"], output_raster)
+    _util_write_raster(bool_grid, dc["metadata"], output_raster)
 
     return None
 
 
-def util_read_raster(file_input, n_band=1, metadata=True):
+def _util_read_raster(file_input, n_band=1, metadata=True):
     """
     Read a raster (GeoTIFF) file
 
@@ -1239,7 +1239,7 @@ def util_read_raster(file_input, n_band=1, metadata=True):
     return dc_output
 
 
-def util_write_raster(
+def _util_write_raster(
     grid_output, dc_metadata, file_output, n_band=1, nodata_value=-99999
 ):
     """
