@@ -399,12 +399,10 @@
                   
   <section id="tutorial-conflict-index">
 <span id="guide-conflict"></span><h1>Tutorial: Conflict Index<a class="headerlink" href="#tutorial-conflict-index" title="Link to this heading">#</a></h1>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Ensure that Ocean Users have been properly configured before computing
-the Conflict Index. See
-<a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>
-and <a class="reference internal" href="usage_project.html#guide-project-users"><span class="std std-ref">Populate Ocean Users</span></a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Before proceeding, make sure your project structure is fully configured.
+See <a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>.</p>
 </div>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
@@ -426,6 +424,17 @@ the Conflict Index focuses exclusively on <strong>user–user spatial overlap</s
 </ol>
 <p>The result is a normalized spatial indicator representing the
 relative likelihood of conflict within the scenario.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn more on the Conflict Index in <a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">About: Conflict Index</span></a></p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Ensure that Ocean Users have been properly configured before computing
+the Conflict Index. See
+<a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>
+and <a class="reference internal" href="usage_project.html#guide-project-users"><span class="std std-ref">Populate Ocean Users</span></a>.</p>
+</div>
 </section>
 <section id="complete-workflow">
 <h2>Complete Workflow<a class="headerlink" href="#complete-workflow" title="Link to this heading">#</a></h2>
@@ -521,7 +530,19 @@ numeric value is allowed.</p></li>
 </ul>
 <p>Although optional, adjusting weights is <strong>strongly recommended</strong>
 to ensure realistic conflict representation.</p>
-</section>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-table" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25ZM6.5 6.5v8h7.75a.25.25 0 0 0 .25-.25V6.5Zm8-1.5V1.75a.25.25 0 0 0-.25-.25H6.5V5Zm-13 1.5v7.75c0 .138.112.25.25.25H5v-8ZM5 5V1.5H1.75a.25.25 0 0 0-.25.25V5Z"></path></svg></span><span class="sd-summary-text">Conflict Matrix example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>users        , cargo , fisheries , tourism , oilngas , offshwind
+cargo        , 0     , 0         , 0       , 0       , 0
+fisheries    , 5     , 0         , 0       , 0       , 0
+tourism      , 10    , 7         , 0       , 0       , 0
+oilngas      , 13    , 9         , 6       , 0       , 0
+offshwind    , 8     , 4         , 3       , 11      , 0
+</pre></div>
+</div>
+</div>
+</details></section>
 <section id="script-generate-the-conflict-index">
 <h2>3. Script: Generate the Conflict Index<a class="headerlink" href="#script-generate-the-conflict-index" title="Link to this heading">#</a></h2>
 <p>Once the matrix is finalized, compute the Conflict Index:</p>

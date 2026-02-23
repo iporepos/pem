@@ -3,7 +3,7 @@
 Tutorial: Habitat Risk Index
 ############################################
 
-.. seealso::
+.. important::
 
    Before proceeding, make sure your project structure is fully configured.
    See :ref:`Tutorial: Setting Up a PEM Project <guide-project>`.
@@ -26,6 +26,11 @@ PEM does **not** reimplement the HRA algorithm. Instead, it:
 
 The workflow therefore combines automated scripting with a manual
 InVEST execution step to ensure methodological transparency.
+
+.. seealso::
+
+    Learn more on the Habitat Risk Index in :ref:`About: Habitat Risk Index <about-risk-index>`
+
 
 Complete Workflow
 =======================================

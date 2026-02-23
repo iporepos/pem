@@ -397,18 +397,14 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <div class="admonition warning" id="about-risk-index">
-<p class="admonition-title">Warning</p>
-<p>This section is under development.</p>
-</div>
-<section id="habitat-risk-index">
-<h1>Habitat Risk Index<a class="headerlink" href="#habitat-risk-index" title="Link to this heading">#</a></h1>
+  <section id="habitat-risk-index">
+<span id="about-risk-index"></span><h1>Habitat Risk Index<a class="headerlink" href="#habitat-risk-index" title="Link to this heading">#</a></h1>
 <p>The <strong>Habitat Risk Index</strong>, denoted as <span class="math notranslate nohighlight">\(R\)</span>, follows the conceptual structure of the
-<em>InVEST Habitat Risk model</em>. It estimates the likelihood of impact for a given
+<em>InVEST Habitat Risk Assessment model</em> (HRA). It estimates the likelihood of impact for a given
 habitat cell in the spatial model based on exposure to one or more stressors,
 the consequence of this exposure, and the sensitivity of the habitat to each stressor.</p>
 <p>The sensitivity, consequence, and exposure parameters are defined by a
-<strong>habitat–stressor table</strong>, which specifies how each stressor
+<strong>habitat–stressor score table</strong>, which specifies how each stressor
 (e.g., ocean use, infrastructure, or activity) affects each habitat type.
 The resulting risk values are calculated for every cell in the spatial grid,
 producing a continuous risk surface.</p>
@@ -418,9 +414,16 @@ producing a continuous risk surface.</p>
 documentation for theoretical and technical details regarding data inputs
 and methodological background.</p>
 </div>
-<section id="habitat-and-stressors">
-<h2>Habitat and Stressors<a class="headerlink" href="#habitat-and-stressors" title="Link to this heading">#</a></h2>
-<p>As illustrated in bellow, multiple stressors can
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently the PEM framework is tailored for using the InVEST HRA model
+as an intermediate step in the workflow. However, model users may feel
+free to replace the computation of a risk map for benthic and pelagic
+habitats using other reproducible procedure.</p>
+</div>
+<section id="habitats-and-stressors">
+<h2>Habitats and Stressors<a class="headerlink" href="#habitats-and-stressors" title="Link to this heading">#</a></h2>
+<p>As illustrated below, multiple stressors can
 overlap spatially, compounding their individual impacts. The cumulative habitat
 risk is therefore nonlinear, reflecting potential synergistic effects among
 stressors.</p>
@@ -455,6 +458,13 @@ superfície cumulativa e não linear de risco ao habitat.</span><a class="header
 </figcaption>
 </figure>
 </div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>In the PEM framework, the <em>all Ocean Users</em> are considered as Stressors in the
+computation of the Habitat Risk Index.
+The <strong>habitat-stressor score table</strong> in the InVEST HRA model allows for
+fine tuning the stressing magnitude of major and minor users.</p>
 </div>
 </section>
 <section id="benthic-and-pelagic-habitats">
@@ -519,7 +529,7 @@ indices for benthic and pelagic habitats.</p>
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#habitat-and-stressors">Habitat and Stressors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#habitats-and-stressors">Habitats and Stressors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benthic-and-pelagic-habitats">Benthic and Pelagic Habitats</a></li>
 </ul>
   </nav></div>
