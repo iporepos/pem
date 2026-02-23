@@ -30,6 +30,8 @@ import pprint
 import importlib.util as iu
 
 
+# External imports
+# =======================================================================
 import geopandas as gpd
 
 # QGIS imports

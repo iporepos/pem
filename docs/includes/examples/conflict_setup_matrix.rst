@@ -27,7 +27,7 @@
         spec.loader.exec_module(module)
 
         output = module.setup_conflict_matrix(
-            folder_project=folder_project,
+            folder_project=folder,
             scenario=scenario
         )
 

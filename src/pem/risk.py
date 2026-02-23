@@ -252,7 +252,7 @@ def setup_hra_model(folder_project, scenario):
 
     """
 
-    heading()
+    _heading()
     _message("Setup HRA Model")
     _message(f"Scenario: {scenario}")
 
@@ -351,8 +351,8 @@ def setup_hra_info(folder_project, scenario, buffers=10000):
     # handle stressors
     # ---------------------------------------------------------
     prefix = f"{scenario} -- Handling stressors info ..."
-    ls_users = list(folder_users.glob("*.tif"))
-    ls_users_names = [Path(s).stem.upper() for s in ls_users]
+    ls_users = list(folder_users.glob("*_footprint.tif"))
+    ls_users_names = [Path(s).stem.upper().split("_")[0] for s in ls_users]
     ls_users_paths = [str(Path(s)) for s in ls_users]
     ls_users_types = ["STRESSOR" for s in ls_users]
     ls_users_buffs = [buffers for s in ls_users]

@@ -27,7 +27,7 @@
         spec.loader.exec_module(module)
 
         output = module.get_conflict_index(
-            folder_project=folder_project,
+            folder_project=folder,
             scenario=scenario
         )
 

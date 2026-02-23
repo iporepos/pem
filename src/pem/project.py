@@ -600,6 +600,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
 
     # enter main loop
     # ===============================================
+    ls_outputs = list()
     for g in groups:
         _message(f"{scenario} {g} \t-- Starting ...")
         ls_rasters = list()
@@ -657,17 +658,53 @@ def setup_users(folder_project, groups, scenario="baseline"):
             ls_normalized = _util_normalize_rasters(ls_rasters=[file_raster])
 
         _message(f"{scenario} {g} \t-- Filling no-data ...")
+        fo = str(folder_output / f"{g}.tif")
         dc = {
             "INPUT": str(ls_normalized[0]),
             "BAND": 1,
             "FILL_VALUE": 0,
             "CREATE_OPTIONS": None,
-            "OUTPUT": str(folder_output / f"{g}.tif"),
+            "OUTPUT": fo,
         }
         processing.run("native:fillnodata", dc)
         _message(f"{scenario} {g} \t-- Concluded ...")
 
+        ls_outputs.append(fo)
+
+    # ------------------------------
+    # make booleans
+    for f in ls_outputs:
+
+        d = Path(f).parent
+        nm = Path(f).stem
+        _message(f"{scenario} making footprint of {nm} ...")
+        fo2 = f"{d}/{nm}_footprint.tif"
+        dc = {
+            "INPUT_A": str(f),
+            "BAND_A": 1,
+            "INPUT_B": None,
+            "BAND_B": None,
+            "INPUT_C": None,
+            "BAND_C": None,
+            "INPUT_D": None,
+            "BAND_D": None,
+            "INPUT_E": None,
+            "BAND_E": None,
+            "INPUT_F": None,
+            "BAND_F": None,
+            "FORMULA": "A > 0.01",
+            "NO_DATA": None,
+            "EXTENT_OPT": 0,
+            "PROJWIN": None,
+            "RTYPE": 5,
+            "OPTIONS": None,
+            "EXTRA": "",
+            "OUTPUT": fo2,
+        }
+        processing.run("gdal:rastercalculator", dc)
+
     _message_end()
+
     return None
 
 
