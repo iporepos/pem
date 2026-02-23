@@ -989,6 +989,7 @@
 
     <span class="c1"># enter main loop</span>
     <span class="c1"># ===============================================</span>
+    <span class="n">ls_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
         <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Starting ...&quot;</span><span class="p">)</span>
         <span class="n">ls_rasters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
@@ -1046,17 +1047,53 @@
             <span class="n">ls_normalized</span> <span class="o">=</span> <span class="n">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="p">[</span><span class="n">file_raster</span><span class="p">])</span>
 
         <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Filling no-data ...&quot;</span><span class="p">)</span>
+        <span class="n">fo</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_output</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
         <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">ls_normalized</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
             <span class="s2">&quot;BAND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
             <span class="s2">&quot;FILL_VALUE&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
             <span class="s2">&quot;CREATE_OPTIONS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_output</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">fo</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:fillnodata&quot;</span><span class="p">,</span> <span class="n">dc</span><span class="p">)</span>
         <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">g</span><span class="si">}</span><span class="s2"> </span><span class="se">\t</span><span class="s2">-- Concluded ...&quot;</span><span class="p">)</span>
 
+        <span class="n">ls_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
+
+    <span class="c1"># ------------------------------</span>
+    <span class="c1"># make booleans</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ls_outputs</span><span class="p">:</span>
+
+        <span class="n">d</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
+        <span class="n">nm</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> making footprint of </span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="n">fo2</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">d</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">_footprint.tif&quot;</span>
+        <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;INPUT_A&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">f</span><span class="p">),</span>
+            <span class="s2">&quot;BAND_A&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT_B&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;BAND_B&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT_C&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;BAND_C&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT_D&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;BAND_D&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT_E&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;BAND_E&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;INPUT_F&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;BAND_F&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;FORMULA&quot;</span><span class="p">:</span> <span class="s2">&quot;A &gt; 0.01&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;NO_DATA&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;EXTENT_OPT&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="s2">&quot;PROJWIN&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;RTYPE&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+            <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;EXTRA&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="n">fo2</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;gdal:rastercalculator&quot;</span><span class="p">,</span> <span class="n">dc</span><span class="p">)</span>
+
     <span class="n">_message_end</span><span class="p">()</span>
+
     <span class="k">return</span> <span class="kc">None</span></div>
 
 
