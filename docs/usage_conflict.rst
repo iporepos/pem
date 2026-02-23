@@ -3,13 +3,10 @@
 Tutorial: Conflict Index
 ############################################
 
-.. seealso::
+.. important::
 
-   Ensure that Ocean Users have been properly configured before computing
-   the Conflict Index. See
-   :ref:`Tutorial: Setting Up a PEM Project <guide-project>`
-   and :ref:`Populate Ocean Users <guide-project-users>`.
-
+   Before proceeding, make sure your project structure is fully configured.
+   See :ref:`Tutorial: Setting Up a PEM Project <guide-project>`.
 
 Overview
 =======================================
@@ -34,6 +31,17 @@ The Conflict Index is computed as:
 
 The result is a normalized spatial indicator representing the
 relative likelihood of conflict within the scenario.
+
+.. seealso::
+
+    Learn more on the Conflict Index in :ref:`About: Conflict Index <about-conflict-index>`
+
+.. seealso::
+
+   Ensure that Ocean Users have been properly configured before computing
+   the Conflict Index. See
+   :ref:`Tutorial: Setting Up a PEM Project <guide-project>`
+   and :ref:`Populate Ocean Users <guide-project-users>`.
 
 Complete Workflow
 =======================================
@@ -113,6 +121,8 @@ Important notes:
 
 Although optional, adjusting weights is **strongly recommended**
 to ensure realistic conflict representation.
+
+.. include:: includes/examples/conflict_matrix.rst
 
 
 3. Script: Generate the Conflict Index

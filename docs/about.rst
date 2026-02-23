@@ -50,7 +50,7 @@ At the foundation level, the workflow integrates diverse spatial datasets, inclu
 
 * **Bathymetry** – ocean depth and seabed morphology.
 * **Habitats** – distribution and characteristics of marine environments that provide ecosystem services.
-* **Users** – spatial footprint of human activities across sectors such as fisheries, energy and transportation.
+* **Users** – spatial footprint or intensity of human activities in the ocean across sectors such as fisheries, energy and transportation.
 * **Land Hubs** – ports, cities, and infrastructure nodes in land that receives direct economic benefits from activities in the ocean.
 * **Coastal features** - other important geographical features of the coastline that influence the definition of management units.
 
