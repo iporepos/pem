@@ -692,7 +692,7 @@ def setup_users(folder_project, groups, scenario="baseline"):
             "BAND_E": None,
             "INPUT_F": None,
             "BAND_F": None,
-            "FORMULA": "A > 0.01",
+            "FORMULA": "A > 0.005",
             "NO_DATA": None,
             "EXTENT_OPT": 0,
             "PROJWIN": None,

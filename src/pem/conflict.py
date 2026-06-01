@@ -263,6 +263,13 @@ def setup_conflict_matrix(folder_project, scenario):
     ls_files = list(folder_users.glob("*.tif"))
     items = [Path(f).stem for f in ls_files]
 
+    items_filtered = []
+    for item in items:
+        if "_footprint" not in item:
+            items_filtered.append(item)
+
+    items = items_filtered[:]
+
     _message("Computing Matrix ...")
     n = len(items)
 

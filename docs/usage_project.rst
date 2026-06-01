@@ -100,9 +100,9 @@ by the framework.
 Script: Setup ROI
 -------------------------------
 
-.. todo develop
-
-.. include:: includes/ipsum.rst
+After the ROI layer is available, run the function ``setup_roi()`` from the
+``project.py`` module. The function will ask for a set of arguments.
+Importantly, the ``bathymetry.tif`` canonical raster must be avaible.
 
 .. include:: includes/examples/project_setup_roi.rst
 
@@ -118,7 +118,6 @@ assessment and for the delineation of biophysically grounded Management Units.
 During processing, habitat layers are rasterized onto the canonical grid and
 encoded as a categorical (qualitative) raster, where each cell represents a
 specific habitat group identifier.
-
 
 
 .. _guide-project-habitats-manual:
@@ -176,13 +175,29 @@ Example script:
 5. Populate Ocean Users
 =======================================
 
-Ocean Users represent spatially explicit human activities within the marine
-domain. Activities may overlap spatially both within the same economic sector
-and across different sectors.
+cean Users represent spatially explicit human activities within the marine domain.
+These activities often overlap spatially, both within the same economic sector and across different sectors.
 
-For each scenario, user layers are ultimately transformed into a continuous
-intensity quantitative raster, representing the relative magnitude or footprint of
-each activity across the ocean space.
+For each scenario, user layers are transformed into a **continuous fuzzy raster**
+that represents the relative intensity of an activity across the ocean space.
+
+* **Relative Scaling:** Every user raster intensity surface is relative to itself and to its specific scenario.
+* **Value Range:** Cell values are normalized, meaning the maximum values always vary between **0 and 1**.
+
+.. note::
+
+   **Comparing Across Users and Scenarios**
+
+   You can compare different Ocean Users within a scenario—or across multiple scenarios—by scaling (multiplying) the use intensity to match the user's total benefit. This effectively maps the actual benefit distribution across the ocean space.
+
+   **Example:**
+   If the total benefit of *User A* in a given scenario is ``1000``, the scaling constant for that intensity raster is calculated as:
+
+   .. code-block:: text
+
+      Scaling Constant = 1000 / (Sum of all intensity cells)
+
+
 
 .. _guide-project-users-over:
 
