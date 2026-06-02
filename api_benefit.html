@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Tutorial: Defining Ocean User Groups &#8212; pem v0.0.1 documentation</title>
+    <title>pem.benefit &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,13 +46,14 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'usage_groups_users';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_benefit';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Tutorial: Benefit Index" href="usage_benefit.html" />
-    <link rel="prev" title="Tutorial: Defining Ocean Habitat Groups" href="usage_groups_habitats.html" />
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="pem.conflict" href="api_conflict.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -151,14 +152,14 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     User Guide
   </a>
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -280,14 +281,14 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="usage.html">
     User Guide
   </a>
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -357,13 +358,11 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Home</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Defining Ocean User Groups</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_benefit.html">Tutorial: Benefit Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_project.html">pem.project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_risk.html">pem.risk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_conflict.html">pem.conflict</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.benefit</a></li>
 </ul>
 </div>
 </nav></div>
@@ -405,9 +404,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="usage.html" class="nav-link">User Guide</a></li>
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Defining Ocean User Groups</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.benefit</span></li>
   </ul>
 </nav>
 </div>
@@ -424,149 +423,78 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tutorial-defining-ocean-user-groups">
-<span id="usage-groups-users"></span><h1>Tutorial: Defining Ocean User Groups<a class="headerlink" href="#tutorial-defining-ocean-user-groups" title="Link to this heading">#</a></h1>
-<p>Ocean User groups define how human-use layers are provided to the PEM model.</p>
-<p>This grouping system applies <strong>only to Ocean Users</strong>.
-Ocean Habitats use a different grouping structure.</p>
-<p>Each group represents one thematic activity (e.g., fisheries, windfarms)
-and may contain vector and/or raster layers.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>Learn how to setup habitat groups in the scripts in
-<a class="reference internal" href="usage_groups_habitats.html#usage-groups-habitats"><span class="std std-ref">Tutorial: Defining Ocean Habitat Groups</span></a>.</p>
-</div>
-<section id="concept">
-<h2>Concept<a class="headerlink" href="#concept" title="Link to this heading">#</a></h2>
-<p>Ocean User inputs are structured in three levels:</p>
-<ol class="arabic simple">
-<li><p>Individual layer definitions</p></li>
-<li><p>Thematic groups</p></li>
-<li><p>A master <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary</p></li>
-</ol>
-<p>Final structure:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;group_name&quot;</span><span class="p">:</span> <span class="n">group_definition</span><span class="p">,</span>
-    <span class="c1"># ... other groups</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-</section>
-<section id="group-structure">
-<h2>Group Structure<a class="headerlink" href="#group-structure" title="Link to this heading">#</a></h2>
-<p>Each group is a Python dictionary with up to two optional keys:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;vectors&quot;</span></code> → list of vector layer definitions</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">&quot;rasters&quot;</span></code> → list of raster layer definitions</p></li>
+  <section id="module-pem.benefit">
+<span id="pem-benefit"></span><span id="api-benefit"></span><h1>pem.benefit<a class="headerlink" href="#module-pem.benefit" title="Link to this heading">#</a></h1>
+<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">benefit</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="pem.benefit.get_benefit_index">
+<span class="sig-prename descclassname"><span class="pre">pem.benefit.</span></span><span class="sig-name descname"><span class="pre">get_benefit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/benefit.html#get_benefit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.benefit.get_benefit_index" title="Link to this definition">#</a></dt>
+<dd><p>Calculate and map the spatial Benefit Index for a given scenario and socio-economic metric.</p>
+<p>This function executes the core downscaling pipeline of the PEM framework’s benefit
+component. It maps aggregate socio-economic value (e.g., employment, revenue) back
+to the marine space based on relative ocean use intensity.</p>
+<p><strong>Mathematical Pipeline</strong></p>
+<p>For each ocean user <span class="math notranslate nohighlight">\(i\)</span>, the function reads its spatial intensity surface <span class="math notranslate nohighlight">\(U_{i, j}\)</span>
+across all grid cells <span class="math notranslate nohighlight">\(j\)</span> and scales it linearly against the total onshore economic
+benefit <span class="math notranslate nohighlight">\(B_i\)</span> aggregated from coastal hubs:</p>
+<div class="math notranslate nohighlight">
+\[c_i = \frac{B_i}{\sum_{j} U_{i, j}}\]</div>
+<div class="math notranslate nohighlight">
+\[B_{i, j} = c_i \cdot U_{i, j}\]</div>
+<p>Individual scaled layers are summed into a cumulative absolute benefit surface, which
+is then linearly fuzzified to a standard <span class="math notranslate nohighlight">\([0, 1]\)</span> range to represent relative
+benefit hotspots.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Path to the root project directory containing ‘inputs’ and ‘outputs’.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario (matches folder name under <code class="docutils literal notranslate"><span class="pre">inputs/users/</span></code>).</p></li>
+<li><p><strong>attribute</strong> (<em>str</em>) – The targeted column header name in the benefit CSV file (e.g., <code class="docutils literal notranslate"><span class="pre">'jobs_number'</span></code>).</p></li>
 </ul>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>
-    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span><span class="o">...</span><span class="p">],</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>A group may contain only vectors or only rasters.
-If both are missing or empty, an error is raised.</p>
-</section>
-<section id="vector-layer-definition">
-<h2>Vector Layer Definition<a class="headerlink" href="#vector-layer-definition" title="Link to this heading">#</a></h2>
-<p>Vector layers must exist inside <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>.
-Each vector is defined as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;layer_name&quot;</span><span class="p">,</span>      <span class="c1"># required</span>
-    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;attribute&quot;</span><span class="p">,</span>      <span class="c1"># optional</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>             <span class="c1"># optional</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="parameters">
-<h3>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> (str)</dt><dd><p>Layer name inside <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>. (required)</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">field</span></code> (str or None)</dt><dd><p>Attribute used for rasterization.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → constant value <code class="docutils literal notranslate"><span class="pre">1</span></code> is burned.</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of file paths pointing to the individual, un-normalized spatial benefit rasters generated for each active user.</p>
 </dd>
-<dt><code class="docutils literal notranslate"><span class="pre">weight</span></code> (float or None)</dt><dd><p>Global multiplier applied after normalization.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[pathlib.Path]</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the project directory structure, mandatory reference
+rasters/vectors, or the core data file <code class="docutils literal notranslate"><span class="pre">inputs/benefit/benefit_users.csv</span></code> are missing.</p></li>
+<li><p><strong>KeyError</strong> – If the provided <code class="docutils literal notranslate"><span class="pre">attribute</span></code> string does not exist as a column header
+in the benefit database.</p></li>
+</ul>
 </dd>
 </dl>
-<p>Example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_02&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span>
-<span class="p">}</span>
+<p><strong>File Inputs and Prerequisites</strong></p>
+<p>The function dynamically infers and requires the following files:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/benefit/benefit_users.csv</span></code>: Semicolon-separated database containing columns <code class="docutils literal notranslate"><span class="pre">[scenario,</span> <span class="pre">user,</span> <span class="pre">hub,</span> <span class="pre">&lt;attribute&gt;]</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/users/{scenario}/*.tif</span></code>: User intensity surfaces. <em>Note: Files containing underscores (“_”) are ignored as internal/intermediate layers.</em></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/bathymetry.tif</span></code>: Reference raster utilized to determine spatial resolution, extent, and coordinate reference system (CRS).</p></li>
+</ul>
+<p><strong>Side Effects &amp; File Outputs</strong></p>
+<p>Running this function populates the project directories with the following outputs:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/{scenario}_benefit.tif</span></code>: The final, cumulative, normalized (0 to 1) Benefit Index spatial raster.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/{scenario}_benefit_users.csv</span></code>: A clean summary table detailing the absolute total benefit weight (<span class="math notranslate nohighlight">\(B_i\)</span>) allocated per evaluated sector.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/intermediate/benefit/benefit_{user}.tif</span></code>: Sector-specific absolute benefit density maps.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/intermediate/benefit/benefit_wsum.tif</span></code>: The un-normalized cumulative sum map of all downscaled benefits.</p></li>
+</ul>
+<p><strong>Example</strong></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pem</span><span class="w"> </span><span class="kn">import</span> <span class="n">benefit</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">generated_rasters</span> <span class="o">=</span> <span class="n">benefit</span><span class="o">.</span><span class="n">get_benefit_index</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">folder_project</span><span class="o">=</span><span class="s2">&quot;/workspaces/pem_project&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">scenario</span><span class="o">=</span><span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;jobs_number&quot;</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">generated_rasters</span><span class="p">])</span>
+<span class="go">[&#39;benefit_cargo.tif&#39;, &#39;benefit_oil.tif&#39;, &#39;benefit_tourism.tif&#39;]</span>
 </pre></div>
 </div>
-</section>
-</section>
-<section id="raster-layer-definition">
-<h2>Raster Layer Definition<a class="headerlink" href="#raster-layer-definition" title="Link to this heading">#</a></h2>
-<p>Raster files must be located in the project <code class="docutils literal notranslate"><span class="pre">inputs/_sources</span></code> directory.
-Each raster is defined as:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;filename.tif&quot;</span><span class="p">,</span>    <span class="c1"># required</span>
-    <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span>             <span class="c1"># optional</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<section id="id1">
-<h3>Parameters<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">name</span></code> (str)</dt><dd><p>Raster filename. (required)</p>
-</dd>
-<dt><code class="docutils literal notranslate"><span class="pre">weight</span></code> (float or None)</dt><dd><p>Global multiplier.
-- If <code class="docutils literal notranslate"><span class="pre">None</span></code> or omitted → defaults to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
-</dd>
-</dl>
-<p>All rasters are normalized to the 0–1 range before merging.</p>
-</section>
-</section>
-<section id="complete-example">
-<h2>Complete Example<a class="headerlink" href="#complete-example" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">group_fisheries</span> <span class="o">=</span> <span class="p">{</span>
+</dd></dl>
 
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_01&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fisheries_02&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">},</span>
-    <span class="p">],</span>
-
-    <span class="s2">&quot;rasters&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fish_industry_footprints.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;fish_industry_density.tif&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
-    <span class="p">],</span>
-<span class="p">}</span>
-
-<span class="n">group_windfarms</span> <span class="o">=</span> <span class="p">{</span>
-
-    <span class="s2">&quot;vectors&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;lines&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">},</span>
-        <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;turbines&quot;</span><span class="p">,</span> <span class="s2">&quot;field&quot;</span><span class="p">:</span> <span class="s2">&quot;intensity&quot;</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
-    <span class="p">],</span>
-
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>Registering groups:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">groups</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;fisheries&quot;</span><span class="p">:</span> <span class="n">group_fisheries</span><span class="p">,</span>
-    <span class="s2">&quot;windfarms&quot;</span><span class="p">:</span> <span class="n">group_windfarms</span><span class="p">,</span>
-<span class="p">}</span>
-</pre></div>
-</div>
-<p>The dictionary key (e.g., <code class="docutils literal notranslate"><span class="pre">&quot;fisheries&quot;</span></code>) is the group identifier used by the model.</p>
-</section>
-<section id="workflow-summary">
-<h2>Workflow Summary<a class="headerlink" href="#workflow-summary" title="Link to this heading">#</a></h2>
-<ol class="arabic simple">
-<li><p>Define vector and raster layers.</p></li>
-<li><p>Organize them into thematic Ocean User groups.</p></li>
-<li><p>Register groups in <code class="docutils literal notranslate"><span class="pre">groups</span></code> dictionary.</p></li>
-<li><p>Pass <code class="docutils literal notranslate"><span class="pre">groups</span></code> to the model parser.</p></li>
-</ol>
-</section>
 </section>
 
 
@@ -580,20 +508,20 @@ Each raster is defined as:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="usage_groups_habitats.html"
+       href="api_conflict.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Tutorial: Defining Ocean Habitat Groups</p>
+        <p class="prev-next-title">pem.conflict</p>
       </div>
     </a>
     <a class="right-next"
-       href="usage_benefit.html"
+       href="development.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Tutorial: Benefit Index</p>
+        <p class="prev-next-title">Development</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -616,25 +544,14 @@ Each raster is defined as:</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#concept">Concept</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#group-structure">Group Structure</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#vector-layer-definition">Vector Layer Definition</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#parameters">Parameters</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#raster-layer-definition">Raster Layer Definition</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Parameters</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-example">Complete Example</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#workflow-summary">Workflow Summary</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.benefit.get_benefit_index"><code class="docutils literal notranslate"><span class="pre">get_benefit_index()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/usage_groups_users.rst.txt">
+    <a href="_sources/api_benefit.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

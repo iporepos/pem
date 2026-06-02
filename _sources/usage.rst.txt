@@ -14,8 +14,9 @@ modules, each targeting a specific analytical component.
    usage_project
    usage_groups_habitats
    usage_groups_users
-   usage_risk
+   usage_benefit
    usage_conflict
+   usage_risk
 
 .. seealso::
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pem.risk &#8212; pem v0.0.1 documentation</title>
+    <title>Tutorial: Benefit Index &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,13 +46,14 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_risk';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'usage_benefit';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pem.conflict" href="api_conflict.html" />
-    <link rel="prev" title="pem.project" href="api_project.html" />
+    <link rel="next" title="Tutorial: Conflict Index" href="usage_conflict.html" />
+    <link rel="prev" title="Tutorial: Defining Ocean User Groups" href="usage_groups_users.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -151,14 +152,14 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="usage.html">
     User Guide
   </a>
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -280,14 +281,14 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="usage.html">
     User Guide
   </a>
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -357,11 +358,13 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_project.html">pem.project</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.risk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_conflict.html">pem.conflict</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_benefit.html">pem.benefit</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_project.html">Tutorial: Setting Up a PEM Project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_habitats.html">Tutorial: Defining Ocean Habitat Groups</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_groups_users.html">Tutorial: Defining Ocean User Groups</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Tutorial: Benefit Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_conflict.html">Tutorial: Conflict Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage_risk.html">Tutorial: Habitat Risk Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -403,9 +406,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    <li class="breadcrumb-item"><a href="usage.html" class="nav-link">User Guide</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.risk</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Tutorial: Benefit Index</span></li>
   </ul>
 </nav>
 </div>
@@ -422,43 +425,86 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pem.risk">
-<span id="pem-risk"></span><span id="api-risk"></span><h1>pem.risk<a class="headerlink" href="#module-pem.risk" title="Link to this heading">#</a></h1>
-<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">risk</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
+  <section id="tutorial-benefit-index">
+<span id="guide-benefit"></span><h1>Tutorial: Benefit Index<a class="headerlink" href="#tutorial-benefit-index" title="Link to this heading">#</a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Before proceeding, make sure your project structure is fully configured.
+See <a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>.</p>
+</div>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>This tutorial walks you through calculating and mapping the <strong>Benefit Index</strong> using the
+PEM automated engine. The Python <code class="docutils literal notranslate"><span class="pre">benefit</span></code> module bridges offshore marine activities
+with onshore economic impacts. It loops over your active ocean spatial footprint, scales
+relative user intensities using socio-economic totals retrieved from coastal hubs, and exports
+both sector-specific and normalized cumulative benefit surfaces.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p>Learn how to derive the Habitat Risk Index in
-<a class="reference internal" href="usage_risk.html#guide-risk"><span class="std std-ref">Tutorial: Habitat Risk Index</span></a>.</p>
+<p>For a deep dive into the theoretical framework, see <a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">About: Benefit Index</span></a>.</p>
 </div>
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.get_risk_index">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">get_risk_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_benthic</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hra_pelagic</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#get_risk_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.get_risk_index" title="Link to this definition">#</a></dt>
-<dd><p>Calculate and normalize the total risk index by combining
-benthic and pelagic Habitat Risk Assessment (HRA) results.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-<li><p><strong>hra_benthic</strong> (<em>str</em>) – Path to the benthic HRA raster file</p></li>
-<li><p><strong>hra_pelagic</strong> (<em>str</em>) – Path to the pelagic HRA raster file</p></li>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Ensure that Ocean Users have been properly configured before computing
+the Benefit Index. See <a class="reference internal" href="usage_project.html#guide-project"><span class="std std-ref">Tutorial: Setting Up a PEM Project</span></a>
+and <a class="reference internal" href="usage_project.html#guide-project-users"><span class="std std-ref">Populate Ocean Users</span></a>.</p>
+</div>
+</section>
+<section id="complete-workflow">
+<h2>Complete Workflow<a class="headerlink" href="#complete-workflow" title="Link to this heading">#</a></h2>
+<p>Calculating the Benefit Index consists of two primary phases:</p>
+<ol class="arabic simple">
+<li><p><strong>Manual Entry:</strong> Populating the semicolon-separated <code class="docutils literal notranslate"><span class="pre">benefit_users.csv</span></code> database.</p></li>
+<li><p><strong>Execution:</strong> Running the Python script via <code class="docutils literal notranslate"><span class="pre">get_benefit_index()</span></code>.</p></li>
+</ol>
+<p>Each stage is detailed below.</p>
+</section>
+<section id="manual-step-populate-the-benefit-database">
+<h2>1. Manual Step: Populate the Benefit Database<a class="headerlink" href="#manual-step-populate-the-benefit-database" title="Link to this heading">#</a></h2>
+<p>The Benefit Engine requires a structured CSV file located exactly at
+<code class="docutils literal notranslate"><span class="pre">/inputs/benefit/benefit_users.csv</span></code>. This file associates total economic value
+to specific coastal hubs (e.g., ports, processing centers, or municipalities)
+per scenario and sector.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>Delimiter Requirement:</strong> The underlying parser reads this database using a
+<strong>semicolon (`;`)</strong> separator and <code class="docutils literal notranslate"><span class="pre">utf-8</span></code> encoding. Ensure your export configuration
+reflects this.</p>
+</div>
+<p>The database must include the following structural columns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">scenario</span></code>: The exact case-sensitive scenario identifier (e.g., <code class="docutils literal notranslate"><span class="pre">baseline</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">user</span></code>: The sector’s unique code. This <strong>must match exactly</strong> the root filename of the corresponding spatial raster map.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">hub</span></code>: The unique name or ID of the onshore destination node.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Path to the generated normalized risk raster</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pathlib.Path</span></code></p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-bookmark-fill" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.69 2h10.56c.966 0 1.75.784 1.75 1.75v17.5a.75.75 0 0 1-1.218.585L12 17.21l-5.781 4.626A.75.75 0 0 1 5 21.253L4.94 3.756A1.748 1.748 0 0 1 6.69 2Z"></path></svg></span><span class="sd-summary-text">Extra notes</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<p class="sd-card-text">The function reprojects and resamples input HRA rasters to a common grid, sums the
-overlapping layers using raster calculation, and applies a normalization process
-to produce a final risk map.</p>
+<p>All additional columns represent the explicit economic metrics you wish to analyze.
+Ensure these attributes use standard alphanumeric ASCII characters without spaces.</p>
+<p>Example layout:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>scenario;user;hub;jobs_number
+baseline;cargo;city_A;1000
+baseline;cargo;city_B;1200
+baseline;cargo;city_C;5000
+baseline;oil;city_A;500
+baseline;oil;city_B;200
+baseline;tourism;city_D;56000
+</pre></div>
 </div>
-</details><details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+</section>
+<section id="script-generate-the-benefit-index">
+<h2>2. Script: Generate the Benefit Index<a class="headerlink" href="#script-generate-the-benefit-index" title="Link to this heading">#</a></h2>
+<p>Once your database is formatted and placed within the inputs folder, you can run the
+spatial scaling pipeline using the following Python interface:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pem</span><span class="w"> </span><span class="kn">import</span> <span class="n">benefit</span>
+
+<span class="n">benefit</span><span class="o">.</span><span class="n">get_benefit_index</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="s2">&quot;/path/to/project&quot;</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
+    <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;jobs_number&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Example:</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
 <summary class="sd-summary-title sd-card-header">
 <span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
@@ -466,7 +512,7 @@ to produce a final risk map.</p>
 
 <span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/benefit.py&quot;</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -476,10 +522,9 @@ to produce a final risk map.</p>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
 
-<span class="c1"># define paths to InVEST HRA outputs</span>
+<span class="c1"># define benefit attribute</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">hra_benthic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
-<span class="n">hra_pelagic</span> <span class="o">=</span> <span class="s2">&quot;path/to/TOTAL_RISK_Ecosystem**_pelagic.tif&quot;</span>
+<span class="n">attribute</span> <span class="o">=</span> <span class="s2">&quot;jobs_number&quot;</span>
 
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
@@ -488,135 +533,70 @@ to produce a final risk map.</p>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
-<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_risk_index</span><span class="p">(</span>
+<span class="n">output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">get_benefit_index</span><span class="p">(</span>
     <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
     <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span><span class="p">,</span>
-    <span class="n">hra_benthic</span><span class="o">=</span><span class="n">hra_benthic</span><span class="p">,</span>
-    <span class="n">hra_pelagic</span><span class="o">=</span><span class="n">hra_pelagic</span>
+    <span class="n">attribute</span><span class="o">=</span><span class="n">attribute</span>
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_model">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_model" title="Link to this definition">#</a></dt>
-<dd><p>Execute the full configuration suite required to initialize an InVEST HRA model.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Always returns <code class="docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to the module file</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/risk.py&quot;</span> <span class="c1"># change here</span>
-
-<span class="c1"># define the project folder</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
-
-<span class="c1"># define scenario</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">setup_hra_model</span><span class="p">(</span>
-    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
-    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</details><section id="computation-steps">
+<h3>Computation Steps<a class="headerlink" href="#computation-steps" title="Link to this heading">#</a></h3>
+<p>When executing <code class="docutils literal notranslate"><span class="pre">get_benefit_index()</span></code>, the engine runs through the following automated pipeline:</p>
+<ol class="arabic">
+<li><p><strong>Environment and Variable Check:</strong>
+The function queries the core project directory to locate reference infrastructure,
+including <code class="docutils literal notranslate"><span class="pre">inputs/vectors.gpkg</span></code> and <code class="docutils literal notranslate"><span class="pre">inputs/bathymetry.tif</span></code>. It extracts matching CRS and resolution limits.</p></li>
+<li><p><strong>Spatial File Selection:</strong>
+The engine scans <code class="docutils literal notranslate"><span class="pre">inputs/users/{scenario}/*.tif</span></code> to read user maps.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p><strong>Naming Rule:</strong> Files containing an underscore (<code class="docutils literal notranslate"><span class="pre">_</span></code>) in their name are explicitly skipped by the data loader. Only pure user root rasters (e.g., <code class="docutils literal notranslate"><span class="pre">cargo.tif</span></code>) are compiled.</p>
+</div>
+</li>
+<li><p><strong>Pixel Summation &amp; Querying:</strong>
+For each valid user raster, pixels are loaded into memory as a Float32 NumPy array. The total global intensity is summed:</p>
+<div class="math notranslate nohighlight">
+\[U = \sum U_{i,j}\]</div>
+<p>Simultaneously, the script executes a internal Pandas query against your database to fetch the total attribute value for that sector:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;scenario == &#39;baseline&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;user == &#39;cargo&#39;&quot;</span><span class="p">)[</span><span class="s1">&#39;jobs_number&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 </div>
+</li>
+<li><p><strong>Linear Scaling:</strong>
+The engine evaluates the scaling constant <span class="math notranslate nohighlight">\(c = B / U\)</span>, translates the spatial grid cell array into localized benefit densities (<span class="math notranslate nohighlight">\(b\_map = c \cdot u\_map\)</span>), and outputs individual rasters containing a <code class="docutils literal notranslate"><span class="pre">-99999</span></code> NoData fallback value.</p></li>
+<li><p><strong>Summation &amp; Fuzzification:</strong>
+Individual sector surfaces are added to a cumulative matrix. The engine then utilizes QGIS native algorithm mapping components (<code class="docutils literal notranslate"><span class="pre">native:fuzzifyrasterlinearmembership</span></code>) to scale the cumulative results to a clean, final 0 to 1 range.</p></li>
+</ol>
+</section>
+</section>
+<section id="generated-project-outputs">
+<h2>Generated Project Outputs<a class="headerlink" href="#generated-project-outputs" title="Link to this heading">#</a></h2>
+<p>Running the routine populates your scenario output directories with both
+intermediate matrix calculations and final report products:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>outputs/{scenario}/
+├── {scenario}_benefit.tif            &lt;-- The final, normalized (0-1) cumulative Benefit Index map.
+├── {scenario}_benefit_users.csv       &lt;-- Summary log containing compiled total benefits per sector.
+└── intermediate/benefit/
+    ├── benefit_cargo.tif              &lt;-- Raw absolute scaled benefit density for the cargo sector.
+    ├── benefit_oil.tif                &lt;-- Raw absolute scaled benefit density for the oil sector.
+    └── benefit_wsum.tif               &lt;-- Un-normalized cumulative absolute total benefit array.
+</pre></div>
 </div>
-</details></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_scores">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_scores"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_scores" title="Link to this definition">#</a></dt>
-<dd><p>Generate the CSV scoring matrices for habitats and stressors based on project info tables.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
+</section>
+<section id="conceptual-interpretation">
+<h2>Conceptual Interpretation<a class="headerlink" href="#conceptual-interpretation" title="Link to this heading">#</a></h2>
+<p>When validating your generated output maps, notice these
+design constraints built into the code:</p>
+<ul class="simple">
+<li><p><strong>Spatial Dominance:</strong> The framework treats the spatial users map as the absolute source of truth. If a sector has entries inside the <code class="docutils literal notranslate"><span class="pre">benefit_users.csv</span></code> file but missing or invalid spatial rasters inside the user directory, it will be skipped from final index compilation.</p></li>
+<li><p><strong>Pixel Meaning:</strong> While the raw intermediate maps match your specific metrics exactly (e.g., representing the localized portion of physical jobs or revenue attributed to that cell), the final top-level raster layer represents a relative scale.</p></li>
+<li><p><strong>Hotspots:</strong> Pixels approaching <code class="docutils literal notranslate"><span class="pre">1.0</span></code> indicate spatial engines—focal geographic points in the ocean where either a single hyper-productive industry exists or where multiple distinct sectors overlap to create significant cumulative wealth for coastal hubs.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the generated score CSV files</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_info">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">buffers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_info" title="Link to this definition">#</a></dt>
-<dd><p>Create the HRA information tables linking habitat
-and stressor names to their respective file paths.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-<li><p><strong>buffers</strong> (<em>int</em>) – The buffer distance for stressors in meters. Default value = 10000</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the generated info CSV files</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pem.risk.setup_hra_json">
-<span class="sig-prename descclassname"><span class="pre">pem.risk.</span></span><span class="sig-name descname"><span class="pre">setup_hra_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/risk.html#setup_hra_json"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.risk.setup_hra_json" title="Link to this definition">#</a></dt>
-<dd><p>Configure and save InVEST model parameter files in JSON format for the specified scenario.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em>) – Path to the root project directory</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of paths to the created JSON configuration files</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
+</section>
 </section>
 
 
@@ -630,20 +610,20 @@ and stressor names to their respective file paths.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_project.html"
+       href="usage_groups_users.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pem.project</p>
+        <p class="prev-next-title">Tutorial: Defining Ocean User Groups</p>
       </div>
     </a>
     <a class="right-next"
-       href="api_conflict.html"
+       href="usage_conflict.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">pem.conflict</p>
+        <p class="prev-next-title">Tutorial: Conflict Index</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -666,18 +646,22 @@ and stressor names to their respective file paths.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.get_risk_index"><code class="docutils literal notranslate"><span class="pre">get_risk_index()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_model"><code class="docutils literal notranslate"><span class="pre">setup_hra_model()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_scores"><code class="docutils literal notranslate"><span class="pre">setup_hra_scores()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_info"><code class="docutils literal notranslate"><span class="pre">setup_hra_info()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.risk.setup_hra_json"><code class="docutils literal notranslate"><span class="pre">setup_hra_json()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#complete-workflow">Complete Workflow</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-step-populate-the-benefit-database">1. Manual Step: Populate the Benefit Database</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#script-generate-the-benefit-index">2. Script: Generate the Benefit Index</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computation-steps">Computation Steps</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generated-project-outputs">Generated Project Outputs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conceptual-interpretation">Conceptual Interpretation</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/api_risk.rst.txt">
+    <a href="_sources/usage_benefit.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>

@@ -19,7 +19,8 @@
         │   │
         │   ├── _sources/                      # Helper folder for sourced datasets
         │   │
-        │   ├── benefit/                       # Benefit Index parameters and data
+        │   ├── benefit/                       # Benefit Index data
+        │   │   └── benefit_users.csv          # Benefit table
         │   │
         │   ├── habitats/                      # Habitat rasters
         │   │   ├── habitats_benthic.tif       # Rasterized Benthic habitat map
