@@ -6,7 +6,6 @@
 """
 This is the complete API reference for the ``conflict`` python module of the ``pem`` system.
 
-
 """
 import glob
 
@@ -60,6 +59,29 @@ def _message_end():
 
 def _heading():
     print(80 * "=")
+
+
+def _get_users_maps(folder_users):
+    """
+    Get user activity rasters maps from user activity rasters.
+
+    :param folder_users: Path to the users raster folder
+    :type folder_users: str
+    :return: A list containing the paths to the ocean users rasters
+    :rtype: list
+
+    """
+    folder_users = Path(folder_users)
+
+    ls_files = glob.glob(f"{folder_users}/*.tif")
+    ls_files_filter = []
+    for f in ls_files:
+        p = Path(f)
+        nm = p.stem
+        if "_" not in nm:
+            ls_files_filter.append(p)
+
+    return ls_files_filter
 
 
 def _get_project_vars(folder_project):
@@ -147,8 +169,7 @@ def get_conflict_index(folder_project, scenario):
     folder_output_sub.mkdir(exist_ok=True)
 
     folder_users = folder_inputs / f"users/{scenario}"
-
-    ls_files = list(folder_users.glob("*.tif"))
+    ls_files = _get_users_maps(folder_users)
     items = [Path(f).stem for f in ls_files]
     dc = {}
 

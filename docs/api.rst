@@ -15,3 +15,4 @@ overview of all relevant functions in the repository.
    api_project
    api_risk
    api_conflict
+   api_benefit
