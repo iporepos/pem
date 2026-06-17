@@ -6,6 +6,76 @@
 """
 This is the complete API reference for the ``publish`` python module of the ``pem`` system.
 
+This module assembles the final published results for a scenario run: it
+publishes the grid and units layers to a single GeoPackage, warps the
+scenario's raster maps (benefit, risk, conflict, performance, and any
+user-activity maps) to the target CRS, computes zonal statistics of each
+map over the grid, joins those statistics back onto the grid (normalized
+to the ``[0, 1]`` range), and finally aggregates the grid statistics by
+unit, via a non-spatial group-by on the unit id, joining the resulting
+means back onto each unit layer.
+
+This module is intended to be run from within the QGIS Python
+environment, since it relies on the ``processing``, ``osgeo``, and
+``qgis.core`` packages for raster warping and zonal statistics.
+
+.. dropdown:: Script example
+    :icon: code-square
+    :open:
+
+    .. code-block:: python
+
+        # !WARNING: run this in QGIS Python Environment
+        import importlib.util as iu
+
+        # define the paths to the module file
+        # ------------------------------------------------------
+        file = "path/to/publish.py"  # change here
+
+        # define the project folder
+        # ------------------------------------------------------
+        folder = "path/to/project_folder"  # change here
+
+        # define scenario
+        # ------------------------------------------------------
+        scenario = "baseline"
+
+        # define grid layer name
+        # ------------------------------------------------------
+        grid = "grid"
+
+        # define units layers
+        # ------------------------------------------------------
+        units = {
+            "units_micro": {
+                "layer": "upg_micro",
+                "id": "id"
+            },
+
+            "units_macro": {
+                "layer": "upg_macro",
+                "id": "id"
+            },
+        }
+
+        # call the function
+        # ------------------------------------------------------
+        # do not change here
+        spec = iu.spec_from_file_location("module", file)
+        module = iu.module_from_spec(spec)
+        spec.loader.exec_module(module)
+
+        ls_output = module.publish_results(
+            folder_project=folder,
+            scenario=scenario,
+            grid_layer=grid,
+            units_layers=units,
+            grid_id_field="h3_index",
+            crs_epsg=4326
+        )
+
+        print(" ----- DONE -----")
+
 """
 
 # Native imports
@@ -219,6 +289,42 @@ def _join_zonal_stats(grid, grid_id_field, stats_db, stats_layers, normalize=Tru
     return grid
 
 
+def _aggregate_stats_by_unit(grid, grid_unit_field, unit_gdf, unit_id_field, stat_cols):
+    """Aggregate grid-level stat columns by unit, via a non-spatial
+    groupby, and left-join the means onto ``unit_gdf``.
+
+    The join is non-destructive: every row and column already in
+    ``unit_gdf`` is preserved, and only the new per-stat mean columns
+    are added (NaN for any unit with no matching grid rows).
+
+    :param grid: grid GeoDataFrame, already carrying ``grid_unit_field``
+        (e.g. from ``_assign_unit_ids``) and the stat columns to
+        aggregate
+    :type grid: geopandas.GeoDataFrame
+    :param grid_unit_field: name of the column on ``grid`` holding each
+        row's unit id (named after the unit layer, per
+        ``_assign_unit_ids``)
+    :type grid_unit_field: str
+    :param unit_gdf: the unit GeoDataFrame to receive the aggregated
+        mean columns
+    :type unit_gdf: geopandas.GeoDataFrame
+    :param unit_id_field: name of the id column on ``unit_gdf`` itself
+        (the unit layer's own id field, e.g. ``"mun_id"``)
+    :type unit_id_field: str
+    :param stat_cols: names of the grid stat columns to average per
+        unit
+    :type stat_cols: list
+    :return: ``unit_gdf`` with one new mean column per entry in
+        ``stat_cols``
+    :rtype: geopandas.GeoDataFrame
+    """
+    means = grid.groupby(grid_unit_field)[stat_cols].mean()
+    means = means.reset_index()
+    means = means.rename(columns={grid_unit_field: unit_id_field})
+
+    return unit_gdf.merge(means, on=unit_id_field, how="left")
+
+
 def _get_users_maps(folder_users):
     """
     Get user activity rasters maps from user activity rasters.
@@ -245,6 +351,69 @@ def _get_users_maps(folder_users):
 def publish_results(
     folder_project, scenario, grid_layer, units_layers, grid_id_field, crs_epsg=4326
 ):
+    """Assemble and publish the final results of a scenario run.
+
+    This is the top-level entry point of the module. For a given
+    project and scenario it builds a single output GeoPackage
+    (``outputs/<scenario>/results.gpkg``) holding the grid layer, the
+    units layers, and a set of derived statistics, by running the
+    following steps in order:
+
+    1. Load the grid layer and each unit layer from the project's
+       input vector database, reprojecting both to ``crs_epsg`` if
+       needed (see :func:`_load_and_reproject`).
+    2. For each unit layer, tag every grid row with the id of the unit
+       polygon that contains its centroid (see :func:`_assign_unit_ids`),
+       then publish both the grid and the unit layers to the output
+       GeoPackage.
+    3. Warp the scenario's raster maps (``benefit``, ``risk``,
+       ``conflict``, ``performance``, plus any user-activity maps found
+       under ``inputs/users/<scenario>``) to ``crs_epsg``.
+    4. Compute zonal statistics (mean) of each warped map over the grid,
+       then join the resulting per-map mean back onto the grid,
+       normalized to the ``[0, 1]`` range (see :func:`_join_zonal_stats`
+       and :func:`_normalize_minmax`), and republish the grid layer.
+    5. Aggregate the grid's per-map statistics by unit, via a
+       non-spatial group-by on each unit's id, and join the resulting
+       means back onto each unit layer non-destructively (see
+       :func:`_aggregate_stats_by_unit`), republishing each unit layer.
+
+    :param folder_project: path to the project folder. Must contain an
+        ``inputs/vectors.gpkg`` (holding the grid and unit layers) and
+        an ``inputs/bathymetry.tif`` reference raster; see
+        :func:`_get_project_vars`.
+    :type folder_project: str or pathlib.Path
+    :param scenario: name of the scenario to publish. Used to locate
+        the scenario's raster maps (``<scenario>_<map>.tif``) and the
+        ``inputs/users/<scenario>`` folder, and as the output
+        subfolder name under ``outputs/``.
+    :type scenario: str
+    :param grid_layer: name of the grid layer in ``vectors.gpkg``. Also
+        used as the name under which the grid is published in the
+        output GeoPackage.
+    :type grid_layer: str
+    :param units_layers: mapping of unit layer name (as published in
+        the output GeoPackage) to a dict with the keys ``"layer"``
+        (the source layer name in ``vectors.gpkg``) and ``"id"`` (the
+        name of that unit layer's unique id field), e.g.::
+
+            {
+                "units_micro": {"layer": "upg_micro", "id": "id"},
+                "units_macro": {"layer": "upg_macro", "id": "id"},
+            }
+
+    :type units_layers: dict
+    :param grid_id_field: name of the stable unique id field on the
+        grid layer, used to join the zonal statistics back onto it.
+    :type grid_id_field: str
+    :param crs_epsg: EPSG code of the target CRS that the grid, unit
+        layers, and raster maps are reprojected/warped to. Defaults to
+        ``4326``.
+    :type crs_epsg: int
+    :return: None. All results are written to
+        ``outputs/<scenario>/results.gpkg`` in ``folder_project``.
+    :rtype: None
+    """
     _heading()
     _message(f"Publish results at scenario = {scenario}")
 
@@ -370,6 +539,30 @@ def publish_results(
     )
 
     grid.to_file(output_db, layer=grid_layer, driver="GPKG")
+
+    # ===========================================================
+    # ===========================================================
+    _heading()
+    _message(f"Aggregate stats by unit")
+
+    stat_cols = list(maps_dc.keys())
+
+    for unit_layer in units_layers:
+        unit_id_field = units_layers[unit_layer]["id"]
+
+        # read back the unit layer as already published, so the join is
+        # non-destructive (existing unit attributes are preserved)
+        unit_gdf = gpd.read_file(output_db, layer=unit_layer)
+
+        unit_gdf = _aggregate_stats_by_unit(
+            grid=grid,
+            grid_unit_field=unit_layer,
+            unit_gdf=unit_gdf,
+            unit_id_field=unit_id_field,
+            stat_cols=stat_cols,
+        )
+
+        unit_gdf.to_file(output_db, layer=unit_layer, driver="GPKG")
 
     _message_end()
 
