@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development &#8212; pem v0.0.1 documentation</title>
+    <title>pem.publish &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,12 +46,13 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'development';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api_publish';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="pem.publish" href="api_publish.html" />
+    <link rel="next" title="Development" href="development.html" />
+    <link rel="prev" title="pem.benefit" href="api_benefit.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -157,15 +158,15 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
     Development
   </a>
 </li>
@@ -286,15 +287,15 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="#">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="development.html">
     Development
   </a>
 </li>
@@ -355,7 +356,15 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_project.html">pem.project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_risk.html">pem.risk</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_conflict.html">pem.conflict</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_benefit.html">pem.benefit</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.publish</a></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -394,7 +403,10 @@
         <i class="fa-solid fa-home"></i>
       </a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Development</span></li>
+    
+    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.publish</span></li>
   </ul>
 </nav>
 </div>
@@ -411,201 +423,147 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <span class="target" id="development"></span><section id="id1">
-<h1>Development<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
-<p>This section provides guidance for those who wish to contribute to the project.
-It includes instructions for setting up the development environment, cloning the repository, installing the project in development mode, running tests, and building the documentation.</p>
-<p>To ensure that new features and changes adhere to project standards, maintain quality, and keep the documentation up to date, contributors are required to follow:</p>
-<ul class="simple">
-<li><p>Style-consistent formatting;</p></li>
-<li><p>Documentation-oriented practices;</p></li>
-<li><p>Test-driven development;</p></li>
+  <section id="module-pem.publish">
+<span id="pem-publish"></span><span id="api-publish"></span><h1>pem.publish<a class="headerlink" href="#module-pem.publish" title="Link to this heading">#</a></h1>
+<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">publish</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
+<p>This module assembles the final published results for a scenario run: it
+publishes the grid and units layers to a single GeoPackage, warps the
+scenario’s raster maps (benefit, risk, conflict, performance, and any
+user-activity maps) to the target CRS, computes zonal statistics of each
+map over the grid, joins those statistics back onto the grid (normalized
+to the <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> range), and finally aggregates the grid statistics by
+unit, via a non-spatial group-by on the unit id, joining the resulting
+means back onto each unit layer.</p>
+<p>This module is intended to be run from within the QGIS Python
+environment, since it relies on the <code class="docutils literal notranslate"><span class="pre">processing</span></code>, <code class="docutils literal notranslate"><span class="pre">osgeo</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">qgis.core</span></code> packages for raster warping and zonal statistics.</p>
+<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
+<summary class="sd-summary-title sd-card-header">
+<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
+
+<span class="c1"># define the paths to the module file</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/publish.py&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define the project folder</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/project_folder&quot;</span>  <span class="c1"># change here</span>
+
+<span class="c1"># define scenario</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">scenario</span> <span class="o">=</span> <span class="s2">&quot;baseline&quot;</span>
+
+<span class="c1"># define grid layer name</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="s2">&quot;grid&quot;</span>
+
+<span class="c1"># define units layers</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;units_micro&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;upg_micro&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span>
+    <span class="p">},</span>
+
+    <span class="s2">&quot;units_macro&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;upg_macro&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+
+<span class="c1"># call the function</span>
+<span class="c1"># ------------------------------------------------------</span>
+<span class="c1"># do not change here</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
+<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+
+<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">publish_results</span><span class="p">(</span>
+    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
+    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span><span class="p">,</span>
+    <span class="n">grid_layer</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span>
+    <span class="n">units_layers</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
+    <span class="n">grid_id_field</span><span class="o">=</span><span class="s2">&quot;h3_index&quot;</span><span class="p">,</span>
+    <span class="n">crs_epsg</span><span class="o">=</span><span class="mi">4326</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</details><dl class="py function">
+<dt class="sig sig-object py" id="pem.publish.publish_results">
+<span class="sig-prename descclassname"><span class="pre">pem.publish.</span></span><span class="sig-name descname"><span class="pre">publish_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_id_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_epsg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4326</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/publish.html#publish_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.publish.publish_results" title="Link to this definition">#</a></dt>
+<dd><p>Assemble and publish the final results of a scenario run.</p>
+<p>This is the top-level entry point of the module. For a given
+project and scenario it builds a single output GeoPackage
+(<code class="docutils literal notranslate"><span class="pre">outputs/&lt;scenario&gt;/results.gpkg</span></code>) holding the grid layer, the
+units layers, and a set of derived statistics, by running the
+following steps in order:</p>
+<ol class="arabic simple">
+<li><p>Load the grid layer and each unit layer from the project’s
+input vector database, reprojecting both to <code class="docutils literal notranslate"><span class="pre">crs_epsg</span></code> if
+needed (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_load_and_reproject()</span></code>).</p></li>
+<li><p>For each unit layer, tag every grid row with the id of the unit
+polygon that contains its centroid (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_assign_unit_ids()</span></code>),
+then publish both the grid and the unit layers to the output
+GeoPackage.</p></li>
+<li><p>Warp the scenario’s raster maps (<code class="docutils literal notranslate"><span class="pre">benefit</span></code>, <code class="docutils literal notranslate"><span class="pre">risk</span></code>,
+<code class="docutils literal notranslate"><span class="pre">conflict</span></code>, <code class="docutils literal notranslate"><span class="pre">performance</span></code>, plus any user-activity maps found
+under <code class="docutils literal notranslate"><span class="pre">inputs/users/&lt;scenario&gt;</span></code>) to <code class="docutils literal notranslate"><span class="pre">crs_epsg</span></code>.</p></li>
+<li><p>Compute zonal statistics (mean) of each warped map over the grid,
+then join the resulting per-map mean back onto the grid,
+normalized to the <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> range (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_join_zonal_stats()</span></code>
+and <code class="xref py py-func docutils literal notranslate"><span class="pre">_normalize_minmax()</span></code>), and republish the grid layer.</p></li>
+<li><p>Aggregate the grid’s per-map statistics by unit, via a
+non-spatial group-by on each unit’s id, and join the resulting
+means back onto each unit layer non-destructively (see
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_aggregate_stats_by_unit()</span></code>), republishing each unit layer.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>folder_project</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – path to the project folder. Must contain an
+<code class="docutils literal notranslate"><span class="pre">inputs/vectors.gpkg</span></code> (holding the grid and unit layers) and
+an <code class="docutils literal notranslate"><span class="pre">inputs/bathymetry.tif</span></code> reference raster; see
+<code class="xref py py-func docutils literal notranslate"><span class="pre">_get_project_vars()</span></code>.</p></li>
+<li><p><strong>scenario</strong> (<em>str</em>) – name of the scenario to publish. Used to locate
+the scenario’s raster maps (<code class="docutils literal notranslate"><span class="pre">&lt;scenario&gt;_&lt;map&gt;.tif</span></code>) and the
+<code class="docutils literal notranslate"><span class="pre">inputs/users/&lt;scenario&gt;</span></code> folder, and as the output
+subfolder name under <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>.</p></li>
+<li><p><strong>grid_layer</strong> (<em>str</em>) – name of the grid layer in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>. Also
+used as the name under which the grid is published in the
+output GeoPackage.</p></li>
+<li><p><strong>units_layers</strong> (<em>dict</em>) – <p>mapping of unit layer name (as published in
+the output GeoPackage) to a dict with the keys <code class="docutils literal notranslate"><span class="pre">&quot;layer&quot;</span></code>
+(the source layer name in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>) and <code class="docutils literal notranslate"><span class="pre">&quot;id&quot;</span></code> (the
+name of that unit layer’s unique id field), e.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;units_micro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;upg_micro&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;units_macro&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;layer&quot;</span><span class="p">:</span> <span class="s2">&quot;upg_macro&quot;</span><span class="p">,</span> <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;id&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</p></li>
+<li><p><strong>grid_id_field</strong> (<em>str</em>) – name of the stable unique id field on the
+grid layer, used to join the zonal statistics back onto it.</p></li>
+<li><p><strong>crs_epsg</strong> (<em>int</em>) – EPSG code of the target CRS that the grid, unit
+layers, and raster maps are reprojected/warped to. Defaults to
+<code class="docutils literal notranslate"><span class="pre">4326</span></code>.</p></li>
 </ul>
-<section id="cloning">
-<h2>Cloning<a class="headerlink" href="#cloning" title="Link to this heading">#</a></h2>
-<p>Use your IDE for authenticate in GitHub and clone the repo branch of interest
-in your local system.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Of course, Git must be set as the version control system</p>
-</div>
-<p>Alternatively, clone via terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/iporepos/pem.git
-</pre></div>
-</div>
-</section>
-<section id="installing">
-<h2>Installing<a class="headerlink" href="#installing" title="Link to this heading">#</a></h2>
-<p>For developing, it’s recommended to set up a python
-<strong>Virtual Environment</strong> (<code class="docutils literal notranslate"><span class="pre">venv</span></code>) locally for developing the repo.
-This is best for avoiding falling into a <a class="reference external" href="https://en.wikipedia.org/wiki/Dependency_hell">dependency hell</a> with your
-other projects.</p>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Of course, you need Python installed in your system</p>
-</div>
-<p>Move to the repo root folder:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># [CHANGE THIS] set your own actual local path </span>
-<span class="nb">cd</span><span class="w"> </span>./path/to/<span class="o">{</span>thislib<span class="o">}</span>
-</pre></div>
-</div>
-<p>Create a python <code class="docutils literal notranslate"><span class="pre">venv</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>venv<span class="w"> </span>.venv
-</pre></div>
-</div>
-<p>Activate the <code class="docutils literal notranslate"><span class="pre">venv</span></code> session.</p>
-<p>On Unix (Linux/Mac):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">source</span><span class="w"> </span>.venv/bin/activate
-</pre></div>
-</div>
-<p>Activate the <code class="docutils literal notranslate"><span class="pre">venv</span></code> on Windows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>.<span class="w"> </span>.venv<span class="se">\S</span>cripts<span class="se">\A</span>ctivate.ps1
-</pre></div>
-</div>
-<p>Now, under the <code class="docutils literal notranslate"><span class="pre">venv</span></code> session, install all
-dependencies in editable mode <code class="docutils literal notranslate"><span class="pre">-e</span></code> (including <code class="docutils literal notranslate"><span class="pre">dev</span></code> and <code class="docutils literal notranslate"><span class="pre">docs</span></code> dependencies with <code class="docutils literal notranslate"><span class="pre">.[dev,</span> <span class="pre">docs]</span></code>):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span>.<span class="o">[</span>dev,docs<span class="o">]</span>
-</pre></div>
-</div>
-<p>This will install all dependecies needed both for
-developing and documentation.</p>
-</section>
-<hr class="docutils" />
-<section id="style">
-<h2>Style<a class="headerlink" href="#style" title="Link to this heading">#</a></h2>
-<p>In this project, we enforce using <a class="reference external" href="https://black.readthedocs.io">Black</a> to ensure a consistent code style.</p>
-<p>Since <code class="docutils literal notranslate"><span class="pre">black</span></code> is listed in dev dependencies, you may run manually before push:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>black<span class="w"> </span>.
-</pre></div>
-</div>
-<blockquote>
-<div><p>from the repo root, under the venv session</p>
-</div></blockquote>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Unformatted contributions are not going to pass because GitHub checks for style
-consistency.</p>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>There are tools for automating <code class="docutils literal notranslate"><span class="pre">black</span></code> before commit. See <a class="reference external" href="https://pre-commit.com/">https://pre-commit.com/</a></p>
-</div>
-</section>
-<hr class="docutils" />
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
-<p>Documentation-oriented development is recommended. Every feature must be documented with standard Sphinx (rST) format.</p>
-<section id="build-locally">
-<h3>Build locally<a class="headerlink" href="#build-locally" title="Link to this heading">#</a></h3>
-<p>Use Sphinx for building the documentation website locally. Run this via terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>sphinx-build<span class="w"> </span>-b<span class="w"> </span>html<span class="w"> </span>.<span class="se">\d</span>ocs<span class="w"> </span>.<span class="se">\d</span>ocs<span class="se">\_</span>build<span class="w"> </span>--write-all
-</pre></div>
-</div>
-<p>For automating tasks before and after building, consider run:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>./docs/docs_update.py
-</pre></div>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Build documentation under a virtual environment session.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The docs website is generated under <code class="docutils literal notranslate"><span class="pre">docs/_build</span></code></p>
-</div>
-</section>
-</section>
-<section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>Test-driven development is recommended. Tests are split into the following categories:</p>
-<ul class="simple">
-<li><p><strong>Example tests</strong> - single line tests presented in docstrings.</p></li>
-<li><p><strong>Unit tests</strong> - short and targeting feature behavior.</p></li>
-<li><p><strong>Benchmark tests</strong> - may take longer time, targeting full performance, includes inputs and outputs evaluations.</p></li>
-</ul>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Run tests under a virtual environment session.</p>
-</div>
-<section id="example-tests">
-<h3>Example tests<a class="headerlink" href="#example-tests" title="Link to this heading">#</a></h3>
-<p>Create single-line example tests in docstring:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">add</span><span class="p">(</span><span class="n">num1</span><span class="p">,</span> <span class="n">num2</span><span class="p">):</span>
-<span class="w">	</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">	</span>
-<span class="sd">	**Examples**</span>
-<span class="sd">	</span>
-<span class="sd">	&gt;&gt;&gt; add(1, 2)</span>
-<span class="sd">	3</span>
-<span class="sd">		</span>
-<span class="sd">	&quot;&quot;&quot;</span>
-	<span class="k">return</span> <span class="n">num1</span> <span class="o">+</span> <span class="n">num2</span>
-</pre></div>
-</div>
-<p>Test the module using <code class="docutils literal notranslate"><span class="pre">doctest</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>doctest<span class="w"> </span>-v<span class="w"> </span>/path/to/module.py
-</pre></div>
-</div>
-<p>Alternatively, test the module in the script part:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-    <span class="kn">import</span><span class="w"> </span><span class="nn">doctest</span>
-    <span class="n">doctest</span><span class="o">.</span><span class="n">testmod</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>See more in <a class="reference external" href="https://docs.python.org/3/library/doctest.html">doctest library</a> for details on example tests.</p>
-</div>
-</section>
-<section id="unit-tests">
-<h3>Unit tests<a class="headerlink" href="#unit-tests" title="Link to this heading">#</a></h3>
-<p>Run all unit tests in <code class="docutils literal notranslate"><span class="pre">/tests</span></code> via terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>unittest<span class="w"> </span>discover<span class="w"> </span>-s<span class="w"> </span>tests<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;test_*.py&quot;</span><span class="w"> </span>-v
-</pre></div>
-</div>
-<p>For a single unit test module:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>tests.unit.test_module
-</pre></div>
-</div>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<p>See more in <a class="reference external" href="https://docs.python.org/3/library/doctest.html">unittest library</a> for details on unit tests.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Example tests can be included in unit tests with their own testing script.
-A template for this is provided in <code class="docutils literal notranslate"><span class="pre">/tests/test_doctest.py</span></code>.</p>
-</div>
-</section>
-<section id="benchmark-tests">
-<h3>Benchmark tests<a class="headerlink" href="#benchmark-tests" title="Link to this heading">#</a></h3>
-<p>Benchmark tests are unit tests related to full-integration of features, sometimes associated with input and output data. Some benchmark tests will install heavy datasets from provided URLs.</p>
-<section id="enable-benchmark-tests">
-<h4>Enable benchmark tests<a class="headerlink" href="#enable-benchmark-tests" title="Link to this heading">#</a></h4>
-<p>For running benchmark tests, they must be enabled manually. This is because benchmarks may take too long and can deplete resources for CI services. Once enabled, just run the unit tests as usual.</p>
-<p>Enabling benchmarks on Unix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">RUN_BENCHMARKS</span><span class="o">=</span><span class="m">1</span>
-</pre></div>
-</div>
-<p>Enabling benchmarks on Windows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$env</span>:RUN_BENCHMARKS<span class="o">=</span><span class="s2">&quot;1&quot;</span>
-</pre></div>
-</div>
-</section>
-<section id="enable-large-benchmark-tests">
-<h4>Enable large benchmark tests<a class="headerlink" href="#enable-large-benchmark-tests" title="Link to this heading">#</a></h4>
-<p>Large benchmark tests are exceptionally large tests. The same logic applies:</p>
-<p>Enabling large benchmark tests on Unix:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">RUN_BENCHMARKS_XXL</span><span class="o">=</span><span class="m">1</span>
-</pre></div>
-</div>
-<p>Enabling large benchmark tests on Windows:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">$env</span>:RUN_BENCHMARKS_XXL<span class="o">=</span><span class="s2">&quot;1&quot;</span>
-</pre></div>
-</div>
-</section>
-</section>
-</section>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None. All results are written to
+<code class="docutils literal notranslate"><span class="pre">outputs/&lt;scenario&gt;/results.gpkg</span></code> in <code class="docutils literal notranslate"><span class="pre">folder_project</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 </section>
 
 
@@ -619,13 +577,22 @@ A template for this is provided in <code class="docutils literal notranslate"><s
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_publish.html"
+       href="api_benefit.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pem.publish</p>
+        <p class="prev-next-title">pem.benefit</p>
       </div>
+    </a>
+    <a class="right-next"
+       href="development.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Development</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
     </a>
 </div>
                 </footer>
@@ -646,30 +613,14 @@ A template for this is provided in <code class="docutils literal notranslate"><s
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cloning">Cloning</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing">Installing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#style">Style</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-locally">Build locally</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#example-tests">Example tests</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#unit-tests">Unit tests</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#benchmark-tests">Benchmark tests</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-benchmark-tests">Enable benchmark tests</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-large-benchmark-tests">Enable large benchmark tests</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.publish.publish_results"><code class="docutils literal notranslate"><span class="pre">publish_results()</span></code></a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/development.rst.txt">
+    <a href="_sources/api_publish.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
