@@ -4,7 +4,7 @@
 # See pyproject.toml for authors/maintainers.
 # See LICENSE for license details.
 """
-This is the complete API reference for the ``benefit`` python module of the ``pem`` system.
+This is the complete API reference for the ``performance`` python module of the ``pem`` system.
 
 """
 
@@ -48,7 +48,7 @@ def _folder_checker(ls):
 
 
 def _message(msg):
-    print(f" >>> pem @ benefit: {msg}")
+    print(f" >>> pem @ performance: {msg}")
 
 
 def _message_end():
@@ -160,6 +160,8 @@ def get_performance_index(folder_project, scenario, benefit, conflict, risk):
     folder_inputs = pvars["folder_inputs"]
     folder_output = pvars["folder_outputs"] / f"{scenario}"
     folder_output.mkdir(exist_ok=True)
+    folder_output_intermediate = folder_output / "intermediate"
+    folder_output_intermediate.mkdir(exist_ok=True)
 
     # load rasters
     _message(f"loading component rasters")
@@ -180,7 +182,7 @@ def get_performance_index(folder_project, scenario, benefit, conflict, risk):
 
     _message("saving raster data")
 
-    fo1 = folder_output / f"{scenario}_performance.tif"
+    fo1 = folder_output_intermediate / f"{scenario}_performance_raw.tif"
     _util_write_raster(
         grid_output=performance,
         dc_metadata=dc_benefit["metadata"],
@@ -189,7 +191,7 @@ def get_performance_index(folder_project, scenario, benefit, conflict, risk):
         nodata_value=-99999,
     )
 
-    fo2 = folder_output / f"{scenario}_performance_log10.tif"
+    fo2 = folder_output_intermediate / f"{scenario}_performance_log10.tif"
     _util_write_raster(
         grid_output=performance_log10,
         dc_metadata=dc_benefit["metadata"],
@@ -198,7 +200,7 @@ def get_performance_index(folder_project, scenario, benefit, conflict, risk):
         nodata_value=-99999,
     )
 
-    fo3 = folder_output / f"{scenario}_performance_fz.tif"
+    fo3 = folder_output / f"{scenario}_performance.tif"
     _util_write_raster(
         grid_output=performance_fuzzy,
         dc_metadata=dc_benefit["metadata"],
@@ -219,8 +221,6 @@ def _linear_fuzzify(data, a, b):
     - a: Lower bound (where membership starts rising from 0)
     - b: Upper bound (where membership reaches 1)
     """
-    print(a)
-    print(b)
     # Safeguard against division by zero if a equals b
     if a == b:
         return np.where(data >= a, 1.0, 0.0)

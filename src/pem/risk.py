@@ -12,6 +12,7 @@ This is the complete API reference for the ``risk`` python module of the ``pem``
    :ref:`Tutorial: Habitat Risk Index <guide-risk>`.
 
 """
+
 import os
 import shutil
 
@@ -27,7 +28,6 @@ from pathlib import Path
 # =======================================================================
 import numpy as np
 import pandas as pd
-
 
 # qgis stuff
 import processing

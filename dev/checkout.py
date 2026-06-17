@@ -7,6 +7,7 @@
 Master CLI tool for checkout after development sessions
 
 """
+
 # todo apply clean code principles
 # todo this workflow needs to be more stable in edge cases
 # todo handle when there is no action to stage, etc

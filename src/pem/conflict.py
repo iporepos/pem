@@ -7,6 +7,7 @@
 This is the complete API reference for the ``conflict`` python module of the ``pem`` system.
 
 """
+
 import glob
 
 # Native imports
@@ -29,7 +30,6 @@ from qgis.core import (
     QgsRasterLayer,
     QgsRasterBandStats,
 )
-
 
 # FUNCTIONS
 # ***********************************************************************

@@ -13,7 +13,6 @@ This is the complete API reference for the ``project`` python module of the ``pe
 
 """
 
-
 # IMPORTS
 # ***********************************************************************
 # import modules from other libs
