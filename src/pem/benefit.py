@@ -124,76 +124,14 @@ def _get_benefit_weight(df, scenario, user, attribute):
     return w
 
 
-def get_benefit_index(folder_project, scenario, attribute):
+def get_benefit_index(folder_project, scenario, attribute, uniform_weights=False):
     """
-    Calculate and map the spatial Benefit Index for a given scenario and socio-economic metric.
-
-    This function executes the core downscaling pipeline of the PEM framework's benefit
-    component. It maps aggregate socio-economic value (e.g., employment, revenue) back
-    to the marine space based on relative ocean use intensity.
-
-    **Mathematical Pipeline**
-
-    For each ocean user :math:`i`, the function reads its spatial intensity surface :math:`U_{i, j}`
-    across all grid cells :math:`j` and scales it linearly against the total onshore economic
-    benefit :math:`B_i` aggregated from coastal hubs:
-
-    .. math::
-
-        c_i = \\frac{B_i}{\sum_{j} U_{i, j}}
-
-    .. math::
-
-        B_{i, j} = c_i \cdot U_{i, j}
-
-    Individual scaled layers are summed into a cumulative absolute benefit surface, which
-    is then linearly fuzzified to a standard :math:`[0, 1]` range to represent relative
-    benefit hotspots.
-
-    :param folder_project: Path to the root project directory containing 'inputs' and 'outputs'.
-    :type folder_project: str or pathlib.Path
-    :param scenario: Name of the simulation scenario (matches folder name under ``inputs/users/``).
-    :type scenario: str
-    :param attribute: The targeted column header name in the benefit CSV file (e.g., ``'jobs_number'``).
-    :type attribute: str
-    :return: A list of file paths pointing to the individual, un-normalized spatial benefit rasters generated for each active user.
-    :rtype: list[pathlib.Path]
-
-    :raises FileNotFoundError: If the project directory structure, mandatory reference
-        rasters/vectors, or the core data file ``inputs/benefit/benefit_users.csv`` are missing.
-    :raises KeyError: If the provided ``attribute`` string does not exist as a column header
-        in the benefit database.
-
-    **File Inputs and Prerequisites**
-
-    The function dynamically infers and requires the following files:
-
-    * ``{folder_project}/inputs/benefit/benefit_users.csv``: Semicolon-separated database containing columns ``[scenario, user, hub, <attribute>]``.
-    * ``{folder_project}/inputs/users/{scenario}/*.tif``: User intensity surfaces. *Note: Files containing underscores ("_") are ignored as internal/intermediate layers.*
-    * ``{folder_project}/inputs/bathymetry.tif``: Reference raster utilized to determine spatial resolution, extent, and coordinate reference system (CRS).
-
-    **Side Effects & File Outputs**
-
-    Running this function populates the project directories with the following outputs:
-
-    * ``outputs/{scenario}/{scenario}_benefit.tif``: The final, cumulative, normalized (0 to 1) Benefit Index spatial raster.
-    * ``outputs/{scenario}/{scenario}_benefit_users.csv``: A clean summary table detailing the absolute total benefit weight (:math:`B_i`) allocated per evaluated sector.
-    * ``outputs/{scenario}/intermediate/benefit/benefit_{user}.tif``: Sector-specific absolute benefit density maps.
-    * ``outputs/{scenario}/intermediate/benefit/benefit_wsum.tif``: The un-normalized cumulative sum map of all downscaled benefits.
-
-    **Example**
-
-    .. code-block:: python
-
-        >>> from pem import benefit
-        >>> generated_rasters = benefit.get_benefit_index(
-        ...     folder_project="/workspaces/pem_project",
-        ...     scenario="baseline",
-        ...     attribute="jobs_number"
-        ... )
-        >>> print([p.name for p in generated_rasters])
-        ['benefit_cargo.tif', 'benefit_oil.tif', 'benefit_tourism.tif']
-
+    ...
+    :param uniform_weights: If ``True``, ignores the benefit CSV table and assigns
+        equal weight (``B_i = 1``) to all ocean users, producing a simple spatial
+        average. Default value = ``False``.
+    :type uniform_weights: bool
+    ...
     """
     _heading()
     _message(f"Get Benefit Index at {scenario}")
@@ -206,59 +144,51 @@ def get_benefit_index(folder_project, scenario, attribute):
     folder_output_sub = folder_output / "intermediate/benefit"
     folder_output_sub.mkdir(exist_ok=True)
 
-    file_df = folder_inputs / "benefit/benefit_users.csv"
-    df_benefit = pd.read_csv(file_df, sep=";", encoding="utf-8")
+    # only load the CSV if actually needed
+    df_benefit = None
+    if not uniform_weights:
+        file_df = folder_inputs / "benefit/benefit_users.csv"
+        df_benefit = pd.read_csv(file_df, sep=";", encoding="utf-8")
 
     folder_users = folder_inputs / f"users/{scenario}"
     ls_files = _get_users_maps(folder_users)
 
     ls_output_files = []
-
     ls_users = []
     ls_benefit = []
-
     weighted_sum = None
 
-    # loop over users (i)
     for user_file in ls_files[:]:
 
         _message(f"processing {user_file.name}")
         ls_users.append(user_file.name)
-        # load the user intensity fuzzy map U_ij
 
         raster_dict = _util_read_raster(user_file, n_band=1, metadata=True)
         u_map = raster_dict["data"][:].astype(np.float32)
-        # calculate the total intensity U_i = np.sum(U_ij)
         U = np.sum(u_map)
         _message(f"U sum: {U}")
 
-        # assess the global benefit for the user B_i
-        B = _get_benefit_weight(df_benefit, scenario, user_file.stem, attribute)
+        if uniform_weights:
+            B = 1.0
+        else:
+            B = _get_benefit_weight(df_benefit, scenario, user_file.stem, attribute)
         ls_benefit.append(B)
         _message(f"B: {B}")
 
-        # calculate the scaling constant for each user
-        # c = B_i / U_i
         c = B / U
         _message(f"c: {c}")
 
-        # map the spatial benefit:
-        # B_ij = c * U_ij
         b_map = c * u_map
-        b_map_sum = np.sum(b_map)
-        _message(f"b_map sum: {b_map_sum}")
+        _message(f"b_map sum: {np.sum(b_map)}")
 
         if weighted_sum is None:
             weighted_sum = np.zeros_like(b_map)
             out_metadata = raster_dict.get("metadata")
 
-        # Multiply the map by its weight and add it to the running total
         weighted_sum += b_map
 
-        # export B_ij to
         nm = "benefit_" + user_file.name
         fo = folder_output_sub / nm
-
         _message("writing benefit raster")
         _util_write_raster(
             grid_output=b_map,
@@ -270,7 +200,7 @@ def get_benefit_index(folder_project, scenario, attribute):
     _message(f"Saving sum ...")
     file_output = folder_output_sub / "benefit_wsum.tif"
     _util_write_raster(
-        grid_output=weighted_sum,  # Pass the cleaned data, not the array with NaNs
+        grid_output=weighted_sum,
         dc_metadata=out_metadata,
         file_output=str(file_output),
     )
@@ -281,12 +211,7 @@ def get_benefit_index(folder_project, scenario, attribute):
     fo = folder_output / f"{scenario}_benefit.tif"
     shutil.copy(src=ls[0], dst=fo)
 
-    df = pd.DataFrame(
-        {
-            "user": ls_users,
-            "benefit": ls_benefit,
-        }
-    )
+    df = pd.DataFrame({"user": ls_users, "benefit": ls_benefit})
     df["scenario"] = scenario
 
     fo = folder_output / f"{scenario}_benefit_users.csv"
