@@ -46,7 +46,6 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'api_benefit';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="author" title="About these documents" href="about.html" />
@@ -429,71 +428,16 @@
 <p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">benefit</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="pem.benefit.get_benefit_index">
-<span class="sig-prename descclassname"><span class="pre">pem.benefit.</span></span><span class="sig-name descname"><span class="pre">get_benefit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/benefit.html#get_benefit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.benefit.get_benefit_index" title="Link to this definition">#</a></dt>
-<dd><p>Calculate and map the spatial Benefit Index for a given scenario and socio-economic metric.</p>
-<p>This function executes the core downscaling pipeline of the PEM framework’s benefit
-component. It maps aggregate socio-economic value (e.g., employment, revenue) back
-to the marine space based on relative ocean use intensity.</p>
-<p><strong>Mathematical Pipeline</strong></p>
-<p>For each ocean user <span class="math notranslate nohighlight">\(i\)</span>, the function reads its spatial intensity surface <span class="math notranslate nohighlight">\(U_{i, j}\)</span>
-across all grid cells <span class="math notranslate nohighlight">\(j\)</span> and scales it linearly against the total onshore economic
-benefit <span class="math notranslate nohighlight">\(B_i\)</span> aggregated from coastal hubs:</p>
-<div class="math notranslate nohighlight">
-\[c_i = \frac{B_i}{\sum_{j} U_{i, j}}\]</div>
-<div class="math notranslate nohighlight">
-\[B_{i, j} = c_i \cdot U_{i, j}\]</div>
-<p>Individual scaled layers are summed into a cumulative absolute benefit surface, which
-is then linearly fuzzified to a standard <span class="math notranslate nohighlight">\([0, 1]\)</span> range to represent relative
-benefit hotspots.</p>
+<span class="sig-prename descclassname"><span class="pre">pem.benefit.</span></span><span class="sig-name descname"><span class="pre">get_benefit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attribute</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uniform_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/benefit.html#get_benefit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.benefit.get_benefit_index" title="Link to this definition">#</a></dt>
+<dd><p>…
+:param uniform_weights: If <code class="docutils literal notranslate"><span class="pre">True</span></code>, ignores the benefit CSV table and assigns</p>
+<blockquote>
+<div><p>equal weight (<code class="docutils literal notranslate"><span class="pre">B_i</span> <span class="pre">=</span> <span class="pre">1</span></code>) to all ocean users, producing a simple spatial
+average. Default value = <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</div></blockquote>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Path to the root project directory containing ‘inputs’ and ‘outputs’.</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – Name of the simulation scenario (matches folder name under <code class="docutils literal notranslate"><span class="pre">inputs/users/</span></code>).</p></li>
-<li><p><strong>attribute</strong> (<em>str</em>) – The targeted column header name in the benefit CSV file (e.g., <code class="docutils literal notranslate"><span class="pre">'jobs_number'</span></code>).</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of file paths pointing to the individual, un-normalized spatial benefit rasters generated for each active user.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list[pathlib.Path]</p>
-</dd>
-<dt class="field-even">Raises<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>FileNotFoundError</strong> – If the project directory structure, mandatory reference
-rasters/vectors, or the core data file <code class="docutils literal notranslate"><span class="pre">inputs/benefit/benefit_users.csv</span></code> are missing.</p></li>
-<li><p><strong>KeyError</strong> – If the provided <code class="docutils literal notranslate"><span class="pre">attribute</span></code> string does not exist as a column header
-in the benefit database.</p></li>
-</ul>
-</dd>
 </dl>
-<p><strong>File Inputs and Prerequisites</strong></p>
-<p>The function dynamically infers and requires the following files:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/benefit/benefit_users.csv</span></code>: Semicolon-separated database containing columns <code class="docutils literal notranslate"><span class="pre">[scenario,</span> <span class="pre">user,</span> <span class="pre">hub,</span> <span class="pre">&lt;attribute&gt;]</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/users/{scenario}/*.tif</span></code>: User intensity surfaces. <em>Note: Files containing underscores (“_”) are ignored as internal/intermediate layers.</em></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">{folder_project}/inputs/bathymetry.tif</span></code>: Reference raster utilized to determine spatial resolution, extent, and coordinate reference system (CRS).</p></li>
-</ul>
-<p><strong>Side Effects &amp; File Outputs</strong></p>
-<p>Running this function populates the project directories with the following outputs:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/{scenario}_benefit.tif</span></code>: The final, cumulative, normalized (0 to 1) Benefit Index spatial raster.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/{scenario}_benefit_users.csv</span></code>: A clean summary table detailing the absolute total benefit weight (<span class="math notranslate nohighlight">\(B_i\)</span>) allocated per evaluated sector.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/intermediate/benefit/benefit_{user}.tif</span></code>: Sector-specific absolute benefit density maps.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">outputs/{scenario}/intermediate/benefit/benefit_wsum.tif</span></code>: The un-normalized cumulative sum map of all downscaled benefits.</p></li>
-</ul>
-<p><strong>Example</strong></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pem</span><span class="w"> </span><span class="kn">import</span> <span class="n">benefit</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">generated_rasters</span> <span class="o">=</span> <span class="n">benefit</span><span class="o">.</span><span class="n">get_benefit_index</span><span class="p">(</span>
-<span class="gp">... </span>    <span class="n">folder_project</span><span class="o">=</span><span class="s2">&quot;/workspaces/pem_project&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">scenario</span><span class="o">=</span><span class="s2">&quot;baseline&quot;</span><span class="p">,</span>
-<span class="gp">... </span>    <span class="n">attribute</span><span class="o">=</span><span class="s2">&quot;jobs_number&quot;</span>
-<span class="gp">... </span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">([</span><span class="n">p</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">generated_rasters</span><span class="p">])</span>
-<span class="go">[&#39;benefit_cargo.tif&#39;, &#39;benefit_oil.tif&#39;, &#39;benefit_tourism.tif&#39;]</span>
-</pre></div>
-</div>
+<p>…</p>
 </dd></dl>
 
 </section>
