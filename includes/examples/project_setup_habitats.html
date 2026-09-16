@@ -27,18 +27,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=2fea6348"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -404,28 +404,28 @@
 
 <span class="c1"># define the paths to the module file</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;path/to/project.py&quot;</span> <span class="c1"># change here</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s2">"path/to/project.py"</span> <span class="c1"># change here</span>
 
 <span class="c1"># define the project folder</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="s2">&quot;path/to/folder&quot;</span> <span class="c1"># change here</span>
+<span class="n">folder</span> <span class="o">=</span> <span class="s2">"path/to/folder"</span> <span class="c1"># change here</span>
 
 <span class="c1"># define habitat code/id field</span>
 <span class="c1"># ------------------------------------------------------</span>
-<span class="n">field</span> <span class="o">=</span> <span class="s2">&quot;code&quot;</span>
+<span class="n">field</span> <span class="o">=</span> <span class="s2">"code"</span>
 
 <span class="c1"># define habitats grouping scheme for benthic</span>
 <span class="c1"># ------------------------------------------------------</span>
 
 <span class="n">group_benthic</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_a&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB3&quot;</span><span class="p">,</span> <span class="s2">&quot;MC3&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_b&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MB4&quot;</span><span class="p">,</span> <span class="s2">&quot;MB5&quot;</span><span class="p">,</span> <span class="s2">&quot;MB6&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_b&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MC4&quot;</span><span class="p">,</span> <span class="s2">&quot;MC5&quot;</span><span class="p">,</span> <span class="s2">&quot;MC6&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_c&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD3&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_d&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MD4&quot;</span><span class="p">,</span> <span class="s2">&quot;MD5&quot;</span><span class="p">,</span> <span class="s2">&quot;MD6&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_e&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME1&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_f&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;ME4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF4&quot;</span><span class="p">,</span> <span class="s2">&quot;MF5&quot;</span><span class="p">]},</span>
-    <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;benthic_f&quot;</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;MG4&quot;</span><span class="p">,</span> <span class="s2">&quot;MG6&quot;</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_a"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MB3"</span><span class="p">,</span> <span class="s2">"MC3"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_b"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MB4"</span><span class="p">,</span> <span class="s2">"MB5"</span><span class="p">,</span> <span class="s2">"MB6"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_b"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MC4"</span><span class="p">,</span> <span class="s2">"MC5"</span><span class="p">,</span> <span class="s2">"MC6"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_c"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MD3"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_d"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MD4"</span><span class="p">,</span> <span class="s2">"MD5"</span><span class="p">,</span> <span class="s2">"MD6"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_e"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ME1"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_f"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ME4"</span><span class="p">,</span> <span class="s2">"MF4"</span><span class="p">,</span> <span class="s2">"MF5"</span><span class="p">]},</span>
+    <span class="p">{</span><span class="s2">"name"</span><span class="p">:</span> <span class="s2">"benthic_f"</span><span class="p">,</span> <span class="s2">"values"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"MG4"</span><span class="p">,</span> <span class="s2">"MG6"</span><span class="p">]},</span>
 <span class="p">]</span>
 
 <span class="c1"># define habitats grouping scheme for pelagic</span>
@@ -435,7 +435,7 @@
 <span class="c1"># call the function</span>
 <span class="c1"># ------------------------------------------------------</span>
 <span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">&quot;module&quot;</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
+<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">"module"</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
 <span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
 <span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
@@ -443,12 +443,12 @@
     <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
     <span class="n">habitat_field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
     <span class="n">groups</span><span class="o">=</span><span class="p">{</span>
-        <span class="s2">&quot;benthic&quot;</span><span class="p">:</span> <span class="n">group_benthic</span><span class="p">,</span>
-        <span class="s2">&quot;pelagic&quot;</span><span class="p">:</span> <span class="n">group_pelagic</span>
+        <span class="s2">"benthic"</span><span class="p">:</span> <span class="n">group_benthic</span><span class="p">,</span>
+        <span class="s2">"pelagic"</span><span class="p">:</span> <span class="n">group_pelagic</span>
     <span class="p">},</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot; ----- DONE -----&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">" ----- DONE -----"</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -508,8 +508,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -543,7 +543,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>

@@ -26,18 +26,18 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
 
     <script src="../../_static/documentation_options.js?v=2fea6348"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
@@ -400,7 +400,7 @@
 <span class="c1"># Copyright (C) 2025 The Project Authors</span>
 <span class="c1"># See pyproject.toml for authors/maintainers.</span>
 <span class="c1"># See LICENSE for license details.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 <span class="sd">This is the complete API reference for the ``risk`` python module of the ``pem`` system.</span>
 
 <span class="sd">.. seealso::</span>
@@ -408,7 +408,7 @@
 <span class="sd">   Learn how to derive the Habitat Risk Index in</span>
 <span class="sd">   :ref:`Tutorial: Habitat Risk Index &lt;guide-risk&gt;`.</span>
 
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shutil</span>
@@ -439,25 +439,25 @@
 <span class="c1"># ... {develop}</span>
 
 
-<span class="n">INVEST_JSON</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="n">INVEST_JSON</span> <span class="o">=</span> <span class="s2">"""</span>
 <span class="s2">{</span>
-<span class="s2">    &quot;args&quot;: {</span>
-<span class="s2">        &quot;aoi_vector_path&quot;: &quot;[aoi]&quot;,</span>
-<span class="s2">        &quot;criteria_table_path&quot;: &quot;[criteria]&quot;,</span>
-<span class="s2">        &quot;decay_eq&quot;: &quot;linear&quot;,</span>
-<span class="s2">        &quot;info_table_path&quot;: &quot;[info]&quot;,</span>
-<span class="s2">        &quot;max_rating&quot;: &quot;3&quot;,</span>
-<span class="s2">        &quot;n_overlapping_stressors&quot;: &quot;10&quot;,</span>
-<span class="s2">        &quot;resolution&quot;: &quot;[res]&quot;,</span>
-<span class="s2">        &quot;results_suffix&quot;: &quot;[suffix]&quot;,</span>
-<span class="s2">        &quot;risk_eq&quot;: &quot;euclidean&quot;,</span>
-<span class="s2">        &quot;visualize_outputs&quot;: false,</span>
-<span class="s2">        &quot;workspace_dir&quot;: &quot;[workspace]&quot;</span>
+<span class="s2">    "args": {</span>
+<span class="s2">        "aoi_vector_path": "[aoi]",</span>
+<span class="s2">        "criteria_table_path": "[criteria]",</span>
+<span class="s2">        "decay_eq": "linear",</span>
+<span class="s2">        "info_table_path": "[info]",</span>
+<span class="s2">        "max_rating": "3",</span>
+<span class="s2">        "n_overlapping_stressors": "10",</span>
+<span class="s2">        "resolution": "[res]",</span>
+<span class="s2">        "results_suffix": "[suffix]",</span>
+<span class="s2">        "risk_eq": "euclidean",</span>
+<span class="s2">        "visualize_outputs": false,</span>
+<span class="s2">        "workspace_dir": "[workspace]"</span>
 <span class="s2">    },</span>
-<span class="s2">    &quot;invest_version&quot;: &quot;3.16.0&quot;,</span>
-<span class="s2">    &quot;model_id&quot;: &quot;habitat_risk_assessment&quot;</span>
+<span class="s2">    "invest_version": "3.16.0",</span>
+<span class="s2">    "model_id": "habitat_risk_assessment"</span>
 <span class="s2">}</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">"""</span>
 
 <span class="c1"># Project-level imports</span>
 <span class="c1"># =======================================================================</span>
@@ -469,29 +469,29 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt;&gt;&gt; pem @ risk: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">" &gt;&gt;&gt; pem @ risk: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_message_end</span><span class="p">():</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;DONE&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"DONE"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_heading</span><span class="p">():</span>
-    <span class="nb">print</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="s2">&quot;=&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="mi">80</span> <span class="o">*</span> <span class="s2">"="</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_file_checker</span><span class="p">(</span><span class="n">ls</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt;&gt;&gt; check for </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">" &gt;&gt;&gt; check for </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_folder_checker</span><span class="p">(</span><span class="n">ls</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">p</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
-            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot; &gt;&gt;&gt; check for </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="sa">f</span><span class="s2">" &gt;&gt;&gt; check for </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">):</span>
@@ -499,32 +499,32 @@
     <span class="n">pvars</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="n">folder_project</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="s2">&quot;inputs&quot;</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_outputs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="s2">&quot;outputs&quot;</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_project"</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="s2">"inputs"</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_outputs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">folder_project</span> <span class="o">/</span> <span class="s2">"outputs"</span>
 
     <span class="c1"># infer input database</span>
     <span class="c1"># ----------------------------------------</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;vectors&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;vectors.gpkg&quot;</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"vectors"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span> <span class="o">/</span> <span class="s2">"vectors.gpkg"</span>
 
     <span class="c1"># infer reference raster</span>
     <span class="c1"># ----------------------------------------</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="s2">&quot;bathymetry.tif&quot;</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"refraster"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span> <span class="o">/</span> <span class="s2">"bathymetry.tif"</span>
 
     <span class="c1"># run checks</span>
     <span class="c1"># ----------------------------------------</span>
     <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">folder_project</span><span class="p">]</span>
     <span class="n">_folder_checker</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
 
-    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;vectors&quot;</span><span class="p">],</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">]]</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">pvars</span><span class="p">[</span><span class="s2">"vectors"</span><span class="p">],</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"refraster"</span><span class="p">]]</span>
     <span class="n">_file_checker</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
 
     <span class="c1"># get extra parameters</span>
     <span class="c1"># ===============================================</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_crs</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">],</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_extent</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
-    <span class="n">res_dc</span> <span class="o">=</span> <span class="n">_util_get_raster_resolution</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;refraster&quot;</span><span class="p">])</span>
-    <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;res&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_dc</span><span class="p">[</span><span class="s2">&quot;xres&quot;</span><span class="p">]</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"crs"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_crs</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">"refraster"</span><span class="p">],</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"ext"</span><span class="p">]</span> <span class="o">=</span> <span class="n">_util_get_raster_extent</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">"refraster"</span><span class="p">])</span>
+    <span class="n">res_dc</span> <span class="o">=</span> <span class="n">_util_get_raster_resolution</span><span class="p">(</span><span class="n">pvars</span><span class="p">[</span><span class="s2">"refraster"</span><span class="p">])</span>
+    <span class="n">pvars</span><span class="p">[</span><span class="s2">"res"</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_dc</span><span class="p">[</span><span class="s2">"xres"</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">pvars</span>
 
@@ -536,7 +536,7 @@
 <div class="viewcode-block" id="get_risk_index">
 <a class="viewcode-back" href="../../api_risk.html#pem.risk.get_risk_index">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">get_risk_index</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">hra_benthic</span><span class="p">,</span> <span class="n">hra_pelagic</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculate and normalize the total risk index by combining</span>
 <span class="sd">    benthic and pelagic Habitat Risk Assessment (HRA) results.</span>
 
@@ -561,74 +561,74 @@
 
 <span class="sd">    .. include:: includes/examples/risk_get_risk.rst</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_heading</span><span class="p">()</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Get Risk Index&quot;</span><span class="p">)</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Get Risk Index"</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Setup</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
-    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span>
-    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span>
-    <span class="n">folder_outputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_outputs&quot;</span><span class="p">]</span>
-    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">folder_outputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">folder_output_sub</span> <span class="o">=</span> <span class="n">folder_outputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/intermediate&quot;</span>
+    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_project"</span><span class="p">]</span>
+    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span>
+    <span class="n">folder_outputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_outputs"</span><span class="p">]</span>
+    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">folder_outputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">folder_output_sub</span> <span class="o">=</span> <span class="n">folder_outputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/intermediate"</span>
 
-    <span class="n">dst_ext</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;ext&quot;</span><span class="p">]</span>
-    <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;crs&quot;</span><span class="p">]</span>
-    <span class="n">dst_extent</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">&quot;xmin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">&quot;xmax&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">&quot;ymin&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">&quot;ymax&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> [EPSG:</span><span class="si">{</span><span class="n">dst_crs</span><span class="si">}</span><span class="s1">]&#39;</span>
+    <span class="n">dst_ext</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"ext"</span><span class="p">]</span>
+    <span class="n">dst_crs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"crs"</span><span class="p">]</span>
+    <span class="n">dst_extent</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">'</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">"xmin"</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">"xmax"</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">"ymin"</span><span class="p">]</span><span class="si">}</span><span class="s1">,</span><span class="si">{</span><span class="n">dst_ext</span><span class="p">[</span><span class="s2">"ymax"</span><span class="p">]</span><span class="si">}</span><span class="s1"> [EPSG:</span><span class="si">{</span><span class="n">dst_crs</span><span class="si">}</span><span class="s1">]'</span>
 
-    <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_output</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_risk.tif&quot;</span>
+    <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_output</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_risk.tif"</span>
 
-    <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;benthic&quot;</span><span class="p">:</span> <span class="n">hra_benthic</span><span class="p">,</span> <span class="s2">&quot;pelagic&quot;</span><span class="p">:</span> <span class="n">hra_pelagic</span><span class="p">}</span>
+    <span class="n">dc</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"benthic"</span><span class="p">:</span> <span class="n">hra_benthic</span><span class="p">,</span> <span class="s2">"pelagic"</span><span class="p">:</span> <span class="n">hra_pelagic</span><span class="p">}</span>
 
     <span class="c1"># Loop</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="k">for</span> <span class="n">hab</span> <span class="ow">in</span> <span class="n">dc</span><span class="p">:</span>
-        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing HRA - </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> ...&quot;</span><span class="p">)</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Processing HRA - </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> ..."</span><span class="p">)</span>
         <span class="n">fi</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dc</span><span class="p">[</span><span class="n">hab</span><span class="p">])</span>
 
-        <span class="n">fo_sub</span> <span class="o">=</span> <span class="n">folder_output_sub</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_hra_</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.tif&quot;</span>
+        <span class="n">fo_sub</span> <span class="o">=</span> <span class="n">folder_output_sub</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_hra_</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.tif"</span>
 
         <span class="n">dc_params</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fi</span><span class="p">),</span>
-            <span class="s2">&quot;SOURCE_CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;TARGET_CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;RESAMPLING&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-            <span class="s2">&quot;NODATA&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">99999</span><span class="p">,</span>
-            <span class="s2">&quot;TARGET_RESOLUTION&quot;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
-            <span class="s2">&quot;OPTIONS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;DATA_TYPE&quot;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-            <span class="s2">&quot;TARGET_EXTENT&quot;</span><span class="p">:</span> <span class="n">dst_ext</span><span class="p">,</span>
-            <span class="s2">&quot;TARGET_EXTENT_CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-            <span class="s2">&quot;MULTITHREADING&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
-            <span class="s2">&quot;EXTRA&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">),</span>
+            <span class="s2">"INPUT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fi</span><span class="p">),</span>
+            <span class="s2">"SOURCE_CRS"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"TARGET_CRS"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"RESAMPLING"</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+            <span class="s2">"NODATA"</span><span class="p">:</span> <span class="o">-</span><span class="mi">99999</span><span class="p">,</span>
+            <span class="s2">"TARGET_RESOLUTION"</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
+            <span class="s2">"OPTIONS"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"DATA_TYPE"</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+            <span class="s2">"TARGET_EXTENT"</span><span class="p">:</span> <span class="n">dst_ext</span><span class="p">,</span>
+            <span class="s2">"TARGET_EXTENT_CRS"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">"MULTITHREADING"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">"EXTRA"</span><span class="p">:</span> <span class="s2">""</span><span class="p">,</span>
+            <span class="s2">"OUTPUT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;gdal:warpreproject&quot;</span><span class="p">,</span> <span class="n">dc_params</span><span class="p">)</span>
+        <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"gdal:warpreproject"</span><span class="p">,</span> <span class="n">dc_params</span><span class="p">)</span>
 
     <span class="c1"># add hra</span>
     <span class="c1"># -----------------------------------</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Adding HRA ...&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Adding HRA ..."</span><span class="p">)</span>
     <span class="n">name_benthic</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">hra_benthic</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>
     <span class="n">name_pelagic</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">hra_pelagic</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span>
 
-    <span class="n">fo_sub</span> <span class="o">=</span> <span class="n">folder_output_sub</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_hra_sum.tif&quot;</span>
+    <span class="n">fo_sub</span> <span class="o">=</span> <span class="n">folder_output_sub</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_hra_sum.tif"</span>
 
     <span class="n">dc_parameters</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;LAYERS&quot;</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">hra_benthic</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">hra_pelagic</span><span class="p">)],</span>
-        <span class="s2">&quot;EXPRESSION&quot;</span><span class="p">:</span> <span class="s1">&#39;&quot;</span><span class="si">{}</span><span class="s1">@1&quot; + &quot;</span><span class="si">{}</span><span class="s1">@1&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_benthic</span><span class="p">,</span> <span class="n">name_pelagic</span><span class="p">),</span>
-        <span class="s2">&quot;EXTENT&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;CELL_SIZE&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;CRS&quot;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">),</span>
+        <span class="s2">"LAYERS"</span><span class="p">:</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">hra_benthic</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">hra_pelagic</span><span class="p">)],</span>
+        <span class="s2">"EXPRESSION"</span><span class="p">:</span> <span class="s1">'"</span><span class="si">{}</span><span class="s1">@1" + "</span><span class="si">{}</span><span class="s1">@1"'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name_benthic</span><span class="p">,</span> <span class="n">name_pelagic</span><span class="p">),</span>
+        <span class="s2">"EXTENT"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"CELL_SIZE"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"CRS"</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="s2">"OUTPUT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:rastercalc&quot;</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
+    <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"native:rastercalc"</span><span class="p">,</span> <span class="n">dc_parameters</span><span class="p">)</span>
 
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Normalizing HRA ...&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Normalizing HRA ..."</span><span class="p">)</span>
     <span class="n">ls</span> <span class="o">=</span> <span class="n">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="o">=</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">fo_sub</span><span class="p">)])</span>
     <span class="n">fo_sub2</span> <span class="o">=</span> <span class="n">ls</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">shutil</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">fo_sub2</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">fo</span><span class="p">)</span>
@@ -640,7 +640,7 @@
 <div class="viewcode-block" id="setup_hra_model">
 <a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_hra_model">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_model</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Execute the full configuration suite required to initialize an InVEST HRA model.</span>
 
 <span class="sd">    :param folder_project: Path to the root project directory</span>
@@ -652,11 +652,11 @@
 
 <span class="sd">    .. include:: includes/examples/risk_setup_hra.rst</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_heading</span><span class="p">()</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup HRA Model&quot;</span><span class="p">)</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Setup HRA Model"</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="n">setup_hra_info</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
     <span class="n">setup_hra_scores</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">)</span>
@@ -669,7 +669,7 @@
 <div class="viewcode-block" id="setup_hra_scores">
 <a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_hra_scores">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_scores</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Generate the CSV scoring matrices for habitats and stressors based on project info tables.</span>
 
 <span class="sd">    :param folder_project: Path to the root project directory</span>
@@ -678,42 +678,42 @@
 <span class="sd">    :type scenario: str</span>
 <span class="sd">    :return: List of paths to the generated score CSV files</span>
 <span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_heading</span><span class="p">()</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup HRA info table&quot;</span><span class="p">)</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Setup HRA info table"</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Setup</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
-    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span>
-    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span>
-    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">&quot;habitats&quot;</span>
-    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_project"</span><span class="p">]</span>
+    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span>
+    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">"habitats"</span>
+    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="n">ls_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;benthic&quot;</span><span class="p">,</span> <span class="s2">&quot;pelagic&quot;</span><span class="p">]</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"benthic"</span><span class="p">,</span> <span class="s2">"pelagic"</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="n">hab</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
 
-        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">_message</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
 
-        <span class="n">fi</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv&quot;</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+        <span class="n">fi</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv"</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
 
-        <span class="n">df_habitats</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;TYPE == &#39;HABITAT&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="n">df_stressors</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;TYPE == &#39;STRESSOR&#39;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">df_habitats</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"TYPE == 'HABITAT'"</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">df_stressors</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">"TYPE == 'STRESSOR'"</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_scores.csv&quot;</span>
-        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- saving table ...&quot;</span><span class="p">)</span>
+        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_scores.csv"</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- saving table ..."</span><span class="p">)</span>
         <span class="n">_util_generate_hra_scores</span><span class="p">(</span>
-            <span class="n">habitats</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_habitats</span><span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">]),</span>
-            <span class="n">stressors</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_stressors</span><span class="p">[</span><span class="s2">&quot;NAME&quot;</span><span class="p">]),</span>
+            <span class="n">habitats</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_habitats</span><span class="p">[</span><span class="s2">"NAME"</span><span class="p">]),</span>
+            <span class="n">stressors</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">df_stressors</span><span class="p">[</span><span class="s2">"NAME"</span><span class="p">]),</span>
             <span class="n">output_path</span><span class="o">=</span><span class="n">fo</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">ls_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
@@ -726,7 +726,7 @@
 <div class="viewcode-block" id="setup_hra_info">
 <a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_hra_info">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_info</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">,</span> <span class="n">buffers</span><span class="o">=</span><span class="mi">10000</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create the HRA information tables linking habitat</span>
 <span class="sd">    and stressor names to their respective file paths.</span>
 
@@ -738,77 +738,77 @@
 <span class="sd">    :type buffers: int</span>
 <span class="sd">    :return: List of paths to the generated info CSV files</span>
 <span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_heading</span><span class="p">()</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup HRA info table&quot;</span><span class="p">)</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Setup HRA info table"</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Setup</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
-    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span>
-    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span>
-    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">&quot;habitats&quot;</span>
-    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_project"</span><span class="p">]</span>
+    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span>
+    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">"habitats"</span>
+    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
 
     <span class="n">ls_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
     <span class="c1"># handle stressors</span>
     <span class="c1"># ---------------------------------------------------------</span>
-    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- Handling stressors info ...&quot;</span>
-    <span class="n">ls_users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">folder_users</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">&quot;*_footprint.tif&quot;</span><span class="p">))</span>
-    <span class="n">ls_users_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- Handling stressors info ..."</span>
+    <span class="n">ls_users</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">folder_users</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*_footprint.tif"</span><span class="p">))</span>
+    <span class="n">ls_users_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">)</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"_"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
     <span class="n">ls_users_paths</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">s</span><span class="p">))</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
-    <span class="n">ls_users_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;STRESSOR&quot;</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
+    <span class="n">ls_users_types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"STRESSOR"</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
     <span class="n">ls_users_buffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">buffers</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">ls_users</span><span class="p">]</span>
     <span class="n">dc_users</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">ls_users_names</span><span class="p">,</span>
-        <span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">ls_users_paths</span><span class="p">,</span>
-        <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="n">ls_users_types</span><span class="p">,</span>
-        <span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">:</span> <span class="n">ls_users_buffs</span><span class="p">,</span>
+        <span class="s2">"NAME"</span><span class="p">:</span> <span class="n">ls_users_names</span><span class="p">,</span>
+        <span class="s2">"PATH"</span><span class="p">:</span> <span class="n">ls_users_paths</span><span class="p">,</span>
+        <span class="s2">"TYPE"</span><span class="p">:</span> <span class="n">ls_users_types</span><span class="p">,</span>
+        <span class="s2">"STRESSOR BUFFER (meters)"</span><span class="p">:</span> <span class="n">ls_users_buffs</span><span class="p">,</span>
     <span class="p">}</span>
     <span class="n">df_users</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc_users</span><span class="p">)</span>
 
     <span class="c1"># handle habitats</span>
     <span class="c1"># ---------------------------------------------------------</span>
-    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- Handling habitats info ...&quot;</span>
+    <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- Handling habitats info ..."</span>
     <span class="n">_message</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
-    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;benthic&quot;</span><span class="p">,</span> <span class="s2">&quot;pelagic&quot;</span><span class="p">]</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"benthic"</span><span class="p">,</span> <span class="s2">"pelagic"</span><span class="p">]</span>
 
     <span class="c1"># habitat loop</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="k">for</span> <span class="n">hab</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
-        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">prefix</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">"</span>
         <span class="n">_message</span><span class="p">(</span><span class="n">prefix</span><span class="p">)</span>
-        <span class="n">habitats_csv</span> <span class="o">=</span> <span class="n">folder_habitats</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;habitats_</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.csv&quot;</span>
-        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">habitats_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+        <span class="n">habitats_csv</span> <span class="o">=</span> <span class="n">folder_habitats</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"habitats_</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">.csv"</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">habitats_csv</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">";"</span><span class="p">)</span>
 
         <span class="c1"># Iterate over rows as dictionaries</span>
         <span class="n">ls_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">ls_paths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">ls_types</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="n">ls_buffers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">row_dict</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">&quot;records&quot;</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">row_dict</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s2">"records"</span><span class="p">):</span>
 
-            <span class="n">nm</span> <span class="o">=</span> <span class="n">row_dict</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span>
+            <span class="n">nm</span> <span class="o">=</span> <span class="n">row_dict</span><span class="p">[</span><span class="s2">"group_name"</span><span class="p">]</span>
 
-            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- </span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-            <span class="n">fi</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_habitats</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">.tif&quot;</span><span class="p">)</span>
+            <span class="n">fi</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_habitats</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">nm</span><span class="si">}</span><span class="s2">.tif"</span><span class="p">)</span>
 
             <span class="n">ls_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nm</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
             <span class="n">ls_paths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
-            <span class="n">ls_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;HABITAT&quot;</span><span class="p">)</span>
-            <span class="n">ls_buffers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            <span class="n">ls_types</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"HABITAT"</span><span class="p">)</span>
+            <span class="n">ls_buffers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
 
         <span class="n">dc_out</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;NAME&quot;</span><span class="p">:</span> <span class="n">ls_names</span><span class="p">,</span>
-            <span class="s2">&quot;PATH&quot;</span><span class="p">:</span> <span class="n">ls_paths</span><span class="p">,</span>
-            <span class="s2">&quot;TYPE&quot;</span><span class="p">:</span> <span class="n">ls_types</span><span class="p">,</span>
-            <span class="s2">&quot;STRESSOR BUFFER (meters)&quot;</span><span class="p">:</span> <span class="n">ls_buffers</span><span class="p">,</span>
+            <span class="s2">"NAME"</span><span class="p">:</span> <span class="n">ls_names</span><span class="p">,</span>
+            <span class="s2">"PATH"</span><span class="p">:</span> <span class="n">ls_paths</span><span class="p">,</span>
+            <span class="s2">"TYPE"</span><span class="p">:</span> <span class="n">ls_types</span><span class="p">,</span>
+            <span class="s2">"STRESSOR BUFFER (meters)"</span><span class="p">:</span> <span class="n">ls_buffers</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">df_hab</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dc_out</span><span class="p">)</span>
 
@@ -817,9 +817,9 @@
 
         <span class="c1"># save</span>
         <span class="c1"># ---------------------------------------------------------</span>
-        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- saving table ...&quot;</span><span class="p">)</span>
-        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv&quot;</span>
-        <span class="n">df_out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">fo</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">prefix</span><span class="si">}</span><span class="s2"> -- saving table ..."</span><span class="p">)</span>
+        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv"</span>
+        <span class="n">df_out</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">fo</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">","</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">"utf-8"</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">ls_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
 
     <span class="n">_message_end</span><span class="p">()</span>
@@ -830,7 +830,7 @@
 <div class="viewcode-block" id="setup_hra_json">
 <a class="viewcode-back" href="../../api_risk.html#pem.risk.setup_hra_json">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_hra_json</span><span class="p">(</span><span class="n">folder_project</span><span class="p">,</span> <span class="n">scenario</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Configure and save InVEST model parameter files in JSON format for the specified scenario.</span>
 
 <span class="sd">    :param folder_project: Path to the root project directory</span>
@@ -839,52 +839,52 @@
 <span class="sd">    :type scenario: str</span>
 <span class="sd">    :return: List of paths to the created JSON configuration files</span>
 <span class="sd">    :rtype: list</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">_heading</span><span class="p">()</span>
-    <span class="n">_message</span><span class="p">(</span><span class="s2">&quot;Setup HRA JSON file&quot;</span><span class="p">)</span>
-    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Setup HRA JSON file"</span><span class="p">)</span>
+    <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scenario: </span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
     <span class="c1"># Setup</span>
     <span class="c1"># ---------------------------------------------------------</span>
     <span class="n">pvars</span> <span class="o">=</span> <span class="n">_get_project_vars</span><span class="p">(</span><span class="n">folder_project</span><span class="p">)</span>
 
-    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_project&quot;</span><span class="p">]</span>
-    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_outputs&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/intermediate/hra&quot;</span>
+    <span class="n">folder_project</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_project"</span><span class="p">]</span>
+    <span class="n">folder_output</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_outputs"</span><span class="p">]</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">/intermediate/hra"</span>
     <span class="n">folder_output</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;folder_inputs&quot;</span><span class="p">]</span>
-    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">&quot;habitats&quot;</span>
-    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">&quot;</span>
-    <span class="n">folder_roi</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">&quot;roi&quot;</span>
+    <span class="n">folder_inputs</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"folder_inputs"</span><span class="p">]</span>
+    <span class="n">folder_habitats</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">"habitats"</span>
+    <span class="n">folder_users</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"users/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">folder_risk</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"risk/</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">"</span>
+    <span class="n">folder_roi</span> <span class="o">=</span> <span class="n">folder_inputs</span> <span class="o">/</span> <span class="s2">"roi"</span>
 
-    <span class="n">aoi_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_roi</span> <span class="o">/</span> <span class="s2">&quot;roi.shp&quot;</span><span class="p">)</span>
-    <span class="n">resolution</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">&quot;res&quot;</span><span class="p">]</span>
+    <span class="n">aoi_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_roi</span> <span class="o">/</span> <span class="s2">"roi.shp"</span><span class="p">)</span>
+    <span class="n">resolution</span> <span class="o">=</span> <span class="n">pvars</span><span class="p">[</span><span class="s2">"res"</span><span class="p">]</span>
 
     <span class="n">ls_outputs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;benthic&quot;</span><span class="p">,</span> <span class="s2">&quot;pelagic&quot;</span><span class="p">]</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"benthic"</span><span class="p">,</span> <span class="s2">"pelagic"</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">hab</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
 
-        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- setting up JSON file ... &quot;</span><span class="p">)</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- setting up JSON file ... "</span><span class="p">)</span>
 
-        <span class="n">info_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv&quot;</span><span class="p">)</span>
-        <span class="n">criteria_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_scores.csv&quot;</span><span class="p">)</span>
-        <span class="n">suffix</span> <span class="o">=</span> <span class="n">folder_project</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">hab</span>
+        <span class="n">info_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_info.csv"</span><span class="p">)</span>
+        <span class="n">criteria_file</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_scores.csv"</span><span class="p">)</span>
+        <span class="n">suffix</span> <span class="o">=</span> <span class="n">folder_project</span><span class="o">.</span><span class="n">stem</span> <span class="o">+</span> <span class="s2">"-"</span> <span class="o">+</span> <span class="n">hab</span>
 
         <span class="c1"># Handle model file for InVEST</span>
         <span class="c1"># -----------------------------------</span>
         <span class="n">json_string</span> <span class="o">=</span> <span class="n">INVEST_JSON</span><span class="p">[:]</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[aoi]&quot;</span><span class="p">,</span> <span class="n">aoi_file</span><span class="p">)</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[info]&quot;</span><span class="p">,</span> <span class="n">info_file</span><span class="p">)</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[res]&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolution</span><span class="p">))</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[suffix]&quot;</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[criteria]&quot;</span><span class="p">,</span> <span class="n">criteria_file</span><span class="p">)</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;[workspace]&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_output</span><span class="p">))</span>
-        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[aoi]"</span><span class="p">,</span> <span class="n">aoi_file</span><span class="p">)</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[info]"</span><span class="p">,</span> <span class="n">info_file</span><span class="p">)</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[res]"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">resolution</span><span class="p">))</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[suffix]"</span><span class="p">,</span> <span class="n">suffix</span><span class="p">)</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[criteria]"</span><span class="p">,</span> <span class="n">criteria_file</span><span class="p">)</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"[workspace]"</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">folder_output</span><span class="p">))</span>
+        <span class="n">json_string</span> <span class="o">=</span> <span class="n">json_string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"</span><span class="se">\\</span><span class="s2">"</span><span class="p">,</span> <span class="s2">"/"</span><span class="p">)</span>
 
-        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- Saving ... &quot;</span><span class="p">)</span>
-        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_model.json&quot;</span>
-        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fo</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2"> -- Saving ... "</span><span class="p">)</span>
+        <span class="n">fo</span> <span class="o">=</span> <span class="n">folder_risk</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">hab</span><span class="si">}</span><span class="s2">_model.json"</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fo</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json_string</span><span class="p">)</span>
             <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="n">ls_outputs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fo</span><span class="p">)</span>
@@ -895,7 +895,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_generate_hra_scores</span><span class="p">(</span><span class="n">habitats</span><span class="p">,</span> <span class="n">stressors</span><span class="p">,</span> <span class="n">output_path</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Create a standardized HRA criteria template CSV with default</span>
 <span class="sd">    ratings for resilience and overlap attributes.</span>
 
@@ -916,7 +916,7 @@
 <span class="sd">        ``RATING``, ``DQ`` (Data Quality), and ``WEIGHT``. It includes predefined rows for</span>
 <span class="sd">        recruitment, mortality, connectivity, and various stressor-overlap properties.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">habitats</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">habitats</span><span class="p">)</span>
     <span class="n">stressors</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">stressors</span><span class="p">)</span>
 
@@ -929,14 +929,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">get_score_columns</span><span class="p">():</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">habitats</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;RATING&quot;</span><span class="p">,</span> <span class="s2">&quot;DQ&quot;</span><span class="p">,</span> <span class="s2">&quot;WEIGHT&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;E/C&quot;</span><span class="p">,</span> <span class="s2">&quot;Rating Instruction&quot;</span><span class="p">]</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">"RATING"</span><span class="p">,</span> <span class="s2">"DQ"</span><span class="p">,</span> <span class="s2">"WEIGHT"</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"E/C"</span><span class="p">,</span> <span class="s2">"Rating Instruction"</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">get_habitat_names</span><span class="p">():</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">habitats</span><span class="p">:</span>
-            <span class="n">cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;CRITERIA TYPE&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">]</span>
+            <span class="n">cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">h</span><span class="p">,</span> <span class="s2">""</span><span class="p">,</span> <span class="s2">""</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">cols</span> <span class="o">+</span> <span class="p">[</span><span class="s2">"CRITERIA TYPE"</span><span class="p">,</span> <span class="s2">""</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">score_values</span><span class="p">():</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="p">[]</span>
@@ -947,80 +947,80 @@
     <span class="n">score_columns</span> <span class="o">=</span> <span class="n">get_score_columns</span><span class="p">()</span>
 
     <span class="c1"># Master column structure</span>
-    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;HABITAT NAME&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">get_habitat_names</span><span class="p">()</span>
+    <span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"HABITAT NAME"</span><span class="p">]</span> <span class="o">+</span> <span class="n">get_habitat_names</span><span class="p">()</span>
 
     <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="c1"># ------------------------------------------------------------</span>
     <span class="c1"># HABITAT RESILIENCE SECTION</span>
     <span class="c1"># ------------------------------------------------------------</span>
-    <span class="n">row_1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;HABITAT RESILIENCE ATTRIBUTES&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">score_columns</span>
+    <span class="n">row_1</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"HABITAT RESILIENCE ATTRIBUTES"</span><span class="p">]</span> <span class="o">+</span> <span class="n">score_columns</span>
     <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_1</span><span class="p">)</span>
 
     <span class="n">resilience_criteria</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span>
-            <span class="s2">&quot;recruitment rate&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) every 2+ yrs, (2) every 1-2 yrs, (1) every &lt;1 yrs, or (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"recruitment rate"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) every 2+ yrs, (2) every 1-2 yrs, (1) every &lt;1 yrs, or (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;natural mortality rate&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) 0-20%, (2) 20-50%, (1) &gt;80% mortality, or (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"natural mortality rate"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) 0-20%, (2) 20-50%, (1) &gt;80% mortality, or (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;connectivity rate&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) &lt;10km, (2) 10-100km, (1) &gt;100km, or (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"connectivity rate"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) &lt;10km, (2) 10-100km, (1) &gt;100km, or (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;recovery time&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) &gt;10 yrs, (2) 1-10 yrs, (1) &lt;1 yr, or (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"recovery time"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) &gt;10 yrs, (2) 1-10 yrs, (1) &lt;1 yr, or (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="n">resilience_criteria</span><span class="p">:</span>
         <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="n">score_values</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">ec</span><span class="p">,</span> <span class="n">instruction</span><span class="p">])</span>
 
-    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">""</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
 
     <span class="c1"># ------------------------------------------------------------</span>
     <span class="c1"># STRESSOR SECTIONS</span>
     <span class="c1"># ------------------------------------------------------------</span>
 
-    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;HABITAT STRESSOR OVERLAP PROPERTIES&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">"HABITAT STRESSOR OVERLAP PROPERTIES"</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="s2">""</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
 
     <span class="n">stressor_criteria</span> <span class="o">=</span> <span class="p">[</span>
         <span class="p">(</span>
-            <span class="s2">&quot;frequency of disturbance&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) Annually or less often, (2) Several times per year, (1) Weekly or more often, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"frequency of disturbance"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) Annually or less often, (2) Several times per year, (1) Weekly or more often, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;change in area rating&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) 50-100</span><span class="si">% lo</span><span class="s2">ss, (2) 20-50</span><span class="si">% lo</span><span class="s2">ss, (1) 0-20</span><span class="si">% lo</span><span class="s2">ss, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"change in area rating"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) 50-100</span><span class="si">% lo</span><span class="s2">ss, (2) 20-50</span><span class="si">% lo</span><span class="s2">ss, (1) 0-20</span><span class="si">% lo</span><span class="s2">ss, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;change in structure rating&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;C&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) 50-100</span><span class="si">% lo</span><span class="s2">ss, (2) 20-50</span><span class="si">% lo</span><span class="s2">ss, (1) 0-20</span><span class="si">% lo</span><span class="s2">ss, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"change in structure rating"</span><span class="p">,</span>
+            <span class="s2">"C"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) 50-100</span><span class="si">% lo</span><span class="s2">ss, (2) 20-50</span><span class="si">% lo</span><span class="s2">ss, (1) 0-20</span><span class="si">% lo</span><span class="s2">ss, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;temporal overlap rating&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;E&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) co-occur 8-12 mo/year, (2) 4-8 mo/yr, (1) 0-4 mo/yr, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"temporal overlap rating"</span><span class="p">,</span>
+            <span class="s2">"E"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) co-occur 8-12 mo/year, (2) 4-8 mo/yr, (1) 0-4 mo/yr, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;management effectiveness&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;E&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) not effective, (2) somewhat effective, (1) very effective, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"management effectiveness"</span><span class="p">,</span>
+            <span class="s2">"E"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) not effective, (2) somewhat effective, (1) very effective, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
         <span class="p">(</span>
-            <span class="s2">&quot;intensity rating&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;E&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;&lt;enter (3) high, (2) medium, (1) low, (0) no score&gt;&quot;</span><span class="p">,</span>
+            <span class="s2">"intensity rating"</span><span class="p">,</span>
+            <span class="s2">"E"</span><span class="p">,</span>
+            <span class="s2">"&lt;enter (3) high, (2) medium, (1) low, (0) no score&gt;"</span><span class="p">,</span>
         <span class="p">),</span>
     <span class="p">]</span>
 
@@ -1032,7 +1032,7 @@
         <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ec</span><span class="p">,</span> <span class="n">instruction</span> <span class="ow">in</span> <span class="n">stressor_criteria</span><span class="p">:</span>
             <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">name</span><span class="p">]</span> <span class="o">+</span> <span class="n">score_values</span><span class="p">()</span> <span class="o">+</span> <span class="p">[</span><span class="n">ec</span><span class="p">,</span> <span class="n">instruction</span><span class="p">])</span>
 
-        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">&quot;&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="s2">""</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">columns</span><span class="p">))</span>
 
     <span class="c1"># ------------------------------------------------------------</span>
     <span class="c1"># Create DataFrame and export</span>
@@ -1046,7 +1046,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_read_raster</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Read a raster (GeoTIFF) file</span>
 
 <span class="sd">    :param file_input: path to raster file</span>
@@ -1055,9 +1055,9 @@
 <span class="sd">    :type n_band: int</span>
 <span class="sd">    :param metadata: option to return</span>
 <span class="sd">    :type metadata: bool</span>
-<span class="sd">    :return: dictionary with &quot;data&quot; and (optional) &quot;metadata&quot;</span>
+<span class="sd">    :return: dictionary with "data" and (optional) "metadata"</span>
 <span class="sd">    :rtype: dict</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># -------------------------------------------------------------------------</span>
     <span class="c1"># LOAD</span>
     <span class="c1"># Open the raster file using gdal</span>
@@ -1066,17 +1066,17 @@
     <span class="n">band_input</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="n">n_band</span><span class="p">)</span>
     <span class="c1"># Read the raster data as a numpy array</span>
     <span class="n">grid_input</span> <span class="o">=</span> <span class="n">band_input</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">()</span>
-    <span class="n">dc_output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;data&quot;</span><span class="p">:</span> <span class="n">grid_input</span><span class="p">}</span>
+    <span class="n">dc_output</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"data"</span><span class="p">:</span> <span class="n">grid_input</span><span class="p">}</span>
     <span class="c1"># -- Collect useful metadata</span>
     <span class="k">if</span> <span class="n">metadata</span><span class="p">:</span>
         <span class="n">dc_metadata</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_x_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterXSize</span>
-        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_y_size&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterYSize</span>
-        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_projection&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
-        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_geotransform&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
-        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;cellsize&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_geotransform&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_x_size"</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterXSize</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_y_size"</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">RasterYSize</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_projection"</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">()</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_geotransform"</span><span class="p">]</span> <span class="o">=</span> <span class="n">raster_input</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+        <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"cellsize"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_geotransform"</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
         <span class="c1"># append to output</span>
-        <span class="n">dc_output</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span>
+        <span class="n">dc_output</span><span class="p">[</span><span class="s2">"metadata"</span><span class="p">]</span> <span class="o">=</span> <span class="n">dc_metadata</span>
     <span class="c1"># -- Close the raster</span>
     <span class="n">raster_input</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -1086,7 +1086,7 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_write_raster</span><span class="p">(</span>
     <span class="n">grid_output</span><span class="p">,</span> <span class="n">dc_metadata</span><span class="p">,</span> <span class="n">file_output</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">nodata_value</span><span class="o">=-</span><span class="mi">99999</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Write a numpy array to raster</span>
 
 <span class="sd">    :param grid_output: 2D numpy array</span>
@@ -1101,15 +1101,15 @@
 <span class="sd">    :type nodata_value: float or int</span>
 <span class="sd">    :return: path to the written file</span>
 <span class="sd">    :rtype: str</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Get the driver to create the new raster</span>
-    <span class="n">driver</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">&quot;GTiff&quot;</span><span class="p">)</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">GetDriverByName</span><span class="p">(</span><span class="s2">"GTiff"</span><span class="p">)</span>
 
     <span class="c1"># get metadata</span>
-    <span class="n">raster_x_size</span> <span class="o">=</span> <span class="n">grid_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># dc_metadata[&quot;raster_x_size&quot;]</span>
-    <span class="n">raster_y_size</span> <span class="o">=</span> <span class="n">grid_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># dc_metadata[&quot;raster_y_size&quot;]</span>
-    <span class="n">raster_projection</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_projection&quot;</span><span class="p">]</span>
-    <span class="n">raster_geotransform</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">&quot;raster_geotransform&quot;</span><span class="p">]</span>
+    <span class="n">raster_x_size</span> <span class="o">=</span> <span class="n">grid_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>  <span class="c1"># dc_metadata["raster_x_size"]</span>
+    <span class="n">raster_y_size</span> <span class="o">=</span> <span class="n">grid_output</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># dc_metadata["raster_y_size"]</span>
+    <span class="n">raster_projection</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_projection"</span><span class="p">]</span>
+    <span class="n">raster_geotransform</span> <span class="o">=</span> <span class="n">dc_metadata</span><span class="p">[</span><span class="s2">"raster_geotransform"</span><span class="p">]</span>
 
     <span class="c1"># create the raster</span>
     <span class="n">raster_output</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">Create</span><span class="p">(</span>
@@ -1140,7 +1140,7 @@
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_crs</span><span class="p">(</span><span class="n">file_input</span><span class="p">,</span> <span class="n">code_only</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Extracts the Coordinate Reference System (CRS) from a raster file.</span>
 
 <span class="sd">    :param file_input: The file path to the raster source.</span>
@@ -1150,92 +1150,92 @@
 <span class="sd">    :return: The CRS identifier as a string.</span>
 <span class="sd">    :rtype: str</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">rlayer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
+<span class="sd">    """</span>
+    <span class="n">rlayer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">"Raster Layer"</span><span class="p">)</span>
     <span class="n">crs</span> <span class="o">=</span> <span class="n">rlayer</span><span class="o">.</span><span class="n">crs</span><span class="p">()</span>
-    <span class="c1"># Returns string like &#39;EPSG:31983&#39;</span>
+    <span class="c1"># Returns string like 'EPSG:31983'</span>
     <span class="n">epsg_authid</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">code_only</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">crs</span><span class="o">.</span><span class="n">authid</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">epsg_authid</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_extent</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Retrieves the spatial bounding coordinates of a raster file as a dictionary.</span>
 
 <span class="sd">    :param file_input: The path to the input raster file.</span>
 <span class="sd">    :type file_input: str</span>
 <span class="sd">    :return: A dictionary containing the ``xmin``, ``xmax``, ``ymin``, and ``ymax`` coordinates.</span>
 <span class="sd">    :rtype: dict</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="c1"># Create a raster layer object</span>
-    <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
+    <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">"Raster Layer"</span><span class="p">)</span>
     <span class="n">layer_extent</span> <span class="o">=</span> <span class="n">raster_layer</span><span class="o">.</span><span class="n">extent</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;xmin&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">xMinimum</span><span class="p">(),</span>
-        <span class="s2">&quot;xmax&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">xMaximum</span><span class="p">(),</span>
-        <span class="s2">&quot;ymin&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMinimum</span><span class="p">(),</span>
-        <span class="s2">&quot;ymax&quot;</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMaximum</span><span class="p">(),</span>
+        <span class="s2">"xmin"</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">xMinimum</span><span class="p">(),</span>
+        <span class="s2">"xmax"</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">xMaximum</span><span class="p">(),</span>
+        <span class="s2">"ymin"</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMinimum</span><span class="p">(),</span>
+        <span class="s2">"ymax"</span><span class="p">:</span> <span class="n">layer_extent</span><span class="o">.</span><span class="n">yMaximum</span><span class="p">(),</span>
     <span class="p">}</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_resolution</span><span class="p">(</span><span class="n">file_input</span><span class="p">):</span>
     <span class="c1"># todo docstring</span>
     <span class="c1"># Create a raster layer object</span>
-    <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">&quot;Raster Layer&quot;</span><span class="p">)</span>
+    <span class="n">raster_layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file_input</span><span class="p">),</span> <span class="s2">"Raster Layer"</span><span class="p">)</span>
     <span class="n">res_x</span> <span class="o">=</span> <span class="n">raster_layer</span><span class="o">.</span><span class="n">rasterUnitsPerPixelX</span><span class="p">()</span>
     <span class="n">res_y</span> <span class="o">=</span> <span class="n">raster_layer</span><span class="o">.</span><span class="n">rasterUnitsPerPixelY</span><span class="p">()</span>
 
     <span class="k">return</span> <span class="p">{</span>
-        <span class="s2">&quot;xres&quot;</span><span class="p">:</span> <span class="n">res_x</span><span class="p">,</span>
-        <span class="s2">&quot;yres&quot;</span><span class="p">:</span> <span class="n">res_y</span><span class="p">,</span>
+        <span class="s2">"xres"</span><span class="p">:</span> <span class="n">res_x</span><span class="p">,</span>
+        <span class="s2">"yres"</span><span class="p">:</span> <span class="n">res_y</span><span class="p">,</span>
     <span class="p">}</span>
 
 
-<span class="k">def</span><span class="w"> </span><span class="nf">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;fz&quot;</span><span class="p">,</span> <span class="n">force_vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">_util_normalize_rasters</span><span class="p">(</span><span class="n">ls_rasters</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="s2">"fz"</span><span class="p">,</span> <span class="n">force_vmin</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="c1"># todo docstring</span>
     <span class="n">ls_new_rasters</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">ls_rasters</span><span class="p">:</span>
         <span class="n">p</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-        <span class="n">file_output</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">.tif&quot;</span>
+        <span class="n">file_output</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">p</span><span class="o">.</span><span class="n">stem</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">suffix</span><span class="si">}</span><span class="s2">.tif"</span>
 
         <span class="c1"># get values</span>
         <span class="n">dc_stats</span> <span class="o">=</span> <span class="n">_util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">force_vmin</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">vmin</span> <span class="o">=</span> <span class="n">force_vmin</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">vmax</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="s2">&quot;min&quot;</span><span class="p">]</span>
+            <span class="n">vmax</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="s2">"min"</span><span class="p">]</span>
 
-        <span class="n">vmax</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="s2">&quot;max&quot;</span><span class="p">]</span>
+        <span class="n">vmax</span> <span class="o">=</span> <span class="n">dc_stats</span><span class="p">[</span><span class="s2">"max"</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">vmin</span> <span class="o">==</span> <span class="n">vmax</span><span class="p">:</span>
             <span class="n">vmax</span> <span class="o">=</span> <span class="n">vmax</span> <span class="o">+</span> <span class="mi">1</span>
 
         <span class="n">dc_specs</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;INPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
-            <span class="s2">&quot;BAND&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-            <span class="s2">&quot;FUZZYLOWBOUND&quot;</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
-            <span class="s2">&quot;FUZZYHIGHBOUND&quot;</span><span class="p">:</span> <span class="n">vmax</span><span class="p">,</span>
-            <span class="s2">&quot;OUTPUT&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_output</span><span class="p">),</span>
+            <span class="s2">"INPUT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">),</span>
+            <span class="s2">"BAND"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="s2">"FUZZYLOWBOUND"</span><span class="p">:</span> <span class="n">vmin</span><span class="p">,</span>
+            <span class="s2">"FUZZYHIGHBOUND"</span><span class="p">:</span> <span class="n">vmax</span><span class="p">,</span>
+            <span class="s2">"OUTPUT"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">file_output</span><span class="p">),</span>
         <span class="p">}</span>
-        <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;native:fuzzifyrasterlinearmembership&quot;</span><span class="p">,</span> <span class="n">dc_specs</span><span class="p">)</span>
+        <span class="n">processing</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">"native:fuzzifyrasterlinearmembership"</span><span class="p">,</span> <span class="n">dc_specs</span><span class="p">)</span>
         <span class="n">ls_new_rasters</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">file_output</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ls_new_rasters</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_util_get_raster_stats</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">band</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""</span>
 <span class="sd">    Calculates the statistics for a specified band of a given raster file.</span>
 
 <span class="sd">    :param input_raster: Full path to the input raster file.</span>
 <span class="sd">    :type input_raster: str</span>
 <span class="sd">    :param band: The band number to calculate statistics for. Default value = ``1``</span>
 <span class="sd">    :type band: int</span>
-<span class="sd">    :return: A dictionary containing the raster band&#39;s mean, standard deviation, minimum, maximum, sum, and element count.</span>
+<span class="sd">    :return: A dictionary containing the raster band's mean, standard deviation, minimum, maximum, sum, and element count.</span>
 <span class="sd">    :rtype: dict</span>
 
 <span class="sd">    **Notes**</span>
@@ -1243,39 +1243,39 @@
 <span class="sd">    The function uses QGIS classes internally to read the raster and compute statistics.</span>
 <span class="sd">    The keys in the returned dictionary are ``mean``, ``sd``, ``min``, ``max``, ``sum``, and ``count``.</span>
 
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">dc_stats</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">full</span><span class="p">:</span>
         <span class="n">dc_raster</span> <span class="o">=</span> <span class="n">_util_read_raster</span><span class="p">(</span>
             <span class="n">file_input</span><span class="o">=</span><span class="n">input_raster</span><span class="p">,</span> <span class="n">n_band</span><span class="o">=</span><span class="n">band</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span>
         <span class="p">)</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">dc_raster</span><span class="p">[</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">dc_raster</span><span class="p">[</span><span class="s2">"data"</span><span class="p">]</span>
         <span class="n">dc_stats</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
-            <span class="s2">&quot;sd&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
-            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
-            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
-            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
-            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))),</span>  <span class="c1"># number of valid pixels</span>
-            <span class="s2">&quot;p01&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
-            <span class="s2">&quot;p05&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
-            <span class="s2">&quot;p25&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">25</span><span class="p">)),</span>
-            <span class="s2">&quot;p50&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">)),</span>  <span class="c1"># median</span>
-            <span class="s2">&quot;p75&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">75</span><span class="p">)),</span>
-            <span class="s2">&quot;p95&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">95</span><span class="p">)),</span>
-            <span class="s2">&quot;p99&quot;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">99</span><span class="p">)),</span>
+            <span class="s2">"mean"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">"sd"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanstd</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">"min"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">"max"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">"sum"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nansum</span><span class="p">(</span><span class="n">data</span><span class="p">)),</span>
+            <span class="s2">"count"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))),</span>  <span class="c1"># number of valid pixels</span>
+            <span class="s2">"p01"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span>
+            <span class="s2">"p05"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">5</span><span class="p">)),</span>
+            <span class="s2">"p25"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">25</span><span class="p">)),</span>
+            <span class="s2">"p50"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">50</span><span class="p">)),</span>  <span class="c1"># median</span>
+            <span class="s2">"p75"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">75</span><span class="p">)),</span>
+            <span class="s2">"p95"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">95</span><span class="p">)),</span>
+            <span class="s2">"p99"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanpercentile</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="mi">99</span><span class="p">)),</span>
         <span class="p">}</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="s2">&quot;raster&quot;</span><span class="p">)</span>
+        <span class="n">layer</span> <span class="o">=</span> <span class="n">QgsRasterLayer</span><span class="p">(</span><span class="n">input_raster</span><span class="p">,</span> <span class="s2">"raster"</span><span class="p">)</span>
         <span class="n">provider</span> <span class="o">=</span> <span class="n">layer</span><span class="o">.</span><span class="n">dataProvider</span><span class="p">()</span>
         <span class="n">stats</span> <span class="o">=</span> <span class="n">provider</span><span class="o">.</span><span class="n">bandStatistics</span><span class="p">(</span><span class="n">band</span><span class="p">,</span> <span class="n">QgsRasterBandStats</span><span class="o">.</span><span class="n">All</span><span class="p">,</span> <span class="n">layer</span><span class="o">.</span><span class="n">extent</span><span class="p">(),</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">dc_stats</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;mean&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
-            <span class="s2">&quot;sd&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">stdDev</span><span class="p">,</span>
-            <span class="s2">&quot;min&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">minimumValue</span><span class="p">,</span>
-            <span class="s2">&quot;max&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">maximumValue</span><span class="p">,</span>
-            <span class="s2">&quot;sum&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
-            <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">elementCount</span><span class="p">,</span>
+            <span class="s2">"mean"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">mean</span><span class="p">,</span>
+            <span class="s2">"sd"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">stdDev</span><span class="p">,</span>
+            <span class="s2">"min"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">minimumValue</span><span class="p">,</span>
+            <span class="s2">"max"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">maximumValue</span><span class="p">,</span>
+            <span class="s2">"sum"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">sum</span><span class="p">,</span>
+            <span class="s2">"count"</span><span class="p">:</span> <span class="n">stats</span><span class="o">.</span><span class="n">elementCount</span><span class="p">,</span>
         <span class="p">}</span>
     <span class="k">return</span> <span class="n">dc_stats</span>
 
@@ -1283,10 +1283,10 @@
 <span class="c1"># SCRIPT</span>
 <span class="c1"># ***********************************************************************</span>
 <span class="c1"># standalone behaviour as a script</span>
-<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">"__main__"</span><span class="p">:</span>
     <span class="c1"># Test doctests</span>
     <span class="c1"># ===================================================================</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Hello&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">"Hello"</span><span class="p">)</span>
 
     <span class="c1"># Script subsection</span>
     <span class="c1"># -------------------------------------------------------------------</span>
@@ -1320,8 +1320,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1355,7 +1355,7 @@
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
 </p></div>
       
     </div>
