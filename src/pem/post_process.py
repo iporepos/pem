@@ -54,6 +54,7 @@ MAX_LAYER_CHARS = 30
 # Config
 # --------------------------------------------------------------------------- #
 
+
 def load_config(path: Path) -> dict:
     with open(path, "r", encoding="utf-8") as f:
         return json.load(f)
@@ -115,6 +116,7 @@ def validate_config(cfg: dict) -> None:
 # Leitura
 # --------------------------------------------------------------------------- #
 
+
 def read_layer(gpkg_path: Path, layer_name: str) -> gpd.GeoDataFrame:
     gdf = gpd.read_file(gpkg_path, layer=layer_name)
     # 'fid' e o identificador nativo do GeoPackage (gerenciado pelo OGR na
@@ -128,14 +130,15 @@ def read_layer(gpkg_path: Path, layer_name: str) -> gpd.GeoDataFrame:
 # Processamento por escala
 # --------------------------------------------------------------------------- #
 
+
 def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: list[str]):
     prefix = scale_cfg["input_prefix"]
     id_from = scale_cfg["id_column"]["from"]
     id_to = scale_cfg["id_column"]["to"]
 
-    scenarios = cfg["scenario_order"]            # ["0", "1", "2", "3"]
-    scenario_suffixes = cfg["scenarios"]          # {"0": "a0", ...}
-    scenario_labels = cfg["scenario_labels"]      # {"0": "Baseline...", ...}
+    scenarios = cfg["scenario_order"]  # ["0", "1", "2", "3"]
+    scenario_suffixes = cfg["scenarios"]  # {"0": "a0", ...}
+    scenario_labels = cfg["scenario_labels"]  # {"0": "Baseline...", ...}
     general_cfg = cfg["general_indices"]
     general_order = cfg["general_order"]
     # opcionais: colunas de intensidade de uso do cenario base (ausentes
@@ -154,12 +157,14 @@ def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: lis
 
     out = gdf_base[[id_to, "geometry"]].copy()
 
-    columns_catalog = [{
-        "coluna": id_to,
-        "alias": id_aliases[id_to]["alias"],
-        "descricao": id_aliases[id_to].get("descricao", ""),
-        "tipo": id_aliases[id_to].get("type") or str(gdf_base[id_to].dtype),
-    }]
+    columns_catalog = [
+        {
+            "coluna": id_to,
+            "alias": id_aliases[id_to]["alias"],
+            "descricao": id_aliases[id_to].get("descricao", ""),
+            "tipo": id_aliases[id_to].get("type") or str(gdf_base[id_to].dtype),
+        }
+    ]
 
     # cache das camadas de cenario ja lidas, para nao reler do disco a cada indice
     scenario_cache: dict[str, gpd.GeoDataFrame] = {base_scenario: gdf_base}
@@ -169,7 +174,9 @@ def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: lis
             layer_name = f"{prefix}{scen}"
             gdf_s = read_layer(gpkg_path, layer_name)
             if id_from not in gdf_s.columns:
-                raise KeyError(f"Coluna de id '{id_from}' nao encontrada em '{layer_name}'.")
+                raise KeyError(
+                    f"Coluna de id '{id_from}' nao encontrada em '{layer_name}'."
+                )
             gdf_s = gdf_s.rename(columns={id_from: id_to})
             scenario_cache[scen] = gdf_s
         return scenario_cache[scen]
@@ -189,18 +196,22 @@ def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: lis
             else:
                 merged = out[[id_to]].merge(gdf_s[[id_to, name]], on=id_to, how="left")
                 if merged[name].isna().any():
-                    msg = (f"{merged[name].isna().sum()} feicao(oes) sem correspondencia de "
-                           f"id em '{prefix}{scen}' para '{name}'.")
+                    msg = (
+                        f"{merged[name].isna().sum()} feicao(oes) sem correspondencia de "
+                        f"id em '{prefix}{scen}' para '{name}'."
+                    )
                     print(f"  aviso: {msg}", file=sys.stderr)
                     warnings_log.append(msg)
                 out[new_col] = merged[name].values
 
-            columns_catalog.append({
-                "coluna": new_col,
-                "alias": f"{spec['alias']} ({suffix.upper()})",
-                "descricao": f"{spec['descricao']} — {scenario_labels[scen]}",
-                "tipo": spec.get("type", "real"),
-            })
+            columns_catalog.append(
+                {
+                    "coluna": new_col,
+                    "alias": f"{spec['alias']} ({suffix.upper()})",
+                    "descricao": f"{spec['descricao']} — {scenario_labels[scen]}",
+                    "tipo": spec.get("type", "real"),
+                }
+            )
 
     # --- indices exclusivos do cenario base (cenario 0) ---
     base_suffix = scenario_suffixes[base_scenario]
@@ -211,19 +222,23 @@ def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: lis
         if name not in gdf_base.columns:
             raise KeyError(f"Coluna '{name}' nao encontrada em '{base_layer}'.")
         out[new_col] = gdf_base[name].values
-        columns_catalog.append({
-            "coluna": new_col,
-            "alias": f"{spec['alias']} ({base_suffix.upper()})",
-            "descricao": f"{spec['descricao']} — {scenario_labels[base_scenario]}",
-            "tipo": spec.get("type", "real"),
-        })
+        columns_catalog.append(
+            {
+                "coluna": new_col,
+                "alias": f"{spec['alias']} ({base_suffix.upper()})",
+                "descricao": f"{spec['descricao']} — {scenario_labels[base_scenario]}",
+                "tipo": spec.get("type", "real"),
+            }
+        )
 
-    columns_catalog.append({
-        "coluna": "geometry",
-        "alias": id_aliases.get("geometry", {}).get("alias", "Geometria"),
-        "descricao": id_aliases.get("geometry", {}).get("descricao", ""),
-        "tipo": str(gdf_base.geom_type.iloc[0]) if len(gdf_base) else "geometry",
-    })
+    columns_catalog.append(
+        {
+            "coluna": "geometry",
+            "alias": id_aliases.get("geometry", {}).get("alias", "Geometria"),
+            "descricao": id_aliases.get("geometry", {}).get("descricao", ""),
+            "tipo": str(gdf_base.geom_type.iloc[0]) if len(gdf_base) else "geometry",
+        }
+    )
 
     out = gpd.GeoDataFrame(out, geometry="geometry", crs=gdf_base.crs)
     return out, columns_catalog
@@ -232,6 +247,7 @@ def process_scale(gpkg_path: Path, scale_cfg: dict, cfg: dict, warnings_log: lis
 # --------------------------------------------------------------------------- #
 # Catalogo de camadas (Quadro 2 - elementos "Obrigatorio" do Perfil MGB)
 # --------------------------------------------------------------------------- #
+
 
 def build_layer_catalog_row(layer_name: str, cfg: dict, today: str) -> dict:
     catalog_cfg = cfg["layer_catalog"]
@@ -255,6 +271,7 @@ def build_layer_catalog_row(layer_name: str, cfg: dict, today: str) -> dict:
 # LEIAME.txt (log da execucao)
 # --------------------------------------------------------------------------- #
 
+
 def build_leiame(
     start_dt: datetime,
     end_dt: datetime,
@@ -274,7 +291,9 @@ def build_leiame(
     lines.append("")
     lines.append("EXECUCAO")
     lines.append("-" * 70)
-    lines.append(f"Inicio:            {start_dt.isoformat(sep=' ', timespec='seconds')}")
+    lines.append(
+        f"Inicio:            {start_dt.isoformat(sep=' ', timespec='seconds')}"
+    )
     lines.append(f"Fim:               {end_dt.isoformat(sep=' ', timespec='seconds')}")
     lines.append(f"Duracao:           {elapsed_s:.2f} s")
     lines.append(f"Usuario:           {getpass.getuser()}")
@@ -343,9 +362,14 @@ def build_leiame(
 # Main
 # --------------------------------------------------------------------------- #
 
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Padroniza resultados PEM em pem_indices.gpkg")
-    parser.add_argument("--config", required=True, type=Path, help="Caminho do config.json")
+    parser = argparse.ArgumentParser(
+        description="Padroniza resultados PEM em pem_indices.gpkg"
+    )
+    parser.add_argument(
+        "--config", required=True, type=Path, help="Caminho do config.json"
+    )
     args = parser.parse_args()
 
     start_dt = datetime.now()
@@ -371,31 +395,41 @@ def main() -> None:
 
     for scale_key, scale_cfg in cfg["scales"].items():
         print(f"Processando escala '{scale_key}'...")
-        out_gdf, columns_catalog = process_scale(input_gpkg, scale_cfg, cfg, warnings_log)
+        out_gdf, columns_catalog = process_scale(
+            input_gpkg, scale_cfg, cfg, warnings_log
+        )
 
         out_layer_name = scale_cfg["output_layer"]
         out_gdf.to_file(output_gpkg, layer=out_layer_name, driver="GPKG")
-        print(f"  -> camada '{out_layer_name}' gravada "
-              f"({len(out_gdf)} feicoes, {len(out_gdf.columns)} colunas)")
+        print(
+            f"  -> camada '{out_layer_name}' gravada "
+            f"({len(out_gdf)} feicoes, {len(out_gdf.columns)} colunas)"
+        )
 
         cols_csv_path = output_dir / f"colunas_{out_layer_name}.csv"
-        pd.DataFrame(columns_catalog).to_csv(cols_csv_path, index=False, encoding="utf-8-sig")
+        pd.DataFrame(columns_catalog).to_csv(
+            cols_csv_path, index=False, encoding="utf-8-sig"
+        )
         print(f"  -> catalogo de colunas: {cols_csv_path.name}")
 
         layer_catalog_rows.append(build_layer_catalog_row(out_layer_name, cfg, today))
-        layer_stats.append({
-            "scale_key": scale_key,
-            "output_layer": out_layer_name,
-            "source_layers": [
-                f"{scale_cfg['input_prefix']}{s}" for s in cfg["scenario_order"]
-            ],
-            "n_features": len(out_gdf),
-            "n_columns": len(out_gdf.columns),
-        })
+        layer_stats.append(
+            {
+                "scale_key": scale_key,
+                "output_layer": out_layer_name,
+                "source_layers": [
+                    f"{scale_cfg['input_prefix']}{s}" for s in cfg["scenario_order"]
+                ],
+                "n_features": len(out_gdf),
+                "n_columns": len(out_gdf.columns),
+            }
+        )
 
     layer_catalog_name = "camadas_pem_indices.csv"
     layer_catalog_path = output_dir / layer_catalog_name
-    pd.DataFrame(layer_catalog_rows).to_csv(layer_catalog_path, index=False, encoding="utf-8-sig")
+    pd.DataFrame(layer_catalog_rows).to_csv(
+        layer_catalog_path, index=False, encoding="utf-8-sig"
+    )
     print(f"Catalogo de camadas: {layer_catalog_path.name}")
 
     end_dt = datetime.now()

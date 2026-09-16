@@ -51,10 +51,10 @@ def load_config(path: Path) -> dict:
 
 
 _CM = 1 / 2.54
-_CBAR_THICKNESS = 0.032   # colorbar height as fraction of figure height
-_CBAR_BOTTOM    = 0.055   # colorbar bottom edge as fraction of figure height
-_CBAR_LABEL_FS  = 9
-_CBAR_TICK_FS   = 9
+_CBAR_THICKNESS = 0.032  # colorbar height as fraction of figure height
+_CBAR_BOTTOM = 0.055  # colorbar bottom edge as fraction of figure height
+_CBAR_LABEL_FS = 9
+_CBAR_TICK_FS = 9
 
 
 def _add_horizontal_cbar(fig, sm, label, ticks, cbar_bottom=_CBAR_BOTTOM):
@@ -71,7 +71,9 @@ def _add_horizontal_cbar(fig, sm, label, ticks, cbar_bottom=_CBAR_BOTTOM):
 
 def _save_plots(
     gdf,
-    xs, ys, zs,
+    xs,
+    ys,
+    zs,
     distances,
     d_min: float,
     d_max: float,
@@ -93,7 +95,9 @@ def _save_plots(
     # --- 2D scatter plots ---------------------------------------------------
     fig, axes = plt.subplots(1, 3, figsize=(17 * _CM, 8 * _CM))
     for ax, (x_field, y_field, x_label, y_label) in zip(axes, pairs):
-        ax.scatter(gdf[x_field], gdf[y_field], c=d_norm, cmap=cmap, norm=norm, marker="o", s=20)
+        ax.scatter(
+            gdf[x_field], gdf[y_field], c=d_norm, cmap=cmap, norm=norm, marker="o", s=20
+        )
         ax.set_title(f"{x_label} vs {y_label}")
         ax.set_xlabel(x_label)
         ax.set_ylabel(y_label)
@@ -110,7 +114,9 @@ def _save_plots(
     plt.tight_layout(rect=[0, 0.20, 1, 1])
     _add_horizontal_cbar(fig, sm, "Distância ótima", ticks)
 
-    fig.savefig(out_dir / f"scatter2d_{scenario}_{suffix}.jpg", dpi=300, bbox_inches="tight")
+    fig.savefig(
+        out_dir / f"scatter2d_{scenario}_{suffix}.jpg", dpi=300, bbox_inches="tight"
+    )
     if show:
         plt.show()
     plt.close(fig)
@@ -119,12 +125,30 @@ def _save_plots(
     fig3d = plt.figure(figsize=(12 * _CM, 12 * _CM))  # width and height fixed at 12 cm
     ax3d = fig3d.add_subplot(111, projection="3d")
 
-    ax3d.scatter(xs, ys, zs, c=d_norm, cmap=cmap, norm=norm,
-                 marker="o", s=30, alpha=0.8, depthshade=False, zorder=5)
+    ax3d.scatter(
+        xs,
+        ys,
+        zs,
+        c=d_norm,
+        cmap=cmap,
+        norm=norm,
+        marker="o",
+        s=30,
+        alpha=0.8,
+        depthshade=False,
+        zorder=5,
+    )
 
     for x, y, z in zip(xs, ys, zs):
-        ax3d.plot([x, ideal[0]], [y, ideal[1]], [z, ideal[2]],
-                  color="grey", linewidth=0.5, alpha=0.3, zorder=1)
+        ax3d.plot(
+            [x, ideal[0]],
+            [y, ideal[1]],
+            [z, ideal[2]],
+            color="grey",
+            linewidth=0.5,
+            alpha=0.3,
+            zorder=1,
+        )
 
     ax3d.set_title("Benefício / Conflito / Risco")
     ax3d.set_xlabel("Risco")
@@ -178,8 +202,18 @@ def _save_space_plot(
     fig = plt.figure(figsize=(12 * _CM, 12 * _CM))
     ax = fig.add_subplot(111, projection="3d")
 
-    ax.scatter(xs_g, ys_g, zs_g, c=d_norm, cmap=cmap, norm=norm,
-               marker="o", s=8, alpha=0.7, depthshade=False)
+    ax.scatter(
+        xs_g,
+        ys_g,
+        zs_g,
+        c=d_norm,
+        cmap=cmap,
+        norm=norm,
+        marker="o",
+        s=8,
+        alpha=0.7,
+        depthshade=False,
+    )
 
     ax.set_xlabel("Risco")
     ax.set_ylabel("Conflito")
@@ -209,16 +243,16 @@ def run(cfg: dict) -> None:
     out_dir = Path(cfg["out_dir"])
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    layer     = cfg["layer"]
-    out_gpkg  = cfg.get("out_gpkg",  "assessment_upg.gpkg")
+    layer = cfg["layer"]
+    out_gpkg = cfg.get("out_gpkg", "assessment_upg.gpkg")
     out_layer = cfg.get("out_layer", "upg_micro")
-    scenario  = cfg.get("scenario",  "a0")
-    show      = cfg.get("show",  False)
-    cmap_name = cfg.get("cmap",  "Spectral_r")
-    clip      = cfg.get("clip",  False)
-    elev      = cfg.get("elev",  30)
-    azim      = cfg.get("azim", -60)
-    step      = cfg.get("step", 0.2)
+    scenario = cfg.get("scenario", "a0")
+    show = cfg.get("show", False)
+    cmap_name = cfg.get("cmap", "Spectral_r")
+    clip = cfg.get("clip", False)
+    elev = cfg.get("elev", 30)
+    azim = cfg.get("azim", -60)
+    step = cfg.get("step", 0.2)
 
     plt.rcParams.update({"font.family": "Arial", "font.size": 9})
 
@@ -227,16 +261,16 @@ def run(cfg: dict) -> None:
 
     benefit_field = f"benefic_{scenario}"
     conflit_field = f"conflit_{scenario}"
-    risco_field   = f"risco_{scenario}"
+    risco_field = f"risco_{scenario}"
 
     benefit_norm = benefit_field + "_norm"
     conflit_norm = conflit_field + "_norm"
-    risco_norm   = risco_field   + "_norm"
+    risco_norm = risco_field + "_norm"
 
     for field, norm_field in [
         (benefit_field, benefit_norm),
         (conflit_field, conflit_norm),
-        (risco_field,   risco_norm),
+        (risco_field, risco_norm),
     ]:
         col = gdf[field]
         gdf[norm_field] = (col - col.min()) / (col.max() - col.min())
@@ -256,26 +290,43 @@ def run(cfg: dict) -> None:
     cmap = plt.get_cmap(cmap_name)
     pairs = [
         (benefit_norm, conflit_norm, "Benefício", "Conflito"),
-        (benefit_norm, risco_norm,   "Benefício", "Risco"),
-        (conflit_norm, risco_norm,   "Conflito",  "Risco"),
+        (benefit_norm, risco_norm, "Benefício", "Risco"),
+        (conflit_norm, risco_norm, "Conflito", "Risco"),
     ]
     plot_kwargs = dict(
-        gdf=gdf, xs=xs, ys=ys, zs=zs, distances=distances,
-        pairs=pairs, cmap=cmap, ideal=ideal,
-        out_dir=out_dir, scenario=scenario, elev=elev, azim=azim, show=show,
+        gdf=gdf,
+        xs=xs,
+        ys=ys,
+        zs=zs,
+        distances=distances,
+        pairs=pairs,
+        cmap=cmap,
+        ideal=ideal,
+        out_dir=out_dir,
+        scenario=scenario,
+        elev=elev,
+        azim=azim,
+        show=show,
     )
 
     _save_plots(d_min=0.0, d_max=np.sqrt(3), suffix="full", **plot_kwargs)
 
     if clip:
         _save_plots(
-            d_min=np.nanmin(distances), d_max=np.nanmax(distances),
-            suffix="clip", **plot_kwargs,
+            d_min=np.nanmin(distances),
+            d_max=np.nanmax(distances),
+            suffix="clip",
+            **plot_kwargs,
         )
 
     _save_space_plot(
-        step=step, cmap=cmap, ideal=ideal,
-        out_dir=out_dir, elev=elev, azim=azim, show=show,
+        step=step,
+        cmap=cmap,
+        ideal=ideal,
+        out_dir=out_dir,
+        elev=elev,
+        azim=azim,
+        show=show,
     )
 
 
