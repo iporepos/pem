@@ -11,6 +11,7 @@ About
    about_benefit_index
    about_risk_index
    about_conflict_index
+   about_performance_index
 
 
 The **PEM Project** (*Planejamento Espacial Marinho do Brasil*, or *Marine Spatial Planning for Brazil*)
@@ -152,100 +153,38 @@ Use Performance Index
 ============================================
 
 The core integrative indicator of the PEM framework is the
-**Marine Ecosystem Services Use Performance Index**,
+**Marine Ecosystem Services Use Performance Index** (IDUSE-Mar),
+which synthesizes the three component dimensions —
+**Benefit** (:math:`B`), **Habitat Risk** (:math:`R`), and **Conflict** (:math:`C`) —
+into a single spatial expression of marine use performance.
 
-.. note::
+All component variables are normalized to :math:`[0, 1]` and spatially explicit,
+so the performance index is computed at every model cell and can be upscaled by
+averaging to the scale of interest, such as the Management Units.
 
-    In portuguese, this index is referred as *Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar*,
-    or **IDUSE-Mar** for short.
+The PEM framework supports multiple **benchmark performance metrics** to
+quantify how far or close a given spatial configuration is from the
+theoretical ideal of maximum benefit and minimum impacts
+:math:`(B=1,\; R=0,\; C=0)`.
+Available options include the original **Ratio Index**
+(:math:`D = B / (R \times C)`),
+the **Absolute Euclidean Distance** (AED), and the
+**Normalized Euclidean Distance** (NED).
 
-This index, denoted as :math:`D`, synthesizes the three component
-dimensions — benefit, risk, and conflict — into a single expression of marine use performance:
+.. seealso::
 
-.. math::
-
-    D = \frac{B}{R \times C} \quad \text{where } D \in [0, +\infty]
-
-Where:
-
-* :math:`D` is the **use performance index** :math:`\in [0, +\infty]`;
-* :math:`B` is the **benefit index** :math:`\in [0, 1]`;
-* :math:`R` is the **habitat risk index** :math:`\in [0, 1]`; and
-* :math:`C` is the **conflict index** :math:`\in [0, 1]`.
-
-The interpretation of :math:`D` is straight-forward:
-it is as a correction for the economic benefit of using the ocean space
-by taking consideration risk and conflict as well.
-
-The value of :math:`D` must be maximized by ocean management policies,
-since it indicates a more sustainable and efficient use of
-the ocean space — high benefits with relatively low risk and conflict.
-A policy that solely maximizes benefit will more likely
-yield an inferior use performance than one that keeps risk and conflict low.
-
-All component variables are spatially explicit, hence :math:`D` is a local
-spatial variable too, being computed at every model cell.
-The value of :math:`D` can then be upscaled by averaging for the scale of interest,
-like the Management Units.
-
-Performance Hyperspace
--------------------------------------------
-
-Because all components of :math:`D` are normalized variables, *i.e.*, defined
-between 0 and 1, the mathematical **hyperspace** of :math:`D` can be explored
-a priori.
-
-.. tab-set::
-
-    .. tab-item:: English
-
-        .. figure:: figs/plots.jpg
-            :name: fig-plots
-            :width: 100%
-            :align: center
-
-            Exploration of the Use Performance Index formula. (**a**) The performance
-            mathematical hyperspace. (**b**) Mathematical bounds for the performance
-            index.
-
-    .. tab-item:: Português
-
-        .. figure:: figs/plots_pt.jpg
-            :name: fig-plots-pt
-            :width: 100%
-            :align: center
-
-            Exploração da fórmula do Índice de Desempenho.
-            (a) O hiperespaço matemático de desempenho.
-            (b) Limites matemáticos para o índice de desempenho.
-
-
-
-The upper value of :math:`D` is unbounded, it goes to infinity.
-That means that values of :math:`D` can skyrocket if the product :math:`R \times C`
-goes very low, close to zero.
-To avoid technical issues with numerical overflow, one might
-*truncate* the value of the product :math:`R \times C`
-to 0.01, which will yield an upper bound of 100.
-
-The lower value of :math:`D` is bounded to zero, and always
-converges to the value of :math:`B`. When the product :math:`R \times C`
-goes to maximum possible, that is 1,
-The value of :math:`D` converges to :math:`B`. This means that
-the correction for :math:`R` and :math:`C` are always
-incremental, making :math:`D` larger than :math:`B`,
-like an incentive to lower :math:`R` or :math:`C`.
+    Full description of all metric options, their formulas, ranges, and
+    guidance on which to use in the
+    :ref:`Use Performance Index page <about-performance-index>`.
 
 
 Spatial Indexes
 -------------------------------------------
 
-To get :math:`D` one need to compute all three subjacent spatial
-indexes: :math:`B`, :math:`R` and :math:`C`.
+To compute any performance metric, the three component spatial
+indexes — :math:`B`, :math:`R`, and :math:`C` — must first be obtained.
 
-The PEM framework is designed to help in this process. Through a series of
-converging analytical processes, the input data are transformed into this
-spatial index components.
+The PEM framework provides structured workflows for each component.
 
 
 .. seealso::

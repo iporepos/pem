@@ -6,6 +6,13 @@
 """
 This is the complete API reference for the ``performance`` python module of the ``pem`` system.
 
+.. deprecated::
+
+    This module is **legacy**. Performance metrics (``performance_d``,
+    ``performance_aed``, ``performance_ned``) are now computed from sampled
+    values during the publish step in :mod:`pem.publish`.
+    This module will be removed in a future release.
+
 """
 
 import glob
@@ -15,6 +22,16 @@ import glob
 from pathlib import Path
 import os, pprint
 import shutil
+import warnings
+
+warnings.warn(
+    "pem.performance is a legacy module. Performance metrics (performance_d, "
+    "performance_aed, performance_ned) are now computed from sampled values "
+    "during the publish step in pem.publish. This module will be removed in a "
+    "future release.",
+    DeprecationWarning,
+    stacklevel=2,
+)
 
 # ... {develop}
 

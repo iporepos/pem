@@ -8,12 +8,14 @@ This is the complete API reference for the ``publish`` python module of the ``pe
 
 This module assembles the final published results for a scenario run: it
 publishes the grid and units layers to a single GeoPackage, warps the
-scenario's raster maps (benefit, risk, conflict, performance, and any
-user-activity maps) to the target CRS, computes zonal statistics of each
-map over the grid, joins those statistics back onto the grid (normalized
-to the ``[0, 1]`` range), and finally aggregates the grid statistics by
-unit, via a non-spatial group-by on the unit id, joining the resulting
-means back onto each unit layer.
+scenario's raster maps (benefit, risk, conflict, and any user-activity maps)
+to the target CRS, computes zonal statistics of each map over the grid,
+joins those statistics back onto the grid (normalized to the ``[0, 1]``
+range), derives three performance metrics
+(``performance_d``, ``performance_aed``, ``performance_ned``) from the
+sampled benefit, risk, and conflict values, and finally aggregates all
+statistics by unit, via a non-spatial group-by on the unit id, joining the
+resulting means back onto each unit layer.
 
 This module is intended to be run from within the QGIS Python
 environment, since it relies on the ``processing``, ``osgeo``, and
@@ -289,6 +291,37 @@ def _join_zonal_stats(grid, grid_id_field, stats_db, stats_layers, normalize=Tru
     return grid
 
 
+def _compute_performance_metrics(grid):
+    """Derive performance metric columns from sampled benefit, risk, and conflict.
+
+    Adds three columns to ``grid`` in place and returns it:
+
+    * ``performance_d``   – Ratio Index :math:`B / (R \\times C)`, with the
+      denominator clipped to a minimum of 0.01 to avoid overflow.
+    * ``performance_aed`` – Absolute Euclidean Distance to the ideal point
+      :math:`(B=1, R=0, C=0)`: :math:`\\sqrt{(B-1)^2 + R^2 + C^2}`.
+    * ``performance_ned`` – Normalized Euclidean Distance: :math:`1 - \\text{AED} / \\sqrt{3}`,
+      scaled to :math:`[0, 1]` with 1 being best.
+
+    :param grid: grid GeoDataFrame carrying ``benefit``, ``risk``, and
+        ``conflict`` columns.
+    :type grid: geopandas.GeoDataFrame
+    :return: ``grid`` with the three new performance columns appended.
+    :rtype: geopandas.GeoDataFrame
+    """
+    b = grid["benefit"].values.astype(float)
+    r = grid["risk"].values.astype(float)
+    c = grid["conflict"].values.astype(float)
+
+    grid["performance_d"] = b / np.clip(r * c, 0.01, 1.0)
+
+    aed = np.sqrt((b - 1.0) ** 2 + r**2 + c**2)
+    grid["performance_aed"] = aed
+    grid["performance_ned"] = 1.0 - aed / np.sqrt(3.0)
+
+    return grid
+
+
 def _aggregate_stats_by_unit(grid, grid_unit_field, unit_gdf, unit_id_field, stat_cols):
     """Aggregate grid-level stat columns by unit, via a non-spatial
     groupby, and left-join the means onto ``unit_gdf``.
@@ -367,16 +400,20 @@ def publish_results(
        then publish both the grid and the unit layers to the output
        GeoPackage.
     3. Warp the scenario's raster maps (``benefit``, ``risk``,
-       ``conflict``, ``performance``, plus any user-activity maps found
-       under ``inputs/users/<scenario>``) to ``crs_epsg``.
+       ``conflict``, plus any user-activity maps found under
+       ``inputs/users/<scenario>``) to ``crs_epsg``.
     4. Compute zonal statistics (mean) of each warped map over the grid,
        then join the resulting per-map mean back onto the grid,
        normalized to the ``[0, 1]`` range (see :func:`_join_zonal_stats`
-       and :func:`_normalize_minmax`), and republish the grid layer.
-    5. Aggregate the grid's per-map statistics by unit, via a
-       non-spatial group-by on each unit's id, and join the resulting
-       means back onto each unit layer non-destructively (see
-       :func:`_aggregate_stats_by_unit`), republishing each unit layer.
+       and :func:`_normalize_minmax`).
+    5. Derive the three performance metrics from the sampled benefit,
+       risk, and conflict columns (see :func:`_compute_performance_metrics`):
+       ``performance_d``, ``performance_aed``, and ``performance_ned``.
+       Republish the grid layer.
+    6. Aggregate all grid statistics by unit, via a non-spatial group-by
+       on each unit's id, and join the resulting means back onto each
+       unit layer non-destructively (see :func:`_aggregate_stats_by_unit`),
+       republishing each unit layer.
 
     :param folder_project: path to the project folder. Must contain an
         ``inputs/vectors.gpkg`` (holding the grid and unit layers) and
@@ -474,7 +511,7 @@ def publish_results(
     ls_users_maps = _get_users_maps(folder_users=users_folder)
 
     # handle main maps
-    ls_main = ["benefit", "risk", "conflict", "performance"]
+    ls_main = ["benefit", "risk", "conflict"]
     ls_main_maps = [output_folder / f"{scenario}_{i}.tif" for i in ls_main]
 
     ls_maps = ls_users_maps + ls_main_maps
@@ -538,6 +575,9 @@ def publish_results(
         stats_layers=ls_layers,
     )
 
+    _message("Computing performance metrics")
+    grid = _compute_performance_metrics(grid)
+
     grid.to_file(output_db, layer=grid_layer, driver="GPKG")
 
     # ===========================================================
@@ -545,7 +585,11 @@ def publish_results(
     _heading()
     _message(f"Aggregate stats by unit")
 
-    stat_cols = list(maps_dc.keys())
+    stat_cols = list(maps_dc.keys()) + [
+        "performance_d",
+        "performance_aed",
+        "performance_ned",
+    ]
 
     for unit_layer in units_layers:
         unit_id_field = units_layers[unit_layer]["id"]

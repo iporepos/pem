@@ -4,8 +4,7 @@ post_assessment.py
 
 Gera visualizações de avaliação pós-processamento do PEM: scatter plots 2D e
 3D coloridos pela distância euclidiana ao canto ótimo (benefício=1,
-conflito=0, risco=0), e exporta um GeoPackage com os valores brutos dos
-índices e a distância calculada.
+conflito=0, risco=0).
 
 Os valores dos três índices são usados diretamente, sem normalização.
 
@@ -21,8 +20,6 @@ Config JSON:
         "db_file":   "path/to/pem_outputs.gpkg",
         "layer":     "pem_indices_upg_micro",
         "out_dir":   "path/to/output",
-        "out_gpkg":  "assessment_upg.gpkg",
-        "out_layer": "upg_micro",
         "scenario":  "a0",            (or ["a0", "a1", ...])
         "show":      false,
         "cmap":      "Spectral_r",
@@ -136,7 +133,7 @@ def _save_plots(
     ticks = np.linspace(d_min, d_max, 6)
     fig.suptitle(f"Cenário {scenario.upper()}")
     plt.tight_layout(rect=[0, 0.20, 1, 0.93])
-    _add_horizontal_cbar(fig, sm, "Distância ótima", ticks)
+    _add_horizontal_cbar(fig, sm, "Distância Euclidiana Absoluta", ticks)
 
     fig.savefig(
         out_dir / f"2d_scatter_{scenario}_{suffix}.jpg", dpi=300, bbox_inches="tight"
@@ -194,7 +191,9 @@ def _save_plots(
     ax3d.view_init(elev=elev, azim=azim)
 
     fig3d.subplots_adjust(left=0.0, right=0.97, bottom=0.16, top=0.90)
-    _add_horizontal_cbar(fig3d, sm, "Distância ótima", ticks, cbar_bottom=0.12)
+    _add_horizontal_cbar(
+        fig3d, sm, "Distância Euclidiana Absoluta", ticks, cbar_bottom=0.12
+    )
 
     fig3d.savefig(out_dir / f"3d_scatter_{scenario}_{suffix}.jpg", dpi=300)
     if show:
@@ -265,7 +264,9 @@ def _save_space_plot(
 
     step_str = f"{step:.2f}".replace(".", "p")
     fig.subplots_adjust(left=0.0, right=0.97, bottom=0.16, top=0.90)
-    _add_horizontal_cbar(fig, sm, "Distância ótima", ticks, cbar_bottom=0.12)
+    _add_horizontal_cbar(
+        fig, sm, "Distância Euclidiana Absoluta", ticks, cbar_bottom=0.12
+    )
 
     fig.savefig(out_dir / f"space3d_step{step_str}.jpg", dpi=300)
     if show:
@@ -334,7 +335,7 @@ def _save_trajectory_plot(
     lz[2::3] = np.nan
     ax.plot(lx, ly, lz, color="grey", linewidth=0.5, alpha=0.3, zorder=1)
 
-    ax.set_title(f"{scenario} – Trajetória desde {baseline}")
+    ax.set_title(f"{scenario.upper()} – Trajetória desde {baseline.upper()}")
     ax.set_xlabel("Risco", labelpad=-3)
     ax.set_ylabel("Conflito", labelpad=-3)
     ax.set_zlabel("Benefício", labelpad=6)
@@ -354,7 +355,9 @@ def _save_trajectory_plot(
     ax.view_init(elev=elev, azim=azim)
 
     fig.subplots_adjust(left=0.0, right=0.97, bottom=0.16, top=0.90)
-    _add_horizontal_cbar(fig, sm, "Distância ótima", ticks, cbar_bottom=0.12)
+    _add_horizontal_cbar(
+        fig, sm, "Distância Euclidiana Absoluta", ticks, cbar_bottom=0.12
+    )
     fig.savefig(out_dir / f"3d_trajectory_{baseline}_{scenario}.jpg", dpi=300)
     if show:
         plt.show()
@@ -461,7 +464,7 @@ def _save_synthesis_plot(
         fontsize=8,
         title_fontsize=8,
         loc="lower left",
-        bbox_to_anchor=(0.74, 0.10),
+        bbox_to_anchor=(0.82, 0.10),
         bbox_transform=fig.transFigure,
         borderaxespad=0,
     )
@@ -469,7 +472,9 @@ def _save_synthesis_plot(
         handle.set_linewidth(2.0)
 
     fig.subplots_adjust(left=0.0, right=0.97, bottom=0.16, top=0.90)
-    _add_horizontal_cbar(fig, sm, "Distância ótima", ticks, cbar_bottom=0.12)
+    _add_horizontal_cbar(
+        fig, sm, "Distância Euclidiana Absoluta", ticks, cbar_bottom=0.12
+    )
     fig.savefig(out_dir / f"3d_synthesis_{baseline}.jpg", dpi=300)
     if show:
         plt.show()
@@ -482,8 +487,6 @@ def run(cfg: dict) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
 
     layer = cfg["layer"]
-    out_gpkg = cfg.get("out_gpkg", "assessment_upg.gpkg")
-    out_layer = cfg.get("out_layer", "upg_micro")
     raw_scenarios = cfg.get("scenario", "a0")
     scenarios = [raw_scenarios] if isinstance(raw_scenarios, str) else raw_scenarios
     baseline = cfg.get("baseline", "a0")
@@ -560,10 +563,6 @@ def run(cfg: dict) -> None:
                 suffix="clip",
                 **plot_kwargs,
             )
-
-    print(f"\nSaving GeoPackage → {out_dir / out_gpkg} (layer: {out_layer})")
-    gdf.to_file(out_dir / out_gpkg, layer=out_layer, driver="GPKG")
-    print("  Done.")
 
     if baseline in scenarios and len(scenarios) > 1:
         non_bl = [s for s in scenarios if s != baseline]
