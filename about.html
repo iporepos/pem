@@ -364,6 +364,7 @@
 <li class="toctree-l1"><a class="reference internal" href="about_benefit_index.html">Benefit Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_risk_index.html">Habitat Risk Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_conflict_index.html">Conflict Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_performance_index.html">Use Performance Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -430,6 +431,7 @@
 <li class="toctree-l1"><a class="reference internal" href="about_benefit_index.html">Benefit Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_risk_index.html">Habitat Risk Index</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about_conflict_index.html">Conflict Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_performance_index.html">Use Performance Index</a></li>
 </ul>
 </div>
 <p>The <strong>PEM Project</strong> (<em>Planejamento Espacial Marinho do Brasil</em>, or <em>Marine Spatial Planning for Brazil</em>)
@@ -544,89 +546,32 @@ and guide marine management actions.</p>
 <section id="use-performance-index">
 <span id="about-indexes"></span><h2>Use Performance Index<a class="headerlink" href="#use-performance-index" title="Link to this heading">#</a></h2>
 <p>The core integrative indicator of the PEM framework is the
-<strong>Marine Ecosystem Services Use Performance Index</strong>,</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>In portuguese, this index is referred as <em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>,
-or <strong>IDUSE-Mar</strong> for short.</p>
+<strong>Marine Ecosystem Services Use Performance Index</strong> (IDUSE-Mar),
+which synthesizes the three component dimensions —
+<strong>Benefit</strong> (<span class="math notranslate nohighlight">\(B\)</span>), <strong>Habitat Risk</strong> (<span class="math notranslate nohighlight">\(R\)</span>), and <strong>Conflict</strong> (<span class="math notranslate nohighlight">\(C\)</span>) —
+into a single spatial expression of marine use performance.</p>
+<p>All component variables are normalized to <span class="math notranslate nohighlight">\([0, 1]\)</span> and spatially explicit,
+so the performance index is computed at every model cell and can be upscaled by
+averaging to the scale of interest, such as the Management Units.</p>
+<p>The PEM framework supports multiple <strong>benchmark performance metrics</strong> to
+quantify how far or close a given spatial configuration is from the
+theoretical ideal of maximum benefit and minimum impacts
+<span class="math notranslate nohighlight">\((B=1,\; R=0,\; C=0)\)</span>.
+Available options include the original <strong>Ratio Index</strong>
+(<span class="math notranslate nohighlight">\(D = B / (R \times C)\)</span>),
+the <strong>Absolute Euclidean Distance</strong> (AED), and the
+<strong>Normalized Euclidean Distance</strong> (NED).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Full description of all metric options, their formulas, ranges, and
+guidance on which to use in the
+<a class="reference internal" href="about_performance_index.html#about-performance-index"><span class="std std-ref">Use Performance Index page</span></a>.</p>
 </div>
-<p>This index, denoted as <span class="math notranslate nohighlight">\(D\)</span>, synthesizes the three component
-dimensions — benefit, risk, and conflict — into a single expression of marine use performance:</p>
-<div class="math notranslate nohighlight">
-\[D = \frac{B}{R \times C} \quad \text{where } D \in [0, +\infty]\]</div>
-<p>Where:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(D\)</span> is the <strong>use performance index</strong> <span class="math notranslate nohighlight">\(\in [0, +\infty]\)</span>;</p></li>
-<li><p><span class="math notranslate nohighlight">\(B\)</span> is the <strong>benefit index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>;</p></li>
-<li><p><span class="math notranslate nohighlight">\(R\)</span> is the <strong>habitat risk index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>; and</p></li>
-<li><p><span class="math notranslate nohighlight">\(C\)</span> is the <strong>conflict index</strong> <span class="math notranslate nohighlight">\(\in [0, 1]\)</span>.</p></li>
-</ul>
-<p>The interpretation of <span class="math notranslate nohighlight">\(D\)</span> is straight-forward:
-it is as a correction for the economic benefit of using the ocean space
-by taking consideration risk and conflict as well.</p>
-<p>The value of <span class="math notranslate nohighlight">\(D\)</span> must be maximized by ocean management policies,
-since it indicates a more sustainable and efficient use of
-the ocean space — high benefits with relatively low risk and conflict.
-A policy that solely maximizes benefit will more likely
-yield an inferior use performance than one that keeps risk and conflict low.</p>
-<p>All component variables are spatially explicit, hence <span class="math notranslate nohighlight">\(D\)</span> is a local
-spatial variable too, being computed at every model cell.
-The value of <span class="math notranslate nohighlight">\(D\)</span> can then be upscaled by averaging for the scale of interest,
-like the Management Units.</p>
-<section id="performance-hyperspace">
-<h3>Performance Hyperspace<a class="headerlink" href="#performance-hyperspace" title="Link to this heading">#</a></h3>
-<p>Because all components of <span class="math notranslate nohighlight">\(D\)</span> are normalized variables, <em>i.e.</em>, defined
-between 0 and 1, the mathematical <strong>hyperspace</strong> of <span class="math notranslate nohighlight">\(D\)</span> can be explored
-a priori.</p>
-<div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-2">
-English</label><div class="sd-tab-content docutils">
-<figure class="align-center" id="fig-plots">
-<a class="reference internal image-reference" href="_images/plots.jpg"><img alt="_images/plots.jpg" src="_images/plots.jpg" style="width: 100%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Exploration of the Use Performance Index formula. (<strong>a</strong>) The performance
-mathematical hyperspace. (<strong>b</strong>) Mathematical bounds for the performance
-index.</span><a class="headerlink" href="#fig-plots" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</div>
-<input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
-<label class="sd-tab-label" for="sd-tab-item-3">
-Português</label><div class="sd-tab-content docutils">
-<figure class="align-center" id="fig-plots-pt">
-<a class="reference internal image-reference" href="_images/plots_pt.jpg"><img alt="_images/plots_pt.jpg" src="_images/plots_pt.jpg" style="width: 100%;" />
-</a>
-<figcaption>
-<p><span class="caption-text">Exploração da fórmula do Índice de Desempenho.
-(a) O hiperespaço matemático de desempenho.
-(b) Limites matemáticos para o índice de desempenho.</span><a class="headerlink" href="#fig-plots-pt" title="Link to this image">#</a></p>
-</figcaption>
-</figure>
-</div>
-</div>
-<p>The upper value of <span class="math notranslate nohighlight">\(D\)</span> is unbounded, it goes to infinity.
-That means that values of <span class="math notranslate nohighlight">\(D\)</span> can skyrocket if the product <span class="math notranslate nohighlight">\(R \times C\)</span>
-goes very low, close to zero.
-To avoid technical issues with numerical overflow, one might
-<em>truncate</em> the value of the product <span class="math notranslate nohighlight">\(R \times C\)</span>
-to 0.01, which will yield an upper bound of 100.</p>
-<p>The lower value of <span class="math notranslate nohighlight">\(D\)</span> is bounded to zero, and always
-converges to the value of <span class="math notranslate nohighlight">\(B\)</span>. When the product <span class="math notranslate nohighlight">\(R \times C\)</span>
-goes to maximum possible, that is 1,
-The value of <span class="math notranslate nohighlight">\(D\)</span> converges to <span class="math notranslate nohighlight">\(B\)</span>. This means that
-the correction for <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(C\)</span> are always
-incremental, making <span class="math notranslate nohighlight">\(D\)</span> larger than <span class="math notranslate nohighlight">\(B\)</span>,
-like an incentive to lower <span class="math notranslate nohighlight">\(R\)</span> or <span class="math notranslate nohighlight">\(C\)</span>.</p>
-</section>
 <section id="spatial-indexes">
 <h3>Spatial Indexes<a class="headerlink" href="#spatial-indexes" title="Link to this heading">#</a></h3>
-<p>To get <span class="math notranslate nohighlight">\(D\)</span> one need to compute all three subjacent spatial
-indexes: <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span> and <span class="math notranslate nohighlight">\(C\)</span>.</p>
-<p>The PEM framework is designed to help in this process. Through a series of
-converging analytical processes, the input data are transformed into this
-spatial index components.</p>
+<p>To compute any performance metric, the three component spatial
+indexes — <span class="math notranslate nohighlight">\(B\)</span>, <span class="math notranslate nohighlight">\(R\)</span>, and <span class="math notranslate nohighlight">\(C\)</span> — must first be obtained.</p>
+<p>The PEM framework provides structured workflows for each component.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p>The <strong>Benefit Index</strong> quantifies the economic and social <strong>benefit</strong> derived
@@ -702,7 +647,6 @@ competition between different marine uses within the model cell.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scenario-based-analyses">Scenario-Based Analyses</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#management-units">Management Units</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#use-performance-index">Use Performance Index</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-hyperspace">Performance Hyperspace</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-indexes">Spatial Indexes</a></li>
 </ul>
 </li>

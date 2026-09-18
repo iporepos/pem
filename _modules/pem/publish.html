@@ -405,12 +405,14 @@
 
 <span class="sd">This module assembles the final published results for a scenario run: it</span>
 <span class="sd">publishes the grid and units layers to a single GeoPackage, warps the</span>
-<span class="sd">scenario's raster maps (benefit, risk, conflict, performance, and any</span>
-<span class="sd">user-activity maps) to the target CRS, computes zonal statistics of each</span>
-<span class="sd">map over the grid, joins those statistics back onto the grid (normalized</span>
-<span class="sd">to the ``[0, 1]`` range), and finally aggregates the grid statistics by</span>
-<span class="sd">unit, via a non-spatial group-by on the unit id, joining the resulting</span>
-<span class="sd">means back onto each unit layer.</span>
+<span class="sd">scenario's raster maps (benefit, risk, conflict, and any user-activity maps)</span>
+<span class="sd">to the target CRS, computes zonal statistics of each map over the grid,</span>
+<span class="sd">joins those statistics back onto the grid (normalized to the ``[0, 1]``</span>
+<span class="sd">range), derives three performance metrics</span>
+<span class="sd">(``performance_d``, ``performance_aed``, ``performance_ned``) from the</span>
+<span class="sd">sampled benefit, risk, and conflict values, and finally aggregates all</span>
+<span class="sd">statistics by unit, via a non-spatial group-by on the unit id, joining the</span>
+<span class="sd">resulting means back onto each unit layer.</span>
 
 <span class="sd">This module is intended to be run from within the QGIS Python</span>
 <span class="sd">environment, since it relies on the ``processing``, ``osgeo``, and</span>
@@ -686,6 +688,37 @@
     <span class="k">return</span> <span class="n">grid</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_compute_performance_metrics</span><span class="p">(</span><span class="n">grid</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Derive performance metric columns from sampled benefit, risk, and conflict.</span>
+
+<span class="sd">    Adds three columns to ``grid`` in place and returns it:</span>
+
+<span class="sd">    * ``performance_d``   – Ratio Index :math:`B / (R \\times C)`, with the</span>
+<span class="sd">      denominator clipped to a minimum of 0.01 to avoid overflow.</span>
+<span class="sd">    * ``performance_aed`` – Absolute Euclidean Distance to the ideal point</span>
+<span class="sd">      :math:`(B=1, R=0, C=0)`: :math:`\\sqrt{(B-1)^2 + R^2 + C^2}`.</span>
+<span class="sd">    * ``performance_ned`` – Normalized Euclidean Distance: :math:`1 - \\text{AED} / \\sqrt{3}`,</span>
+<span class="sd">      scaled to :math:`[0, 1]` with 1 being best.</span>
+
+<span class="sd">    :param grid: grid GeoDataFrame carrying ``benefit``, ``risk``, and</span>
+<span class="sd">        ``conflict`` columns.</span>
+<span class="sd">    :type grid: geopandas.GeoDataFrame</span>
+<span class="sd">    :return: ``grid`` with the three new performance columns appended.</span>
+<span class="sd">    :rtype: geopandas.GeoDataFrame</span>
+<span class="sd">    """</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">"benefit"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">"risk"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">grid</span><span class="p">[</span><span class="s2">"conflict"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="n">grid</span><span class="p">[</span><span class="s2">"performance_d"</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">r</span> <span class="o">*</span> <span class="n">c</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+
+    <span class="n">aed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">b</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">r</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">grid</span><span class="p">[</span><span class="s2">"performance_aed"</span><span class="p">]</span> <span class="o">=</span> <span class="n">aed</span>
+    <span class="n">grid</span><span class="p">[</span><span class="s2">"performance_ned"</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">aed</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grid</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_aggregate_stats_by_unit</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="n">grid_unit_field</span><span class="p">,</span> <span class="n">unit_gdf</span><span class="p">,</span> <span class="n">unit_id_field</span><span class="p">,</span> <span class="n">stat_cols</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Aggregate grid-level stat columns by unit, via a non-spatial</span>
 <span class="sd">    groupby, and left-join the means onto ``unit_gdf``.</span>
@@ -766,16 +799,20 @@
 <span class="sd">       then publish both the grid and the unit layers to the output</span>
 <span class="sd">       GeoPackage.</span>
 <span class="sd">    3. Warp the scenario's raster maps (``benefit``, ``risk``,</span>
-<span class="sd">       ``conflict``, ``performance``, plus any user-activity maps found</span>
-<span class="sd">       under ``inputs/users/&lt;scenario&gt;``) to ``crs_epsg``.</span>
+<span class="sd">       ``conflict``, plus any user-activity maps found under</span>
+<span class="sd">       ``inputs/users/&lt;scenario&gt;``) to ``crs_epsg``.</span>
 <span class="sd">    4. Compute zonal statistics (mean) of each warped map over the grid,</span>
 <span class="sd">       then join the resulting per-map mean back onto the grid,</span>
 <span class="sd">       normalized to the ``[0, 1]`` range (see :func:`_join_zonal_stats`</span>
-<span class="sd">       and :func:`_normalize_minmax`), and republish the grid layer.</span>
-<span class="sd">    5. Aggregate the grid's per-map statistics by unit, via a</span>
-<span class="sd">       non-spatial group-by on each unit's id, and join the resulting</span>
-<span class="sd">       means back onto each unit layer non-destructively (see</span>
-<span class="sd">       :func:`_aggregate_stats_by_unit`), republishing each unit layer.</span>
+<span class="sd">       and :func:`_normalize_minmax`).</span>
+<span class="sd">    5. Derive the three performance metrics from the sampled benefit,</span>
+<span class="sd">       risk, and conflict columns (see :func:`_compute_performance_metrics`):</span>
+<span class="sd">       ``performance_d``, ``performance_aed``, and ``performance_ned``.</span>
+<span class="sd">       Republish the grid layer.</span>
+<span class="sd">    6. Aggregate all grid statistics by unit, via a non-spatial group-by</span>
+<span class="sd">       on each unit's id, and join the resulting means back onto each</span>
+<span class="sd">       unit layer non-destructively (see :func:`_aggregate_stats_by_unit`),</span>
+<span class="sd">       republishing each unit layer.</span>
 
 <span class="sd">    :param folder_project: path to the project folder. Must contain an</span>
 <span class="sd">        ``inputs/vectors.gpkg`` (holding the grid and unit layers) and</span>
@@ -873,7 +910,7 @@
     <span class="n">ls_users_maps</span> <span class="o">=</span> <span class="n">_get_users_maps</span><span class="p">(</span><span class="n">folder_users</span><span class="o">=</span><span class="n">users_folder</span><span class="p">)</span>
 
     <span class="c1"># handle main maps</span>
-    <span class="n">ls_main</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"benefit"</span><span class="p">,</span> <span class="s2">"risk"</span><span class="p">,</span> <span class="s2">"conflict"</span><span class="p">,</span> <span class="s2">"performance"</span><span class="p">]</span>
+    <span class="n">ls_main</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"benefit"</span><span class="p">,</span> <span class="s2">"risk"</span><span class="p">,</span> <span class="s2">"conflict"</span><span class="p">]</span>
     <span class="n">ls_main_maps</span> <span class="o">=</span> <span class="p">[</span><span class="n">output_folder</span> <span class="o">/</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">scenario</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">.tif"</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ls_main</span><span class="p">]</span>
 
     <span class="n">ls_maps</span> <span class="o">=</span> <span class="n">ls_users_maps</span> <span class="o">+</span> <span class="n">ls_main_maps</span>
@@ -937,6 +974,9 @@
         <span class="n">stats_layers</span><span class="o">=</span><span class="n">ls_layers</span><span class="p">,</span>
     <span class="p">)</span>
 
+    <span class="n">_message</span><span class="p">(</span><span class="s2">"Computing performance metrics"</span><span class="p">)</span>
+    <span class="n">grid</span> <span class="o">=</span> <span class="n">_compute_performance_metrics</span><span class="p">(</span><span class="n">grid</span><span class="p">)</span>
+
     <span class="n">grid</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">output_db</span><span class="p">,</span> <span class="n">layer</span><span class="o">=</span><span class="n">grid_layer</span><span class="p">,</span> <span class="n">driver</span><span class="o">=</span><span class="s2">"GPKG"</span><span class="p">)</span>
 
     <span class="c1"># ===========================================================</span>
@@ -944,7 +984,11 @@
     <span class="n">_heading</span><span class="p">()</span>
     <span class="n">_message</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Aggregate stats by unit"</span><span class="p">)</span>
 
-    <span class="n">stat_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">maps_dc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">stat_cols</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">maps_dc</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">+</span> <span class="p">[</span>
+        <span class="s2">"performance_d"</span><span class="p">,</span>
+        <span class="s2">"performance_aed"</span><span class="p">,</span>
+        <span class="s2">"performance_ned"</span><span class="p">,</span>
+    <span class="p">]</span>
 
     <span class="k">for</span> <span class="n">unit_layer</span> <span class="ow">in</span> <span class="n">units_layers</span><span class="p">:</span>
         <span class="n">unit_id_field</span> <span class="o">=</span> <span class="n">units_layers</span><span class="p">[</span><span class="n">unit_layer</span><span class="p">][</span><span class="s2">"id"</span><span class="p">]</span>

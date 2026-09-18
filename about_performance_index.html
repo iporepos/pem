@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>pem.publish &#8212; pem v0.0.1 documentation</title>
+    <title>Use Performance Index &#8212; pem v0.0.1 documentation</title>
   
   
   
@@ -46,13 +46,14 @@
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="_static/copybutton.js?v=f281be69"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api_publish';</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'about_performance_index';</script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Development" href="development.html" />
-    <link rel="prev" title="pem.benefit" href="api_benefit.html" />
+    <link rel="next" title="User Guide" href="usage.html" />
+    <link rel="prev" title="Conflict Index" href="about_conflict_index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -144,7 +145,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="about.html">
     About
   </a>
@@ -158,7 +159,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -273,7 +274,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="about.html">
     About
   </a>
@@ -287,7 +288,7 @@
 </li>
 
 
-<li class="nav-item current active">
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="api.html">
     API
   </a>
@@ -358,12 +359,12 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="api.html">API</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_project.html">pem.project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_risk.html">pem.risk</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_conflict.html">pem.conflict</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_benefit.html">pem.benefit</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">pem.publish</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_upg.html">Management Units</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_benefit_index.html">Benefit Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_risk_index.html">Habitat Risk Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about_conflict_index.html">Conflict Index</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Use Performance Index</a></li>
 </ul>
 </div>
 </nav></div>
@@ -405,9 +406,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="api.html" class="nav-link">API</a></li>
+    <li class="breadcrumb-item"><a href="about.html" class="nav-link">About</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">pem.publish</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Use Performance Index</span></li>
   </ul>
 </nav>
 </div>
@@ -424,153 +425,156 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="module-pem.publish">
-<span id="pem-publish"></span><span id="api-publish"></span><h1>pem.publish<a class="headerlink" href="#module-pem.publish" title="Link to this heading">#</a></h1>
-<p>This is the complete API reference for the <code class="docutils literal notranslate"><span class="pre">publish</span></code> python module of the <code class="docutils literal notranslate"><span class="pre">pem</span></code> system.</p>
-<p>This module assembles the final published results for a scenario run: it
-publishes the grid and units layers to a single GeoPackage, warps the
-scenario’s raster maps (benefit, risk, conflict, and any user-activity maps)
-to the target CRS, computes zonal statistics of each map over the grid,
-joins those statistics back onto the grid (normalized to the <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code>
-range), derives three performance metrics
-(<code class="docutils literal notranslate"><span class="pre">performance_d</span></code>, <code class="docutils literal notranslate"><span class="pre">performance_aed</span></code>, <code class="docutils literal notranslate"><span class="pre">performance_ned</span></code>) from the
-sampled benefit, risk, and conflict values, and finally aggregates all
-statistics by unit, via a non-spatial group-by on the unit id, joining the
-resulting means back onto each unit layer.</p>
-<p>This module is intended to be run from within the QGIS Python
-environment, since it relies on the <code class="docutils literal notranslate"><span class="pre">processing</span></code>, <code class="docutils literal notranslate"><span class="pre">osgeo</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">qgis.core</span></code> packages for raster warping and zonal statistics.</p>
-<details class="sd-sphinx-override sd-dropdown sd-card sd-mb-3" open="open">
-<summary class="sd-summary-title sd-card-header">
-<span class="sd-summary-icon"><svg version="1.1" width="1.0em" height="1.0em" class="sd-octicon sd-octicon-code-square" viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Zm7.47 3.97a.75.75 0 0 1 1.06 0l2 2a.75.75 0 0 1 0 1.06l-2 2a.749.749 0 0 1-1.275-.326.749.749 0 0 1 .215-.734L10.69 8 9.22 6.53a.75.75 0 0 1 0-1.06ZM6.78 6.53 5.31 8l1.47 1.47a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-2-2a.75.75 0 0 1 0-1.06l2-2a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042Z"></path></svg></span><span class="sd-summary-text">Script example</span><span class="sd-summary-state-marker sd-summary-chevron-right"><svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-chevron-right" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.72 18.78a.75.75 0 0 1 0-1.06L14.44 12 8.72 6.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018l6.25 6.25a.75.75 0 0 1 0 1.06l-6.25 6.25a.75.75 0 0 1-1.06 0Z"></path></svg></span></summary><div class="sd-summary-content sd-card-body docutils">
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># !WARNING: run this in QGIS Python Environment</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">importlib.util</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">iu</span>
-
-<span class="c1"># define the paths to the module file</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">file</span> <span class="o">=</span> <span class="s2">"path/to/publish.py"</span>  <span class="c1"># change here</span>
-
-<span class="c1"># define the project folder</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">folder</span> <span class="o">=</span> <span class="s2">"path/to/project_folder"</span>  <span class="c1"># change here</span>
-
-<span class="c1"># define scenario</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">scenario</span> <span class="o">=</span> <span class="s2">"baseline"</span>
-
-<span class="c1"># define grid layer name</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">grid</span> <span class="o">=</span> <span class="s2">"grid"</span>
-
-<span class="c1"># define units layers</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="n">units</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">"units_micro"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"layer"</span><span class="p">:</span> <span class="s2">"upg_micro"</span><span class="p">,</span>
-        <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"id"</span>
-    <span class="p">},</span>
-
-    <span class="s2">"units_macro"</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">"layer"</span><span class="p">:</span> <span class="s2">"upg_macro"</span><span class="p">,</span>
-        <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"id"</span>
-    <span class="p">},</span>
-<span class="p">}</span>
-
-<span class="c1"># call the function</span>
-<span class="c1"># ------------------------------------------------------</span>
-<span class="c1"># do not change here</span>
-<span class="n">spec</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">spec_from_file_location</span><span class="p">(</span><span class="s2">"module"</span><span class="p">,</span> <span class="n">file</span><span class="p">)</span>
-<span class="n">module</span> <span class="o">=</span> <span class="n">iu</span><span class="o">.</span><span class="n">module_from_spec</span><span class="p">(</span><span class="n">spec</span><span class="p">)</span>
-<span class="n">spec</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">exec_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
-
-<span class="n">ls_output</span> <span class="o">=</span> <span class="n">module</span><span class="o">.</span><span class="n">publish_results</span><span class="p">(</span>
-    <span class="n">folder_project</span><span class="o">=</span><span class="n">folder</span><span class="p">,</span>
-    <span class="n">scenario</span><span class="o">=</span><span class="n">scenario</span><span class="p">,</span>
-    <span class="n">grid_layer</span><span class="o">=</span><span class="n">grid</span><span class="p">,</span>
-    <span class="n">units_layers</span><span class="o">=</span><span class="n">units</span><span class="p">,</span>
-    <span class="n">grid_id_field</span><span class="o">=</span><span class="s2">"h3_index"</span><span class="p">,</span>
-    <span class="n">crs_epsg</span><span class="o">=</span><span class="mi">4326</span>
-<span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="s2">" ----- DONE -----"</span><span class="p">)</span>
-</pre></div>
+  <div class="admonition warning" id="about-performance-index">
+<p class="admonition-title">Warning</p>
+<p>This section is under development.</p>
 </div>
+<section id="use-performance-index">
+<h1>Use Performance Index<a class="headerlink" href="#use-performance-index" title="Link to this heading">#</a></h1>
+<p>The <strong>Use Performance Index</strong> is the core integrative indicator of the PEM framework.
+It synthesizes the three component dimensions — <strong>Benefit</strong> (<span class="math notranslate nohighlight">\(B\)</span>),
+<strong>Habitat Risk</strong> (<span class="math notranslate nohighlight">\(R\)</span>), and <strong>Conflict</strong> (<span class="math notranslate nohighlight">\(C\)</span>) — into a single spatial
+expression of marine use performance.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>In portuguese, this index is referred as <em>Índice de Desempenho do Uso de Serviços Ecossistêmicos do Mar</em>,
+or <strong>IDUSE-Mar</strong> for short.</p>
 </div>
-</details><dl class="py function">
-<dt class="sig sig-object py" id="pem.publish.publish_results">
-<span class="sig-prename descclassname"><span class="pre">pem.publish.</span></span><span class="sig-name descname"><span class="pre">publish_results</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_project</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scenario</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_layer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">units_layers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_id_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crs_epsg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4326</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pem/publish.html#publish_results"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pem.publish.publish_results" title="Link to this definition">#</a></dt>
-<dd><p>Assemble and publish the final results of a scenario run.</p>
-<p>This is the top-level entry point of the module. For a given
-project and scenario it builds a single output GeoPackage
-(<code class="docutils literal notranslate"><span class="pre">outputs/&lt;scenario&gt;/results.gpkg</span></code>) holding the grid layer, the
-units layers, and a set of derived statistics, by running the
-following steps in order:</p>
-<ol class="arabic simple">
-<li><p>Load the grid layer and each unit layer from the project’s
-input vector database, reprojecting both to <code class="docutils literal notranslate"><span class="pre">crs_epsg</span></code> if
-needed (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_load_and_reproject()</span></code>).</p></li>
-<li><p>For each unit layer, tag every grid row with the id of the unit
-polygon that contains its centroid (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_assign_unit_ids()</span></code>),
-then publish both the grid and the unit layers to the output
-GeoPackage.</p></li>
-<li><p>Warp the scenario’s raster maps (<code class="docutils literal notranslate"><span class="pre">benefit</span></code>, <code class="docutils literal notranslate"><span class="pre">risk</span></code>,
-<code class="docutils literal notranslate"><span class="pre">conflict</span></code>, plus any user-activity maps found under
-<code class="docutils literal notranslate"><span class="pre">inputs/users/&lt;scenario&gt;</span></code>) to <code class="docutils literal notranslate"><span class="pre">crs_epsg</span></code>.</p></li>
-<li><p>Compute zonal statistics (mean) of each warped map over the grid,
-then join the resulting per-map mean back onto the grid,
-normalized to the <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> range (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_join_zonal_stats()</span></code>
-and <code class="xref py py-func docutils literal notranslate"><span class="pre">_normalize_minmax()</span></code>).</p></li>
-<li><p>Derive the three performance metrics from the sampled benefit,
-risk, and conflict columns (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_compute_performance_metrics()</span></code>):
-<code class="docutils literal notranslate"><span class="pre">performance_d</span></code>, <code class="docutils literal notranslate"><span class="pre">performance_aed</span></code>, and <code class="docutils literal notranslate"><span class="pre">performance_ned</span></code>.
-Republish the grid layer.</p></li>
-<li><p>Aggregate all grid statistics by unit, via a non-spatial group-by
-on each unit’s id, and join the resulting means back onto each
-unit layer non-destructively (see <code class="xref py py-func docutils literal notranslate"><span class="pre">_aggregate_stats_by_unit()</span></code>),
-republishing each unit layer.</p></li>
-</ol>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_project</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – path to the project folder. Must contain an
-<code class="docutils literal notranslate"><span class="pre">inputs/vectors.gpkg</span></code> (holding the grid and unit layers) and
-an <code class="docutils literal notranslate"><span class="pre">inputs/bathymetry.tif</span></code> reference raster; see
-<code class="xref py py-func docutils literal notranslate"><span class="pre">_get_project_vars()</span></code>.</p></li>
-<li><p><strong>scenario</strong> (<em>str</em>) – name of the scenario to publish. Used to locate
-the scenario’s raster maps (<code class="docutils literal notranslate"><span class="pre">&lt;scenario&gt;_&lt;map&gt;.tif</span></code>) and the
-<code class="docutils literal notranslate"><span class="pre">inputs/users/&lt;scenario&gt;</span></code> folder, and as the output
-subfolder name under <code class="docutils literal notranslate"><span class="pre">outputs/</span></code>.</p></li>
-<li><p><strong>grid_layer</strong> (<em>str</em>) – name of the grid layer in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>. Also
-used as the name under which the grid is published in the
-output GeoPackage.</p></li>
-<li><p><strong>units_layers</strong> (<em>dict</em>) – <p>mapping of unit layer name (as published in
-the output GeoPackage) to a dict with the keys <code class="docutils literal notranslate"><span class="pre">&quot;layer&quot;</span></code>
-(the source layer name in <code class="docutils literal notranslate"><span class="pre">vectors.gpkg</span></code>) and <code class="docutils literal notranslate"><span class="pre">&quot;id&quot;</span></code> (the
-name of that unit layer’s unique id field), e.g.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-    <span class="s2">"units_micro"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"layer"</span><span class="p">:</span> <span class="s2">"upg_micro"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"id"</span><span class="p">},</span>
-    <span class="s2">"units_macro"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"layer"</span><span class="p">:</span> <span class="s2">"upg_macro"</span><span class="p">,</span> <span class="s2">"id"</span><span class="p">:</span> <span class="s2">"id"</span><span class="p">},</span>
-<span class="p">}</span>
-</pre></div>
+<p>All three component dimensions are spatially explicit and normalized to <span class="math notranslate nohighlight">\([0, 1]\)</span>,
+meaning the performance index is computed at every model cell and can be upscaled by
+averaging to the scale of interest (e.g., Management Units).</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Learn how the component indexes are computed:
+<a class="reference internal" href="about_benefit_index.html#about-benefit-index"><span class="std std-ref">Benefit Index</span></a>,
+<a class="reference internal" href="about_risk_index.html#about-risk-index"><span class="std std-ref">Habitat Risk Index</span></a>,
+<a class="reference internal" href="about_conflict_index.html#about-conflict-index"><span class="std std-ref">Conflict Index</span></a>.</p>
 </div>
-</p></li>
-<li><p><strong>grid_id_field</strong> (<em>str</em>) – name of the stable unique id field on the
-grid layer, used to join the zonal statistics back onto it.</p></li>
-<li><p><strong>crs_epsg</strong> (<em>int</em>) – EPSG code of the target CRS that the grid, unit
-layers, and raster maps are reprojected/warped to. Defaults to
-<code class="docutils literal notranslate"><span class="pre">4326</span></code>.</p></li>
+<section id="the-ideal-point">
+<h2>The Ideal Point<a class="headerlink" href="#the-ideal-point" title="Link to this heading">#</a></h2>
+<p>All benchmark performance metrics in the PEM framework share a common reference:
+the <strong>ideal point</strong>, which represents the theoretical configuration of
+maximum benefit and minimum negative impacts:</p>
+<div class="math notranslate nohighlight">
+\[(B^*, R^*, C^*) = (1,\; 0,\; 0)\]</div>
+<p>This ideal represents the best possible state of marine use — full benefit capture,
+zero habitat risk, and zero inter-user conflict.
+No real scenario is expected to reach this point exactly; it serves as a
+fixed reference for measuring how far or close a given spatial configuration
+is from the optimum.</p>
+<p>Because all dimensions are normalized, the ideal point is a well-defined corner
+of the unit cube <span class="math notranslate nohighlight">\([0, 1]^3\)</span>.</p>
+</section>
+<section id="performance-metric-options">
+<h2>Performance Metric Options<a class="headerlink" href="#performance-metric-options" title="Link to this heading">#</a></h2>
+<p>The PEM framework provides multiple formulations to quantify performance relative
+to the ideal point. These options are not mutually exclusive — analysts may choose
+the metric that best suits the theoretical requirements and communication needs
+of their application.</p>
+<section id="option-1-ratio-index">
+<h3>Option 1: Ratio Index<a class="headerlink" href="#option-1-ratio-index" title="Link to this heading">#</a></h3>
+<p>The <strong>Ratio Index</strong> is the original formulation of the performance index in the PEM
+framework. It expresses performance as a benefit-to-impact ratio:</p>
+<div class="math notranslate nohighlight">
+\[D = \frac{B}{R \times C} \quad \text{where } D \in [0,\; +\infty]\]</div>
+<p>The interpretation of <span class="math notranslate nohighlight">\(D\)</span> is intuitive: it is the economic benefit of using
+the ocean space, corrected downward by risk and conflict. A higher value of
+<span class="math notranslate nohighlight">\(D\)</span> indicates a more sustainable and efficient use — high benefit with
+relatively low risk and conflict.</p>
+<div class="admonition-theoretical-limitation admonition">
+<p class="admonition-title">Theoretical limitation</p>
+<p>The Ratio Index is undefined when <span class="math notranslate nohighlight">\(R = 0\)</span> or <span class="math notranslate nohighlight">\(C = 0\)</span> (division by zero).
+It is also unbounded above, which can cause numerical overflow when the denominator
+<span class="math notranslate nohighlight">\(R \times C\)</span> is very close to zero. These limitations motivated the development
+of the distance-based alternatives below.</p>
+</div>
+<p>The upper value of <span class="math notranslate nohighlight">\(D\)</span> is unbounded — values can grow very large if the product
+<span class="math notranslate nohighlight">\(R \times C\)</span> is close to zero. A common workaround is to <em>truncate</em> the product
+to a minimum of 0.01, yielding an effective upper bound of 100.</p>
+<p>The lower value converges to <span class="math notranslate nohighlight">\(B\)</span> when <span class="math notranslate nohighlight">\(R \times C = 1\)</span>, meaning the
+correction for risk and conflict is always incremental — <span class="math notranslate nohighlight">\(D\)</span> is never smaller
+than <span class="math notranslate nohighlight">\(B\)</span>.</p>
+</section>
+<section id="option-2-absolute-euclidean-distance-aed">
+<h3>Option 2: Absolute Euclidean Distance (AED)<a class="headerlink" href="#option-2-absolute-euclidean-distance-aed" title="Link to this heading">#</a></h3>
+<p>The <strong>Absolute Euclidean Distance</strong> metric quantifies performance as the geometric
+distance between a solution <span class="math notranslate nohighlight">\((B, R, C)\)</span> and the ideal point <span class="math notranslate nohighlight">\((1, 0, 0)\)</span>
+in the three-dimensional performance space:</p>
+<div class="math notranslate nohighlight">
+\[\text{AED} = \sqrt{(B - 1)^2 + R^2 + C^2}\]</div>
+<ul class="simple">
+<li><p>When <span class="math notranslate nohighlight">\(\text{AED} = 0\)</span>, the solution coincides with the ideal point — maximum performance.</p></li>
+<li><p>The worst possible solution <span class="math notranslate nohighlight">\((B=0,\; R=1,\; C=1)\)</span> yields
+<span class="math notranslate nohighlight">\(\text{AED} = \sqrt{3} \approx 1.732\)</span>.</p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>None. All results are written to
-<code class="docutils literal notranslate"><span class="pre">outputs/&lt;scenario&gt;/results.gpkg</span></code> in <code class="docutils literal notranslate"><span class="pre">folder_project</span></code>.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
+<div class="math notranslate nohighlight">
+\[\text{AED} \in \bigl[0,\; \sqrt{3}\bigr]\]</div>
+<p>The AED metric is <strong>lower-is-better</strong>: a value close to zero indicates high performance,
+while a value near <span class="math notranslate nohighlight">\(\sqrt{3}\)</span> indicates poor performance.</p>
+<p>Unlike the Ratio Index, AED is well-defined for all combinations of
+<span class="math notranslate nohighlight">\((B, R, C)\)</span> in <span class="math notranslate nohighlight">\([0, 1]^3\)</span>, including cases where <span class="math notranslate nohighlight">\(R = 0\)</span> or <span class="math notranslate nohighlight">\(C = 0\)</span>.</p>
+</section>
+<section id="option-3-normalized-euclidean-distance-ned">
+<h3>Option 3: Normalized Euclidean Distance (NED)<a class="headerlink" href="#option-3-normalized-euclidean-distance-ned" title="Link to this heading">#</a></h3>
+<p>The <strong>Normalized Euclidean Distance</strong> rescales the AED to a standard <span class="math notranslate nohighlight">\([0, 1]\)</span>
+interval and inverts the direction so that higher values indicate better performance:</p>
+<div class="math notranslate nohighlight">
+\[\text{NED} = 1 - \frac{\text{AED}}{\sqrt{3}}\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{NED} = 1\)</span> corresponds to the ideal point <span class="math notranslate nohighlight">\((B=1, R=0, C=0)\)</span> — best performance.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{NED} = 0\)</span> corresponds to <span class="math notranslate nohighlight">\((B=0, R=1, C=1)\)</span> — worst performance.</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{NED} \in [0,\; 1]\]</div>
+<p>The NED metric is <strong>higher-is-better</strong> and directly comparable across scenarios and
+spatial units, making it especially suited for mapping, ranking, and communication
+purposes.</p>
+</section>
+</section>
+<section id="summary">
+<h2>Summary<a class="headerlink" href="#summary" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 32.0%" />
+<col style="width: 18.0%" />
+<col style="width: 16.0%" />
+<col style="width: 16.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Metric</p></th>
+<th class="head"><p>Formula</p></th>
+<th class="head"><p>Range</p></th>
+<th class="head"><p>Better direction</p></th>
+<th class="head"><p>Defined when <span class="math notranslate nohighlight">\(R=0\)</span> or <span class="math notranslate nohighlight">\(C=0\)</span>?</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Ratio Index (<span class="math notranslate nohighlight">\(D\)</span>)</p></td>
+<td><p><span class="math notranslate nohighlight">\(B\;/\;(R \times C)\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\([0,\;+\infty]\)</span></p></td>
+<td><p>Higher</p></td>
+<td><p>No</p></td>
+</tr>
+<tr class="row-odd"><td><p>AED</p></td>
+<td><p><span class="math notranslate nohighlight">\(\sqrt{(B-1)^2 + R^2 + C^2}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\([0,\;\sqrt{3}]\)</span></p></td>
+<td><p>Lower</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-even"><td><p>NED</p></td>
+<td><p><span class="math notranslate nohighlight">\(1 - \text{AED}\;/\;\sqrt{3}\)</span></p></td>
+<td><p><span class="math notranslate nohighlight">\([0,\;1]\)</span></p></td>
+<td><p>Higher</p></td>
+<td><p>Yes</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>For new applications, the <strong>NED</strong> is the recommended default metric: it is
+well-defined across the entire variable space, bounded between 0 and 1, and
+follows the intuitive convention that higher values indicate better performance.</p>
+</section>
 </section>
 
 
@@ -584,20 +588,20 @@ layers, and raster maps are reprojected/warped to. Defaults to
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_benefit.html"
+       href="about_conflict_index.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">pem.benefit</p>
+        <p class="prev-next-title">Conflict Index</p>
       </div>
     </a>
     <a class="right-next"
-       href="development.html"
+       href="usage.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Development</p>
+        <p class="prev-next-title">User Guide</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -620,14 +624,21 @@ layers, and raster maps are reprojected/warped to. Defaults to
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pem.publish.publish_results"><code class="docutils literal notranslate"><span class="pre">publish_results()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ideal-point">The Ideal Point</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#performance-metric-options">Performance Metric Options</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-ratio-index">Option 1: Ratio Index</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-absolute-euclidean-distance-aed">Option 2: Absolute Euclidean Distance (AED)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-3-normalized-euclidean-distance-ned">Option 3: Normalized Euclidean Distance (NED)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#summary">Summary</a></li>
 </ul>
   </nav></div>
 
   <div class="sidebar-secondary-item">
 
   <div class="tocsection sourcelink">
-    <a href="_sources/api_publish.rst.txt">
+    <a href="_sources/about_performance_index.rst.txt">
       <i class="fa-solid fa-file-lines"></i> Show Source
     </a>
   </div>
