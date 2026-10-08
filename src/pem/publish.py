@@ -512,6 +512,11 @@ def publish_results(
 
     # handle main maps
     ls_main = ["benefit", "risk", "conflict"]
+    # optional analytical map: sampled and aggregated only if it was produced
+    # for this scenario (see synergy.get_synergy_index). It is not part of
+    # the performance metrics below.
+    if (output_folder / f"{scenario}_synergy.tif").is_file():
+        ls_main.append("synergy")
     ls_main_maps = [output_folder / f"{scenario}_{i}.tif" for i in ls_main]
 
     ls_maps = ls_users_maps + ls_main_maps
@@ -578,6 +583,12 @@ def publish_results(
     _message("Computing performance metrics")
     grid = _compute_performance_metrics(grid)
 
+    # synergy x conflict balance, computed on the grid (no extra raster):
+    # both columns are already rescaled to 0-1 by the same percentile rule,
+    # so the difference is in [-1, 1]; > 0 synergy prevails, < 0 conflict does.
+    if "synergy" in grid.columns:
+        grid["balance"] = grid["synergy"] - grid["conflict"]
+
     grid.to_file(output_db, layer=grid_layer, driver="GPKG")
 
     # ===========================================================
@@ -585,11 +596,15 @@ def publish_results(
     _heading()
     _message(f"Aggregate stats by unit")
 
-    stat_cols = list(maps_dc.keys()) + [
-        "performance_d",
-        "performance_aed",
-        "performance_ned",
-    ]
+    stat_cols = (
+        list(maps_dc.keys())
+        + (["balance"] if "balance" in grid.columns else [])
+        + [
+            "performance_d",
+            "performance_aed",
+            "performance_ned",
+        ]
+    )
 
     for unit_layer in units_layers:
         unit_id_field = units_layers[unit_layer]["id"]
