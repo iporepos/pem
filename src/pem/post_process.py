@@ -1,34 +1,65 @@
 #!/usr/bin/env python3
 """
-process_pem_indices.py
+This is the complete API reference for the ``post_process`` python module of the ``pem`` system.
 
-Consolida os resultados do PEM (results.gpkg), que trazem uma camada por
-escala espacial x cenario (grid_cenario0..3, units_micro_cenario0..3,
-units_macro_cenario0..3), em um unico GeoPackage de saida com uma camada
-por escala espacial (pem_indices_malha_hex, pem_indices_upg_micro,
-pem_indices_upg_macro), onde os cenarios viram colunas no padrao
-"{abreviacao}_{cenario}" (<=10 caracteres, conforme Quadro 3 do relatorio
-de padronizacao).
+This module consolidates the PEM results, which hold one layer for each spatial
+scale and scenario, into a single output GeoPackage with one layer by spatial
+scale. Scenarios become columns named ``{abbreviation}_{scenario}``, up to 10
+characters long, as set by Quadro 3 of the standardization report.
 
-Os indices gerais (benefit/conflict/risk/performance) sao consolidados
-para os 4 cenarios. Colunas de intensidade de uso do mar por setor
-(scenario0_indices no config) sao OPCIONAIS: se essa secao nao existir no
-config, essas colunas simplesmente nao entram na saida vetorial (por
-exemplo, quando esse dado passa a ser publicado apenas em formato raster).
+.. list-table::
+    :header-rows: 1
+    :widths: 50 50
 
-Alem do GeoPackage, gera:
-  - camadas_pem_indices.csv
-        1 linha por camada de saida, com os elementos "Obrigatorio" do
-        Quadro 2 (Perfil MGB Sumarizado) do relatorio de padronizacao.
-  - colunas_{camada}.csv (um por camada de saida, ex. colunas_pem_indices_malha_hex.csv)
-        1 linha por coluna, com nome tecnico, alias (nome curto), descricao
-        (texto completo) e tipo.
-  - LEIAME.txt
-        Log da execucao: data/hora, duracao, maquina, config usado e
-        descricao de cada arquivo gerado.
+    * - Input layers
+      - Output layer
+    * - ``grid_cenario0`` to ``grid_cenario3``
+      - ``pem_indices_malha_hex``
+    * - ``units_micro_cenario0`` to ``units_micro_cenario3``
+      - ``pem_indices_upg_micro``
+    * - ``units_macro_cenario0`` to ``units_macro_cenario3``
+      - ``pem_indices_upg_macro``
 
-Uso:
-    python process_pem_indices.py --config config.json
+The general indexes (benefit, conflict, risk, and performance) are consolidated
+for the four scenarios.
+
+.. note::
+
+    Columns of ocean use intensity by sector (``scenario0_indices`` in the config)
+    are optional. If this section is missing from the config, these columns are not
+    included in the vector output (for instance, when this data is published only
+    in raster format).
+
+.. dropdown:: Script example
+    :icon: code-square
+    :open:
+
+    .. code-block:: bash
+
+        python -m pem.post_process --config path/to/config.json
+
+.. dropdown:: Additional output files
+    :icon: file
+
+    Besides the GeoPackage, this module generates:
+
+    .. list-table::
+        :header-rows: 1
+        :widths: 35 65
+
+        * - File
+          - Content
+        * - ``camadas_pem_indices.csv``
+          - One row by output layer, with the mandatory ("Obrigatorio") elements of
+            Quadro 2 (Perfil MGB Sumarizado) of the standardization report.
+        * - ``colunas_{layer}.csv``
+          - One file by output layer (e.g., ``colunas_pem_indices_malha_hex.csv``),
+            with one row by column: technical name, alias (short name), description
+            (full text), and type.
+        * - ``LEIAME.txt``
+          - Run log: date and time, duration, machine, config used, and a description
+            of each generated file.
+
 """
 
 from __future__ import annotations
@@ -61,8 +92,8 @@ def load_config(path: Path) -> dict:
 
 
 def validate_config(cfg: dict) -> None:
-    """Falha cedo se alguma abreviacao/camada estourar os limites de
-    caracteres definidos no relatorio de padronizacao."""
+    """Fail early if any abbreviation or layer name exceeds the character
+    limits set by the standardization report."""
     errors = []
 
     for scale_key, scale_cfg in cfg["scales"].items():

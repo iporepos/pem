@@ -1,33 +1,48 @@
 #!/usr/bin/env python3
 """
-post_assessment.py
+This is the complete API reference for the ``post_assessment`` python module of the ``pem`` system.
 
-Gera visualizações de avaliação pós-processamento do PEM: scatter plots 2D e
-3D coloridos pela distância euclidiana ao canto ótimo (benefício=1,
-conflito=0, risco=0).
+This module generates the PEM post-processing assessment plots: 2D and 3D scatter
+plots colored by the Euclidean distance to the optimal corner (benefit = 1,
+conflict = 0, risk = 0).
 
-Os valores dos três índices são usados diretamente, sem normalização.
+.. note::
 
-A versão com escala teórica completa (0 a sqrt(3)) é sempre gerada com sufixo
-"_full". Se "clip" for true no config, uma segunda versão com escala ajustada
-ao intervalo amostral é gerada com sufixo "_clip".
+    The values of the three indexes are used directly, without normalization.
 
-Uso:
-    python -m pem.post_assessment --config path/to/config.json
+The version with the full theoretical scale (0 to ``sqrt(3)``) is always generated,
+with the ``_full`` suffix. If ``clip`` is ``true`` in the config, a second version
+with a scale fitted to the sampled range is generated, with the ``_clip`` suffix.
 
-Config JSON:
-    {
-        "db_file":   "path/to/pem_outputs.gpkg",
-        "layer":     "pem_indices_upg_micro",
-        "out_dir":   "path/to/output",
-        "scenario":  "a0",            (or ["a0", "a1", ...])
-        "show":      false,
-        "cmap":      "Spectral_r",
-        "clip":      false,
-        "elev":      30,
-        "azim":      -60,
-        "step":      0.2
-    }
+.. dropdown:: Script example
+    :icon: code-square
+    :open:
+
+    .. code-block:: bash
+
+        python -m pem.post_assessment --config path/to/config.json
+
+.. dropdown:: Config file
+    :icon: gear
+
+    The ``scenario`` key accepts a single scenario or a list of scenarios
+    (e.g., ``["a0", "a1"]``).
+
+    .. code-block:: json
+
+        {
+            "db_file": "path/to/pem_outputs.gpkg",
+            "layer": "pem_indices_upg_micro",
+            "out_dir": "path/to/output",
+            "scenario": "a0",
+            "show": false,
+            "cmap": "Spectral_r",
+            "clip": false,
+            "elev": 30,
+            "azim": -60,
+            "step": 0.2
+        }
+
 """
 
 from __future__ import annotations

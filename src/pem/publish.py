@@ -384,7 +384,8 @@ def _get_users_maps(folder_users):
 def publish_results(
     folder_project, scenario, grid_layer, units_layers, grid_id_field, crs_epsg=4326
 ):
-    """Assemble and publish the final results of a scenario run.
+    """
+    Assemble and publish the final results of a scenario run.
 
     This is the top-level entry point of the module. For a given
     project and scenario it builds a single output GeoPackage
