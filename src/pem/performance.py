@@ -134,39 +134,90 @@ def _get_users_maps(folder_users):
     return ls_files_filter
 
 
-def _compute_performance(b, c, r):
-    return b / (c * r)
+def _check_normalized(data, name, tolerance=1e-6):
+    """
+    Check that a component raster is normalized to the ``[0, 1]`` range.
+
+    :param data: component raster values, with NoData cells set to NaN
+    :type data: :class:`numpy.ndarray`
+    :param name: name of the component, for the error message
+    :type name: str
+    :param tolerance: allowance for floating point error. Default value = ``1e-6``
+    :type tolerance: float
+    :return: Always returns ``None``
+    :rtype: None
+    """
+    vmin = np.nanmin(data)
+    vmax = np.nanmax(data)
+    if vmin < -tolerance or vmax > 1.0 + tolerance:
+        raise ValueError(
+            f" >>> {name} raster must be in [0, 1], found [{vmin}, {vmax}]"
+        )
+
+
+def _compute_aed(b, r, c):
+    """
+    Compute the Absolute Euclidean Distance to the ideal point ``(B=1, R=0, C=0)``.
+
+    :param b: normalized benefit
+    :type b: :class:`numpy.ndarray`
+    :param r: normalized risk
+    :type r: :class:`numpy.ndarray`
+    :param c: normalized conflict
+    :type c: :class:`numpy.ndarray`
+    :return: distance to the ideal point, in the ``[0, sqrt(3)]`` range (0 is best)
+    :rtype: :class:`numpy.ndarray`
+    """
+    return np.sqrt((b - 1.0) ** 2 + r**2 + c**2)
+
+
+def _compute_ned(aed):
+    """
+    Compute the Normalized Euclidean Distance from the Absolute Euclidean Distance.
+
+    :param aed: Absolute Euclidean Distance
+    :type aed: :class:`numpy.ndarray`
+    :return: performance in the ``[0, 1]`` range (1 is best)
+    :rtype: :class:`numpy.ndarray`
+    """
+    return 1.0 - aed / np.sqrt(3.0)
 
 
 def get_performance_index(folder_project, scenario, benefit, conflict, risk):
     """
-    Calculates, log-transforms, and fuzzifies a project performance index from rasters.
+    Calculates the project performance index from rasters as the Normalized Euclidean Distance.
 
-    This function loads geospatial rasters for benefit, conflict, and risk,
-    computes a combined raw performance array, and then generates two derivative
-    datasets: a base-10 log-transformed version, and a linearly fuzzified version
-    bounded by the 1st and 99th percentiles of the log data. All three outputs
+    This function loads geospatial rasters for benefit, conflict, and risk, and
+    computes the Absolute Euclidean Distance (AED) of each cell to the ideal point
+    ``(B=1, R=0, C=0)``. The Normalized Euclidean Distance (NED) is then
+    ``1 - AED / sqrt(3)``, in the ``[0, 1]`` range with 1 being best. Both outputs
     are saved as GeoTIFF files.
+
+    .. note::
+
+        The NED is not stretched to the values of each scenario, so it remains
+        comparable across scenarios. Cells that are NoData in any of the input
+        rasters are NoData in the outputs.
 
     :param folder_project: Path to the root project directory.
     :type folder_project: str or pathlib.Path
     :param scenario: Name of the current evaluation scenario (used for directory
         creation and file naming).
     :type scenario: str
-    :param benefit: Path to the benefit input raster file.
+    :param benefit: Path to the benefit input raster file, normalized to ``[0, 1]``.
     :type benefit: str or pathlib.Path
-    :param conflict: Path to the conflict input raster file.
+    :param conflict: Path to the conflict input raster file, normalized to ``[0, 1]``.
     :type conflict: str or pathlib.Path
-    :param risk: Path to the risk input raster file.
+    :param risk: Path to the risk input raster file, normalized to ``[0, 1]``.
     :type risk: str or pathlib.Path
 
-    :return: A list containing exactly three Paths to the saved GeoTIFF files in
+    :return: A list containing exactly two Paths to the saved GeoTIFF files in
         the following order:
 
-        * Index 0: Raw performance raster (``*_performance.tif``)
-        * Index 1: Log10-transformed performance raster (``*_performance_log10.tif``)
-        * Index 2: Fuzzified performance raster (``*_performance_fz.tif``)
+        * Index 0: Absolute Euclidean Distance raster (``*_performance_aed.tif``)
+        * Index 1: Normalized Euclidean Distance raster (``*_performance.tif``)
     :rtype: list[pathlib.Path]
+    :raises ValueError: if any input raster has values outside of ``[0, 1]``
     """
     _heading()
     _message(f"Get Performance Index at {scenario}")
@@ -186,67 +237,34 @@ def get_performance_index(folder_project, scenario, benefit, conflict, risk):
     dc_conflict = _util_read_raster(conflict, n_band=1, metadata=True)
     dc_risk = _util_read_raster(risk, n_band=1, metadata=True)
 
-    performance = _compute_performance(
-        dc_benefit["data"], dc_conflict["data"], dc_risk["data"]
-    )
-    performance = np.where(performance <= 0, np.nan, performance)
-    performance_log10 = np.log10(performance)
-    performance_fuzzy = _linear_fuzzify(
-        performance_log10,
-        a=np.nanpercentile(performance_log10, 1),
-        b=np.nanpercentile(performance_log10, 99),
-    )
+    _check_normalized(dc_benefit["data"], name="benefit")
+    _check_normalized(dc_conflict["data"], name="conflict")
+    _check_normalized(dc_risk["data"], name="risk")
+
+    aed = _compute_aed(b=dc_benefit["data"], r=dc_risk["data"], c=dc_conflict["data"])
+    ned = _compute_ned(aed)
 
     _message("saving raster data")
 
-    fo1 = folder_output_intermediate / f"{scenario}_performance_raw.tif"
+    fo1 = folder_output_intermediate / f"{scenario}_performance_aed.tif"
     _util_write_raster(
-        grid_output=performance,
+        grid_output=aed,
         dc_metadata=dc_benefit["metadata"],
         file_output=fo1,
         n_band=1,
         nodata_value=-99999,
     )
 
-    fo2 = folder_output_intermediate / f"{scenario}_performance_log10.tif"
+    fo2 = folder_output / f"{scenario}_performance.tif"
     _util_write_raster(
-        grid_output=performance_log10,
+        grid_output=ned,
         dc_metadata=dc_benefit["metadata"],
         file_output=fo2,
         n_band=1,
         nodata_value=-99999,
     )
 
-    fo3 = folder_output / f"{scenario}_performance.tif"
-    _util_write_raster(
-        grid_output=performance_fuzzy,
-        dc_metadata=dc_benefit["metadata"],
-        file_output=fo3,
-        n_band=1,
-        nodata_value=-99999,
-    )
-
-    return [fo1, fo2, fo3]
-
-
-def _linear_fuzzify(data, a, b):
-    """
-    Fuzzifies a NumPy array using a simple linear ramp function.
-
-    Parameters:
-    - data: NumPy array of input values
-    - a: Lower bound (where membership starts rising from 0)
-    - b: Upper bound (where membership reaches 1)
-    """
-    # Safeguard against division by zero if a equals b
-    if a == b:
-        return np.where(data >= a, 1.0, 0.0)
-
-    # Calculate the linear slope: (x - a) / (b - a)
-    membership = (data - a) / (b - a)
-
-    # Clip values to keep them strictly between 0.0 and 1.0
-    return np.clip(membership, 0.0, 1.0)
+    return [fo1, fo2]
 
 
 def _util_get_raster_crs(file_input, code_only=True):
@@ -417,7 +435,7 @@ def _util_read_raster(file_input, n_band=1, metadata=True):
     :type n_band: int
     :param metadata: option to return
     :type metadata: bool
-    :return: dictionary with "data" and (optional) "metadata"
+    :return: dictionary with "data" (NoData cells set to NaN) and (optional) "metadata"
     :rtype: dict
     """
     # -------------------------------------------------------------------------
@@ -427,7 +445,11 @@ def _util_read_raster(file_input, n_band=1, metadata=True):
     # Get the raster band
     band_input = raster_input.GetRasterBand(n_band)
     # Read the raster data as a numpy array
-    grid_input = band_input.ReadAsArray()
+    grid_input = band_input.ReadAsArray().astype(np.float32)
+    # Set NoData cells to NaN so they do not enter calculations
+    nodata_value = band_input.GetNoDataValue()
+    if nodata_value is not None:
+        grid_input[np.isclose(grid_input, nodata_value)] = np.nan
     dc_output = {"data": grid_input}
     # -- Collect useful metadata
     if metadata:
@@ -486,6 +508,8 @@ def _util_write_raster(
     out_band = raster_output.GetRasterBand(n_band)
 
     # Write the new data to the new raster
+    if nodata_value is not None:
+        grid_output = np.nan_to_num(grid_output, nan=nodata_value)
     out_band.WriteArray(grid_output)
 
     # Assign the NoData value to the band
